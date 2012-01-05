@@ -1,8 +1,8 @@
 /**
- * This is a stylesheet for a demo presentation for impress.js
+ * This is a stylesheet for a demo presentation for jmpress.js
  * 
- * It is not meant to be a part of impress.js and is not required by impress.js.
- * I expect that anyone creating a presentation for impress.js would create their own
+ * It is not meant to be a part of jmpress.js and is not required by jmpress.js.
+ * I expect that anyone creating a presentation for jmpress.js would create their own
  * set of styles.
  */
 
@@ -179,7 +179,7 @@ a:hover {
     transform:         translateY(0px);
 }
 
-/* impress.js title */
+/* jmpress.js title */
 
 #title {
     padding: 0;
@@ -413,7 +413,7 @@ a:hover {
 
 /* on overview step everything is visible */
 
-#impress.step-overview .step {
+#jmpress.step-overview .step {
     opacity: 1;
     cursor: pointer;
 }
@@ -465,7 +465,7 @@ a:hover {
 }
 
 
-/* IMPRESS NOT SUPPORTED STYLES */
+/* JMPRESS NOT SUPPORTED STYLES */
 
 .fallback-message {
     font-family: sans-serif;
@@ -485,13 +485,13 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.impress-not-supported .step {
+.jmpress-not-supported .step {
     position: relative;
     opacity: 1;
     margin: 20px auto;
 }
 
-.impress-not-supported .fallback-message {
+.jmpress-not-supported .fallback-message {
     display: block;
 }
 

@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>impress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Bartek Szopka @bartaz</title>
+    <title>jmpress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Kyle Robinson Young @shama</title>
     
-    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
-    <meta name="author" content="Bartek Szopka" />
+    <meta name="description" content="jmpress.js is jQuery fork of https://github.com/bartaz/impress.js and a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+    <meta name="author" content="Kyle Robinson Young" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
 
@@ -13,10 +13,10 @@
 </head>
 <body>
 
-<div id="impress" class="impress-not-supported">
+<div id="jmpress" class="impress-not-supported">
 
     <div class="fallback-message">
-        <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+        <p>Your browser <b>doesn't support the features required</b> by jmpress.js, so you are presented with a simplified version of this presentation.</p>
         <p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser. Firefox 10 (to be released soon) will also handle it.</p>
     </div>
 
@@ -34,13 +34,13 @@
 
     <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
         <span class="try">then you should try</span>
-        <h1>impress.js<sup>*</sup></h1>
+        <h1>jmpress.js<sup>*</sup></h1>
         <span class="footnote"><sup>*</sup> no rhyme intended</span>
     </div>
 
     <div id="its" class="step" data-x="850" data-y="3000" data-rotate="90" data-scale="5">
-        <p>It's a <strong>presentation tool</strong> <br/>
-        inspired by the idea behind <a href="http://prezi.com">prezi.com</a> <br/>
+        <p>It's a <strong>presentation tool</strong> started by <a href="https://github.com/bartaz/impress.js/">@bartaz</a>, 
+        inspired by the idea behind <a href="http://prezi.com">prezi.com</a> 
         and based on the <strong>power of CSS3 transforms and transitions</strong> in modern browsers.</p>
     </div>
 
@@ -62,7 +62,7 @@
 
     <div id="source" class="step" data-x="6300" data-y="2000" data-rotate="20" data-scale="4">
         <p>want to know more?</p>
-        <q><a href="http://github.com/bartaz/impress.js">use the source</a>, Luke!</q>
+        <q><a href="http://github.com/shama/jmpress.js">use the source</a>, Luke!</q>
     </div>
 
     <div id="one-more-thing" class="step" data-x="6000" data-y="4000" data-scale="2">
@@ -83,7 +83,13 @@
     <p>Use a spacebar or arrow keys to navigate</p>
 </div>
 
-<script src="js/impress.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="js/jmpress.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#jmpress').jmpress();
+});
+</script>
 
 </body>
 </html>
