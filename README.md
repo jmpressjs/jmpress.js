@@ -1,6 +1,6 @@
 # jmpress.js
 
-It's a jQuery fork of https://github.com/bartaz/impress.js and a presentation 
+It's a jQuery port of https://github.com/bartaz/impress.js and a presentation 
 framework based on the power of CSS3 transforms and transitions in modern 
 browsers and inspired by the idea behind prezi.com.
 
@@ -14,8 +14,6 @@ jmpress.js demo: [http://shama.github.com/jmpress.js]
 
 ## BROWSER SUPPORT
 
-### TL;DR;
-
 Currently jmpress.js works fine in latest Chrome/Chromium browser, Safari 5.1 and Firefox 10
 (to be released in January 2012). IE10 support is currently unknown, so let's assume it doesn't
 work there. It also doesn't work in Opera.
@@ -23,54 +21,126 @@ work there. It also doesn't work in Opera.
 As it was not developed with mobile browsers in mind, it currently doesn't work on 
 any mobile devices, including tablets.
 
-### Still interested? Read more...
-
 Additionally for the animations to run smoothly it's required to have hardware
 acceleration support in your browser. This depends on the browser, your operating
 system and even kind of graphic hardware you have in your machine.
 
-For browsers not supporting CSS3 3D transforms jmpress.js adds `impress-not-supported`
-class on `#impress` element, so fallback styles can be applied to make all the content accessible.
+For browsers not supporting CSS3 3D transforms jmpress.js adds a not supported 
+class to your element, so fallback styles can be applied to make all the content 
+accessible.
 
-### Even more explanation and technical stuff
+## USAGE
 
-Let's put this straight -- wide browser support was (and is) not on top of my priority list for
-jmpress.js. It's built on top of fresh technologies that just start to appear in the browsers
-and I'd like to rather look forward and develop for the future than being slowed down by the past.
+Take a look at the `index.html` and `css/style.css` for an example presentation. 
+The only required file to use this is `js/jmpress.js`.
 
-But it's not "hard-coded" for any particular browser or engine. If any browser in future will
-support features required to run jmpress.js, it will just begin to work there without changes in
-the code.
+### Create a root presentation element
 
-From technical point of view all the positioning of presentation elements in 3D requires CSS 3D
-transforms support. Transitions between presentation steps are based on CSS transitions.
-So these two features are required by jmpress.js to display presentation correctly.
+    <div id="jmpress"></div>
 
-Unfortunately the support for CSS 3D transforms and transitions is not enough for animations to
-run smoothly. If the browser doesn't support hardware acceleration or the graphic card is not 
-good enough the transitions will be laggy.
+### Fill it up with steps
 
-Additionally the code of jmpress.js relies on APIs proposed in HTML5 specification, including
-`classList` and `dataset` APIs. If they are not available in the browser, jmpress.js will not work.
+    <div id="jmpress">
+        <div class="step">Slide 1</div>
+        <div class="step">Slide 2</div>
+    </div>
 
-Fortunately, as these are JavaScript APIs there are polyfill libraries that patch older browsers
-with these APIs.
+### Configure each step properties
 
-For example IE10 is said to support CSS 3D transforms and transitions, but it doesn't have `classList`
-not `dataset` APIs implemented at the moment. So including polyfill libraries *should* help IE10
-with running jmpress.js.
+    <div id="jmpress">
+        <div class="step" data-x="3500" data-y="-850" data-rotate="270" data-scale="6">Slide 1</div>
+        <div class="step" data-x="2825" data-y="2325" data-z="-3000" data-rotate="300" data-scale="1">Slide 2</div>
+    </div>
 
-### And few more details about mobile support
+### Tell jQuery to build your presentation
 
-Mobile browsers are currently not supported. Even iOS and Android browsers that support
-CSS 3D transforms are forced into fallback view at this point.
+    <script type="text/javascript">
+    $(function() {
+        $('#jmpress').jmpress();
+    });
+    </script>
 
-Anyway, I'm really curious to see how modern mobile devices such as iPhone or iPad can
-handle such animations, so future mobile support is considered.
+### Configure jmpress
 
-iOS supports `classList` and `dataset` APIs starting with version 5, so iOS 4.X and older is not
-likely to be supported (without polyfill code).
+Don't want to use `.step` as a selector? Okay:
+
+    $('#jmpress').jmpress({
+        stepSelector: 'li'
+    });
+
+### Customize the hash id of each slide
+
+The id of the step will appear as the URI hash to recall the slide later. If you 
+don't give your steps ids then the id `step-N` will be used.
+
+    <div id="name-of-slide" class="step" data-x="3500" data-y="-850" data-rotate="270" data-scale="6">Slide 1</div>
+
+## API
+
+### Steps
+
+Each step element can have the following data properties set:
+
+* data-x: X Position
+* data-y: Y Position
+* data-z: Z Position
+* data-scale: Scale of element
+* data-rotation: Degree of rotation
+* data-rotation-x: Degree of rotation on x-axis
+* data-rotation-y: Degree of rotation on y-axis
+* data-rotation-z: Degree of rotation on z-axis
+
+### jQuery.jmpress()
+
+    $(selector).jmpress({
+        // jQuery selector to select each step
+        stepSelector: '.step'
+
+        // Class name to give the canvas
+		,canvasClass: 'canvas'
+
+        // Class name to trigger if jmpress is not supported
+		,notSupportedClass: 'jmpress-not-supported'
+
+        // Customize the animations (or CSS) used
+        ,animation: {
+			,transitionDuration: '5s'
+			,transitionTimingFunction: 'linear'
+		}
+    });
+
+#### METHODS
+
+    // Next slide
+    $(selector).jmpress('next');
+
+    // Previous slide
+    $(selector).jmpress('prev');
+
+    // Goto a slide
+    $(selector).jmpress('select', '#slide-id');
+    $(selector).jmpress('select', $(selector));
+
+    // Manipulate the canvas
+    $(selector).jmpress('canvas', {
+        transform: 'rotate(7deg)'
+    });
+
+    // Manipulate an element
+    $(selector).jmpress('css', $('#step-1'), {
+        transform: 'scale(0.5)'
+    });
+
+## CONTRIBUTING
+
+I accept pull requests! ;)
+
+### WISHLIST
+
+* Support mobile/tablet devices
+* Fallback to canvas or SVG for older browsers
+* jQuery UI theme support
 
 ## LICENSE
 
-Copyright 2012 Kyle Robinson Young. Released under MIT License.
+Copyright 2012 Kyle Robinson Young. Released under a [MIT license](http://www.opensource.org/licenses/mit-license.php).

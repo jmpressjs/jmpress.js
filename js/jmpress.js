@@ -220,7 +220,6 @@
 
 			var props,
 				zoomin = target.scale.x >= current.scale.x;
-			//var duration = (active) ? "1s" : "0";
 
 			props = {
 				// to keep the perspective look similar for different scales
