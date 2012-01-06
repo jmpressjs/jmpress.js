@@ -18,7 +18,15 @@
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
 		,notSupportedClass: 'jmpress-not-supported'
+		,animation: {
+			transformOrigin: 'top left'
+			,transitionProperty: 'all'
+			,transitionDuration: '1s'
+			,transitionTimingFunction: 'ease-in-out'
+			,transformStyle: "preserve-3d"
+		}
 	};
+
 	/**
 	 * Vars used throughout plugin
 	 */
@@ -26,7 +34,7 @@
 		,canvas = null
 		,steps = null
 		,current = null
-		,active = null;
+		,active = false;
 
 	/**
 	 * Methods
@@ -62,10 +70,9 @@
 
 			var props = {
 				position: "absolute"
-				,transformOrigin: "top left"
-				,transition: "all 0 ease-in-out"
-				,transformStyle: "preserve-3d"
+				,transitionDuration: '0s'
 			};
+			props = $.extend({}, settings.animation, props);
 			methods.css(jmpress, props);
 			methods.css(jmpress, {
 				top: '50%'
@@ -211,23 +218,32 @@
 				}
 			};
 
-			var zoomin = target.scale.x >= current.scale.x;
-			var duration = (active) ? "1s" : "0";
+			var props,
+				zoomin = target.scale.x >= current.scale.x;
+			//var duration = (active) ? "1s" : "0";
 
-			methods.css(jmpress, {
+			props = {
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
 				,transform: methods.scale(target.scale)
-				,transitionDuration: duration
 				,transitionDelay: (zoomin ? "500ms" : "0ms")
-			});
+			};
+			props = $.extend({}, settings.animation, props);
+			if (!active) {
+				props.transitionDuration = '0';
+			}
+			methods.css(jmpress, props);
 
-			methods.css(canvas, {
+			props = {
 				transform: methods.rotate(target.rotate, true) + methods.translate(target.translate)
-				,transitionDuration: duration
 				,transitionDelay: (zoomin ? "0ms" : "500ms")
-			});
+			};
+			props = $.extend({}, settings.animation, props);
+			if (!active) {
+				props.transitionDuration = '0';
+			}
+			methods.css(canvas, props);
 
 			current = target;
 			active = el;
