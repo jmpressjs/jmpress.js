@@ -1,7 +1,7 @@
 /**
  * jmpress.js
  *
- * jmpress.js is jQuery fork of https://github.com/bartaz/impress.js and a 
+ * jmpress.js is jQuery port of https://github.com/bartaz/impress.js and a 
  * presentation tool based on the power of CSS3 transforms and transitions
  * in modern browsers and inspired by the idea behind prezi.com.
  *
@@ -15,19 +15,18 @@
 	 * Default Settings
 	 */
 	var settings = {
-		active: null
+		stepSelector: '.step'
+		,canvasClass: 'canvas'
+		,notSupportedClass: 'jmpress-not-supported'
 	};
-	
 	/**
 	 * Vars used throughout plugin
 	 */
-	var vars = {
-		impress: null
-		,canvas: null
-		,steps: null
-		,current: null
-		,active: null
-	};
+	var jmpress = null
+		,canvas = null
+		,steps = null
+		,current = null
+		,active = null;
 
 	/**
 	 * Methods
@@ -37,18 +36,20 @@
 		 * Initialize jmpress
 		 */
 		init: function( args ) {
-			methods.checkSupport( this );
-			
-			vars.impress = $(this);
-			
-			vars.canvas = $('<div />').addClass('canvas');
-			vars.impress.children().each(function() {
-				vars.canvas.append($(this));
+			settings = $.extend(settings, {}, args);
+
+			jmpress = $( this );
+
+			methods.checkSupport();
+
+			canvas = $('<div />').addClass( settings.canvasClass );
+			jmpress.children().each(function() {
+				canvas.append( $( this ) );
 			});
-			vars.impress.append(vars.canvas);
+			jmpress.append( canvas );
 			
-			vars.steps = $('.step', vars.impress);
-    
+			steps = $('.step', jmpress);
+
 			// SETUP
 			// set initial values and defaults
 
@@ -62,25 +63,26 @@
 			var props = {
 				position: "absolute"
 				,transformOrigin: "top left"
-				,transition: "all 1s ease-in-out"
+				,transition: "all 0 ease-in-out"
 				,transformStyle: "preserve-3d"
 			};
-			methods.css(vars.impress, props);
-			methods.css(vars.impress, {
+			methods.css(jmpress, props);
+			methods.css(jmpress, {
 				top: '50%'
 				,left: '50%'
 				,perspective: '1000px'
 			});
-			methods.css(vars.canvas, props);
+			methods.css(canvas, props);
 
-			vars.current = {
+			current = {
 				translate: { x: 0, y: 0, z: 0 }
 				,rotate:    { x: 0, y: 0, z: 0 }
 				,scale:     { x: 1, y: 1, z: 1 }
 			};
 
-			vars.steps.each(function( idx, el ) {
-				var data = el.dataset;
+			// INITIALIZE EACH STEP
+			steps.each(function( idx ) {
+				var data = this.dataset;
 				var step = {
 					translate: {
 						x: data.x || 0
@@ -99,25 +101,30 @@
 					}
 				};
 
-				$.data($(el), 'stepData', step);
+				$(this).data('stepData', step);
 
-				if ( !$(el).attr('id') ) {
-					$(el).attr('id', 'step-' + (idx + 1));
+				if ( !$(this).attr('id') ) {
+					$(this).attr('id', 'step-' + (idx + 1));
 				}
-				
-				methods.css($(el), {
+
+				methods.css($(this), {
 					position: "absolute"
 					,transform: "translate(-50%,-50%)" +
-							   methods.translate(step.translate) +
-							   methods.rotate(step.rotate) +
-							   methods.scale(step.scale)
+						methods.translate(step.translate) +
+						methods.rotate(step.rotate) +
+						methods.scale(step.scale)
 					,transformStyle: "preserve-3d"
+				});
+				
+				// ON CLICK
+				$(this).click(function() {
+					methods.select($(this));
+					return false;
 				});
 
 			});
-			
-			// EVENTS
-    
+
+			// KEYDOWN EVENT
 			$(document).keydown(function( event ) {
 				if ( event.keyCode == 9 || ( event.keyCode >= 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
 					switch( event.keyCode ) {
@@ -138,45 +145,27 @@
 				}
 			});
 
-			$(document).click(function( event ) {
-				// event delegation with "bubbling"
-				// check if event target (or any of its parents is a link or a step)
-				var target = event.target;
-				while ( (target.tagName != "A") &&
-						(!target.stepData) &&
-						(target != document.body) ) {
-					target = target.parentNode;
-				}
-
-				if ( target.tagName == "A" ) {
-					var href = target.getAttribute("href");
-
-					// if it's a link to presentation step, target this step
-					if ( href && href[0] == '#' ) {
-						target = byId( href.slice(1) );
-					}
-				}
-
-				if ( methods.select(target) ) {
-					event.preventDefault();
-				}
-			});
-
-			// TODO: Replace with jQuery way
+			// HASH CHANGE EVENT
 			window.addEventListener("hashchange", function () {
 				methods.select( methods.getElementFromUrl() );
 			}, false);
 
 			// START 
 			// by selecting step defined in url or first step of the presentation
-			methods.select( methods.getElementFromUrl() || $( vars.steps[0] ) );
-			
+			methods.select( methods.getElementFromUrl() || $( steps[0] ) );
+
 		}
 		/**
 		 * Select a given step
+		 *
+		 * @param Object|String el element to select
+		 * @return Object element selected
 		 */
 		,select: function ( el ) {
-			if ( !el || !$.hasData( el ) ) {
+			if ( typeof el == 'string') {
+				el = $( el );
+			}
+			if ( !el || !el.data('stepData') ) {
 				// selected element is not defined as step
 				return false;
 			}
@@ -191,14 +180,14 @@
 			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
 			window.scrollTo(0, 0);
 
-			var step = el.data('stepData');console.log(step);
+			var step = el.data('stepData');
 
-			if ( vars.active ) {
-				vars.active.removeClass('active');
+			if ( active ) {
+				active.removeClass('active');
 			}
-			$( el ).addClass('active');
+			el.addClass('active');
 
-			vars.impress.attr('class', 'step-' + el.attr('id'));
+			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
@@ -222,46 +211,67 @@
 				}
 			};
 
-			var zoomin = target.scale.x >= vars.current.scale.x;
+			var zoomin = target.scale.x >= current.scale.x;
+			var duration = (active) ? "1s" : "0";
 
-			methods.css(vars.impress, {
+			methods.css(jmpress, {
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
-				perspective: step.scale.x * 1000 + "px",
-				transform: methods.scale(target.scale),
-				transitionDelay: (zoomin ? "500ms" : "0ms")
+				perspective: step.scale.x * 1000 + "px"
+				,transform: methods.scale(target.scale)
+				,transitionDuration: duration
+				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			});
 
-			methods.css(vars.canvas, {
-				transform: methods.rotate(target.rotate, true) + methods.translate(target.translate),
-				transitionDelay: (zoomin ? "0ms" : "500ms")
+			methods.css(canvas, {
+				transform: methods.rotate(target.rotate, true) + methods.translate(target.translate)
+				,transitionDuration: duration
+				,transitionDelay: (zoomin ? "0ms" : "500ms")
 			});
 
-			vars.current = target;
-			vars.active = el;
+			current = target;
+			active = el;
 
 			return el;
 		}
 		/**
-		 * Next Slide
+		 * Select Next Slide
+		 *
+		 * @return Object newly active slide
 		 */
 		,next: function() {
-			var next = vars.active;
-			next = vars.steps.indexOf( vars.active ) + 1;
-			next = next < vars.steps.length ? vars.steps[ next ] : vars.steps[ 0 ];
-			methods.select(next);
+			var next = active.next();
+			if (next.length < 1) {
+				next = steps.first();
+			}
+			return methods.select( next );
 		}
 		/**
-		 * Previous Slide
+		 * Select Previous Slide
+		 *
+		 * @return Object newly active slide
 		 */
 		,prev: function() {
-			var next = vars.active;
-			next = vars.steps.indexOf( vars.active ) - 1;
-			next = next >= 0 ? vars.steps[ next ] : vars.steps[ vars.steps.length-1 ];
-			methods.select(next);
+			var prev = active.prev();
+			if (prev.length < 1) {
+				prev = steps.last();
+			}
+			return methods.select( prev );
+		}
+		/**
+		 * Manipulate the canvas
+		 *
+		 * @param Object props
+		 * @return Object canvas
+		 */
+		,canvas: function( props ) {
+			methods.css(canvas, props);
+			return canvas;
 		}
 		/**
 		 * getElementFromUrl
+		 *
+		 * @return String or false
 		 */
 		,getElementFromUrl: function () {
 			// get id from url # by removing `#` or `#/` from the beginning,
@@ -270,9 +280,11 @@
 			return el.length > 0 ? el : false;
 		}
 		/**
-		 * Prefix
+		 * Set supported prefixes
+		 *
+		 * @return Function to get prefixed property
 		 */
-		,pfx: function () {
+		,pfx: (function () {
 			var style = document.createElement('dummy').style,
 				prefixes = 'Webkit Moz O ms Khtml'.split(' '),
 				memory = {};
@@ -290,18 +302,19 @@
 				}
 				return memory[ prop ];
 			}
-		}
+		})()
 		/**
-		 * Set CSS on element
+		 * Set CSS on element w/ prefixes
+		 *
+		 * @return Object element which properties were set
 		 */
 		,css: function ( el, props ) {
 			var key, pkey;
-			elem = el.get(0);
 			for ( key in props ) {
 				if ( props.hasOwnProperty(key) ) {
 					pkey = methods.pfx(key);
 					if ( pkey != null ) {
-						elem.style[pkey] = props[key];
+						el.css(pkey, props[key]);
 					}
 				}
 			}
@@ -309,12 +322,16 @@
 		}
 		/**
 		 * Translate
+		 *
+		 * @return String CSS for translate3d
 		 */
 		,translate: function ( t ) {
 			return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
 		}
 		/**
 		 * Scale
+		 *
+		 * @return String CSS for rotate
 		 */
 		,rotate: function ( r, revert ) {
 			var rX = " rotateX(" + r.x + "deg) ",
@@ -324,20 +341,23 @@
 		}
 		/**
 		 * Scale
+		 *
+		 * @return String CSS for scale
 		 */
 		,scale: function ( s ) {
 			return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
 		}
 		/**
 		 * Check for support
+		 *
+		 * @return void
 		 */
-		,checkSupport: function( elem ) {
+		,checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
-			var impressSupported = ( methods.pfx("perspective") != null ) &&
+			var jmpressSupported = ( methods.pfx("perspective") != null ) &&
 				( ua.search(/(iphone)|(ipod)|(ipad)|(android)/) == -1 );
-			if (!impressSupported) {
-				$(elem).addClass('impress-not-supported');
-				return;
+			if (jmpressSupported) {
+				jmpress.addClass(settings.notSupportedClass);
 			}
 		}
 	};

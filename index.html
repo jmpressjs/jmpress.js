@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>jmpress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Kyle Robinson Young @shama</title>
     
-    <meta name="description" content="jmpress.js is jQuery fork of https://github.com/bartaz/impress.js and a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+    <meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js and a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
     <meta name="author" content="Kyle Robinson Young" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<div id="jmpress" class="impress-not-supported">
+<div id="jmpress">
 
     <div class="fallback-message">
         <p>Your browser <b>doesn't support the features required</b> by jmpress.js, so you are presented with a simplified version of this presentation.</p>
@@ -86,9 +86,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/jmpress.js"></script>
 <script type="text/javascript">
-$(function() {
-	$('#jmpress').jmpress();
-});
+$(function() { $('#jmpress').jmpress(); });
 </script>
 
 </body>
