@@ -14,10 +14,11 @@
 	/**
 	 * Default Settings
 	 */
-	var settings = {
+	var defaults = {
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
 		,notSupportedClass: 'jmpress-not-supported'
+		,loadedClass: 'loaded'
 		,animation: {
 			transformOrigin: 'top left'
 			,transitionProperty: 'all'
@@ -31,6 +32,7 @@
 	 * Vars used throughout plugin
 	 */
 	var jmpress = null
+		,settings = null
 		,canvas = null
 		,steps = null
 		,current = null
@@ -44,7 +46,7 @@
 		 * Initialize jmpress
 		 */
 		init: function( args ) {
-			settings = $.extend(settings, {}, args);
+			settings = $.extend(defaults, {}, args);
 
 			jmpress = $( this );
 
@@ -82,9 +84,9 @@
 			methods.css(canvas, props);
 
 			current = {
-				translate: { x: 0, y: 0, z: 0 }
-				,rotate:    { x: 0, y: 0, z: 0 }
-				,scale:     { x: 1, y: 1, z: 1 }
+				translate: {x: 0, y: 0, z: 0}
+				,rotate:   {x: 0, y: 0, z: 0}
+				,scale:    {x: 1, y: 1, z: 1}
 			};
 
 			// INITIALIZE EACH STEP
@@ -122,13 +124,6 @@
 						methods.scale(step.scale)
 					,transformStyle: "preserve-3d"
 				});
-				
-				// ON CLICK
-				$(this).click(function() {
-					methods.select($(this));
-					return false;
-				});
-
 			});
 
 			// KEYDOWN EVENT
@@ -170,7 +165,7 @@
 		 */
 		,select: function ( el ) {
 			if ( typeof el == 'string') {
-				el = $( el );
+				el = jmpress.find( el ).first();
 			}
 			if ( !el || !el.data('stepData') ) {
 				// selected element is not defined as step
@@ -246,32 +241,76 @@
 
 			current = target;
 			active = el;
+			
+			methods.loadSiblings();
 
 			return el;
 		}
 		/**
-		 * Select Next Slide
+		 * Alias for select
+		 */
+		,goTo: function( el ) {
+			return methods.select( el );
+		}
+		/**
+		 * Goto Next Slide
 		 *
 		 * @return Object newly active slide
 		 */
 		,next: function() {
-			var next = active.next();
-			if (next.length < 1) {
-				next = steps.first();
-			}
-			return methods.select( next );
+			return methods.select( methods.getNext() );
 		}
 		/**
-		 * Select Previous Slide
+		 * Goto Previous Slide
 		 *
 		 * @return Object newly active slide
 		 */
 		,prev: function() {
-			var prev = active.prev();
-			if (prev.length < 1) {
-				prev = steps.last();
+			return methods.select( methods.getPrev() );
+		}
+		/**
+		 * Get Next Slide
+		 * 
+		 * @return Object
+		 */
+		,getNext: function() {
+			var next = active.next( settings.stepSelector );
+			if (next.length < 1) {
+				next = steps.first( settings.stepSelector );
 			}
-			return methods.select( prev );
+			return next;
+		}
+		/**
+		 * Get Previous Slide
+		 * 
+		 * @return Object
+		 */
+		,getPrev: function() {
+			var prev = active.prev( settings.stepSelector );
+			if (prev.length < 1) {
+				prev = steps.last( settings.stepSelector );
+			}
+			return prev;
+		}
+		/**
+		 * Load Siblings
+		 * 
+		 * @return void
+		 */
+		,loadSiblings: function() {
+			var siblings = active.siblings( settings.stepSelector );
+			siblings.push( active );
+			siblings.each(function() {
+				if ($(this).hasClass( settings.loadedClass )) {
+					return;
+				}
+				var href = $(this).attr('href') || $(this).attr('data-src') || false;
+				if ( href ) {
+					$(this).load( href, function() {
+						$(this).addClass( settings.loadedClass );
+					});
+				}
+			});
 		}
 		/**
 		 * Manipulate the canvas
@@ -324,15 +363,16 @@
 		 * @return Object element which properties were set
 		 */
 		,css: function ( el, props ) {
-			var key, pkey;
+			var key, pkey, css = {};
 			for ( key in props ) {
 				if ( props.hasOwnProperty(key) ) {
 					pkey = methods.pfx(key);
 					if ( pkey != null ) {
-						el.css(pkey, props[key]);
+						css[pkey] = props[key];
 					}
 				}
 			}
+			el.css(css);
 			return el;
 		}
 		/**
@@ -374,6 +414,14 @@
 			if (jmpressSupported) {
 				jmpress.addClass(settings.notSupportedClass);
 			}
+		}
+		/**
+		 * Return current settings
+		 * 
+		 * @return Object
+		 */
+		,settings: function() {
+			return settings;
 		}
 	};
 
