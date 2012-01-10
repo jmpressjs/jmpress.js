@@ -1,93 +1,112 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>jmpress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Kyle Robinson Young @shama</title>
-    
-    <meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js and a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
-    <meta name="author" content="Kyle Robinson Young" />
+	<meta charset="utf-8" />
+	<title>jmpress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Kyle Robinson Young @shama</title>
 
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+	<meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js and a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+	<meta name="author" content="Kyle Robinson Young" />
 
-    <link href="css/style.css" rel="stylesheet" />
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
 </head>
-<body>
+<body class="ui-state-default">
+
+<ul id="nav">
+	<li><a href="#about">ABOUT</a></li>
+	<li><a href="#download">DOWNLOAD</a></li>
+	<li><a href="#docs">DOCS</a></li>
+	<li><a href="#contribute">CONTRIBUTE</a></li>
+</ul>
 
 <div id="jmpress">
 
-    <div class="fallback-message">
-        <p>Your browser <b>doesn't support the features required</b> by jmpress.js, so you are presented with a simplified version of this presentation.</p>
-        <p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser. Firefox 10 (to be released soon) will also handle it.</p>
+	<div class="fallback-message">
+		<p>Your browser <b>doesn't support the features required</b> by jmpress.js, so you are presented with a simplified version of this presentation.</p>
+		<p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser. Firefox 10 (to be released soon) will also handle it.</p>
+	</div>
+
+	<div id="about" class="step" data-x="-900" data-y="-1500">
+		<h4>introducing</h4>
+		<h1>jmpress.js</h1>
+		<p>a jQuery plugin to build a website on the infinite canvas</p>
+		<span class="ui-icon ui-icon-star"></span>
+	</div>
+	
+	<div id="about-2" class="step" data-x="-950" data-y="-1000" data-rotate="20">
+		<h4>a jQuery port of</h4>
+		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js*</a><sup>created by Bartek Szopka</sup></div>
+		<p>but with a different goal in mind. Why keep it behind a podium? Let's make websites!</p>
+	</div>
+	
+	<div id="about-3" class="step" data-x="-900" data-y="-500">
+		<h1>why jQuery?</h1>
+		<ul>
+			<li>great plugin framework that is familiar to a lot of people</li>
+			<li>easier to add and maintain features</li>
+			<li>wouldn't be surprised if CSS3 transforms are later supported</li>
+			<li>Fallback to <i>.animate()</i> for some browsers</li>
+			<li>jQuery UI themes</li>
+			<li>load slides dynamically via ajax</li>
+			<li>jQuery mobile for adding touch support</li>
+		</ul>
+		<h3>So why not?</h3>
+	</div>
+
+	<div id="about-4" class="step" data-x="-950" data-y="100" data-rotate="20">
+		<h4>why not contribute to the</h4>
+		<h1>original?</h1>
+		<p>I have contributed and will continue to send pull requests :)<br/>
+		@bartaz has a very specific vision for impress.js which I respect.<br/>
+		<br/>
+		Plus I asked him and he <a href="https://twitter.com/#!/bartaz/status/156123781037957123" target="_blank">said no</a>.</p>
+	</div>
+
+    <div id="download" class="step" data-x="0" data-y="-1500" data-rotate="-90">
+		<h1>download</h1>
+		<p>Download, clone, submodule or fork on <a href="https://github.com/shama/jmpress.js/">github</a></p>
+		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
     </div>
 
-    <div id="bored" class="step slide" data-x="-1000" data-y="-1500">
-        <q>Aren't you just <b>bored</b> with all those slides-based presentations?</q>
-    </div>
+	<div id="docs" class="step" data-x="1000" data-y="-1500" data-rotate="-180">
+		<h1>docs</h1>
+		<p>Available <a href="https://github.com/shama/jmpress.js/wiki">here on the github wiki</a></p>
+		<span class="ui-icon ui-icon-document"></span>
+	</div>
 
-    <div class="step slide" data-x="0" data-y="-1500">
-        <q>Don't you think that presentations given <strong>in modern browsers</strong> shouldn't <strong>copy the limits</strong> of 'classic' slide decks?</q>
-    </div>
-
-    <div class="step slide" data-x="1000" data-y="-1500">
-        <q>Would you like to <strong>impress your audience</strong> with <strong>stunning visualization</strong> of your talk?</q>
-    </div>
-
-    <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
-        <span class="try">then you should try</span>
-        <h1>jmpress.js<sup>*</sup></h1>
-        <span class="footnote"><sup>*</sup> no rhyme intended</span>
-    </div>
-
-    <div id="its" class="step" data-x="850" data-y="3000" data-rotate="90" data-scale="5">
-        <p>It's a <strong>presentation tool</strong> started by <a href="https://github.com/bartaz/impress.js/">@bartaz</a>, 
-        inspired by the idea behind <a href="http://prezi.com">prezi.com</a> 
-        and based on the <strong>power of CSS3 transforms and transitions</strong> in modern browsers.</p>
-    </div>
-
-    <div id="big" class="step" data-x="3500" data-y="2100" data-rotate="180" data-scale="6">
-        <p>visualize your <b>big</b> <span class="thoughts">thoughts</span></p>
-    </div>
-
-    <div id="tiny" class="step" data-x="2825" data-y="2325" data-z="-3000" data-rotate="300" data-scale="1">
-        <p>and <b>tiny</b> ideas</p>
-    </div>
-
-    <div id="ing" class="step" data-x="3500" data-y="-850" data-rotate="270" data-scale="6">
-        <p>by <b class="positioning">positioning</b>, <b class="rotating">rotating</b> and <b class="scaling">scaling</b> them on an infinite canvas</p>
-    </div>
-
-    <div id="imagination" class="step" data-x="6700" data-y="-300" data-scale="6">
-        <p>the only <b>limit</b> is your <b class="imagination">imagination</b></p>
-    </div>
-
-    <div id="source" class="step" data-x="6300" data-y="2000" data-rotate="20" data-scale="4">
-        <p>want to know more?</p>
-        <q><a href="http://github.com/shama/jmpress.js">use the source</a>, Luke!</q>
-    </div>
-
-    <div id="one-more-thing" class="step" data-x="6000" data-y="4000" data-scale="2">
-        <p>one more thing...</p>
-    </div>
-
-    <div id="its-in-3d" class="step" data-x="6200" data-y="4300" data-z="-100" data-rotate-x="-40" data-rotate-y="10" data-scale="2">
-        <p><span class="have">have</span> <span class="you">you</span> <span class="noticed">noticed</span> <span class="its">it's</span> <span class="in">in</span> <b>3D<sup>*</sup></b>?</p>
-        <span class="footnote">* beat that, prezi ;)</span>
-    </div>
-
-    <div id="overview" class="step" data-x="3000" data-y="1500" data-scale="10">
-    </div>
-
+	<div id="contribute" class="step" data-x="2000" data-y="-1500">
+		<h1>contribute</h1>
+		<p>Good news! I accept pull requests ;)</p>
+		<p>Please pull against the <i>dev</i> branch and try to keep it one feature per pull. Thanks!</p>
+		<span class="ui-icon ui-icon-person"></span>
+	</div>
+	
+	<div id="wishlist" class="step" data-x="2000" data-y="-1000" data-rotate="20">
+		<h1>wishlist</h1>
+		<ul>
+			<li>Browser Support (hard but important)</li>
+			<li>Fallback support for older browsers</li>
+			<li>Mobile/Touch (use jQuery mobile)</li>
+			<li>Integrate an option for jQuery UI theme support</li>
+		</ul>
+	</div>
+	
 </div>
 
 <div class="hint">
-    <p>Use a spacebar or arrow keys to navigate</p>
+    <p>Use arrow keys to navigate</p>
 </div>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="js/jmpress.js"></script>
+<script type="text/javascript" src="js/jmpress.js"></script>
 <script type="text/javascript">
 $(function() {
-	$('#jmpress').jmpress();
+	$('#jmpress').jmpress({
+		beforeChange: function( el ) {
+			$('#nav a').removeClass( 'active' );
+			$('#nav a[href=#' + el.attr('id') + ']').addClass( 'active' );
+		}
+	});
 });
 </script>
 
