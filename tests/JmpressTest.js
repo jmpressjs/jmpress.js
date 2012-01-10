@@ -135,7 +135,7 @@ describe('Jmpress', function() {
 	/**
 	 * test rotate
 	 */
-	it('should build translate', function() {
+	it('should build rotate', function() {
 		var result;
 		
 		result = jmpress.jmpress('rotate', { x: 90, y: 180, z: 20 }, false);
@@ -148,7 +148,7 @@ describe('Jmpress', function() {
 	/**
 	 * test scale
 	 */
-	it('should build translate', function() {
+	it('should build scale', function() {
 		var result = jmpress.jmpress('scale', { x: 3, y: 2, z: 1 });
 		expect( result ).toEqual( ' scaleX(3) scaleY(2) scaleZ(1) ' );
 	});
