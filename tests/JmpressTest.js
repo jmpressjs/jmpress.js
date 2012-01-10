@@ -29,6 +29,7 @@ describe('Jmpress', function() {
 				,transitionTimingFunction: 'ease-in-out'
 				,transformStyle: "preserve-3d"
 			}
+			,debug: true
 		});
 		settings = jmpress.jmpress( 'settings' );
 	});
@@ -125,31 +126,31 @@ describe('Jmpress', function() {
 	// TODO: Test getElementFromUrl, pfx, css, checkSupport
 	
 	/**
-	 * test translate
+	 * test _translate
 	 */
 	it('should build translate', function() {
-		var result = jmpress.jmpress('translate', { x: 500, y: -900, z: 2 });
+		var result = jmpress.jmpress('_translate', { x: 500, y: -900, z: 2 });
 		expect( result ).toEqual( ' translate3d(500px,-900px,2px) ' );
 	});
 	
 	/**
-	 * test rotate
+	 * test _rotate
 	 */
 	it('should build rotate', function() {
 		var result;
 		
-		result = jmpress.jmpress('rotate', { x: 90, y: 180, z: 20 }, false);
+		result = jmpress.jmpress('_rotate', { x: 90, y: 180, z: 20 }, false);
 		expect( result ).toEqual( ' rotateX(90deg)  rotateY(180deg)  rotateZ(20deg) ' );
 		
-		result = jmpress.jmpress('rotate', { x: 90, y: 180, z: 20 }, true);
+		result = jmpress.jmpress('_rotate', { x: 90, y: 180, z: 20 }, true);
 		expect( result ).toEqual( ' rotateZ(20deg)  rotateY(180deg)  rotateX(90deg) ' );
 	});
 	
 	/**
-	 * test scale
+	 * test _scale
 	 */
 	it('should build scale', function() {
-		var result = jmpress.jmpress('scale', { x: 3, y: 2, z: 1 });
+		var result = jmpress.jmpress('_scale', { x: 3, y: 2, z: 1 });
 		expect( result ).toEqual( ' scaleX(3) scaleY(2) scaleZ(1) ' );
 	});
 	

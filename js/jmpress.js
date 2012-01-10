@@ -26,6 +26,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
+		,debug: false
 	};
 
 	/**
@@ -50,7 +51,7 @@
 
 			jmpress = $( this );
 
-			methods.checkSupport();
+			methods._checkSupport();
 
 			canvas = $('<div />').addClass( settings.canvasClass );
 			jmpress.children().each(function() {
@@ -119,9 +120,9 @@
 				methods.css($(this), {
 					position: "absolute"
 					,transform: "translate(-50%,-50%)" +
-						methods.translate(step.translate) +
-						methods.rotate(step.rotate) +
-						methods.scale(step.scale)
+						methods._translate(step.translate) +
+						methods._rotate(step.rotate) +
+						methods._scale(step.scale)
 					,transformStyle: "preserve-3d"
 				});
 			});
@@ -149,12 +150,12 @@
 
 			// HASH CHANGE EVENT
 			window.addEventListener("hashchange", function () {
-				methods.select( methods.getElementFromUrl() );
+				methods.select( methods._getElementFromUrl() );
 			}, false);
 
 			// START 
 			// by selecting step defined in url or first step of the presentation
-			methods.select( methods.getElementFromUrl() || $( steps[0] ) );
+			methods.select( methods._getElementFromUrl() || $( steps[0] ) );
 
 		}
 		/**
@@ -220,7 +221,7 @@
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
-				,transform: methods.scale(target.scale)
+				,transform: methods._scale(target.scale)
 				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			};
 			props = $.extend({}, settings.animation, props);
@@ -230,7 +231,7 @@
 			methods.css(jmpress, props);
 
 			props = {
-				transform: methods.rotate(target.rotate, true) + methods.translate(target.translate)
+				transform: methods._rotate(target.rotate, true) + methods._translate(target.translate)
 				,transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
@@ -242,7 +243,7 @@
 			current = target;
 			active = el;
 			
-			methods.loadSiblings();
+			methods._loadSiblings();
 
 			return el;
 		}
@@ -293,11 +294,48 @@
 			return prev;
 		}
 		/**
+		 * Manipulate the canvas
+		 *
+		 * @param Object props
+		 * @return Object canvas
+		 */
+		,canvas: function( props ) {
+			methods.css(canvas, props);
+			return canvas;
+		}
+		/**
+		 * Set CSS on element w/ prefixes
+		 *
+		 * @return Object element which properties were set
+		 */
+		,css: function ( el, props ) {
+			var key, pkey, css = {};
+			for ( key in props ) {
+				if ( props.hasOwnProperty(key) ) {
+					pkey = methods._pfx(key);
+					if ( pkey != null ) {
+						css[pkey] = props[key];
+					}
+				}
+			}
+			el.css(css);
+			return el;
+		}
+		/**
+		 * Return current settings
+		 * 
+		 * @return Object
+		 */
+		,settings: function() {
+			return settings;
+		}
+		/**
 		 * Load Siblings
 		 * 
+		 * @access protected
 		 * @return void
 		 */
-		,loadSiblings: function() {
+		,_loadSiblings: function() {
 			var siblings = active.siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
@@ -313,21 +351,12 @@
 			});
 		}
 		/**
-		 * Manipulate the canvas
-		 *
-		 * @param Object props
-		 * @return Object canvas
-		 */
-		,canvas: function( props ) {
-			methods.css(canvas, props);
-			return canvas;
-		}
-		/**
 		 * getElementFromUrl
 		 *
+		 * @access protected
 		 * @return String or false
 		 */
-		,getElementFromUrl: function () {
+		,_getElementFromUrl: function () {
 			// get id from url # by removing `#` or `#/` from the beginning,
 			// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
 			var el = $('#' + window.location.hash.replace(/^#\/?/,"") );
@@ -336,9 +365,10 @@
 		/**
 		 * Set supported prefixes
 		 *
+		 * @access protected
 		 * @return Function to get prefixed property
 		 */
-		,pfx: (function () {
+		,_pfx: (function () {
 			var style = document.createElement('dummy').style,
 				prefixes = 'Webkit Moz O ms Khtml'.split(' '),
 				memory = {};
@@ -358,37 +388,21 @@
 			}
 		})()
 		/**
-		 * Set CSS on element w/ prefixes
-		 *
-		 * @return Object element which properties were set
-		 */
-		,css: function ( el, props ) {
-			var key, pkey, css = {};
-			for ( key in props ) {
-				if ( props.hasOwnProperty(key) ) {
-					pkey = methods.pfx(key);
-					if ( pkey != null ) {
-						css[pkey] = props[key];
-					}
-				}
-			}
-			el.css(css);
-			return el;
-		}
-		/**
 		 * Translate
 		 *
+		 * @access protected
 		 * @return String CSS for translate3d
 		 */
-		,translate: function ( t ) {
+		,_translate: function ( t ) {
 			return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
 		}
 		/**
 		 * Scale
 		 *
+		 * @access protected
 		 * @return String CSS for rotate
 		 */
-		,rotate: function ( r, revert ) {
+		,_rotate: function ( r, revert ) {
 			var rX = " rotateX(" + r.x + "deg) ",
 				rY = " rotateY(" + r.y + "deg) ",
 				rZ = " rotateZ(" + r.z + "deg) ";
@@ -397,31 +411,25 @@
 		/**
 		 * Scale
 		 *
+		 * @access protected
 		 * @return String CSS for scale
 		 */
-		,scale: function ( s ) {
+		,_scale: function ( s ) {
 			return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
 		}
 		/**
 		 * Check for support
 		 *
+		 * @access protected
 		 * @return void
 		 */
-		,checkSupport: function() {
+		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
-			var jmpressSupported = ( methods.pfx("perspective") != null ) &&
+			var jmpressSupported = ( methods._pfx("perspective") != null ) &&
 				( ua.search(/(iphone)|(ipod)|(ipad)|(android)/) == -1 );
 			if (jmpressSupported) {
 				jmpress.addClass(settings.notSupportedClass);
 			}
-		}
-		/**
-		 * Return current settings
-		 * 
-		 * @return Object
-		 */
-		,settings: function() {
-			return settings;
 		}
 	};
 
@@ -430,7 +438,11 @@
 	 */
 	$.fn.jmpress = function( method ) {
 		if ( methods[method] ) {
-			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+			if ( method.substr(0, 1) == '_' && settings.debug === false) {
+				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+			} else {
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
 		} else {
