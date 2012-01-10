@@ -26,7 +26,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
-		,debug: false
+		,test: false
 	};
 
 	/**
@@ -438,7 +438,7 @@
 	 */
 	$.fn.jmpress = function( method ) {
 		if ( methods[method] ) {
-			if ( method.substr(0, 1) == '_' && settings.debug === false) {
+			if ( method.substr(0, 1) == '_' && settings.test === false) {
 				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 			} else {
 				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));

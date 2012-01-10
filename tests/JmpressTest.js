@@ -29,7 +29,7 @@ describe('Jmpress', function() {
 				,transitionTimingFunction: 'ease-in-out'
 				,transformStyle: "preserve-3d"
 			}
-			,debug: true
+			,test: true
 		});
 		settings = jmpress.jmpress( 'settings' );
 	});
