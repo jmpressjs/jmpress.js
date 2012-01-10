@@ -37,7 +37,10 @@
 		,canvas = null
 		,steps = null
 		,current = null
-		,active = false;
+		,active = false
+		,callbacks = {
+			'beforeChange': 1
+		};
 
 	/**
 	 * Methods
@@ -47,8 +50,17 @@
 		 * Initialize jmpress
 		 */
 		init: function( args ) {
+			// SET CALLBACKS
+			$.each(callbacks, function(callback) {
+				if ($.isFunction( args[callback] )) {
+					methods[callback] = args[callback];
+				}
+			});
+			
+			// MERGE SETTINGS
 			settings = $.extend(defaults, {}, args);
 
+			// BEGIN INIT
 			jmpress = $( this );
 
 			methods._checkSupport();
@@ -60,9 +72,6 @@
 			jmpress.append( canvas );
 			
 			steps = $('.step', jmpress);
-
-			// SETUP
-			// set initial values and defaults
 
 			document.documentElement.style.height = "100%";
 			
@@ -131,15 +140,15 @@
 			$(document).keydown(function( event ) {
 				if ( event.keyCode == 9 || ( event.keyCode >= 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
 					switch( event.keyCode ) {
-						case 33: ; // pg up
-						case 37: ; // left
+						case 33:; // pg up
+						case 37:; // left
 						case 38:   // up
 							methods.prev();
 						break;
-						case 9:  ; // tab
-						case 32: ; // space
-						case 34: ; // pg down
-						case 39: ; // right
+						case 9:; // tab
+						case 32:; // space
+						case 34:; // pg down
+						case 39:; // right
 						case 40:   // down
 							methods.next();
 						break; 
@@ -169,7 +178,6 @@
 				el = jmpress.find( el ).first();
 			}
 			if ( !el || !el.data('stepData') ) {
-				// selected element is not defined as step
 				return false;
 			}
 
@@ -187,6 +195,7 @@
 
 			if ( active ) {
 				active.removeClass('active');
+				methods.beforeChange.call( jmpress, el );
 			}
 			el.addClass('active');
 
@@ -242,7 +251,7 @@
 
 			current = target;
 			active = el;
-			
+
 			methods._loadSiblings();
 
 			return el;
@@ -307,6 +316,9 @@
 		 * Set CSS on element w/ prefixes
 		 *
 		 * @return Object element which properties were set
+		 * 
+		 * TODO: Consider bypassing pfx and blindly set as jQuery 
+		 * already checks for support
 		 */
 		,css: function ( el, props ) {
 			var key, pkey, css = {};
@@ -328,6 +340,12 @@
 		 */
 		,settings: function() {
 			return settings;
+		}
+		/**
+		 * Call before slide has changed
+		 */
+		,beforeChange: function( el ) {
+			return true;
 		}
 		/**
 		 * Load Siblings
@@ -441,7 +459,14 @@
 			if ( method.substr(0, 1) == '_' && settings.test === false) {
 				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 			} else {
-				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				if ( callbacks[method] ) {
+					var func = Array.prototype.slice.call( arguments, 1 )[0];
+					if ($.isFunction( func )) {
+						methods[method] = func;
+					}
+				} else {
+					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				}
 			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );

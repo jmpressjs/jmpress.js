@@ -8,16 +8,11 @@
 
 describe('Jmpress', function() {
 	
-	var jmpress, settings;
+	// TODO: Use a proper fixture
 	
-	/**
-	 * beforeEach
-	 */
-	beforeEach(function() {
-		jmpress = $('<div />').attr('id', 'jmpress');
-		jmpress.append( $('<div id="impressive" class="step" data-x="-900" data-y="-1500">Slide 1</div>') );
-		jmpress.append( $('<div class="step" data-x="0" data-y="0">Slide 2</div>') );
-		jmpress.jmpress({
+	var jmpress
+		,settings
+		,defaults = {
 			stepSelector: '.step'
 			,canvasClass: 'canvas'
 			,notSupportedClass: 'jmpress-not-supported'
@@ -30,7 +25,16 @@ describe('Jmpress', function() {
 				,transformStyle: "preserve-3d"
 			}
 			,test: true
-		});
+		};
+	
+	/**
+	 * beforeEach
+	 */
+	beforeEach(function() {
+		jmpress = $('<div />').attr('id', 'jmpress');
+		jmpress.append( $('<div id="impressive" class="step" data-x="-900" data-y="-1500">Slide 1</div>') );
+		jmpress.append( $('<div class="step" data-x="0" data-y="0">Slide 2</div>') );
+		jmpress.jmpress(defaults);
 		settings = jmpress.jmpress( 'settings' );
 	});
 	
@@ -123,13 +127,26 @@ describe('Jmpress', function() {
 		expect( canvas.attr('style') ).toContain( 'transition-timing-function: linear;' );
 	});
 	
+	/**
+	 * test beforeChange
+	 */
+	it('should call a function before the slide has changed', function() {
+		var callback = jasmine.createSpy('beforeChange');
+		jmpress.jmpress('beforeChange', callback);
+		expect(callback).not.toHaveBeenCalled();
+		jmpress.jmpress('next');
+		expect(callback).toHaveBeenCalled();
+		
+		// TODO: Test setting callbacks as param
+	});
+	
 	// TODO: Test getElementFromUrl, pfx, css, checkSupport
 	
 	/**
 	 * test _translate
 	 */
 	it('should build translate', function() {
-		var result = jmpress.jmpress('_translate', { x: 500, y: -900, z: 2 });
+		var result = jmpress.jmpress('_translate', {x: 500, y: -900, z: 2});
 		expect( result ).toEqual( ' translate3d(500px,-900px,2px) ' );
 	});
 	
@@ -139,10 +156,10 @@ describe('Jmpress', function() {
 	it('should build rotate', function() {
 		var result;
 		
-		result = jmpress.jmpress('_rotate', { x: 90, y: 180, z: 20 }, false);
+		result = jmpress.jmpress('_rotate', {x: 90, y: 180, z: 20}, false);
 		expect( result ).toEqual( ' rotateX(90deg)  rotateY(180deg)  rotateZ(20deg) ' );
 		
-		result = jmpress.jmpress('_rotate', { x: 90, y: 180, z: 20 }, true);
+		result = jmpress.jmpress('_rotate', {x: 90, y: 180, z: 20}, true);
 		expect( result ).toEqual( ' rotateZ(20deg)  rotateY(180deg)  rotateX(90deg) ' );
 	});
 	
@@ -150,7 +167,7 @@ describe('Jmpress', function() {
 	 * test _scale
 	 */
 	it('should build scale', function() {
-		var result = jmpress.jmpress('_scale', { x: 3, y: 2, z: 1 });
+		var result = jmpress.jmpress('_scale', {x: 3, y: 2, z: 1});
 		expect( result ).toEqual( ' scaleX(3) scaleY(2) scaleZ(1) ' );
 	});
 	
