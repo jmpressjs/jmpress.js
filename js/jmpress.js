@@ -290,9 +290,15 @@
 		 * @return Object
 		 */
 		,getNext: function() {
+			if (!active) {
+				return false;
+			}
 			var next = active.next( settings.stepSelector );
 			if (next.length < 1) {
 				next = steps.first( settings.stepSelector );
+			}
+			if (next.length < 1) {
+				return false;
 			}
 			return next;
 		}
@@ -302,9 +308,15 @@
 		 * @return Object
 		 */
 		,getPrev: function() {
+			if (!active) {
+				return false;
+			}
 			var prev = active.prev( settings.stepSelector );
 			if (prev.length < 1) {
 				prev = steps.last( settings.stepSelector );
+			}
+			if (prev.length < 1) {
+				return false;
 			}
 			return prev;
 		}
@@ -361,6 +373,9 @@
 		 * @return void
 		 */
 		,_loadSiblings: function() {
+			if (!active) {
+				return false;
+			}
 			var siblings = active.siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
