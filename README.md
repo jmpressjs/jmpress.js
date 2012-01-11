@@ -26,7 +26,7 @@ the support list for the latest version of each browser:
 Take a look at the `index.html` and `css/style.css` for an example.
 The only required files are jQuery and `js/jmpress.js` to use.
 
-### Create a root presentation element
+### Create a root element
 
     <div id="jmpress"></div>
 
@@ -44,7 +44,7 @@ The only required files are jQuery and `js/jmpress.js` to use.
         <div class="step" data-x="2825" data-y="2325" data-z="-3000" data-rotate="300" data-scale="1">Slide 2</div>
     </div>
 
-### Tell jQuery to build your presentation
+### Tell jQuery to run it
 
     <script type="text/javascript">
     $(function() {

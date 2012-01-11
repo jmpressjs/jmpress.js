@@ -168,7 +168,7 @@
 			}, false);
 
 			// START 
-			// by selecting step defined in url or first step of the presentation
+			// by selecting step defined in url or first step
 			methods.select( methods._getElementFromUrl() || $( steps[0] ) );
 
 		}
