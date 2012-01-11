@@ -17,7 +17,7 @@
 	var defaults = {
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
-		,notSupportedClass: 'jmpress-not-supported'
+		,notSupportedClass: 'not-supported'
 		,loadedClass: 'loaded'
 		,animation: {
 			transformOrigin: 'top left'
@@ -63,7 +63,10 @@
 			// BEGIN INIT
 			jmpress = $( this );
 
-			methods._checkSupport();
+			// CHECK FOR SUPPORT
+			if (methods._checkSupport() == false) {
+				return;
+			}
 
 			canvas = $('<div />').addClass( settings.canvasClass );
 			jmpress.children().each(function() {
@@ -74,7 +77,7 @@
 			steps = $('.step', jmpress);
 
 			document.documentElement.style.height = "100%";
-			
+
 			$('body').css({
 				height: '100%'
 				,overflow: 'hidden'
@@ -193,9 +196,10 @@
 
 			var step = el.data('stepData');
 
+			methods.beforeChange.call( jmpress, el );
+
 			if ( active ) {
 				active.removeClass('active');
-				methods.beforeChange.call( jmpress, el );
 			}
 			el.addClass('active');
 
@@ -443,11 +447,12 @@
 		 */
 		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
-			var jmpressSupported = ( methods._pfx("perspective") != null ) &&
+			var supported = ( methods._pfx("perspective") !== null ) &&
 				( ua.search(/(iphone)|(ipod)|(ipad)|(android)/) == -1 );
-			if (jmpressSupported) {
-				jmpress.addClass(settings.notSupportedClass);
+			if (!supported) {
+				jmpress.addClass( settings.notSupportedClass );
 			}
+			return supported;
 		}
 	};
 

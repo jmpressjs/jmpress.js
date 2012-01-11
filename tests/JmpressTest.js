@@ -15,7 +15,7 @@ describe('Jmpress', function() {
 		,defaults = {
 			stepSelector: '.step'
 			,canvasClass: 'canvas'
-			,notSupportedClass: 'jmpress-not-supported'
+			,notSupportedClass: 'not-supported'
 			,loadedClass: 'loaded'
 			,animation: {
 				transformOrigin: 'top left'

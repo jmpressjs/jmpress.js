@@ -1,18 +1,14 @@
 /**
- * This is a stylesheet for a demo presentation for jmpress.js
- * 
+ * This is a demo stylesheet for jmpress.js
  * It is not meant to be a part of jmpress.js and is not required by jmpress.js.
- * I expect that anyone creating a presentation for jmpress.js would create their own
- * set of styles.
  */
 @import url(http://fonts.googleapis.com/css?family=Quicksand:400,700);
 
-
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
+/*
+ * http://meyerweb.com/eric/tools/css/reset/ 
+ * v2.0 | 20110126
+ * License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -26,64 +22,61 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-    display: block;
+	display: block;
 }
 body {
-    line-height: 1;
+	line-height: 1;
 }
 ol, ul {
-    list-style: none;
+	list-style: none;
 }
 blockquote, q {
-    quotes: none;
+	quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content: '';
-    content: none;
+	content: '';
+	content: none;
 }
-
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 /** GENERAL **/
 body {
-    font-family: 'Quicksand', Verdana, sans-serif;
-    min-height: 740px;
-    -webkit-font-smoothing: antialiased;
+	font-family: 'Quicksand', Verdana, sans-serif;
+	min-height: 740px;
+	-webkit-font-smoothing: antialiased;
 }
 b, strong { font-weight: bold }
 i, em { font-style: italic}
 a {
-    color: inherit;
-    text-decoration: none;
-    padding: 0.1em 0.2em;
+	color: inherit;
+	text-decoration: none;
+	padding: 0.1em 0.2em;
 	background-color: rgba(255,255,255,0.3);
 	border-radius: 0.2em;
-    
-    -webkit-transition: 0.5s;
-    -moz-transition:    0.5s;
-    -ms-transition:     0.5s;
-    -o-transition:      0.5s;
-    transition:         0.5s;
+	
+	-webkit-transition: 0.5s;
+	-moz-transition:    0.5s;
+	-ms-transition:     0.5s;
+	-o-transition:      0.5s;
+	transition:         0.5s;
 }
 a:hover {
 	background-color: rgba(51,51,51,1);
-}
-p {
 }
 h1, h1 a {
 	font-size: 68px;
@@ -100,9 +93,8 @@ h4 {
 }
 
 /** NAV **/
-
 #nav {
-	position: absolute;
+	position: fixed;
 	left: 0px;
 	top: 10px;
 	z-index: 99;
@@ -122,34 +114,32 @@ h4 {
 }
 
 /** COMMON STEP STYLES **/
-
 .step {
-    width: 900px;
-    padding: 40px;
+	width: 900px;
+	padding: 40px;
 
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing:    border-box;
-    -ms-box-sizing:     border-box;
-    -o-box-sizing:      border-box;
-    box-sizing:         border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	-ms-box-sizing:     border-box;
+	-o-box-sizing:      border-box;
+	box-sizing:         border-box;
 
-    font-family: 'Quicksand', Verdana, sans-serif;
+	font-family: 'Quicksand', Verdana, sans-serif;
 
-    font-size: 26px;
-    line-height: 1.5;
+	font-size: 26px;
+	line-height: 1.5;
 }
 
 /* fade out inactive slides */
-
 .step {
-    -webkit-transition: opacity 1s;
-    -moz-transition:    opacity 1s;
-    -ms-transition:     opacity 1s;
-    -o-transition:      opacity 1s;
-    transition:         opacity 1s;
+	-webkit-transition: opacity 1s;
+	-moz-transition:    opacity 1s;
+	-ms-transition:     opacity 1s;
+	-o-transition:      opacity 1s;
+	transition:         opacity 1s;
 }
 .step:not(.active) {
-    opacity: 0.3;
+	opacity: 0.3;
 }
 .step ul {
 	margin-left: 20px;
@@ -189,78 +179,55 @@ h4 {
 /* hint on the first slide */
 
 .hint {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 200px;
-    
-    background: rgba(255,204,0,1);
-    color: #000;
-    text-align: center;
-    
-    font-size: 50px;
-    padding: 20px;
-    
-    z-index: 100;
-    
-    opacity: 0;
-    
-    -webkit-transform: translateY(400px);
-    -moz-transform:    translateY(400px);
-    -ms-transform:     translateY(400px);
-    -o-transform:      translateY(400px);
-    transform:         translateY(400px);
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0px;
 
-    -webkit-transition: opacity 1s, -webkit-transform 0.5s 1s;
-    -moz-transition:    opacity 1s,    -moz-transform 0.5s 1s;
-    -ms-transition:     opacity 1s,     -ms-transform 0.5s 1s;
-    -o-transition:      opacity 1s,      -o-transform 0.5s 1s;
-    transition:         opacity 1s,         transform 0.5s 1s;
+	background: rgba(255,204,0,1);
+	color: #000;
+	text-align: center;
+
+	font-size: 36px;
+	padding: 20px;
+
+	z-index: 100;
+
+	opacity: 0;
+
+	-webkit-transform: translateY(400px);
+	-moz-transform:    translateY(400px);
+	-ms-transform:     translateY(400px);
+	-o-transform:      translateY(400px);
+	transform:         translateY(400px);
+
+	-webkit-transition: opacity 1s, -webkit-transform 0.5s 1s;
+	-moz-transition:    opacity 1s,    -moz-transform 0.5s 1s;
+	-ms-transition:     opacity 1s,     -ms-transform 0.5s 1s;
+	-o-transition:      opacity 1s,      -o-transform 0.5s 1s;
+	transition:         opacity 1s,         transform 0.5s 1s;
 }
 
 .step-about + .hint {
-    opacity: 1;
-    
-    -webkit-transition: opacity 1s 5s, -webkit-transform 0.5s;
-    -moz-transition:    opacity 1s 5s,    -moz-transform 0.5s;
-    -ms-transition:     opacity 1s 5s,     -ms-transform 0.5s;
-    -o-transition:      opacity 1s 5s,      -o-transform 0.5s;
-    transition:         opacity 1s 5s,         transform 0.5s;
-    
-    -webkit-transform: translateY(0px);
-    -moz-transform:    translateY(0px);
-    -ms-transform:     translateY(0px);
-    -o-transform:      translateY(0px);
-    transform:         translateY(0px);
+	opacity: 1;
+
+	-webkit-transition: opacity 1s 5s, -webkit-transform 0.5s;
+	-moz-transition:    opacity 1s 5s,    -moz-transform 0.5s;
+	-ms-transition:     opacity 1s 5s,     -ms-transform 0.5s;
+	-o-transition:      opacity 1s 5s,      -o-transform 0.5s;
+	transition:         opacity 1s 5s,         transform 0.5s;
+
+	-webkit-transform: translateY(0px);
+	-moz-transform:    translateY(0px);
+	-ms-transform:     translateY(0px);
+	-o-transform:      translateY(0px);
+	transform:         translateY(0px);
 }
 
-/* JMPRESS NOT SUPPORTED STYLES */
+/* NOT SUPPORTED STYLES */
 
-.fallback-message {
-    font-family: sans-serif;
-    line-height: 1.3;
-    
-    display: none;
-    width: 780px;
-    padding: 10px 10px 0;
-    margin: 20px auto;
-
-    border-radius: 10px;
-    border: 1px solid #E4C652;
-    background: #EEDC94;
+.not-supported .step {
+	position: relative;
+	opacity: 1;
+	margin: 20px auto;
 }
-
-.fallback-message p {
-    margin-bottom: 10px;
-}
-
-.jmpress-not-supported .step {
-    position: relative;
-    opacity: 1;
-    margin: 20px auto;
-}
-
-.jmpress-not-supported .fallback-message {
-    display: block;
-}
-
