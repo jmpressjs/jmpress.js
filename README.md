@@ -1,8 +1,8 @@
 # jmpress.js
 
-It's a jQuery port of https://github.com/bartaz/impress.js and a presentation 
-framework based on the power of CSS3 transforms and transitions in modern 
-browsers and inspired by the idea behind prezi.com.
+A jQuery port of https://github.com/bartaz/impress.js based on the power of
+CSS3 transforms and transitions in modern browsers and inspired by the idea
+behind prezi.com.
 
 ## DEMO
 
@@ -10,7 +10,7 @@ jmpress.js demo: [http://shama.github.com/jmpress.js]
 
 ## BROWSER SUPPORT
 
-jmpress.js is made for the latest browsers. Old browsers get old styles. Here is 
+jmpress.js is made for the latest browsers. Old browsers get old styles. Here is
 the support list for the latest version of each browser:
 
 * Chrome/Chromium: YES
@@ -18,12 +18,12 @@ the support list for the latest version of each browser:
 * Firefox: ALMOST
 * IE: NO
 * Opera: PARTIAL
-* iOS: NO
-* Android: NO
+* iOS: PARTIAL
+* Android: ?
 
 ## USAGE
 
-Take a look at the `index.html` and `css/style.css` for an example presentation. 
+Take a look at the `index.html` and `css/style.css` for an example.
 The only required files are jQuery and `js/jmpress.js` to use.
 
 ### Create a root presentation element
@@ -62,10 +62,18 @@ Don't want to use `.step` as a selector? Okay:
 
 ### Customize the hash id of each slide
 
-The id of the step will appear as the URI hash to recall the slide later. If you 
+The id of the step will appear as the URI hash to recall the slide later. If you
 don't give your steps ids then the id `step-N` will be used.
 
     <div id="name-of-slide" class="step" data-x="3500" data-y="-850" data-rotate="270" data-scale="6">Slide 1</div>
+
+### Load slides dynamically
+
+You can load a slide dynamically by setting the `data-src` or `href` attribute
+on the slide. The slide will only be loaded when an adjacent slide or the slide
+itself is selected.
+
+    <div class="step" data-src="slides/slide-1.html" data-x="500" data-y="300">Loading...</div>
 
 ## API
 
@@ -92,7 +100,7 @@ Each step element can have the following data properties set:
         ,canvasClass: 'canvas'
 
         // Class name to trigger if jmpress is not supported
-        ,notSupportedClass: 'jmpress-not-supported'
+        ,notSupportedClass: 'not-supported'
 
         // Customize the animations (or CSS) used
         ,animation: {
@@ -121,6 +129,11 @@ Each step element can have the following data properties set:
     // Manipulate an element
     $(selector).jmpress('css', $('#step-1'), {
         transform: 'scale(0.5)'
+    });
+
+    // Set a beforeChange callback
+    $(selector).jmpress('beforeChange', function( slide ) {
+        // Called on the start of each slide change
     });
 
 ## LICENSE

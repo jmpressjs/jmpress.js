@@ -1,13 +1,15 @@
-/**
+/*!
  * jmpress.js
  *
- * jmpress.js is jQuery port of https://github.com/bartaz/impress.js and a 
- * presentation tool based on the power of CSS3 transforms and transitions
- * in modern browsers and inspired by the idea behind prezi.com.
+ * a jQuery port of https://github.com/bartaz/impress.js based on the power of
+ * CSS3 transforms and transitions in modern browsers and inspired by the idea
+ * behind prezi.com.
  *
- * MIT Licensed.
+ * Copyright 2012, Kyle Robinson Young @shama
+ * Licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
  *
- * Copyright 2012 Kyle Robinson Young (@shama)
+ * Based on the foundation laid by Bartek Szopka @bartaz
  */
 
 (function( $, document, window ) {
@@ -353,7 +355,8 @@
 		}
 		/**
 		 * Load Siblings
-		 * 
+		 * If a slide has data-src or href set load that slide dynamically
+		 *
 		 * @access protected
 		 * @return void
 		 */
