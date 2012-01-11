@@ -1,8 +1,8 @@
 # jmpress.js
 
-A jQuery port of https://github.com/bartaz/impress.js based on the power of
-CSS3 transforms and transitions in modern browsers and inspired by the idea
-behind prezi.com.
+A jQuery port of [impress.js](https://github.com/bartaz/impress.js) based on the
+power of CSS3 transforms and transitions in modern browsers and inspired by the
+idea behind prezi.com.
 
 ## DEMO
 
