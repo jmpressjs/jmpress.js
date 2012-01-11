@@ -112,6 +112,11 @@ h4 {
 	border-left: 100px solid #ffcc00;
 	color: #333;
 }
+.next {
+	float: right;
+	margin-top: 50px;
+	font-size: 22px;
+}
 
 /** COMMON STEP STYLES **/
 .step {
