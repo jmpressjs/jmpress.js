@@ -89,6 +89,7 @@ Each step element can have the following data properties set:
 * data-rotation-x: Degree of rotation on x-axis
 * data-rotation-y: Degree of rotation on y-axis
 * data-rotation-z: Degree of rotation on z-axis
+* data-src: Load content of slide dynamically
 
 ### jQuery.jmpress()
 
