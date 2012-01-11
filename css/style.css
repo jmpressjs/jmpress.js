@@ -236,3 +236,6 @@ h4 {
 	opacity: 1;
 	margin: 20px auto;
 }
+.not-supported .next {
+	display: none;
+}
