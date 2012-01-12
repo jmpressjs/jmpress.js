@@ -28,6 +28,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
+		,beforeChange: null
 		,test: false
 	};
 
@@ -52,13 +53,6 @@
 		 * Initialize jmpress
 		 */
 		init: function( args ) {
-			// SET CALLBACKS
-			$.each(callbacks, function(callback) {
-				if ($.isFunction( args[callback] )) {
-					methods[callback] = args[callback];
-				}
-			});
-			
 			// MERGE SETTINGS
 			settings = $.extend(defaults, {}, args);
 
@@ -179,7 +173,7 @@
 		 * @return Object element selected
 		 */
 		,select: function ( el ) {
-			if ( typeof el == 'string') {
+			if ( typeof el === 'string') {
 				el = jmpress.find( el ).first();
 			}
 			if ( !el || !el.data('stepData') ) {
@@ -198,7 +192,7 @@
 
 			var step = el.data('stepData');
 
-			methods.beforeChange.call( jmpress, el );
+			methods._beforeChange( el );
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
@@ -364,7 +358,10 @@
 		/**
 		 * Call before slide has changed
 		 */
-		,beforeChange: function( el ) {
+		,_beforeChange: function( slide ) {
+			if ( $.isFunction( settings.beforeChange )) {
+				settings.beforeChange.call( jmpress, slide );
+			}
 			return true;
 		}
 		/**
@@ -484,14 +481,12 @@
 			if ( method.substr(0, 1) == '_' && settings.test === false) {
 				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 			} else {
-				if ( callbacks[method] ) {
-					var func = Array.prototype.slice.call( arguments, 1 )[0];
-					if ($.isFunction( func )) {
-						methods[method] = func;
-					}
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+			}
+		} else if ( callbacks[method] ) {
+			var func = Array.prototype.slice.call( arguments, 1 )[0];
+			if ($.isFunction( func )) {
+				settings[method] = func;
 			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
