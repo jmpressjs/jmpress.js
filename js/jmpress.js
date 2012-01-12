@@ -43,7 +43,8 @@
 		,active = false
 		,callbacks = {
 			'beforeChange': 1
-		};
+		}
+		,ignoreHashChange = false;
 
 	/**
 	 * Methods
@@ -157,9 +158,12 @@
 			});
 
 			// HASH CHANGE EVENT
-			window.addEventListener("hashchange", function () {
-				methods.select( methods._getElementFromUrl() );
-			}, false);
+			$(window).bind('hashchange', function() {
+				if (ignoreHashChange === false) {
+					methods.select( methods._getElementFromUrl() );
+				}
+				ignoreHashChange = false;
+			});
 
 			// START 
 			// by selecting step defined in url or first step
@@ -196,6 +200,7 @@
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
+			ignoreHashChange = true;
 			window.location.hash = "#/" + el.attr('id');
 
 			if ( active ) {
