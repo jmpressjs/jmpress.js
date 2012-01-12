@@ -137,6 +137,17 @@ Each step element can have the following data properties set:
         // Called on the start of each slide change
     });
 
+## CONTRIBUTING
+
+Good news! I accept pull requests ;) Please work and pull against the `dev`
+branch. Thanks!
+
+### TESTS
+
+jmpress.js uses the [jasmine bdd](http://pivotal.github.com/jasmine/) library
+for testing. Please load `test.html` in your browser to run the tests.
+
 ## LICENSE
 
-Copyright 2012 Kyle Robinson Young. Released under a [MIT license](http://www.opensource.org/licenses/mit-license.php).
+Copyright 2012 Kyle Robinson Young. Released under a
+[MIT license](http://www.opensource.org/licenses/mit-license.php).
