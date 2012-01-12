@@ -200,16 +200,18 @@
 
 			methods.beforeChange.call( jmpress, el );
 
-			if ( active ) {
-				active.removeClass('active');
-			}
-			el.addClass('active');
-
-			jmpress.attr('class', 'step-' + el.attr('id'));
-
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
 			window.location.hash = "#/" + el.attr('id');
+
+			if ( active ) {
+				if ( active.attr('id') === el.attr('id') ) {
+					return el;
+				}
+				active.removeClass('active');
+			}
+			el.addClass('active');
+			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var target = {
 				rotate: {
