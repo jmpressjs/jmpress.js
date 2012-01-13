@@ -28,6 +28,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
+		,beforeChange: null
 		,test: false
 	};
 
@@ -42,7 +43,8 @@
 		,active = false
 		,callbacks = {
 			'beforeChange': 1
-		};
+		}
+		,ignoreHashChange = false;
 
 	/**
 	 * Methods
@@ -52,13 +54,6 @@
 		 * Initialize jmpress
 		 */
 		init: function( args ) {
-			// SET CALLBACKS
-			$.each(callbacks, function(callback) {
-				if ($.isFunction( args[callback] )) {
-					methods[callback] = args[callback];
-				}
-			});
-			
 			// MERGE SETTINGS
 			settings = $.extend(defaults, {}, args);
 
@@ -163,9 +158,12 @@
 			});
 
 			// HASH CHANGE EVENT
-			window.addEventListener("hashchange", function () {
-				methods.select( methods._getElementFromUrl() );
-			}, false);
+			$(window).bind('hashchange', function() {
+				if (ignoreHashChange === false) {
+					methods.select( methods._getElementFromUrl() );
+				}
+				ignoreHashChange = false;
+			});
 
 			// START 
 			// by selecting step defined in url or first step
@@ -179,7 +177,7 @@
 		 * @return Object element selected
 		 */
 		,select: function ( el ) {
-			if ( typeof el == 'string') {
+			if ( typeof el === 'string') {
 				el = jmpress.find( el ).first();
 			}
 			if ( !el || !el.data('stepData') ) {
@@ -198,18 +196,24 @@
 
 			var step = el.data('stepData');
 
-			methods.beforeChange.call( jmpress, el );
-
-			if ( active ) {
-				active.removeClass('active');
-			}
-			el.addClass('active');
-
-			jmpress.attr('class', 'step-' + el.attr('id'));
+			methods._beforeChange( el );
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
+			ignoreHashChange = true;
 			window.location.hash = "#/" + el.attr('id');
+			setTimeout(function() {
+				ignoreHashChange = false;
+			}, 1000);
+
+			if ( active ) {
+				if ( active.attr('id') === el.attr('id') ) {
+					return el;
+				}
+				active.removeClass('active');
+			}
+			el.addClass('active');
+			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var target = {
 				rotate: {
@@ -255,6 +259,9 @@
 			}
 			methods.css(canvas, props);
 
+			$( settings.stepSelector ).css('z-index', 9);
+			el.css('z-index', 10);
+
 			current = target;
 			active = el;
 
@@ -290,9 +297,15 @@
 		 * @return Object
 		 */
 		,getNext: function() {
+			if (!active) {
+				return false;
+			}
 			var next = active.next( settings.stepSelector );
 			if (next.length < 1) {
 				next = steps.first( settings.stepSelector );
+			}
+			if (next.length < 1) {
+				return false;
 			}
 			return next;
 		}
@@ -302,9 +315,15 @@
 		 * @return Object
 		 */
 		,getPrev: function() {
+			if (!active) {
+				return false;
+			}
 			var prev = active.prev( settings.stepSelector );
 			if (prev.length < 1) {
 				prev = steps.last( settings.stepSelector );
+			}
+			if (prev.length < 1) {
+				return false;
 			}
 			return prev;
 		}
@@ -350,7 +369,10 @@
 		/**
 		 * Call before slide has changed
 		 */
-		,beforeChange: function( el ) {
+		,_beforeChange: function( slide ) {
+			if ( $.isFunction( settings.beforeChange )) {
+				settings.beforeChange.call( jmpress, slide );
+			}
 			return true;
 		}
 		/**
@@ -361,6 +383,9 @@
 		 * @return void
 		 */
 		,_loadSiblings: function() {
+			if (!active) {
+				return false;
+			}
 			var siblings = active.siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
@@ -451,7 +476,7 @@
 		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
 			var supported = ( methods._pfx("perspective") !== null ) &&
-				( ua.search(/(iphone)|(ipod)|(ipad)|(android)/) == -1 );
+				( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
 			if (!supported) {
 				jmpress.addClass( settings.notSupportedClass );
 			}
@@ -467,14 +492,12 @@
 			if ( method.substr(0, 1) == '_' && settings.test === false) {
 				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 			} else {
-				if ( callbacks[method] ) {
-					var func = Array.prototype.slice.call( arguments, 1 )[0];
-					if ($.isFunction( func )) {
-						methods[method] = func;
-					}
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+			}
+		} else if ( callbacks[method] ) {
+			var func = Array.prototype.slice.call( arguments, 1 )[0];
+			if ($.isFunction( func )) {
+				settings[method] = func;
 			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
