@@ -61,8 +61,8 @@
 			jmpress = $( this );
 
 			// CHECK FOR SUPPORT
-			if (methods._checkSupport() == false) {
-				return;
+			if (methods._checkSupport() === false) {
+				//return;
 			}
 
 			canvas = $('<div />').addClass( settings.canvasClass );
@@ -118,6 +118,7 @@
 						,y: data.scaleY || data.scale || 1
 						,z: data.scaleZ || 1
 					}
+					,prepend: 'translate(-50%,-50%)'
 				};
 
 				$(this).data('stepData', step);
@@ -128,12 +129,13 @@
 
 				methods.css($(this), {
 					position: "absolute"
-					,transform: "translate(-50%,-50%)" +
+					/*,transform: "translate(-50%,-50%)" +
 						methods._translate(step.translate) +
 						methods._rotate(step.rotate) +
-						methods._scale(step.scale)
+						methods._scale(step.scale)//*/
 					,transformStyle: "preserve-3d"
 				});
+				methods._transform( $(this), step );
 			});
 
 			// KEYDOWN EVENT
@@ -217,19 +219,20 @@
 
 			var target = {
 				rotate: {
-					x: -parseInt(step.rotate.x, 10),
-					y: -parseInt(step.rotate.y, 10),
-					z: -parseInt(step.rotate.z, 10)
+					x: -parseInt(step.rotate.x, 10)
+					,y: -parseInt(step.rotate.y, 10)
+					,z: -parseInt(step.rotate.z, 10)
+					,revert: false
 				},
 				scale: {
-					x: 1 / parseFloat(step.scale.x),
-					y: 1 / parseFloat(step.scale.y),
-					z: 1 / parseFloat(step.scale.z)
+					x: 1 / parseFloat(step.scale.x)
+					,y: 1 / parseFloat(step.scale.y)
+					,z: 1 / parseFloat(step.scale.z)
 				},
 				translate: {
-					x: -step.translate.x,
-					y: -step.translate.y,
-					z: -step.translate.z
+					x: -step.translate.x
+					,y: -step.translate.y
+					,z: -step.translate.z
 				}
 			};
 
@@ -240,7 +243,7 @@
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
-				,transform: methods._scale(target.scale)
+				//,transform: methods._scale(target.scale)
 				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			};
 			props = $.extend({}, settings.animation, props);
@@ -248,9 +251,13 @@
 				props.transitionDuration = '0';
 			}
 			methods.css(jmpress, props);
-
+			methods._transform(jmpress, {
+				scale: target.scale
+			});
+			
+			target.rotate.revert = true;
 			props = {
-				transform: methods._rotate(target.rotate, true) + methods._translate(target.translate)
+				transform: methods._rotate(target.rotate) + methods._translate(target.translate)
 				,transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
@@ -258,6 +265,11 @@
 				props.transitionDuration = '0';
 			}
 			methods.css(canvas, props);
+			/*methods._transform(canvas, {
+				translate: target.translate
+				,rotate: target.rotate
+				,css: props
+			});*/
 
 			$( settings.stepSelector ).css('z-index', 9);
 			el.css('z-index', 10);
@@ -438,6 +450,30 @@
 			}
 		})()
 		/**
+		 * Transforms the element
+		 * 
+		 * @return boolean
+		 */
+		,_transform: function( el, data ) {
+			if ( !Modernizr.csstransitions ) {
+				if ( data.translate ) {
+					methods.css(el, {
+						top: data.translate.x + 'px'
+						,left: data.translate.y + 'px'
+					});
+				}
+				return true;
+			}
+			var transform = data.prepend || '';
+			transform += data.translate ? methods._translate(data.translate) : '';
+			transform += data.rotate ? methods._rotate(data.rotate) : '';
+			transform += data.scale ? methods._scale(data.scale) : '';
+			var css = $.extend({}, { transform: transform }, data.css);
+			//console.log(css);
+			methods.css(el, css);
+			return true;
+		}
+		/**
 		 * Translate
 		 *
 		 * @access protected
@@ -447,16 +483,16 @@
 			return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
 		}
 		/**
-		 * Scale
+		 * Rotate
 		 *
 		 * @access protected
 		 * @return String CSS for rotate
 		 */
-		,_rotate: function ( r, revert ) {
+		,_rotate: function ( r ) {
 			var rX = " rotateX(" + r.x + "deg) ",
 				rY = " rotateY(" + r.y + "deg) ",
 				rZ = " rotateZ(" + r.z + "deg) ";
-			return revert ? rZ + rY + rX : rX + rY + rZ;
+			return r.revert ? rZ + rY + rX : rX + rY + rZ;
 		}
 		/**
 		 * Scale
