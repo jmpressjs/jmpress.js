@@ -229,7 +229,7 @@ h4 {
 	transform:         translateY(0px);
 }
 
-/* NOT SUPPORTED STYLES */
+/** NOT SUPPORTED STYLES **/
 
 .not-supported .step {
 	position: relative;
@@ -238,4 +238,42 @@ h4 {
 }
 .not-supported .next {
 	display: none;
+}
+
+/** PRINT STYLE **/
+
+@media print {
+	body, .ui-state-default {
+		background: white;
+	}
+	#nav, .hint, .next {
+		display: none;
+	}
+	#jmpress {
+		width: auto; 
+		margin: 0 5%;
+		padding: 0; 
+		border: 0;
+		float: none !important;
+		color: black; 
+		background: transparent;
+	}
+	.step {
+		page-break-after: always;
+		opacity: 1;
+		clear: both;
+		display: block;
+		float: none !important;
+		position: relative;
+		margin: 20px auto;
+
+		-webkit-transition: rotate(0deg);
+		-moz-transition:    rotate(0deg);
+		-ms-transition:     rotate(0deg);
+		-o-transition:      rotate(0deg);
+		transition:         rotate(0deg);
+	}
+	.step:not(.active) {
+		opacity: 1;
+	}
 }
