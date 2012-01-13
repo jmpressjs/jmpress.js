@@ -256,6 +256,9 @@
 			}
 			methods.css(canvas, props);
 
+			$( settings.stepSelector ).css('z-index', 9);
+			el.css('z-index', 10);
+
 			current = target;
 			active = el;
 
