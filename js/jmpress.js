@@ -101,7 +101,6 @@
 
 			// INITIALIZE EACH STEP
 			steps.each(function( idx ) {
-				//var data = this.dataset;
 				var data = methods._dataset( this );
 				var step = {
 					translate: {
@@ -460,7 +459,21 @@
 			if ( el.dataset ) {
 				return el.dataset;
 			}
-			// TODO: Get dataset for IE
+			var look = [
+				'data-x', 'data-y', 'data-z',
+				'data-scale',
+				'data-rotation',
+				'data-rotation-x', 'data-rotation-y', 'data-rotation-z',
+				'data-src'
+			];
+			var dataset = {};
+			for ( var i in look ) {
+				var attr = $(el).attr( look[i] );
+				if ( attr ) {
+					dataset[ look[i].substr(5) ] = attr;
+				}
+			}
+			return dataset;
 		}
 		/**
 		 * Transforms the element
