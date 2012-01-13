@@ -62,7 +62,7 @@
 
 			// CHECK FOR SUPPORT
 			if (methods._checkSupport() === false) {
-				//return;
+				return;
 			}
 
 			canvas = $('<div />').addClass( settings.canvasClass );
@@ -546,8 +546,7 @@
 		 */
 		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( methods._pfx("perspective") !== null ) &&
-				( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
+			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
 			if (!supported) {
 				jmpress.addClass( settings.notSupportedClass );
 			}
