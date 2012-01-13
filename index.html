@@ -126,6 +126,11 @@ $(function() {
 		$('#jmpress').jmpress('next');
 		return false;
 	});
+	// HACK TO CHANGE HINT IF IPAD
+	var ua = navigator.userAgent.toLowerCase();
+	if ( ua.search(/(ipad)/) != -1 ) {
+		$('.hint').text('Swipe support is coming :)');
+	}
 });
 </script>
 

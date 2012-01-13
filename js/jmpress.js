@@ -473,7 +473,7 @@
 		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
 			var supported = ( methods._pfx("perspective") !== null ) &&
-				( ua.search(/(iphone)|(ipod)|(ipad)|(android)/) == -1 );
+				( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
 			if (!supported) {
 				jmpress.addClass( settings.notSupportedClass );
 			}
