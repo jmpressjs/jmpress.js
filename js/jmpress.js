@@ -101,7 +101,8 @@
 
 			// INITIALIZE EACH STEP
 			steps.each(function( idx ) {
-				var data = this.dataset;
+				//var data = this.dataset;
+				var data = methods._dataset( this );
 				var step = {
 					translate: {
 						x: data.x || 0
@@ -257,19 +258,19 @@
 			
 			target.rotate.revert = true;
 			props = {
-				transform: methods._rotate(target.rotate) + methods._translate(target.translate)
-				,transitionDelay: (zoomin ? "0ms" : "500ms")
+				//transform: methods._rotate(target.rotate) + methods._translate(target.translate)
+				transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
 			if (!active) {
 				props.transitionDuration = '0';
 			}
-			methods.css(canvas, props);
-			/*methods._transform(canvas, {
+			//methods.css(canvas, props);
+			methods._transform(canvas, {
 				translate: target.translate
 				,rotate: target.rotate
 				,css: props
-			});*/
+			});
 
 			$( settings.stepSelector ).css('z-index', 9);
 			el.css('z-index', 10);
@@ -450,27 +451,48 @@
 			}
 		})()
 		/**
+		 * Return dataset for element
+		 * 
+		 * @param Object element
+		 * @return Object
+		 */
+		,_dataset: function( el ) {
+			if ( el.dataset ) {
+				return el.dataset;
+			}
+			// TODO: Get dataset for IE
+		}
+		/**
 		 * Transforms the element
 		 * 
 		 * @return boolean
+		 * 
+		 * TODO: This can be done a lot nicer
 		 */
 		,_transform: function( el, data ) {
-			if ( !Modernizr.csstransitions ) {
+			if ( methods._pfx("perspective") === null ) {
 				if ( data.translate ) {
-					methods.css(el, {
-						top: data.translate.x + 'px'
-						,left: data.translate.y + 'px'
-					});
+					el.animate({
+						top: data.translate.y - ( el.height() / 2 ) + 'px'
+						,left: data.translate.x - ( el.width() / 2 ) + 'px'
+					}, 1000); // TODO: Use animation duration
 				}
 				return true;
 			}
 			var transform = data.prepend || '';
-			transform += data.translate ? methods._translate(data.translate) : '';
-			transform += data.rotate ? methods._rotate(data.rotate) : '';
+			var revert = false;
+			if ( data.rotate && data.rotate.revert ) {
+				revert = true;
+			}
+			if ( revert ) {
+				transform += data.rotate ? methods._rotate(data.rotate) : '';
+				transform += data.translate ? methods._translate(data.translate) : '';
+			} else {
+				transform += data.translate ? methods._translate(data.translate) : '';
+				transform += data.rotate ? methods._rotate(data.rotate) : '';
+			}
 			transform += data.scale ? methods._scale(data.scale) : '';
-			var css = $.extend({}, { transform: transform }, data.css);
-			//console.log(css);
-			methods.css(el, css);
+			methods.css(el, $.extend({}, { transform: transform }, data.css));
 			return true;
 		}
 		/**

@@ -163,9 +163,9 @@ describe('Jmpress', function() {
 		 */
 		it('should build rotate', function() {
 			var result;
-			result = $('#jmpress').jmpress('_rotate', {x: 90, y: 180, z: 20}, false);
+			result = $('#jmpress').jmpress('_rotate', {x: 90, y: 180, z: 20});
 			expect( result ).toEqual( ' rotateX(90deg)  rotateY(180deg)  rotateZ(20deg) ' );
-			result = $('#jmpress').jmpress('_rotate', {x: 90, y: 180, z: 20}, true);
+			result = $('#jmpress').jmpress('_rotate', {x: 90, y: 180, z: 20, revert: true});
 			expect( result ).toEqual( ' rotateZ(20deg)  rotateY(180deg)  rotateX(90deg) ' );
 		});
 
