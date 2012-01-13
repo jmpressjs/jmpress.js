@@ -202,6 +202,9 @@
 			// scrolling to element in hash
 			ignoreHashChange = true;
 			window.location.hash = "#/" + el.attr('id');
+			setTimeout(function() {
+				ignoreHashChange = false;
+			}, 1000);
 
 			if ( active ) {
 				if ( active.attr('id') === el.attr('id') ) {
