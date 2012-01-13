@@ -11,14 +11,15 @@ jmpress.js demo: [http://shama.github.com/jmpress.js]
 ## BROWSER SUPPORT
 
 jmpress.js is made for the latest browsers. Old browsers get old styles. Here is
-the support list for the latest version of each browser:
+the support list for the latest version of each browser/device:
 
 * Chrome/Chromium: YES
 * Safari: YES
 * Firefox: ALMOST
 * IE: NO
 * Opera: PARTIAL
-* iOS: PARTIAL
+* iPad: YES (but could be better)
+* iPhone/iPod: PARTIAL
 * Android: ?
 
 ## USAGE
