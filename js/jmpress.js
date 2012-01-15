@@ -552,6 +552,25 @@
 			}
 			return supported;
 		}
+		/**
+		 * Engine to power cross-browser translate, scale and rotate.
+		 * 
+		 * // TODO: Write this and replace the above _transform method
+		 */
+		,_engine: {
+			init: function( data ) {
+				
+			}
+			,translate: function( data ) {
+				
+			}
+			,scale: function( data ) {
+				
+			}
+			,rotate: function( data ) {
+				
+			}
+		}
 	};
 
 	/**
