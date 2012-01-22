@@ -46,108 +46,109 @@
 		}
 		,ignoreHashChange = false;
 
-    	/**
-         * 3D and 2D engines
-         */
+	/**
+	 * 3D and 2D engines
+	 */
 	var engines = {
-	3: {
-		_transform: function( el, data ) {
-			var transform = data.prepend || '';
-			if ( data.rotate && data.rotate.revert ) {
-				transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
-				transform += data.translate ? methods._engine._translate(data.translate) : '';
-			} else {
-				transform += data.translate ? methods._engine._translate(data.translate) : '';
-				transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+		3: {
+			_transform: function( el, data ) {
+				var transform = data.prepend || '';
+				if ( data.rotate && data.rotate.revert ) {
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+				} else {
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+				}
+				transform += data.scale ? methods._engine._scale(data.scale) : '';
+				methods.css(el, $.extend({}, { transform: transform }, data.css));
+				return true;
 			}
-			transform += data.scale ? methods._engine._scale(data.scale) : '';
-			methods.css(el, $.extend({}, { transform: transform }, data.css));
-			return true;
-		}
-		/**
-		 * Translate
-		 *
-		 * @access protected
-		 * @return String CSS for translate3d
-		 */
-		,_translate: function ( t ) {
-			return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
-		}
-		/**
-		 * Rotate
-		 *
-		 * @access protected
-		 * @return String CSS for rotate
-		 */
-		,_rotate: function ( r ) {
-			var rX = " rotateX(" + r.x + "deg) ",
-				rY = " rotateY(" + r.y + "deg) ",
-				rZ = " rotateZ(" + r.z + "deg) ";
-			return r.revert ? rZ + rY + rX : rX + rY + rZ;
-		}
-		/**
-		 * Scale
-		 *
-		 * @access protected
-		 * @return String CSS for scale
-		 */
-		,_scale: function ( s ) {
-			return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
-		}
-	}
-	, 2: {
-		_transform: function( el, data ) {
-			var transform = data.prepend || '';
-			if ( data.rotate && data.rotate.revert ) {
-				transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
-				transform += data.translate ? methods._engine._translate(data.translate) : '';
-			} else {
-				transform += data.translate ? methods._engine._translate(data.translate) : '';
-				transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+			/**
+			 * Translate
+			 *
+			 * @access protected
+			 * @return String CSS for translate3d
+			 */
+			,_translate: function ( t ) {
+				return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
 			}
-			transform += data.scale ? methods._engine._scale(data.scale) : '';
-			methods.css(el, $.extend({}, { transform: transform }, data.css));
-			return true;
-		}
-		/**
-		 * Translate
-		 *
-		 * @access protected
-		 * @return String CSS for translate3d
-		 */
-		,_translate: function ( t ) {
-			return " translate(" + t.x + "px," + t.y + "px) ";
-		}
-		/**
-		 * Rotate
-		 *
-		 * @access protected
-		 * @return String CSS for rotate
-		 */
-		,_rotate: function ( r ) {
-			return " rotate(" + r.z + "deg) ";
-		}
-		/**
-		 * Scale
-		 *
-		 * @access protected
-		 * @return String CSS for scale
-		 */
-		,_scale: function ( s ) {
-			return " scaleX(" + s.x + ") scaleY(" + s.y + ") ";
-		}
-	}
-	, 1: {
-		_transform: function( el, data ) {
-			if ( data.translate ) {
-				el.animate({
-					top: data.translate.y - ( el.height() / 2 ) + 'px'
-					,left: data.translate.x - ( el.width() / 2 ) + 'px'
-				}, 1000); // TODO: Use animation duration
+			/**
+			 * Rotate
+			 *
+			 * @access protected
+			 * @return String CSS for rotate
+			 */
+			,_rotate: function ( r ) {
+				var rX = " rotateX(" + r.x + "deg) ",
+					rY = " rotateY(" + r.y + "deg) ",
+					rZ = " rotateZ(" + r.z + "deg) ";
+				return r.revert ? rZ + rY + rX : rX + rY + rZ;
 			}
-			return true;
+			/**
+			 * Scale
+			 *
+			 * @access protected
+			 * @return String CSS for scale
+			 */
+			,_scale: function ( s ) {
+				return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
+			}
 		}
-	}};
+		,2: {
+			_transform: function( el, data ) {
+				var transform = data.prepend || '';
+				if ( data.rotate && data.rotate.revert ) {
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+				} else {
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+				}
+				transform += data.scale ? methods._engine._scale(data.scale) : '';
+				methods.css(el, $.extend({}, { transform: transform }, data.css));
+				return true;
+			}
+			/**
+			 * Translate
+			 *
+			 * @access protected
+			 * @return String CSS for translate3d
+			 */
+			,_translate: function ( t ) {
+				return " translate(" + t.x + "px," + t.y + "px) ";
+			}
+			/**
+			 * Rotate
+			 *
+			 * @access protected
+			 * @return String CSS for rotate
+			 */
+			,_rotate: function ( r ) {
+				return " rotate(" + r.z + "deg) ";
+			}
+			/**
+			 * Scale
+			 *
+			 * @access protected
+			 * @return String CSS for scale
+			 */
+			,_scale: function ( s ) {
+				return " scaleX(" + s.x + ") scaleY(" + s.y + ") ";
+			}
+		}
+		,1: {
+			_transform: function( el, data ) {
+				if ( data.translate ) {
+					el.animate({
+						top: data.translate.y - ( el.height() / 2 ) + 'px'
+						,left: data.translate.x - ( el.width() / 2 ) + 'px'
+					}, 1000); // TODO: Use animation duration
+				}
+				return true;
+			}
+		}
+	};
 
 	/**
 	 * Methods
