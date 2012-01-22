@@ -21,9 +21,9 @@ would like to put a giant YES on each of the browser/devices below:
 
 * Chrome/Chromium: YES
 * Safari: YES
-* Firefox: PARTIAL
+* Firefox: YES
 * IE: PARTIAL
-* Opera: PARTIAL
+* Opera: YES
 * iPad: YES (but could be better)
 * iPhone/iPod: PARTIAL
 * Android: ?
