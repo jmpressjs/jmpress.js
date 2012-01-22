@@ -47,6 +47,110 @@
 		,ignoreHashChange = false;
 
 	/**
+	 * 3D and 2D engines
+	 */
+	var engines = {
+		3: {
+			_transform: function( el, data ) {
+				var transform = data.prepend || '';
+				if ( data.rotate && data.rotate.revert ) {
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+				} else {
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+				}
+				transform += data.scale ? methods._engine._scale(data.scale) : '';
+				methods.css(el, $.extend({}, { transform: transform }, data.css));
+				return true;
+			}
+			/**
+			 * Translate
+			 *
+			 * @access protected
+			 * @return String CSS for translate3d
+			 */
+			,_translate: function ( t ) {
+				return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
+			}
+			/**
+			 * Rotate
+			 *
+			 * @access protected
+			 * @return String CSS for rotate
+			 */
+			,_rotate: function ( r ) {
+				var rX = " rotateX(" + r.x + "deg) ",
+					rY = " rotateY(" + r.y + "deg) ",
+					rZ = " rotateZ(" + r.z + "deg) ";
+				return r.revert ? rZ + rY + rX : rX + rY + rZ;
+			}
+			/**
+			 * Scale
+			 *
+			 * @access protected
+			 * @return String CSS for scale
+			 */
+			,_scale: function ( s ) {
+				return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
+			}
+		}
+		,2: {
+			_transform: function( el, data ) {
+				var transform = data.prepend || '';
+				if ( data.rotate && data.rotate.revert ) {
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+				} else {
+					transform += data.translate ? methods._engine._translate(data.translate) : '';
+					transform += data.rotate ? methods._engine._rotate(data.rotate) : '';
+				}
+				transform += data.scale ? methods._engine._scale(data.scale) : '';
+				methods.css(el, $.extend({}, { transform: transform }, data.css));
+				return true;
+			}
+			/**
+			 * Translate
+			 *
+			 * @access protected
+			 * @return String CSS for translate3d
+			 */
+			,_translate: function ( t ) {
+				return " translate(" + t.x + "px," + t.y + "px) ";
+			}
+			/**
+			 * Rotate
+			 *
+			 * @access protected
+			 * @return String CSS for rotate
+			 */
+			,_rotate: function ( r ) {
+				return " rotate(" + r.z + "deg) ";
+			}
+			/**
+			 * Scale
+			 *
+			 * @access protected
+			 * @return String CSS for scale
+			 */
+			,_scale: function ( s ) {
+				return " scaleX(" + s.x + ") scaleY(" + s.y + ") ";
+			}
+		}
+		,1: {
+			_transform: function( el, data ) {
+				if ( data.translate ) {
+					el.animate({
+						top: data.translate.y - ( el.height() / 2 ) + 'px'
+						,left: data.translate.x - ( el.width() / 2 ) + 'px'
+					}, 1000); // TODO: Use animation duration
+				}
+				return true;
+			}
+		}
+	};
+
+	/**
 	 * Methods
 	 */
 	var methods = {
@@ -61,7 +165,7 @@
 			jmpress = $( this );
 
 			// CHECK FOR SUPPORT
-			if (methods._checkSupport() == false) {
+			if (methods._checkSupport() === false) {
 				return;
 			}
 
@@ -101,7 +205,7 @@
 
 			// INITIALIZE EACH STEP
 			steps.each(function( idx ) {
-				var data = this.dataset;
+				var data = methods._dataset( this );
 				var step = {
 					translate: {
 						x: data.x || 0
@@ -118,6 +222,7 @@
 						,y: data.scaleY || data.scale || 1
 						,z: data.scaleZ || 1
 					}
+					,prepend: 'translate(-50%,-50%)'
 				};
 
 				$(this).data('stepData', step);
@@ -128,12 +233,9 @@
 
 				methods.css($(this), {
 					position: "absolute"
-					,transform: "translate(-50%,-50%)" +
-						methods._translate(step.translate) +
-						methods._rotate(step.rotate) +
-						methods._scale(step.scale)
 					,transformStyle: "preserve-3d"
 				});
+				methods._engine._transform( $(this), step );
 			});
 
 			// KEYDOWN EVENT
@@ -217,19 +319,20 @@
 
 			var target = {
 				rotate: {
-					x: -parseInt(step.rotate.x, 10),
-					y: -parseInt(step.rotate.y, 10),
-					z: -parseInt(step.rotate.z, 10)
+					x: -parseInt(step.rotate.x, 10)
+					,y: -parseInt(step.rotate.y, 10)
+					,z: -parseInt(step.rotate.z, 10)
+					,revert: false
 				},
 				scale: {
-					x: 1 / parseFloat(step.scale.x),
-					y: 1 / parseFloat(step.scale.y),
-					z: 1 / parseFloat(step.scale.z)
+					x: 1 / parseFloat(step.scale.x)
+					,y: 1 / parseFloat(step.scale.y)
+					,z: 1 / parseFloat(step.scale.z)
 				},
 				translate: {
-					x: -step.translate.x,
-					y: -step.translate.y,
-					z: -step.translate.z
+					x: -step.translate.x
+					,y: -step.translate.y
+					,z: -step.translate.z
 				}
 			};
 
@@ -240,7 +343,6 @@
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
-				,transform: methods._scale(target.scale)
 				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			};
 			props = $.extend({}, settings.animation, props);
@@ -248,16 +350,24 @@
 				props.transitionDuration = '0';
 			}
 			methods.css(jmpress, props);
-
+			methods._engine._transform(jmpress, {
+				scale: target.scale
+			});
+			
+			target.rotate.revert = true;
 			props = {
-				transform: methods._rotate(target.rotate, true) + methods._translate(target.translate)
-				,transitionDelay: (zoomin ? "0ms" : "500ms")
+				transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
 			if (!active) {
 				props.transitionDuration = '0';
 			}
-			methods.css(canvas, props);
+			//methods.css(canvas, props);
+			methods._engine._transform(canvas, {
+				translate: target.translate
+				,rotate: target.rotate
+				,css: props
+			});
 
 			$( settings.stepSelector ).css('z-index', 9);
 			el.css('z-index', 10);
@@ -438,34 +548,30 @@
 			}
 		})()
 		/**
-		 * Translate
-		 *
-		 * @access protected
-		 * @return String CSS for translate3d
+		 * Return dataset for element
+		 * 
+		 * @param Object element
+		 * @return Object
 		 */
-		,_translate: function ( t ) {
-			return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
-		}
-		/**
-		 * Scale
-		 *
-		 * @access protected
-		 * @return String CSS for rotate
-		 */
-		,_rotate: function ( r, revert ) {
-			var rX = " rotateX(" + r.x + "deg) ",
-				rY = " rotateY(" + r.y + "deg) ",
-				rZ = " rotateZ(" + r.z + "deg) ";
-			return revert ? rZ + rY + rX : rX + rY + rZ;
-		}
-		/**
-		 * Scale
-		 *
-		 * @access protected
-		 * @return String CSS for scale
-		 */
-		,_scale: function ( s ) {
-			return " scaleX(" + s.x + ") scaleY(" + s.y + ") scaleZ(" + s.z + ") ";
+		,_dataset: function( el ) {
+			if ( el.dataset ) {
+				return el.dataset;
+			}
+			var look = [
+				'data-x', 'data-y', 'data-z',
+				'data-scale',
+				'data-rotation',
+				'data-rotation-x', 'data-rotation-y', 'data-rotation-z',
+				'data-src'
+			];
+			var dataset = {};
+			for ( var i in look ) {
+				var attr = $(el).attr( look[i] );
+				if ( attr ) {
+					dataset[ look[i].substr(5) ] = attr;
+				}
+			}
+			return dataset;
 		}
 		/**
 		 * Check for support
@@ -475,14 +581,34 @@
 		 */
 		,_checkSupport: function() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( methods._pfx("perspective") !== null ) &&
-				( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
+			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
 			if (!supported) {
 				jmpress.addClass( settings.notSupportedClass );
 			}
 			return supported;
 		}
+		/**
+		 * Return supported Engine
+		 *
+		 * @access protected
+		 * @return an transformator
+		 */
+		,_getSupportedEngine: function() {
+			if (methods._pfx("perspective")) {
+				return engines[3];
+			} else if (methods._pfx("transform")) {
+				return engines[2];
+			} else {
+			    return engines[1];
+			}
+		}
+		/**
+		 * Engine to power cross-browser translate, scale and rotate.
+		 */
+		,_engine: {}
 	};
+
+	methods._engine = methods._getSupportedEngine();
 
 	/**
 	 * $.jmpress()

@@ -10,14 +10,20 @@ jmpress.js demo: [http://shama.github.com/jmpress.js]
 
 ## BROWSER SUPPORT
 
-jmpress.js is made for the latest browsers. Old browsers get old styles. Here is
-the support list for the latest version of each browser/device:
+jmpress.js currently uses CSS3 transform and transition as its engine. As of
+this writing only the latest Chrome, Safari and Firefox 10 supports this engine.
+I think we should support all browsers. Which is the main reason I ported this
+to jQuery.
+
+The next step is to build a fallback engine for older browsers (this might mean
+Modernizr). So until then older browsers just get older styles. Eventually I
+would like to put a giant YES on each of the browser/devices below:
 
 * Chrome/Chromium: YES
 * Safari: YES
-* Firefox: ALMOST
-* IE: NO
-* Opera: PARTIAL
+* Firefox: YES
+* IE: PARTIAL
+* Opera: YES
 * iPad: YES (but could be better)
 * iPhone/iPod: PARTIAL
 * Android: ?
