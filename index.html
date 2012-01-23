@@ -113,7 +113,7 @@
 <script type="text/javascript">
 $(function() {
 	$('#jmpress').jmpress({
-		beforeChange: function( slide ) {
+		setActive: function( slide ) {
 			var id = slide.attr('id');
 			if (id.indexOf('-') != -1) {
 				id = id.substr(0, id.indexOf('-'));
