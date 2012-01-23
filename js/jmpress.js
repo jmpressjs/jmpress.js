@@ -43,6 +43,10 @@
 		,applyStep: []
 		,setInactive: []
 		,setActive: []
+		,selectInitialStep: []
+		,selectPrev: []
+		,selectNext: []
+		,loadStep: []
 
 		/* TEST */
 		,test: false
@@ -63,6 +67,10 @@
 			,'applyStep': 1
 			,'setInactive': 1
 			,'setActive': 1
+			,'selectInitialStep': 1
+			,'selectPrev': 1
+			,'selectNext': 1
+			,'loadStep': 1
 		}
 		,ignoreHashChange = false;
 
@@ -258,8 +266,8 @@
 				};
 
 				var callbackData = {
-					data: data,
-					stepData: step,
+					data: data
+					,stepData: step
 				}
 				methods._callCallback( 'initStep', $(this), callbackData);
 
@@ -298,31 +306,18 @@
 				}
 			});
 
-			var initialStep = $( steps[0] );
-
-			// HASH CHANGE EVENT
-			if(settings.useHash) {
-				$(window).bind('hashchange', function() {
-					if (ignoreHashChange === false) {
-						methods.select( methods._getElementFromUrl() );
-					}
-					ignoreHashChange = false;
-				});
-				initialStep = methods._getElementFromUrl() || initialStep;
-			}
-
 			// START 
-			// by selecting step defined in url or first step
-			methods.select( initialStep );
+			methods.select( methods._callCallback( 'selectInitialStep', null, { steps: steps }) );
 
 		}
 		/**
 		 * Select a given step
 		 *
 		 * @param Object|String el element to select
+		 * @param String type reason of changing step
 		 * @return Object element selected
 		 */
-		,select: function ( el ) {
+		,select: function ( el, type ) {
 			if ( typeof el === 'string') {
 				el = jmpress.find( el ).first();
 			}
@@ -352,16 +347,6 @@
 			if(cancelSelect)
 				return;
 
-			// `#/step-id` is used instead of `#step-id` to prevent default browser
-			// scrolling to element in hash
-			if(settings.useHash) {
-				ignoreHashChange = true;
-				window.location.hash = "#/" + el.attr('id');
-				setTimeout(function() {
-					ignoreHashChange = false;
-				}, 1000); // TODO: Use animation duration
-			}
-
 			var target = {
 				rotate: {
 					x: -parseInt(step.rotate.x, 10)
@@ -385,7 +370,6 @@
 				if ( active.attr('id') === el.attr('id') ) {
 					return el;
 				}
-				active.removeClass('active');
 				methods._callCallback( 'setInactive', active, {
 					stepData: $(active).data('stepData')
 					,target: target
@@ -393,7 +377,6 @@
 					,nextStepData: step
 				} );
 			}
-			el.addClass('active');
 			methods._callCallback( 'setActive', el, {
 				stepData: step
 				,target: target
@@ -453,7 +436,7 @@
 		 * Alias for select
 		 */
 		,goTo: function( el ) {
-			return methods.select( el );
+			return methods.select( el, "jump" );
 		}
 		/**
 		 * Goto Next Slide
@@ -461,7 +444,7 @@
 		 * @return Object newly active slide
 		 */
 		,next: function() {
-			return methods.select( methods.getNext() );
+			return methods.select( methods.getNext(), "next" );
 		}
 		/**
 		 * Goto Previous Slide
@@ -469,7 +452,7 @@
 		 * @return Object newly active slide
 		 */
 		,prev: function() {
-			return methods.select( methods.getPrev() );
+			return methods.select( methods.getPrev(), "prev" );
 		}
 		/**
 		 * Get Next Slide
@@ -477,17 +460,10 @@
 		 * @return Object
 		 */
 		,getNext: function() {
-			if (!active) {
-				return false;
-			}
-			var next = active.next( settings.stepSelector );
-			if (next.length < 1) {
-				next = steps.first( settings.stepSelector );
-			}
-			if (next.length < 1) {
-				return false;
-			}
-			return next;
+			return methods._callCallback( 'selectNext', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			} );
 		}
 		/**
 		 * Get Previous Slide
@@ -495,17 +471,10 @@
 		 * @return Object
 		 */
 		,getPrev: function() {
-			if (!active) {
-				return false;
-			}
-			var prev = active.prev( settings.stepSelector );
-			if (prev.length < 1) {
-				prev = steps.last( settings.stepSelector );
-			}
-			if (prev.length < 1) {
-				return false;
-			}
-			return prev;
+			return methods._callCallback( 'selectPrev', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			} );
 		}
 		/**
 		 * Manipulate the canvas
@@ -539,6 +508,14 @@
 			return el;
 		}
 		/**
+		 * Return default settings
+		 *
+		 * @return Object
+		 */
+		,defaults: function() {
+			return defaults;
+		}
+		/**
 		 * Return current settings
 		 * 
 		 * @return Object
@@ -552,11 +529,12 @@
 		 * @param callbackName String callback which should be called
 		 * @param arguments some arguments to the callback
 		 */
-		,_callCallback: function( callbackName ) {
-			var result = {}
-				,callbackArgs =  Array.prototype.slice.call( arguments, 1 );
+		,_callCallback: function( callbackName, element, eventData ) {
+			eventData.settings = settings;
+			eventData.current = current;
+			var result = {};
 			$.each( settings[callbackName], function(idx, callback) {
-				result.value = callback.apply( jmpress, callbackArgs ) || result.value;
+				result.value = callback.call( jmpress, element, eventData ) || result.value;
 			});
 			return result.value;
 		}
@@ -574,28 +552,15 @@
 			var siblings = active.siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
+
 				if ($(this).hasClass( settings.loadedClass )) {
 					return;
 				}
-				var href = $(this).attr('href') || $(this).attr('data-src') || false;
-				if ( href ) {
-					$(this).load( href, function() {
-						$(this).addClass( settings.loadedClass );
-					});
-				}
+				methods._callCallback( 'loadStep', this, {
+					stepData: $(this).data('stepData')
+				} )
+				$(this).addClass( settings.loadedClass );
 			});
-		}
-		/**
-		 * getElementFromUrl
-		 *
-		 * @access protected
-		 * @return String or false
-		 */
-		,_getElementFromUrl: function () {
-			// get id from url # by removing `#` or `#/` from the beginning,
-			// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-			var el = $('#' + window.location.hash.replace(/^#\/?/,"") );
-			return el.length > 0 ? el : false;
 		}
 		/**
 		 * Set supported prefixes
@@ -726,4 +691,95 @@
 			}
 		}
 	});
+
+	/* DEFAULT PLUGINS */
+
+	(function() { // active class
+		$.jmpress( 'defaults' ).activeClass = "active";
+		$.jmpress( 'setInactive', function( step, eventData ) {
+			$(step).removeClass( eventData.settings.activeClass );
+		});
+		$.jmpress( 'setActive', function( step, eventData ) {
+			$(step).addClass( eventData.settings.activeClass );
+		});
+	})();
+
+	(function() { // circular stepping
+		$.jmpress( 'selectInitialStep', function( step, eventData ) {
+			return $( eventData.steps[0] );
+		});
+		$.jmpress( 'selectPrev', function( step, eventData ) {
+			if (!step) {
+				return false;
+			}
+			var prev = $(step).prev( eventData.settings.stepSelector );
+			if (prev.length < 1) {
+				prev = eventData.steps.last( eventData.settings.stepSelector );
+			}
+			if (prev.length > 0) {
+				return prev;
+			}
+		});
+		$.jmpress( 'selectNext', function( step, eventData ) {
+			if (!step) {
+				return false;
+			}
+			var next = $(step).next( eventData.settings.stepSelector );
+			if (next.length < 1) {
+				next = eventData.steps.first( eventData.settings.stepSelector );
+			}
+			if (next.length > 0) {
+				return next;
+			}
+		});
+	})();
+
+	(function() { // load steps from ajax
+		$.jmpress( 'initStep', function( step, eventData ) {
+			eventData.stepData.ajaxSource = $(step).attr('href') || eventData.data['src'] || false;
+		});
+		$.jmpress( 'loadStep', function( step, eventData ) {
+			var href = eventData.stepData.ajaxSource;
+			if ( href ) {
+				$(step).load( href );
+			}
+		});
+	})();
+
+	(function() { // use hash in url
+		$.jmpress( 'selectInitialStep', function( step, eventData ) {
+			// HASH CHANGE EVENT
+			if(eventData.settings.useHash) {
+				/**
+				 * getElementFromUrl
+				 *
+				 * @return String or undefined
+				 */
+				function getElementFromUrl() {
+					// get id from url # by removing `#` or `#/` from the beginning,
+					// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+					var el = $('#' + window.location.hash.replace(/^#\/?/,"") );
+					return el.length > 0 ? el : undefined;
+				}
+				$(window).bind('hashchange', function() {
+					if (eventData.current.ignoreHashChange === false) {
+						$.jmpress('select' ,getElementFromUrl() );
+					}
+					eventData.current.ignoreHashChange = false;
+				});
+				return getElementFromUrl();
+			}
+		});
+		$.jmpress( 'setActive', function( step, eventData ) {
+			// `#/step-id` is used instead of `#step-id` to prevent default browser
+			// scrolling to element in hash
+			if(eventData.settings.useHash) {
+				eventData.current.ignoreHashChange = true;
+				window.location.hash = "#/" + step.attr('id');
+				setTimeout(function() {
+					eventData.current.ignoreHashChange = false;
+				}, 1000); // TODO: Use animation duration
+			}
+		});
+})();
 })(jQuery, document, window);
