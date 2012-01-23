@@ -41,11 +41,22 @@ describe('Jmpress', function() {
 		 * test beforeChange
 		 */
 		it('should call a function before the slide has changed', function() {
-			var callback = jasmine.createSpy('beforeChange');
-			$('#jmpress').jmpress( 'beforeChange', callback );
-			expect( callback ).not.toHaveBeenCalled();
+			var callback1 = jasmine.createSpy('beforeChange1');
+			var callback2 = jasmine.createSpy('beforeChange2');
+			var callback3 = jasmine.createSpy('beforeChange3');
+			$.jmpress( 'beforeChange', callback3 );
+			$('#jmpress').jmpress( 'beforeChange', callback1 );
+			expect( callback1 ).not.toHaveBeenCalled();
+			expect( callback3 ).not.toHaveBeenCalled();
 			$('#jmpress').jmpress( 'next' );
-			expect( callback ).toHaveBeenCalled();
+			expect( callback1 ).toHaveBeenCalled();
+			expect( callback3 ).toHaveBeenCalled();
+			$('#jmpress').jmpress( 'beforeChange', callback2 );
+			expect( callback2 ).not.toHaveBeenCalled();
+			$('#jmpress').jmpress( 'next' );
+			expect( callback1.callCount ).toEqual(2);
+			expect( callback2.callCount ).toEqual(1);
+			expect( callback3.callCount ).toEqual(2);
 
 			// TODO: Test setting callbacks as param
 		});
