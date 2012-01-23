@@ -17,18 +17,34 @@
 	 * Default Settings
 	 */
 	var defaults = {
+		/* CLASSES */
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
 		,notSupportedClass: 'not-supported'
 		,loadedClass: 'loaded'
+
+		/* CONFIG */
+		,useHash: true
+
+		/* ANIMATION */
 		,animation: {
 			transformOrigin: 'top left'
 			,transitionProperty: 'all'
 			,transitionDuration: '1s'
+			,transitionDelay: '500ms'
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
+
+		/* CALLBACKS */
+		// TODO documentation
 		,beforeChange: []
+		,initStep: []
+		,applyStep: []
+		,setInactive: []
+		,setActive: []
+
+		/* TEST */
 		,test: false
 	};
 
@@ -43,6 +59,10 @@
 		,active = false
 		,callbacks = {
 			'beforeChange': 1
+			,'initStep': 1
+			,'applyStep': 1
+			,'setInactive': 1
+			,'setActive': 1
 		}
 		,ignoreHashChange = false;
 
@@ -187,7 +207,7 @@
 			});
 			jmpress.append( canvas );
 			
-			steps = $('.step', jmpress);
+			steps = $(settings.stepSelector, jmpress);
 
 			document.documentElement.style.height = "100%";
 
@@ -237,6 +257,12 @@
 					,prepend: 'translate(-50%,-50%)'
 				};
 
+				var callbackData = {
+					data: data,
+					stepData: step,
+				}
+				methods._callCallback( 'initStep', $(this), callbackData);
+
 				$(this).data('stepData', step);
 
 				if ( !$(this).attr('id') ) {
@@ -247,6 +273,7 @@
 					position: "absolute"
 					,transformStyle: "preserve-3d"
 				});
+				methods._callCallback( 'applyStep', $(this), callbackData);
 				methods._engine._transform( $(this), step );
 			});
 
@@ -271,17 +298,22 @@
 				}
 			});
 
+			var initialStep = $( steps[0] );
+
 			// HASH CHANGE EVENT
-			$(window).bind('hashchange', function() {
-				if (ignoreHashChange === false) {
-					methods.select( methods._getElementFromUrl() );
-				}
-				ignoreHashChange = false;
-			});
+			if(settings.useHash) {
+				$(window).bind('hashchange', function() {
+					if (ignoreHashChange === false) {
+						methods.select( methods._getElementFromUrl() );
+					}
+					ignoreHashChange = false;
+				});
+				initialStep = methods._getElementFromUrl() || initialStep;
+			}
 
 			// START 
 			// by selecting step defined in url or first step
-			methods.select( methods._getElementFromUrl() || $( steps[0] ) );
+			methods.select( initialStep );
 
 		}
 		/**
@@ -294,7 +326,7 @@
 			if ( typeof el === 'string') {
 				el = jmpress.find( el ).first();
 			}
-			if ( !el || !el.data('stepData') ) {
+			if ( !el || !$(el).data('stepData') ) {
 				return false;
 			}
 
@@ -308,26 +340,27 @@
 			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
 			window.scrollTo(0, 0);
 
-			var step = el.data('stepData');
+			var step = $(el).data('stepData');
 
-			methods._callCallback( "beforeChange", el );
+			var cancelSelect = false;
+			methods._callCallback( "beforeChange", el, {
+				stepData: step
+				,cancel: function() {
+					cancelSelect = true;
+				}
+			} );
+			if(cancelSelect)
+				return;
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
-			ignoreHashChange = true;
-			window.location.hash = "#/" + el.attr('id');
-			setTimeout(function() {
-				ignoreHashChange = false;
-			}, 1000);
-
-			if ( active ) {
-				if ( active.attr('id') === el.attr('id') ) {
-					return el;
-				}
-				active.removeClass('active');
+			if(settings.useHash) {
+				ignoreHashChange = true;
+				window.location.hash = "#/" + el.attr('id');
+				setTimeout(function() {
+					ignoreHashChange = false;
+				}, 1000); // TODO: Use animation duration
 			}
-			el.addClass('active');
-			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var target = {
 				rotate: {
@@ -348,6 +381,25 @@
 				}
 			};
 
+			if ( active ) {
+				if ( active.attr('id') === el.attr('id') ) {
+					return el;
+				}
+				active.removeClass('active');
+				methods._callCallback( 'setInactive', active, {
+					stepData: $(active).data('stepData')
+					,target: target
+					,nextStep: el
+					,nextStepData: step
+				} );
+			}
+			el.addClass('active');
+			methods._callCallback( 'setActive', el, {
+				stepData: step
+				,target: target
+			} );
+			jmpress.attr('class', 'step-' + el.attr('id'));
+
 			var props,
 				zoomin = target.scale.x >= current.scale.x;
 
@@ -355,11 +407,14 @@
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
-				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			};
 			props = $.extend({}, settings.animation, props);
+			if (!zoomin) {
+				props.transitionDelay = '0';
+			}
 			if (!active) {
 				props.transitionDuration = '0';
+				props.transitionDelay = '0';
 			}
 			methods.css(jmpress, props);
 			methods._engine._transform(jmpress, {
@@ -368,11 +423,14 @@
 			
 			target.rotate.revert = true;
 			props = {
-				transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
+			if (zoomin) {
+				props.transitionDelay = '0';
+			}
 			if (!active) {
 				props.transitionDuration = '0';
+				props.transitionDelay = '0';
 			}
 			//methods.css(canvas, props);
 			methods._engine._transform(canvas, {
@@ -574,20 +632,18 @@
 			if ( el.dataset ) {
 				return el.dataset;
 			}
-			var look = [
-				'data-x', 'data-y', 'data-z',
-				'data-scale',
-				'data-rotation',
-				'data-rotation-x', 'data-rotation-y', 'data-rotation-z',
-				'data-src'
-			];
-			var dataset = {};
-			for ( var i in look ) {
-				var attr = $(el).attr( look[i] );
-				if ( attr ) {
-					dataset[ look[i].substr(5) ] = attr;
-				}
+			function toCamelcase( str ) {
+				str = str.split( '-' );
+				for( var i = 1; i < str.length; i++ )
+					str[i] = str[i].substr(0, 1).toUpperCase() + str[i].substr(1);
+				return str.join( '' );
 			}
+			var dataset = {};
+			var attrs = $(el)[0].attributes;
+			$.each( attrs, function ( idx, attr ) {
+				if( attr.nodeName.substr(0, 5) == "data-" )
+					dataset[ toCamelcase(attr.nodeName.substr(5)) ] = attr.nodeValue;
+			});
 			return dataset;
 		}
 		/**
@@ -653,7 +709,13 @@
 	};
 	$.extend({
 		jmpress: function( method ) {
-			if ( callbacks[method] ) {
+			if ( methods[method] ) {
+				if ( method.substr(0, 1) == '_' && settings.test === false) {
+					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+				} else {
+					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				}
+			} else if ( callbacks[method] ) {
 				// plugin interface
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
 				if ($.isFunction( func )) {
