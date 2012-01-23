@@ -28,7 +28,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
-		,beforeChange: null
+		,beforeChange: []
 		,test: false
 	};
 
@@ -159,7 +159,19 @@
 		 */
 		init: function( args ) {
 			// MERGE SETTINGS
-			settings = $.extend(defaults, {}, args);
+			settings = $.extend({}, defaults, args);
+
+			// accept functions and arrays of functions as callbacks
+			for(var callbackName in callbacks) {
+				if( settings[callbackName] == null )
+					settings[callbackName] = [];
+				else if( $.isFunction( settings[callbackName] ) )
+					settings[callbackName] = [ settings[callbackName] ];
+				// merge new callbacks with defaults
+				// this is required if callbacks are set in defaults
+				if(defaults[callbackName] !== settings[callbackName])
+					settings[callbackName] = $.merge(defaults[callbackName], settings[callbackName]);
+			}
 
 			// BEGIN INIT
 			jmpress = $( this );
@@ -298,7 +310,7 @@
 
 			var step = el.data('stepData');
 
-			methods._beforeChange( el );
+			methods._callCallback( "beforeChange", el );
 
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
@@ -477,13 +489,18 @@
 			return settings;
 		}
 		/**
-		 * Call before slide has changed
+		 * Call a callback
+		 *
+		 * @param callbackName String callback which should be called
+		 * @param arguments some arguments to the callback
 		 */
-		,_beforeChange: function( slide ) {
-			if ( $.isFunction( settings.beforeChange )) {
-				settings.beforeChange.call( jmpress, slide );
-			}
-			return true;
+		,_callCallback: function( callbackName ) {
+			var result = {}
+				,callbackArgs =  Array.prototype.slice.call( arguments, 1 );
+			$.each( settings[callbackName], function(idx, callback) {
+				result.value = callback.apply( jmpress, callbackArgs ) || result.value;
+			});
+			return result.value;
 		}
 		/**
 		 * Load Siblings
@@ -623,13 +640,28 @@
 		} else if ( callbacks[method] ) {
 			var func = Array.prototype.slice.call( arguments, 1 )[0];
 			if ($.isFunction( func )) {
-				settings[method] = func;
+				settings[method] = settings[method] || [];
+				settings[method].push(func);
 			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
 		} else {
 			$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
 		}
-		return false;
+		// to allow chaining
+		return this;
 	};
+	$.extend({
+		jmpress: function( method ) {
+			if ( callbacks[method] ) {
+				// plugin interface
+				var func = Array.prototype.slice.call( arguments, 1 )[0];
+				if ($.isFunction( func )) {
+					defaults[method].push(func);
+				} else $.error( 'Second parameter should be a function: $.jmpress( callbackName, callbackFunction )' );
+			} else {
+				$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
+			}
+		}
+	});
 })(jQuery, document, window);
