@@ -24,7 +24,7 @@
 		,loadedClass: 'loaded'
 
 		/* CONFIG */
-		,useHash: true
+		,fullscreen: true
 
 		/* ANIMATION */
 		,animation: {
@@ -40,12 +40,15 @@
 		// TODO documentation
 		,beforeChange: []
 		,initStep: []
+		,afterInit: []
 		,applyStep: []
 		,setInactive: []
 		,setActive: []
 		,selectInitialStep: []
 		,selectPrev: []
 		,selectNext: []
+		,selectHome: []
+		,selectEnd: []
 		,loadStep: []
 
 		/* TEST */
@@ -64,12 +67,15 @@
 		,callbacks = {
 			'beforeChange': 1
 			,'initStep': 1
+			,'afterInit': 1
 			,'applyStep': 1
 			,'setInactive': 1
 			,'setActive': 1
 			,'selectInitialStep': 1
 			,'selectPrev': 1
 			,'selectNext': 1
+			,'selectHome': 1
+			,'selectEnd': 1
 			,'loadStep': 1
 		}
 		,ignoreHashChange = false;
@@ -285,29 +291,12 @@
 				methods._engine._transform( $(this), step );
 			});
 
-			// KEYDOWN EVENT
-			$(document).keydown(function( event ) {
-				if ( event.keyCode == 9 || ( event.keyCode >= 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
-					switch( event.keyCode ) {
-						case 33:; // pg up
-						case 37:; // left
-						case 38:   // up
-							methods.prev();
-						break;
-						case 9:; // tab
-						case 32:; // space
-						case 34:; // pg down
-						case 39:; // right
-						case 40:   // down
-							methods.next();
-						break; 
-					}
-					event.preventDefault();
-				}
+			methods._callCallback('afterInit', $(this), {
+				steps: steps
 			});
 
 			// START 
-			methods.select( methods._callCallback('selectInitialStep', null, { steps: steps }) );
+			methods.select( methods._callCallback('selectInitialStep', "init", { steps: steps }) );
 
 		}
 		/**
@@ -333,13 +322,15 @@
 			// whenever slide is selected
 			//
 			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
-			window.scrollTo(0, 0);
+			if(settings.fullscreen)
+				window.scrollTo(0, 0);
 
 			var step = $(el).data('stepData');
 
 			var cancelSelect = false;
 			methods._callCallback("beforeChange", el, {
 				stepData: step
+				,reason: type
 				,cancel: function() {
 					cancelSelect = true;
 				}
@@ -368,11 +359,12 @@
 			};
 
 			if ( active ) {
-				if ( active.attr('id') === el.attr('id') ) {
+				if ( $(active).attr('id') === $(el).attr('id') ) {
 					return el;
 				}
 				methods._callCallback( 'setInactive', active, {
 					stepData: $(active).data('stepData')
+					,reason: type
 					,target: target
 					,nextStep: el
 					,nextStepData: step
@@ -380,9 +372,10 @@
 			}
 			methods._callCallback('setActive', el, {
 				stepData: step
+				,reason: type
 				,target: target
 			});
-			jmpress.attr('class', 'step-' + el.attr('id'));
+			jmpress.attr('class', 'step-' + $(el).attr('id'));
 
 			var props,
 				zoomin = target.scale.x >= current.scalex;
@@ -424,7 +417,7 @@
 			});
 
 			$( settings.stepSelector ).css('z-index', 9);
-			el.css('z-index', 10);
+			$(el).css('z-index', 10);
 
 			current.scalex = target.scale.x;
 			active = el;
@@ -445,7 +438,10 @@
 		 * @return Object newly active slide
 		 */
 		,next: function() {
-			return methods.select( methods.getNext(), "next" );
+			return methods.select( methods._callCallback('selectNext', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "next" );
 		}
 		/**
 		 * Goto Previous Slide
@@ -453,29 +449,32 @@
 		 * @return Object newly active slide
 		 */
 		,prev: function() {
-			return methods.select( methods.getPrev(), "prev" );
-		}
-		/**
-		 * Get Next Slide
-		 * 
-		 * @return Object
-		 */
-		,getNext: function() {
-			return methods._callCallback('selectNext', active, {
+			return methods.select( methods._callCallback('selectPrev', active, {
 				stepData: $(active).data('stepData')
 				,steps: steps
-			});
+			}), "prev" );
 		}
 		/**
-		 * Get Previous Slide
-		 * 
-		 * @return Object
+		 * Goto First Slide
+		 *
+		 * @return Object newly active slide
 		 */
-		,getPrev: function() {
-			return methods._callCallback('selectPrev', active, {
+		,home: function() {
+			return methods.select(  methods._callCallback('selectHome', active, {
 				stepData: $(active).data('stepData')
 				,steps: steps
-			});
+			}), "home" );
+		}
+		/**
+		 * Goto Last Slide
+		 *
+		 * @return Object newly active slide
+		 */
+		,end: function() {
+			return methods.select(  methods._callCallback('selectEnd', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "end" );
 		}
 		/**
 		 * Manipulate the canvas
@@ -525,6 +524,14 @@
 			return settings;
 		}
 		/**
+		 * Return current step
+		 *
+		 * @return Object
+		 */
+		,active: function() {
+			return active && $(active);
+		}
+		/**
 		 * Call a callback
 		 *
 		 * @param callbackName String callback which should be called
@@ -560,7 +567,7 @@
 			if (!active) {
 				return false;
 			}
-			var siblings = active.siblings( settings.stepSelector );
+			var siblings = $(active).siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
 				if ($(this).hasClass( settings.loadedClass )) {
@@ -739,8 +746,13 @@
 	})();
 
 	(function() { // circular stepping
-		$.jmpress( 'selectInitialStep', function( step, eventData ) {
-			return $( eventData.steps[0] );
+		function firstSlide( step, eventData ) {
+			return eventData.steps[0];
+		}
+		$.jmpress( 'selectInitialStep', firstSlide);
+		$.jmpress( 'selectHome', firstSlide);
+		$.jmpress( 'selectEnd', function( step, eventData ) {
+			return eventData.steps[eventData.steps.length - 1];
 		});
 		$.jmpress( 'selectPrev', function( step, eventData ) {
 			if (!step) {
@@ -788,9 +800,12 @@
 	})();
 
 	(function() { // use hash in url
+		$.jmpress('defaults').hash = {
+			use: true
+		};
 		$.jmpress('selectInitialStep', function( step, eventData ) {
 			// HASH CHANGE EVENT
-			if ( eventData.settings.useHash ) {
+			if ( eventData.settings.hash.use ) {
 				/**
 				 * getElementFromUrl
 				 *
@@ -804,7 +819,7 @@
 				}
 				$(window).bind('hashchange', function() {
 					if (eventData.current.ignoreHashChange === false) {
-						$.jmpress('select' ,getElementFromUrl() );
+						$.jmpress('select', getElementFromUrl() );
 					}
 					eventData.current.ignoreHashChange = false;
 				});
@@ -814,13 +829,171 @@
 		$.jmpress('setActive', function( step, eventData ) {
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
-			if ( eventData.settings.useHash ) {
+			if ( eventData.settings.hash.use ) {
 				eventData.current.ignoreHashChange = true;
-				window.location.hash = "#/" + step.attr('id');
+				window.location.hash = "#/" + $(step).attr('id');
 				setTimeout(function() {
 					eventData.current.ignoreHashChange = false;
 				}, 1000); // TODO: Use animation duration
 			}
 		});
 	})();
+
+	(function() { // keyboard
+		$.jmpress('defaults').keyboard = {
+			use: true
+			,focusable: true
+			,keys: {
+				33: "prev" // pg up
+				,37: "prev" // left
+				,38: "prev" // up
+
+				,9: "next:prev" // tab
+				,32: "next" // space
+				,34: "next" // pg down
+				,39: "next" // right
+				,40: "next" // down
+
+				,36: "home" // home
+
+				,35: "end" // end
+			}
+			,ignore: {
+				"INPUT": [
+					,32 // space
+					,37 // left
+					,38 // up
+					,39 // right
+					,40 // down
+				]
+				,"TEXTAREA": [
+					,32 // space
+					,37 // left
+					,38 // up
+					,39 // right
+					,40 // down
+				]
+				,"SELECT": [
+					,38 // up
+					,40 // down
+				]
+			}
+			,tabSelector: "a[href]:visible, :input:visible"
+		};
+		$.jmpress('afterInit', function( step, eventData ) {
+			var mysettings = eventData.settings.keyboard;
+			var jmpress = this;
+
+			// tabindex make it focusable so that it can recieve key events
+			$(this).attr("tabindex", 0);
+
+			// KEYDOWN EVENT
+			$(document).keydown(function( event ) {
+				if( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use )
+					return;
+
+				for( var nodeName in mysettings.ignore ) {
+					if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+						return;
+					}
+				}
+
+				var reverseSelect = false;
+				if(event.which == 9) {
+					// tab
+					var nextFocus;
+					if( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
+						if( !event.shiftKey )
+							nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").first();
+						else
+							reverseSelect = true;
+					} else {
+						function checkAndGo( elements, func ) {
+							var next;
+							elements.each(function(idx, element) {
+								if(event.shiftKey) {
+									next = func(element);
+									if(next)
+										return false;
+								}
+								if( $(element).is(mysettings.tabSelector) ) {
+									next = $(element);
+									return false;
+								}
+								if(!event.shiftKey) {
+									next = func(element);
+									if(next)
+										return false;
+								}
+							});
+							return next;
+						}
+						function findNextInChildren(item) {
+							var children = $(item).children();
+							if(event.shiftKey)
+								children = $(children.get().reverse());
+							return checkAndGo( children, findNextInChildren );
+						}
+						function findNextInSiblings(item) {
+							return checkAndGo(
+								$(item)[event.shiftKey ? "prevAll" : "nextAll"](),
+								findNextInChildren );
+						}
+						function findNextInParents(item) {
+							var next;
+							var parents = $(item)
+									.parentsUntil($(jmpress).jmpress('active'));
+							$.each(parents.get(), function(idx, element) {
+								if( $(element).is(mysettings.tabSelector) ) {
+									next = $(element);
+									return false;
+								}
+								next = findNextInSiblings(element);
+								if(next)
+									return false;
+							});
+							return next;
+						}
+						nextFocus = (event.shiftKey ?
+										false :
+										findNextInChildren( event.target )) ||
+									findNextInSiblings( event.target ) ||
+									findNextInParents( event.target );
+					}
+					if( nextFocus && nextFocus.length > 0 ) {
+						nextFocus.focus();
+						if(eventData.settings.fullscreen)
+							window.scrollTo(0, 0);
+						event.preventDefault();
+						return;
+					} else {
+						if(event.shiftKey)
+							reverseSelect = true;
+					}
+				}
+
+				var action = mysettings.keys[ event.which ];
+				if( typeof action == "string" ) {
+					if(action.indexOf(":") != -1) {
+						action = action.split(":");
+						action = event.shiftKey ? action[1] : action[0];
+					}
+					$(jmpress).jmpress( action );
+					event.preventDefault();
+				} else if ( action ) {
+					$(jmpress).jmpress.apply( $(this), action );
+					event.preventDefault();
+				}
+
+				if(reverseSelect) {
+					// tab
+					nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").last();
+					nextFocus.focus();
+					if(eventData.settings.fullscreen)
+						window.scrollTo(0, 0);
+				}
+			});
+		});
+	})();
+
 })(jQuery, document, window);
