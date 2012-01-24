@@ -12,23 +12,44 @@
  * Based on the foundation laid by Bartek Szopka @bartaz
  */
 
-(function( $, document, window ) {
+(function( $, document, window, undefined ) {
 	/**
 	 * Default Settings
 	 */
 	var defaults = {
+		/* CLASSES */
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
 		,notSupportedClass: 'not-supported'
 		,loadedClass: 'loaded'
+
+		/* CONFIG */
+		,useHash: true
+
+		/* ANIMATION */
 		,animation: {
 			transformOrigin: 'top left'
 			,transitionProperty: 'all'
 			,transitionDuration: '1s'
+			,transitionDelay: '500ms'
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
-		,beforeChange: null
+
+		/* CALLBACKS */
+		// TODO documentation
+		,beforeChange: []
+		,initStep: []
+		,applyStep: []
+		,setInactive: []
+		,setActive: []
+		,selectInitialStep: []
+		,selectPrev: []
+		,selectNext: []
+		,loadStep: []
+		,afterStepLoaded: []
+
+		/* TEST */
 		,test: false
 	};
 
@@ -43,6 +64,15 @@
 		,active = false
 		,callbacks = {
 			'beforeChange': 1
+			,'initStep': 1
+			,'applyStep': 1
+			,'setInactive': 1
+			,'setActive': 1
+			,'selectInitialStep': 1
+			,'selectPrev': 1
+			,'selectNext': 1
+			,'loadStep': 1
+			,'afterStepLoaded': 1
 		}
 		,ignoreHashChange = false;
 
@@ -159,7 +189,21 @@
 		 */
 		init: function( args ) {
 			// MERGE SETTINGS
-			settings = $.extend(defaults, {}, args);
+			settings = $.extend({}, defaults, args);
+
+			// accept functions and arrays of functions as callbacks
+			for (var callbackName in callbacks) {
+				if ( settings[callbackName] == null ) {
+					settings[callbackName] = [];
+				} else if ( $.isFunction( settings[callbackName] ) ) {
+					settings[callbackName] = [ settings[callbackName] ];
+				}
+				// merge new callbacks with defaults
+				// this is required if callbacks are set in defaults
+				if ( defaults[callbackName] !== settings[callbackName] ) {
+					settings[callbackName] = $.merge(defaults[callbackName], settings[callbackName]);
+				}
+			}
 
 			// BEGIN INIT
 			jmpress = $( this );
@@ -175,7 +219,7 @@
 			});
 			jmpress.append( canvas );
 			
-			steps = $('.step', jmpress);
+			steps = $(settings.stepSelector, jmpress);
 
 			document.documentElement.style.height = "100%";
 
@@ -198,9 +242,7 @@
 			methods.css(canvas, props);
 
 			current = {
-				translate: {x: 0, y: 0, z: 0}
-				,rotate:   {x: 0, y: 0, z: 0}
-				,scale:    {x: 1, y: 1, z: 1}
+				scalex: 1
 			};
 
 			// INITIALIZE EACH STEP
@@ -225,6 +267,12 @@
 					,prepend: 'translate(-50%,-50%)'
 				};
 
+				var callbackData = {
+					data: data
+					,stepData: step
+				}
+				methods._callCallback('initStep', $(this), callbackData);
+
 				$(this).data('stepData', step);
 
 				if ( !$(this).attr('id') ) {
@@ -235,6 +283,7 @@
 					position: "absolute"
 					,transformStyle: "preserve-3d"
 				});
+				methods._callCallback('applyStep', $(this), callbackData);
 				methods._engine._transform( $(this), step );
 			});
 
@@ -259,30 +308,22 @@
 				}
 			});
 
-			// HASH CHANGE EVENT
-			$(window).bind('hashchange', function() {
-				if (ignoreHashChange === false) {
-					methods.select( methods._getElementFromUrl() );
-				}
-				ignoreHashChange = false;
-			});
-
 			// START 
-			// by selecting step defined in url or first step
-			methods.select( methods._getElementFromUrl() || $( steps[0] ) );
+			methods.select( methods._callCallback('selectInitialStep', null, { steps: steps }) );
 
 		}
 		/**
 		 * Select a given step
 		 *
 		 * @param Object|String el element to select
+		 * @param String type reason of changing step
 		 * @return Object element selected
 		 */
-		,select: function ( el ) {
+		,select: function ( el, type ) {
 			if ( typeof el === 'string') {
 				el = jmpress.find( el ).first();
 			}
-			if ( !el || !el.data('stepData') ) {
+			if ( !el || !$(el).data('stepData') ) {
 				return false;
 			}
 
@@ -296,26 +337,18 @@
 			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
 			window.scrollTo(0, 0);
 
-			var step = el.data('stepData');
+			var step = $(el).data('stepData');
 
-			methods._beforeChange( el );
-
-			// `#/step-id` is used instead of `#step-id` to prevent default browser
-			// scrolling to element in hash
-			ignoreHashChange = true;
-			window.location.hash = "#/" + el.attr('id');
-			setTimeout(function() {
-				ignoreHashChange = false;
-			}, 1000);
-
-			if ( active ) {
-				if ( active.attr('id') === el.attr('id') ) {
-					return el;
+			var cancelSelect = false;
+			methods._callCallback("beforeChange", el, {
+				stepData: step
+				,cancel: function() {
+					cancelSelect = true;
 				}
-				active.removeClass('active');
+			});
+			if(cancelSelect) {
+				return;
 			}
-			el.addClass('active');
-			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var target = {
 				rotate: {
@@ -336,31 +369,54 @@
 				}
 			};
 
+			if ( active ) {
+				if ( active.attr('id') === el.attr('id') ) {
+					return el;
+				}
+				methods._callCallback( 'setInactive', active, {
+					stepData: $(active).data('stepData')
+					,target: target
+					,nextStep: el
+					,nextStepData: step
+				} );
+			}
+			methods._callCallback('setActive', el, {
+				stepData: step
+				,target: target
+			});
+			jmpress.attr('class', 'step-' + el.attr('id'));
+
 			var props,
-				zoomin = target.scale.x >= current.scale.x;
+				zoomin = target.scale.x >= current.scalex;
 
 			props = {
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: step.scale.x * 1000 + "px"
-				,transitionDelay: (zoomin ? "500ms" : "0ms")
 			};
 			props = $.extend({}, settings.animation, props);
+			if (!zoomin) {
+				props.transitionDelay = '0';
+			}
 			if (!active) {
 				props.transitionDuration = '0';
+				props.transitionDelay = '0';
 			}
 			methods.css(jmpress, props);
 			methods._engine._transform(jmpress, {
 				scale: target.scale
 			});
-			
+
 			target.rotate.revert = true;
 			props = {
-				transitionDelay: (zoomin ? "0ms" : "500ms")
 			};
 			props = $.extend({}, settings.animation, props);
+			if (zoomin) {
+				props.transitionDelay = '0';
+			}
 			if (!active) {
 				props.transitionDuration = '0';
+				props.transitionDelay = '0';
 			}
 			//methods.css(canvas, props);
 			methods._engine._transform(canvas, {
@@ -372,7 +428,7 @@
 			$( settings.stepSelector ).css('z-index', 9);
 			el.css('z-index', 10);
 
-			current = target;
+			current.scalex = target.scale.x;
 			active = el;
 
 			methods._loadSiblings();
@@ -383,7 +439,7 @@
 		 * Alias for select
 		 */
 		,goTo: function( el ) {
-			return methods.select( el );
+			return methods.select( el, "jump" );
 		}
 		/**
 		 * Goto Next Slide
@@ -391,7 +447,7 @@
 		 * @return Object newly active slide
 		 */
 		,next: function() {
-			return methods.select( methods.getNext() );
+			return methods.select( methods.getNext(), "next" );
 		}
 		/**
 		 * Goto Previous Slide
@@ -399,7 +455,7 @@
 		 * @return Object newly active slide
 		 */
 		,prev: function() {
-			return methods.select( methods.getPrev() );
+			return methods.select( methods.getPrev(), "prev" );
 		}
 		/**
 		 * Get Next Slide
@@ -407,17 +463,10 @@
 		 * @return Object
 		 */
 		,getNext: function() {
-			if (!active) {
-				return false;
-			}
-			var next = active.next( settings.stepSelector );
-			if (next.length < 1) {
-				next = steps.first( settings.stepSelector );
-			}
-			if (next.length < 1) {
-				return false;
-			}
-			return next;
+			return methods._callCallback('selectNext', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			});
 		}
 		/**
 		 * Get Previous Slide
@@ -425,17 +474,10 @@
 		 * @return Object
 		 */
 		,getPrev: function() {
-			if (!active) {
-				return false;
-			}
-			var prev = active.prev( settings.stepSelector );
-			if (prev.length < 1) {
-				prev = steps.last( settings.stepSelector );
-			}
-			if (prev.length < 1) {
-				return false;
-			}
-			return prev;
+			return methods._callCallback('selectPrev', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			});
 		}
 		/**
 		 * Manipulate the canvas
@@ -469,6 +511,14 @@
 			return el;
 		}
 		/**
+		 * Return default settings
+		 *
+		 * @return Object
+		 */
+		,defaults: function() {
+			return defaults;
+		}
+		/**
 		 * Return current settings
 		 * 
 		 * @return Object
@@ -477,13 +527,19 @@
 			return settings;
 		}
 		/**
-		 * Call before slide has changed
+		 * Call a callback
+		 *
+		 * @param callbackName String callback which should be called
+		 * @param arguments some arguments to the callback
 		 */
-		,_beforeChange: function( slide ) {
-			if ( $.isFunction( settings.beforeChange )) {
-				settings.beforeChange.call( jmpress, slide );
-			}
-			return true;
+		,_callCallback: function( callbackName, element, eventData ) {
+			eventData.settings = settings;
+			eventData.current = current;
+			var result = {};
+			$.each( settings[callbackName], function(idx, callback) {
+				result.value = callback.call( jmpress, element, eventData ) || result.value;
+			});
+			return result.value;
 		}
 		/**
 		 * Load Siblings
@@ -502,25 +558,11 @@
 				if ($(this).hasClass( settings.loadedClass )) {
 					return;
 				}
-				var href = $(this).attr('href') || $(this).attr('data-src') || false;
-				if ( href ) {
-					$(this).load( href, function() {
-						$(this).addClass( settings.loadedClass );
-					});
-				}
+				methods._callCallback('loadStep', this, {
+					stepData: $(this).data('stepData')
+				});
+				$(this).addClass( settings.loadedClass );
 			});
-		}
-		/**
-		 * getElementFromUrl
-		 *
-		 * @access protected
-		 * @return String or false
-		 */
-		,_getElementFromUrl: function () {
-			// get id from url # by removing `#` or `#/` from the beginning,
-			// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-			var el = $('#' + window.location.hash.replace(/^#\/?/,"") );
-			return el.length > 0 ? el : false;
 		}
 		/**
 		 * Set supported prefixes
@@ -557,20 +599,20 @@
 			if ( el.dataset ) {
 				return el.dataset;
 			}
-			var look = [
-				'data-x', 'data-y', 'data-z',
-				'data-scale',
-				'data-rotation',
-				'data-rotation-x', 'data-rotation-y', 'data-rotation-z',
-				'data-src'
-			];
-			var dataset = {};
-			for ( var i in look ) {
-				var attr = $(el).attr( look[i] );
-				if ( attr ) {
-					dataset[ look[i].substr(5) ] = attr;
+			function toCamelcase( str ) {
+				str = str.split( '-' );
+				for( var i = 1; i < str.length; i++ ) {
+					str[i] = str[i].substr(0, 1).toUpperCase() + str[i].substr(1);
 				}
+				return str.join( '' );
 			}
+			var dataset = {};
+			var attrs = $(el)[0].attributes;
+			$.each(attrs, function ( idx, attr ) {
+				if ( attr.nodeName.substr(0, 5) == "data-" ) {
+					dataset[ toCamelcase(attr.nodeName.substr(5)) ] = attr.nodeValue;
+				}
+			});
 			return dataset;
 		}
 		/**
@@ -623,13 +665,129 @@
 		} else if ( callbacks[method] ) {
 			var func = Array.prototype.slice.call( arguments, 1 )[0];
 			if ($.isFunction( func )) {
-				settings[method] = func;
+				settings[method] = settings[method] || [];
+				settings[method].push(func);
 			}
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
 		} else {
 			$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
 		}
-		return false;
+		// to allow chaining
+		return this;
 	};
+	$.extend({
+		jmpress: function( method ) {
+			if ( methods[method] ) {
+				if ( method.substr(0, 1) == '_' && settings.test === false) {
+					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+				} else {
+					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				}
+			} else if ( callbacks[method] ) {
+				// plugin interface
+				var func = Array.prototype.slice.call( arguments, 1 )[0];
+				if ($.isFunction( func )) {
+					defaults[method].push(func);
+				} else {
+					$.error( 'Second parameter should be a function: $.jmpress( callbackName, callbackFunction )' );
+				}
+			} else {
+				$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
+			}
+		}
+	});
+
+	/* DEFAULT PLUGINS */
+
+	(function() { // active class
+		$.jmpress( 'defaults' ).activeClass = "active";
+		$.jmpress( 'setInactive', function( step, eventData ) {
+			$(step).removeClass( eventData.settings.activeClass );
+		});
+		$.jmpress( 'setActive', function( step, eventData ) {
+			$(step).addClass( eventData.settings.activeClass );
+		});
+	})();
+
+	(function() { // circular stepping
+		$.jmpress( 'selectInitialStep', function( step, eventData ) {
+			return $( eventData.steps[0] );
+		});
+		$.jmpress( 'selectPrev', function( step, eventData ) {
+			if (!step) {
+				return false;
+			}
+			var prev = $(step).prev( eventData.settings.stepSelector );
+			if (prev.length < 1) {
+				prev = eventData.steps.last( eventData.settings.stepSelector );
+			}
+			if (prev.length > 0) {
+				return prev;
+			}
+		});
+		$.jmpress( 'selectNext', function( step, eventData ) {
+			if (!step) {
+				return false;
+			}
+			var next = $(step).next( eventData.settings.stepSelector );
+			if (next.length < 1) {
+				next = eventData.steps.first( eventData.settings.stepSelector );
+			}
+			if (next.length > 0) {
+				return next;
+			}
+		});
+	})();
+
+	(function() { // load steps from ajax
+		$.jmpress('initStep', function( step, eventData ) {
+			eventData.stepData.ajaxSource = $(step).attr('href') || eventData.data['src'] || false;
+		});
+		$.jmpress('loadStep', function( step, eventData ) {
+			var href = eventData.stepData.ajaxSource;
+			if ( href ) {
+				$(step).load(href, function() {
+					methods._callCallback('afterStepLoaded', step, eventData);
+				});
+			}
+		});
+	})();
+
+	(function() { // use hash in url
+		$.jmpress('selectInitialStep', function( step, eventData ) {
+			// HASH CHANGE EVENT
+			if ( eventData.settings.useHash ) {
+				/**
+				 * getElementFromUrl
+				 *
+				 * @return String or undefined
+				 */
+				function getElementFromUrl() {
+					// get id from url # by removing `#` or `#/` from the beginning,
+					// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+					var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
+					return el.length > 0 ? el : undefined;
+				}
+				$(window).bind('hashchange', function() {
+					if (eventData.current.ignoreHashChange === false) {
+						$.jmpress('select' ,getElementFromUrl() );
+					}
+					eventData.current.ignoreHashChange = false;
+				});
+				return getElementFromUrl();
+			}
+		});
+		$.jmpress('setActive', function( step, eventData ) {
+			// `#/step-id` is used instead of `#step-id` to prevent default browser
+			// scrolling to element in hash
+			if ( eventData.settings.useHash ) {
+				eventData.current.ignoreHashChange = true;
+				window.location.hash = "#/" + step.attr('id');
+				setTimeout(function() {
+					eventData.current.ignoreHashChange = false;
+				}, 1000); // TODO: Use animation duration
+			}
+		});
+	})();
 })(jQuery, document, window);

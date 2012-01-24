@@ -1,0 +1,58 @@
+<h1>API</h1>
+
+<p>Each step element can have the following data properties set:</p>
+<ul>
+	<li>data-x: X Position
+	<li>data-y: Y Position
+	<li>data-z: Z Position
+	<li>data-scale: Scale of element
+	<li>data-rotation: Degree of rotation
+	<li>data-rotation-x: Degree of rotation on x-axis
+	<li>data-rotation-y: Degree of rotation on y-axis
+	<li>data-rotation-z: Degree of rotation on z-axis
+	<li>data-src: Load content of slide dynamically
+</ul>
+
+<p><strong>jQuery.jmpress()</strong></p>
+<pre><code>$(selector).jmpress({
+	// jQuery selector to select each step
+	stepSelector: '.step'
+
+	// Class name to give the canvas
+	,canvasClass: 'canvas'
+
+	// Class name to trigger if jmpress is not supported
+	,notSupportedClass: 'not-supported'
+
+	// Customize the animations (or CSS) used
+	,animation: {
+		,transitionDuration: '5s'
+		,transitionTimingFunction: 'linear'
+	}
+});</code></pre>
+
+<p><strong>METHODS</strong></p>
+<pre><code>// Next slide
+$(selector).jmpress('next');
+
+// Previous slide
+$(selector).jmpress('prev');
+
+// Goto a slide
+$(selector).jmpress('select', '#slide-id');
+$(selector).jmpress('select', $(selector));
+
+// Manipulate the canvas
+$(selector).jmpress('canvas', {
+	transform: 'rotate(7deg)'
+});
+
+// Manipulate an element
+$(selector).jmpress('css', $('#step-1'), {
+	transform: 'scale(0.5)'
+});
+
+// Set a beforeChange callback
+$(selector).jmpress('beforeChange', function( slide ) {
+	// Called on the start of each slide change
+});</code></pre>
