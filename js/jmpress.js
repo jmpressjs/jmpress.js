@@ -6,6 +6,7 @@
  * behind prezi.com.
  *
  * Copyright 2012, Kyle Robinson Young @shama
+ * Copyright 2012, Tobias Koppers @sokra
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
