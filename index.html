@@ -123,8 +123,13 @@
 <script type="text/javascript">
 $(function() {
 	$('#jmpress').jmpress({
+		// SET THE VIEW PORT
+		viewPort: {
+			height: 600
+			,width: 1000
+		}
 		// SET THE ACTIVE SLIDE IN THE NAV
-		setActive: function( slide ) {
+		,setActive: function( slide ) {
 			var id = $(slide).attr('id');
 			if (id.indexOf('-') != -1) {
 				id = id.substr(0, id.indexOf('-'));

@@ -361,9 +361,6 @@
 			};
 
 			if ( active ) {
-				if ( $(active).attr('id') === $(el).attr('id') ) {
-					return el;
-				}
 				methods._callCallback( 'setInactive', active, {
 					stepData: $(active).data('stepData')
 					,reason: type
@@ -1002,6 +999,31 @@
 						window.scrollTo(0, 0);
 				}
 			});
+		});
+	})();
+
+	(function() { // viewPort
+		$.jmpress("defaults").viewPort = {
+			width: false
+			,height: false
+		};
+		$.jmpress("afterInit", function( step, eventData ) {
+			var jmpress = this;
+			$(window).resize(function (event) {
+				$(jmpress).jmpress("select", $(jmpress).jmpress("active"), "resize");
+			});
+		});
+		$.jmpress("setActive", function( step, eventData ) {
+			// Correct the scale based on the window's size
+			var windowScaleY = eventData.settings.viewPort.height && $(window).innerHeight()/eventData.settings.viewPort.height;
+			var windowScaleX = eventData.settings.viewPort.width && $(window).innerWidth()/eventData.settings.viewPort.width;
+			var windowScale = (windowScaleX || windowScaleY) && Math.min( windowScaleX || windowScaleY, windowScaleY || windowScaleX );
+
+			if(windowScale) {
+				eventData.target.scale.x *= windowScale;
+				eventData.target.scale.y *= windowScale;
+				eventData.target.scale.z *= windowScale;
+			}
 		});
 	})();
 
