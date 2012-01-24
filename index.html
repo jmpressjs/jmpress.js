@@ -77,9 +77,15 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<!--<div id="docs-basic" data-src="docs/basic.html" class="step" data-x="0" data-y="0" data-rotate="0" data-scale="1">
+	<!--
+	<div id="docs-basic" data-src="docs/basic.html" class="step docs" data-x="2800" data-y="1400" data-rotate="-130" data-scale="2">
 		Loading...
-	</div>-->
+	</div>
+
+	<div id="docs-api" data-src="docs/api.html" class="step docs" data-x="3900" data-y="2500" data-rotate="-140" data-scale="2">
+		Loading...
+	</div>
+	-->
 
 	<div id="contribute" class="step" data-x="2500" data-y="-900" data-rotate="-160" data-scale="2.2">
 		<h1>contribute</h1>
@@ -126,7 +132,7 @@ $(function() {
 			$('#nav a').removeClass( 'active' );
 			$('#nav a[href=#' + id + ']').addClass( 'active' );
 		}
-		// UPON STEP LOAD HTML ENCODE CODE SAMPLES
+		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
 			$(step).find('code').each(function() {
 				$(this).text($(this).html()).html();
