@@ -242,9 +242,7 @@
 			methods.css(canvas, props);
 
 			current = {
-				translate: {x: 0, y: 0, z: 0}
-				,rotate:   {x: 0, y: 0, z: 0}
-				,scale:    {x: 1, y: 1, z: 1}
+				scalex: 1
 			};
 
 			// INITIALIZE EACH STEP
@@ -389,7 +387,7 @@
 			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var props,
-				zoomin = target.scale.x >= current.scale.x;
+				zoomin = target.scale.x >= current.scalex;
 
 			props = {
 				// to keep the perspective look similar for different scales
@@ -430,7 +428,7 @@
 			$( settings.stepSelector ).css('z-index', 9);
 			el.css('z-index', 10);
 
-			current = target;
+			current.scalex = target.scale.x;
 			active = el;
 
 			methods._loadSiblings();
