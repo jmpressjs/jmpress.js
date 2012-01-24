@@ -1006,6 +1006,8 @@
 		$.jmpress("defaults").viewPort = {
 			width: false
 			,height: false
+			,maxScale: 0
+			,minScale: 0
 		};
 		$.jmpress("afterInit", function( step, eventData ) {
 			var jmpress = this;
@@ -1014,12 +1016,15 @@
 			});
 		});
 		$.jmpress("setActive", function( step, eventData ) {
+			var viewPort = eventData.settings.viewPort;
 			// Correct the scale based on the window's size
-			var windowScaleY = eventData.settings.viewPort.height && $(window).innerHeight()/eventData.settings.viewPort.height;
-			var windowScaleX = eventData.settings.viewPort.width && $(window).innerWidth()/eventData.settings.viewPort.width;
+			var windowScaleY = viewPort.height && $(window).innerHeight()/viewPort.height;
+			var windowScaleX = viewPort.width && $(window).innerWidth()/viewPort.width;
 			var windowScale = (windowScaleX || windowScaleY) && Math.min( windowScaleX || windowScaleY, windowScaleY || windowScaleX );
 
 			if(windowScale) {
+				if(viewPort.maxScale) windowScale = Math.min(windowScale, viewPort.maxScale);
+				if(viewPort.minScale) windowScale = Math.max(windowScale, viewPort.minScale);
 				eventData.target.scale.x *= windowScale;
 				eventData.target.scale.y *= windowScale;
 				eventData.target.scale.z *= windowScale;
