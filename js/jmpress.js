@@ -12,7 +12,7 @@
  * Based on the foundation laid by Bartek Szopka @bartaz
  */
 
-(function( $, document, window ) {
+(function( $, document, window, undefined ) {
 	/**
 	 * Default Settings
 	 */
@@ -190,15 +190,17 @@
 			settings = $.extend({}, defaults, args);
 
 			// accept functions and arrays of functions as callbacks
-			for(var callbackName in callbacks) {
-				if( settings[callbackName] == null )
+			for (var callbackName in callbacks) {
+				if ( settings[callbackName] == null ) {
 					settings[callbackName] = [];
-				else if( $.isFunction( settings[callbackName] ) )
+				} else if ( $.isFunction( settings[callbackName] ) ) {
 					settings[callbackName] = [ settings[callbackName] ];
+				}
 				// merge new callbacks with defaults
 				// this is required if callbacks are set in defaults
-				if(defaults[callbackName] !== settings[callbackName])
+				if ( defaults[callbackName] !== settings[callbackName] ) {
 					settings[callbackName] = $.merge(defaults[callbackName], settings[callbackName]);
+				}
 			}
 
 			// BEGIN INIT
@@ -269,7 +271,7 @@
 					data: data
 					,stepData: step
 				}
-				methods._callCallback( 'initStep', $(this), callbackData);
+				methods._callCallback('initStep', $(this), callbackData);
 
 				$(this).data('stepData', step);
 
@@ -281,7 +283,7 @@
 					position: "absolute"
 					,transformStyle: "preserve-3d"
 				});
-				methods._callCallback( 'applyStep', $(this), callbackData);
+				methods._callCallback('applyStep', $(this), callbackData);
 				methods._engine._transform( $(this), step );
 			});
 
@@ -307,7 +309,7 @@
 			});
 
 			// START 
-			methods.select( methods._callCallback( 'selectInitialStep', null, { steps: steps }) );
+			methods.select( methods._callCallback('selectInitialStep', null, { steps: steps }) );
 
 		}
 		/**
@@ -338,14 +340,15 @@
 			var step = $(el).data('stepData');
 
 			var cancelSelect = false;
-			methods._callCallback( "beforeChange", el, {
+			methods._callCallback("beforeChange", el, {
 				stepData: step
 				,cancel: function() {
 					cancelSelect = true;
 				}
-			} );
-			if(cancelSelect)
+			});
+			if(cancelSelect) {
 				return;
+			}
 
 			var target = {
 				rotate: {
@@ -377,10 +380,10 @@
 					,nextStepData: step
 				} );
 			}
-			methods._callCallback( 'setActive', el, {
+			methods._callCallback('setActive', el, {
 				stepData: step
 				,target: target
-			} );
+			});
 			jmpress.attr('class', 'step-' + el.attr('id'));
 
 			var props,
@@ -403,7 +406,7 @@
 			methods._engine._transform(jmpress, {
 				scale: target.scale
 			});
-			
+
 			target.rotate.revert = true;
 			props = {
 			};
@@ -460,10 +463,10 @@
 		 * @return Object
 		 */
 		,getNext: function() {
-			return methods._callCallback( 'selectNext', active, {
+			return methods._callCallback('selectNext', active, {
 				stepData: $(active).data('stepData')
 				,steps: steps
-			} );
+			});
 		}
 		/**
 		 * Get Previous Slide
@@ -471,10 +474,10 @@
 		 * @return Object
 		 */
 		,getPrev: function() {
-			return methods._callCallback( 'selectPrev', active, {
+			return methods._callCallback('selectPrev', active, {
 				stepData: $(active).data('stepData')
 				,steps: steps
-			} );
+			});
 		}
 		/**
 		 * Manipulate the canvas
@@ -599,15 +602,17 @@
 			}
 			function toCamelcase( str ) {
 				str = str.split( '-' );
-				for( var i = 1; i < str.length; i++ )
+				for( var i = 1; i < str.length; i++ ) {
 					str[i] = str[i].substr(0, 1).toUpperCase() + str[i].substr(1);
+				}
 				return str.join( '' );
 			}
 			var dataset = {};
 			var attrs = $(el)[0].attributes;
-			$.each( attrs, function ( idx, attr ) {
-				if( attr.nodeName.substr(0, 5) == "data-" )
+			$.each(attrs, function ( idx, attr ) {
+				if ( attr.nodeName.substr(0, 5) == "data-" ) {
 					dataset[ toCamelcase(attr.nodeName.substr(5)) ] = attr.nodeValue;
+				}
 			});
 			return dataset;
 		}
@@ -685,7 +690,9 @@
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
 				if ($.isFunction( func )) {
 					defaults[method].push(func);
-				} else $.error( 'Second parameter should be a function: $.jmpress( callbackName, callbackFunction )' );
+				} else {
+					$.error( 'Second parameter should be a function: $.jmpress( callbackName, callbackFunction )' );
+				}
 			} else {
 				$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
 			}
@@ -735,10 +742,10 @@
 	})();
 
 	(function() { // load steps from ajax
-		$.jmpress( 'initStep', function( step, eventData ) {
+		$.jmpress('initStep', function( step, eventData ) {
 			eventData.stepData.ajaxSource = $(step).attr('href') || eventData.data['src'] || false;
 		});
-		$.jmpress( 'loadStep', function( step, eventData ) {
+		$.jmpress('loadStep', function( step, eventData ) {
 			var href = eventData.stepData.ajaxSource;
 			if ( href ) {
 				$(step).load( href );
@@ -747,9 +754,9 @@
 	})();
 
 	(function() { // use hash in url
-		$.jmpress( 'selectInitialStep', function( step, eventData ) {
+		$.jmpress('selectInitialStep', function( step, eventData ) {
 			// HASH CHANGE EVENT
-			if(eventData.settings.useHash) {
+			if ( eventData.settings.useHash ) {
 				/**
 				 * getElementFromUrl
 				 *
@@ -758,7 +765,7 @@
 				function getElementFromUrl() {
 					// get id from url # by removing `#` or `#/` from the beginning,
 					// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-					var el = $('#' + window.location.hash.replace(/^#\/?/,"") );
+					var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
 					return el.length > 0 ? el : undefined;
 				}
 				$(window).bind('hashchange', function() {
@@ -770,10 +777,10 @@
 				return getElementFromUrl();
 			}
 		});
-		$.jmpress( 'setActive', function( step, eventData ) {
+		$.jmpress('setActive', function( step, eventData ) {
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
-			if(eventData.settings.useHash) {
+			if ( eventData.settings.useHash ) {
 				eventData.current.ignoreHashChange = true;
 				window.location.hash = "#/" + step.attr('id');
 				setTimeout(function() {
@@ -781,5 +788,5 @@
 				}, 1000); // TODO: Use animation duration
 			}
 		});
-})();
+	})();
 })(jQuery, document, window);
