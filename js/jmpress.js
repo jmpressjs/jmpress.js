@@ -13,6 +13,9 @@
  */
 
 (function( $, document, window, undefined ) {
+
+	'use strict';
+
 	/**
 	 * Default Settings
 	 */
@@ -804,19 +807,19 @@
 			use: true
 		};
 		$.jmpress('selectInitialStep', function( step, eventData ) {
+			/**
+			 * getElementFromUrl
+			 *
+			 * @return String or undefined
+			 */
+			function getElementFromUrl() {
+				// get id from url # by removing `#` or `#/` from the beginning,
+				// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
+				return el.length > 0 ? el : undefined;
+			}
 			// HASH CHANGE EVENT
 			if ( eventData.settings.hash.use ) {
-				/**
-				 * getElementFromUrl
-				 *
-				 * @return String or undefined
-				 */
-				function getElementFromUrl() {
-					// get id from url # by removing `#` or `#/` from the beginning,
-					// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-					var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
-					return el.length > 0 ? el : undefined;
-				}
 				$(window).bind('hashchange', function() {
 					if (eventData.current.ignoreHashChange === false) {
 						$.jmpress('select', getElementFromUrl() );
@@ -884,13 +887,65 @@
 			var mysettings = eventData.settings.keyboard;
 			var jmpress = this;
 
+			function checkAndGo( elements, func ) {
+				var next;
+				elements.each(function(idx, element) {
+					if(event.shiftKey) {
+						next = func(element);
+						if (next) {
+							return false;
+						}
+					}
+					if( $(element).is(mysettings.tabSelector) ) {
+						next = $(element);
+						return false;
+					}
+					if(!event.shiftKey) {
+						next = func(element);
+						if (next) {
+							return false;
+						}
+					}
+				});
+				return next;
+			}
+			function findNextInChildren(item) {
+				var children = $(item).children();
+				if(event.shiftKey) {
+					children = $(children.get().reverse());
+				}
+				return checkAndGo( children, findNextInChildren );
+			}
+			function findNextInSiblings(item) {
+				return checkAndGo(
+					$(item)[event.shiftKey ? "prevAll" : "nextAll"](),
+					findNextInChildren );
+			}
+			function findNextInParents(item) {
+				var next;
+				var parents = $(item)
+					.parentsUntil($(jmpress).jmpress('active'));
+				$.each(parents.get(), function(idx, element) {
+					if( $(element).is(mysettings.tabSelector) ) {
+						next = $(element);
+						return false;
+					}
+					next = findNextInSiblings(element);
+					if(next) {
+						return false;
+					}
+				});
+				return next;
+			}
+
 			// tabindex make it focusable so that it can recieve key events
 			$(this).attr("tabindex", 0);
 
 			// KEYDOWN EVENT
 			$(document).keydown(function( event ) {
-				if( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use )
+				if ( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use ) {
 					return;
+				}
 
 				for( var nodeName in mysettings.ignore ) {
 					if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
@@ -899,61 +954,16 @@
 				}
 
 				var reverseSelect = false;
-				if(event.which == 9) {
+				if (event.which == 9) {
 					// tab
 					var nextFocus;
-					if( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
-						if( !event.shiftKey )
+					if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
+						if ( !event.shiftKey ) {
 							nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").first();
-						else
+						} else {
 							reverseSelect = true;
+						}
 					} else {
-						function checkAndGo( elements, func ) {
-							var next;
-							elements.each(function(idx, element) {
-								if(event.shiftKey) {
-									next = func(element);
-									if(next)
-										return false;
-								}
-								if( $(element).is(mysettings.tabSelector) ) {
-									next = $(element);
-									return false;
-								}
-								if(!event.shiftKey) {
-									next = func(element);
-									if(next)
-										return false;
-								}
-							});
-							return next;
-						}
-						function findNextInChildren(item) {
-							var children = $(item).children();
-							if(event.shiftKey)
-								children = $(children.get().reverse());
-							return checkAndGo( children, findNextInChildren );
-						}
-						function findNextInSiblings(item) {
-							return checkAndGo(
-								$(item)[event.shiftKey ? "prevAll" : "nextAll"](),
-								findNextInChildren );
-						}
-						function findNextInParents(item) {
-							var next;
-							var parents = $(item)
-									.parentsUntil($(jmpress).jmpress('active'));
-							$.each(parents.get(), function(idx, element) {
-								if( $(element).is(mysettings.tabSelector) ) {
-									next = $(element);
-									return false;
-								}
-								next = findNextInSiblings(element);
-								if(next)
-									return false;
-							});
-							return next;
-						}
 						nextFocus = (event.shiftKey ?
 										false :
 										findNextInChildren( event.target )) ||
