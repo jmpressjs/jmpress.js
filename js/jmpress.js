@@ -47,7 +47,6 @@
 		,selectPrev: []
 		,selectNext: []
 		,loadStep: []
-		,afterStepLoaded: []
 
 		/* TEST */
 		,test: false
@@ -72,7 +71,6 @@
 			,'selectPrev': 1
 			,'selectNext': 1
 			,'loadStep': 1
-			,'afterStepLoaded': 1
 		}
 		,ignoreHashChange = false;
 
@@ -544,6 +542,16 @@
 			return result.value;
 		}
 		/**
+		 *
+		 */
+		,fire: function( callbackName, element, eventData ) {
+			if( !callbacks[callbackName] ) {
+				$.error( "callback " + callbackName + " is not registered." );
+			} else {
+				methods._callCallback(callbackName, element, eventData);
+			}
+		}
+		/**
 		 * Load Siblings
 		 * If a slide has data-src or href set load that slide dynamically
 		 *
@@ -565,6 +573,20 @@
 				});
 				$(this).addClass( settings.loadedClass );
 			});
+		}
+		/**
+		 * Register a callback
+		 *
+		 * @access public
+		 * @param callbackName String the name of the callback
+		 */
+		,register: function (callbackName) {
+			if( callbacks[callbackName] ) {
+				$.error( "callback " + callbackName + " is already registered." );
+			} else {
+				callbacks[callbackName] = 1;
+				defaults[callbackName] = [];
+			}
 		}
 		/**
 		 * Set supported prefixes
@@ -701,6 +723,12 @@
 	});
 
 	/* DEFAULT PLUGINS */
+	// The plugins should be independent from above code
+	// They may read settings from eventData.settings and
+	// store state to eventData.current.
+	// They can modify the defaults with $.jmpress( 'defaults' )
+	// and register own callbacks with $.jmpress( 'register', '<callbackName>' )
+	// own callbacks may be fired with $.jmpress( 'fire', step, eventData )
 
 	(function() { // active class
 		$.jmpress( 'defaults' ).activeClass = "active";
@@ -743,14 +771,19 @@
 	})();
 
 	(function() { // load steps from ajax
+		$.jmpress('register', 'afterStepLoaded');
 		$.jmpress('initStep', function( step, eventData ) {
 			eventData.stepData.ajaxSource = $(step).attr('href') || eventData.data['src'] || false;
 		});
 		$.jmpress('loadStep', function( step, eventData ) {
 			var href = eventData.stepData.ajaxSource;
 			if ( href ) {
-				$(step).load(href, function() {
-					methods._callCallback('afterStepLoaded', step, eventData);
+				$(step).load(href, function(response, status, xhr) {
+					$.jmpress('fire', 'afterStepLoaded', step, $.extend({}, eventData, {
+						response: response
+						,status: status
+						,xhr: xhr
+					}));
 				});
 			}
 		});
