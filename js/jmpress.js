@@ -363,7 +363,7 @@
 			};
 
 			if ( active ) {
-				if ( active.attr('id') === $(el).attr('id') ) {
+				if ( $(active).attr('id') === $(el).attr('id') ) {
 					return el;
 				}
 				methods._callCallback( 'setInactive', active, {
@@ -561,7 +561,7 @@
 			if (!active) {
 				return false;
 			}
-			var siblings = active.siblings( settings.stepSelector );
+			var siblings = $(active).siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
 				if ($(this).hasClass( settings.loadedClass )) {
@@ -849,9 +849,6 @@
 			}
 			,tabSelector: "a[href]:visible, :input:visible"
 		};
-		$.jmpress('initStep', function( step, eventData ) {
-			//$(step).attr("tabindex", 0);
-		});
 		$.jmpress('afterInit', function( step, eventData ) {
 			var mysettings = eventData.settings.keyboard;
 			var jmpress = this;
@@ -859,12 +856,9 @@
 			// tabindex make it focusable so that it can recieve key events
 			$(this).attr("tabindex", 0);
 
-			if(eventData.settings.fullscreen)
-				$(this).focus();
-
 			// KEYDOWN EVENT
 			$(document).keydown(function( event ) {
-				if( !$(event.target).closest(jmpress).length || !mysettings.use )
+				if( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use )
 					return;
 
 				for( var nodeName in mysettings.ignore ) {
@@ -934,7 +928,6 @@
 										findNextInChildren( event.target )) ||
 									findNextInSiblings( event.target ) ||
 									findNextInParents( event.target );
-						console.log("found "+(nextFocus && nextFocus[0]));
 					}
 					if( nextFocus && nextFocus.length > 0 ) {
 						nextFocus.focus();
