@@ -80,8 +80,7 @@
 			,'selectHome': 1
 			,'selectEnd': 1
 			,'loadStep': 1
-		}
-		,ignoreHashChange = false;
+		};
 
 	/**
 	 * 3D and 2D engines
