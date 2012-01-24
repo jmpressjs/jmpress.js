@@ -77,6 +77,10 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
+	<!--<div id="docs-basic" data-src="docs/basic.html" class="step" data-x="0" data-y="0" data-rotate="0" data-scale="1">
+		Loading...
+	</div>-->
+
 	<div id="contribute" class="step" data-x="2500" data-y="-900" data-rotate="-160" data-scale="2.2">
 		<h1>contribute</h1>
 		<p>Good news! I accept pull requests ;)</p>
@@ -113,6 +117,7 @@
 <script type="text/javascript">
 $(function() {
 	$('#jmpress').jmpress({
+		// SET THE ACTIVE SLIDE IN THE NAV
 		setActive: function( slide ) {
 			var id = slide.attr('id');
 			if (id.indexOf('-') != -1) {
@@ -120,6 +125,12 @@ $(function() {
 			}
 			$('#nav a').removeClass( 'active' );
 			$('#nav a[href=#' + id + ']').addClass( 'active' );
+		}
+		// UPON STEP LOAD HTML ENCODE CODE SAMPLES
+		,afterStepLoaded: function( step, eventData ) {
+			$(step).find('code').each(function() {
+				$(this).text($(this).html()).html();
+			});
 		}
 	});
 	$('.next').click(function() {

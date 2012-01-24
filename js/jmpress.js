@@ -47,6 +47,7 @@
 		,selectPrev: []
 		,selectNext: []
 		,loadStep: []
+		,afterStepLoaded: []
 
 		/* TEST */
 		,test: false
@@ -71,6 +72,7 @@
 			,'selectPrev': 1
 			,'selectNext': 1
 			,'loadStep': 1
+			,'afterStepLoaded': 1
 		}
 		,ignoreHashChange = false;
 
@@ -555,13 +557,12 @@
 			var siblings = active.siblings( settings.stepSelector );
 			siblings.push( active );
 			siblings.each(function() {
-
 				if ($(this).hasClass( settings.loadedClass )) {
 					return;
 				}
-				methods._callCallback( 'loadStep', this, {
+				methods._callCallback('loadStep', this, {
 					stepData: $(this).data('stepData')
-				} )
+				});
 				$(this).addClass( settings.loadedClass );
 			});
 		}
@@ -748,7 +749,9 @@
 		$.jmpress('loadStep', function( step, eventData ) {
 			var href = eventData.stepData.ajaxSource;
 			if ( href ) {
-				$(step).load( href );
+				$(step).load(href, function() {
+					methods._callCallback('afterStepLoaded', step, eventData);
+				});
 			}
 		});
 	})();
