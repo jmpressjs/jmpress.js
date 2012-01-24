@@ -363,7 +363,7 @@
 			};
 
 			if ( active ) {
-				if ( active.attr('id') === el.attr('id') ) {
+				if ( active.attr('id') === $(el).attr('id') ) {
 					return el;
 				}
 				methods._callCallback( 'setInactive', active, {
@@ -379,7 +379,7 @@
 				,reason: type
 				,target: target
 			});
-			jmpress.attr('class', 'step-' + el.attr('id'));
+			jmpress.attr('class', 'step-' + $(el).attr('id'));
 
 			var props,
 				zoomin = target.scale.x >= current.scale.x;
@@ -421,7 +421,7 @@
 			});
 
 			$( settings.stepSelector ).css('z-index', 9);
-			el.css('z-index', 10);
+			$(el).css('z-index', 10);
 
 			current = target;
 			active = el;
