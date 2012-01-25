@@ -950,10 +950,10 @@
 			// scrolling to element in hash
 			if ( eventData.settings.hash.use ) {
 				eventData.current.ignoreHashChange = true;
-				window.location.hash = "#/" + $(step).attr('id');
 				setTimeout(function() {
+					window.location.hash = "#/" + $(step).attr('id');
 					eventData.current.ignoreHashChange = false;
-				}, 1000); // TODO: Use animation duration
+				}, 1500); // TODO: Use animation duration
 			}
 		});
 	})();
