@@ -448,6 +448,8 @@
 		 */
 		,scrollFix: function() {
 			function fix() {
+				if($(container)[0].tagName == "BODY")
+					window.scrollTo(0, 0);
 				$(container).scrollTop(0);
 				$(container).scrollLeft(0);
 				function check() {
