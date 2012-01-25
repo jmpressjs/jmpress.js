@@ -727,6 +727,10 @@
 		}
 	});
 
+})(jQuery, document, window);
+
+(function( $, document, window, undefined ) {
+
 	/* DEFAULT PLUGINS */
 	// The plugins should be independent from above code
 	// They may read settings from eventData.settings and
