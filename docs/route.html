@@ -1,0 +1,21 @@
+<h1>Route</h1>
+
+<p>By default, jmpress.js will flow through each step linearly down the DOM. You have a couple of ways to modify the flow.</p>
+
+<p><strong>Inline Next / Prev</strong></p>
+<pre><code><div id="jmpress">
+	<div class="step" id="a" data-next="c">A</div>
+	<div class="step" id="b">B</div>
+	<div class="step" id="c" data-prev="b">C</div>
+	<div class="step" id="d">D</div>
+</div></code></pre>
+<p>The flow will start with A, goto C, then D and back to A. Only when the user is on C and goes back will they be shown B.</p>
+
+<p><strong>Using route:</strong></p>
+<p>You can set the flow using the route method. You also don't have to define all the steps. The example below will preserve the natural flow and only modify the indicated steps:</p>
+<pre><code>$("#jmpress").jmpress("route", ["#b", "#d", "#c"]);</code></pre>
+<p>The flow will start with A, goto B, goto D, goto C and back to A.</p>
+
+<p><strong>Unidirectional:</strong></p>
+<pre><code>$("#jmpress").jmpress("route", ["#d", "#b"], true);</code></pre>
+<p>The flow will be A -> B -> C -> D -> B -> C -> D -> A.</p>

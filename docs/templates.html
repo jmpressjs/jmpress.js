@@ -1,0 +1,20 @@
+<h1>Templates</h1>
+
+<p>For more complex builds consider using templates rather then setting attributes on each step.</p>
+
+<p>Setup your template with nested steps and give your template a name:</p>
+<pre><code><div class="step" data-template="mytemplate">
+	<div class="step">...</div>
+	<div class="step">...</div>
+	<div class="step">...</div>
+</div></code></pre>
+
+<p>Then describe your template:</p>
+<pre><code>$.jmpress("template", "mytemplate", {
+  x: 1000, y: -2000, scale: 10,
+  children: [
+    { x: -300, y: -100, scale: 0.2 },
+    { x: -100, y: -100, scale: 0.2 },
+    { x: 100, y: -100, scale: 0.2 }
+  ]
+});</code></pre>
