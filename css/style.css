@@ -82,6 +82,8 @@ h1, h1 a {
 	font-size: 68px;
 	line-height: 72px;
 	margin-bottom: 10px;
+
+	text-shadow: #333 -2px 2px 3px;
 }
 h2 {
 	font-size: 42px;
