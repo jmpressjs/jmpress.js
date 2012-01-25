@@ -884,7 +884,7 @@
 			}
 			,tabSelector: "a[href]:visible, :input:visible"
 		};
-		$.jmpress('afterInit', function( step, eventData ) {
+		$.jmpress('afterInit', function( nil, eventData ) {
 			var mysettings = eventData.settings.keyboard;
 			var jmpress = this;
 
@@ -1014,7 +1014,7 @@
 			,maxScale: 0
 			,minScale: 0
 		};
-		$.jmpress("afterInit", function( step, eventData ) {
+		$.jmpress("afterInit", function( nil, eventData ) {
 			var jmpress = this;
 			$(window).resize(function (event) {
 				$(jmpress).jmpress("select", $(jmpress).jmpress("active"), "resize");
@@ -1034,6 +1034,30 @@
 				eventData.target.scale.y *= windowScale;
 				eventData.target.scale.z *= windowScale;
 			}
+		});
+	})();
+
+	(function() { // clickable inactive steps
+		$.jmpress("defaults").mouse = {
+			clickSelects: true
+		};
+		$.jmpress("afterInit", function( nil, eventData ) {
+			$(this).click(function(event) {
+				if(!eventData.settings.mouse.clickSelects)
+					return;
+				// clicks on the active step do default
+				if( $(event.target).closest($(this).jmpress("active")).length )
+					return;
+
+				// get clicked step
+				var clickedStep = $(event.target).closest(eventData.settings.stepSelector);
+
+				if(clickedStep.length) {
+					// select the clicked step
+					$(this).jmpress("select", clickedStep[0], "click");
+					event.preventDefault();
+				}
+			});
 		});
 	})();
 
