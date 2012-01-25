@@ -254,7 +254,7 @@
 
 			// INITIALIZE EACH STEP
 			steps.each(function( idx ) {
-				var data = methods._dataset( this );
+				var data = methods.dataset( this );
 				var step = {
 					translate: {
 						x: data.x || 0
@@ -580,17 +580,26 @@
 			});
 		}
 		/**
-		 * Register a callback
+		 * Register a callback or a jmpress function
 		 *
 		 * @access public
-		 * @param callbackName String the name of the callback
+		 * @param name String the name of the callback or function
+		 * @param func Function? the function to be added
 		 */
-		,register: function (callbackName) {
-			if( callbacks[callbackName] ) {
-				$.error( "callback " + callbackName + " is already registered." );
+		,register: function (name, func) {
+			if( $.isFunction(func) ) {
+				if( methods[name] ) {
+					$.error( "function " + name + " is already registered." );
+				} else {
+					methods[name] = func;
+				}
 			} else {
-				callbacks[callbackName] = 1;
-				defaults[callbackName] = [];
+				if( callbacks[name] ) {
+					$.error( "callback " + name + " is already registered." );
+				} else {
+					callbacks[name] = 1;
+					defaults[name] = [];
+				}
 			}
 		}
 		/**
@@ -624,7 +633,7 @@
 		 * @param Object element
 		 * @return Object
 		 */
-		,_dataset: function( el ) {
+		,dataset: function( el ) {
 			if ( el.dataset ) {
 				return el.dataset;
 			}
@@ -731,6 +740,74 @@
 
 (function( $, document, window, undefined ) {
 
+	(function() { // add near( selector, backwards = false) to jquery
+		function checkAndGo( elements, func, selector, backwards ) {
+			var next;
+			elements.each(function(idx, element) {
+				if(backwards) {
+					next = func(element, selector, backwards);
+					if (next) {
+						return false;
+					}
+				}
+				if( $(element).is(selector) ) {
+					next = element;
+					return false;
+				}
+				if(!backwards) {
+					next = func(element, selector, backwards);
+					if (next) {
+						return false;
+					}
+				}
+			});
+			return next;
+		}
+		function findNextInChildren(item, selector, backwards) {
+			var children = $(item).children();
+			if(backwards) {
+				children = $(children.get().reverse());
+			}
+			return checkAndGo( children, findNextInChildren, selector, backwards );
+		}
+		function findNextInSiblings(item, selector, backwards) {
+			return checkAndGo(
+				$(item)[backwards ? "prevAll" : "nextAll"](),
+				findNextInChildren, selector, backwards );
+		}
+		function findNextInParents(item, selector, backwards) {
+			var next;
+			var parents = $(item).parents();
+			parents = $(parents.get());
+			$.each(parents.get(), function(idx, element) {
+				if( $(element).is(selector) ) {
+					next = element;
+					return false;
+				}
+				next = findNextInSiblings(element, selector, backwards);
+				if(next) {
+					return false;
+				}
+			});
+			return next;
+		}
+
+		$.fn.near = function( selector, backwards ) {
+			var array = [];
+			$(this).each(function(idx, element) {
+				var near = (backwards ?
+						false :
+						findNextInChildren( element, selector, backwards )) ||
+					findNextInSiblings( element, selector, backwards ) ||
+					findNextInParents( element, selector, backwards );
+				if( near ) {
+					array.push(near);
+				}
+			});
+			return $(array);
+		}
+	})();
+
 	/* DEFAULT PLUGINS */
 	// The plugins should be independent from above code
 	// They may read settings from eventData.settings and
@@ -780,6 +857,44 @@
 			}
 			if (next.length > 0) {
 				return next;
+			}
+		});
+	})();
+
+	(function() { // ways
+		// TODO allow call of route after init
+		function routeFunc( route, type ) {
+			for(var i = 0; i < route.length - 1; i++) {
+				var from = route[i];
+				var to = route[i+1];
+				$(from, this).each(function(idx, element) {
+					$(element).attr("data-"+type, to);
+				});
+			}
+		}
+		$.jmpress( 'register', 'route', function( route, unidirectional, reversedRoute ) {
+			routeFunc.call(this, route, reversedRoute ? "prev" : "next");
+			if(!unidirectional)
+				routeFunc.call(this, route.reverse(), reversedRoute ? "next" : "prev");
+		});
+		$.jmpress( 'initStep', function( step, eventData ) {
+			eventData.stepData.nextStep = eventData.data.next;
+			eventData.stepData.prevStep = eventData.data.prev;
+		});
+		$.jmpress( 'selectNext', function( step, eventData ) {
+			if(eventData.stepData.nextStep) {
+				var near = $(step).near(eventData.stepData.nextStep);
+				if(near && near.length) return near;
+				near = $(eventData.stepData.nextStep, this);
+				if(near && near.length) return near;
+			}
+		});
+		$.jmpress( 'selectPrev', function( step, eventData ) {
+			if(eventData.stepData.prevStep) {
+				var near = $(step).near(eventData.stepData.prevStep, true);
+				if(near && near.length) return near;
+				near = $(eventData.stepData.prevStep, this).last();
+				if(near && near.length) return near;
 			}
 		});
 	})();
@@ -888,56 +1003,6 @@
 			var mysettings = eventData.settings.keyboard;
 			var jmpress = this;
 
-			function checkAndGo( elements, func ) {
-				var next;
-				elements.each(function(idx, element) {
-					if(event.shiftKey) {
-						next = func(element);
-						if (next) {
-							return false;
-						}
-					}
-					if( $(element).is(mysettings.tabSelector) ) {
-						next = $(element);
-						return false;
-					}
-					if(!event.shiftKey) {
-						next = func(element);
-						if (next) {
-							return false;
-						}
-					}
-				});
-				return next;
-			}
-			function findNextInChildren(item) {
-				var children = $(item).children();
-				if(event.shiftKey) {
-					children = $(children.get().reverse());
-				}
-				return checkAndGo( children, findNextInChildren );
-			}
-			function findNextInSiblings(item) {
-				return checkAndGo(
-					$(item)[event.shiftKey ? "prevAll" : "nextAll"](),
-					findNextInChildren );
-			}
-			function findNextInParents(item) {
-				var next;
-				var parents = $(item)
-					.parentsUntil($(jmpress).jmpress('active'));
-				$.each(parents.get(), function(idx, element) {
-					if( $(element).is(mysettings.tabSelector) ) {
-						next = $(element);
-						return false;
-					}
-					next = findNextInSiblings(element);
-					if(next) {
-						return false;
-					}
-				});
-				return next;
-			}
 
 			// tabindex make it focusable so that it can recieve key events
 			$(this).attr("tabindex", 0);
@@ -965,11 +1030,9 @@
 							reverseSelect = true;
 						}
 					} else {
-						nextFocus = (event.shiftKey ?
-										false :
-										findNextInChildren( event.target )) ||
-									findNextInSiblings( event.target ) ||
-									findNextInParents( event.target );
+						nextFocus = $(event.target).near( mysettings.tabSelector, event.shiftKey );
+						if( !$(nextFocus).closest( $(jmpress).jmpress('active') ).length )
+							nextFocus = undefined;
 					}
 					if( nextFocus && nextFocus.length > 0 ) {
 						nextFocus.focus();
