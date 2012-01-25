@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
+	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/ui-darkness/jquery-ui.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -18,11 +18,11 @@
 <body>
 
 <ul id="nav">
-	<li><a href="#about">ABOUT</a></li>
-	<li><a href="#download">DOWNLOAD</a></li>
-	<li><a href="#docs">DOCS</a></li>
-	<li><a href="#contribute">CONTRIBUTE</a></li>
-	<li><a href="#showcase">SHOWCASE</a></li>
+	<li><a href="#about"><span>ABOUT</span></a></li>
+	<li><a href="#download"><span>DOWNLOAD</span></a></li>
+	<li><a href="#docs"><span>DOCS</span></a></li>
+	<li><a href="#contribute"><span>CONTRIBUTE</span></a></li>
+	<li><a href="#showcase"><span>SHOWCASE</span></a></li>
 </ul>
 
 <div id="jmpress" style="width: 60%; height: 400px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">
@@ -122,6 +122,15 @@
 		<h1>cool features</h1>
 		<ul>
 			<li>embed this in a container. Try it: <a href="?container#showcase">Container</a> <a href="?#showcase">Fullscreen</a></li>
+			<li>jquery ui themes. Try it:
+			<a href="#" data-theme="excite-bike">excite-bike</a>
+			<a href="#" data-theme="sunny">sunny</a> <br/>
+			<a href="#" data-theme="base">base</a>
+			<a href="#" data-theme="le-frog">le-frog</a>
+			<a href="#" data-theme="black-tie">black-tie</a>
+			<a href="#" data-theme="ui-darkness">ui-darkness</a>
+			<a href="#" data-theme="ui-lightness">ui-lightness</a>
+			</li>
 		</ul>
 		<a href="#" class="next">home</a>
 	</div>
@@ -147,8 +156,8 @@ $(function() {
 			if (id.indexOf('-') != -1) {
 				id = id.substr(0, id.indexOf('-'));
 			}
-			$('#nav a').removeClass( 'active' );
-			$('#nav a[href=#' + id + ']').addClass( 'active' );
+			$('#nav a').removeClass( 'ui-state-active' );
+			$('#nav a[href=#' + id + ']').addClass( 'ui-state-active' );
 		}
 		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
@@ -165,7 +174,10 @@ $(function() {
 		$('#jmpress').jmpress('next');
 		return false;
 	});
-	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all").hover(function() {
+	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
+	$("#nav a").addClass("ui-button ui-widget ui-state-default");
+	$("#nav a span").addClass("ui-button-text");
+	$("#jmpress a[href], #nav a").hover(function() {
 		$(this).addClass("ui-state-hover");
 	}, function() {
 		$(this).removeClass("ui-state-hover");
@@ -175,6 +187,22 @@ $(function() {
 	if ( ua.search(/(ipad)/) != -1 ) {
 		$('.hint').text('Swipe support is coming :)');
 	}
+	$("a[data-theme]").click(function(event) {
+		var theme = $(this).data("theme");
+
+		$("#theme").remove();
+
+		var link = $("<link>");
+		link.attr({
+				id: "theme",
+				type: 'text/css',
+				rel: 'stylesheet',
+				href: "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/"+theme+"/jquery-ui.css"
+		});
+		$("head").append( link )
+
+		event.preventDefault();
+	});
 });
 </script>
 

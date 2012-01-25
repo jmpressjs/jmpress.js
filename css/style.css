@@ -94,8 +94,9 @@ h4 {
 
 /** NAV **/
 #nav {
+	background: transparent;
 	position: fixed;
-	left: 0px;
+	left: -5px;
 	top: 10px;
 	z-index: 99;
 }
@@ -104,13 +105,24 @@ h4 {
 	margin: 8px 0px;
 }
 #nav a {
-	background-color: transparent;
-	border-left: 50px solid #ffcc00;
-	font-size: 110%;
+	display: block;
+	position: relative;
+	left: -50px;
+	padding-left: 60px;
+	text-align: right;
+
+	-webkit-transition: 0.5s;
+	-moz-transition:    0.5s;
+	-ms-transition:     0.5s;
+	-o-transition:      0.5s;
+	transition:         0.5s;
 }
-#nav a:hover, #nav a.active {
-	border-left: 100px solid #ffcc00;
-	color: #333;
+#nav a span {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#nav a.ui-state-hover, #nav a.ui-state-active {
+	left: 0px;
 }
 .next {
 	float: right;
