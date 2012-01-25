@@ -781,6 +781,8 @@
 
 (function( $, document, window, undefined ) {
 
+	'use strict';
+
 	(function() { // add near( selector, backwards = false) to jquery
 		function checkAndGo( elements, func, selector, backwards ) {
 			var next;

@@ -1,9 +1,9 @@
 /**
  * jmpress.js test suite
  *
- * MIT Licensed.
- *
- * Copyright 2012 Kyle Robinson Young (@shama)
+ * Copyright 2012, Kyle Robinson Young @shama
+ * Copyright 2012, Tobias Koppers @sokra
+ * http://www.opensource.org/licenses/mit-license.php
  */
 
 describe('Jmpress', function() {

@@ -156,5 +156,5 @@ for testing. Please load `test.html` in your browser to run the tests.
 
 ## LICENSE
 
-Copyright 2012 Kyle Robinson Young. Released under a
+Copyright 2012 Kyle Robinson Young & Tobias Koppers. Released under a
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
