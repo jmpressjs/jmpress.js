@@ -82,6 +82,8 @@ h1, h1 a {
 	font-size: 68px;
 	line-height: 72px;
 	margin-bottom: 10px;
+
+	text-shadow: #333 -2px 2px 3px;
 }
 h2 {
 	font-size: 42px;
@@ -179,6 +181,34 @@ h4 {
 	position: relative;
 	top: -20px;
 	left: 10px;
+}
+
+/* DOCS */
+.docs {
+	font-size: 0.9em;
+	overflow: auto;
+	min-width: 600px;
+	min-height: 600px;
+	width: 80%;
+	height: 80%;
+}
+.docs h1 {
+	font-size: 1.5em;
+	line-height: 1em;
+}
+.docs p {
+	margin-top: 10px;
+}
+.docs strong {
+	font-size: 1.2em;
+}
+.docs pre {
+	background: #333;
+	padding: 5px;
+	border-radius: 5px;
+}
+.docs ul li {
+	font-size: 1em;
 }
 
 /* hint on the first slide */
