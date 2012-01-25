@@ -23,7 +23,9 @@
 	var defaults = {
 		/* CLASSES */
 		stepSelector: '.step'
-		,canvasClass: 'canvas'
+		,containerClass: ''
+		,canvasClass: ''
+		,areaClass: ''
 		,notSupportedClass: 'not-supported'
 		,loadedClass: 'loaded'
 
@@ -64,6 +66,8 @@
 	 */
 	var jmpress = null
 		,settings = null
+		,container = null
+		,area = null
 		,canvas = null
 		,steps = null
 		,current = null
@@ -196,19 +200,14 @@
 		 */
 		init: function( args ) {
 			// MERGE SETTINGS
-			settings = $.extend({}, defaults, args);
+			settings = $.extend(true, {}, defaults, args);
 
 			// accept functions and arrays of functions as callbacks
 			for (var callbackName in callbacks) {
 				if ( settings[callbackName] == null ) {
 					settings[callbackName] = [];
 				} else if ( $.isFunction( settings[callbackName] ) ) {
-					settings[callbackName] = [ settings[callbackName] ];
-				}
-				// merge new callbacks with defaults
-				// this is required if callbacks are set in defaults
-				if ( defaults[callbackName] !== settings[callbackName] ) {
-					settings[callbackName] = $.merge(defaults[callbackName], settings[callbackName]);
+					settings[callbackName] = $.merge(defaults[callbackName], [ settings[callbackName] ]);
 				}
 			}
 
@@ -220,19 +219,36 @@
 				return;
 			}
 
-			canvas = $('<div />').addClass( settings.canvasClass );
+			container = jmpress;
+			area = $('<div />');
+			canvas = $('<div />');
 			jmpress.children().each(function() {
 				canvas.append( $( this ) );
 			});
-			jmpress.append( canvas );
+			if(settings.fullscreen) {
+				container = $('body');
+				area = jmpress;
+				container.css({
+					height: '100%'
+				});
+				jmpress.append( canvas );
+			} else {
+				container.css({
+					position: "relative"
+				});
+				area.append( canvas );
+				jmpress.append( area );
+			}
+
+			$(container).addClass(settings.containerClass);
+			$(area).addClass(settings.areaClass);
+			$(canvas).addClass(settings.canvasClass);
 			
 			steps = $(settings.stepSelector, jmpress);
 
 			document.documentElement.style.height = "100%";
-
-			$('body').css({
-				height: '100%'
-				,overflow: 'hidden'
+			container.css({
+				overflow: 'hidden'
 			});
 
 			var props = {
@@ -240,8 +256,8 @@
 				,transitionDuration: '0s'
 			};
 			props = $.extend({}, settings.animation, props);
-			methods.css(jmpress, props);
-			methods.css(jmpress, {
+			methods.css(area, props);
+			methods.css(area, {
 				top: '50%'
 				,left: '50%'
 				,perspective: '1000px'
@@ -325,8 +341,7 @@
 			// whenever slide is selected
 			//
 			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
-			if(settings.fullscreen)
-				window.scrollTo(0, 0);
+			methods.scrollFix();
 
 			var step = $(el).data('stepData');
 
@@ -375,7 +390,9 @@
 				,reason: type
 				,target: target
 			});
-			jmpress.attr('class', 'step-' + $(el).attr('id'));
+			if(current.jmpressClass)
+				$(jmpress).addClass(current.jmpressClass);
+			$(jmpress).addClass(current.jmpressClass = 'step-' + $(el).attr('id'));
 
 			var props,
 				zoomin = target.scale.x >= current.scalex;
@@ -393,8 +410,8 @@
 				props.transitionDuration = '0';
 				props.transitionDelay = '0';
 			}
-			methods.css(jmpress, props);
-			methods._engine._transform(jmpress, {
+			methods.css(area, props);
+			methods._engine._transform(area, {
 				scale: target.scale
 			});
 
@@ -425,6 +442,27 @@
 			methods._loadSiblings();
 
 			return el;
+		}
+		/**
+		 * This should fix ANY kind of buggy scrolling
+		 */
+		,scrollFix: function() {
+			function fix() {
+				$(container).scrollTop(0);
+				$(container).scrollLeft(0);
+				function check() {
+					if($(container).scrollTop() != 0 ||
+						$(container).scrollLeft() != 0)
+						fix();
+				}
+				setTimeout(check, 1);
+				setTimeout(check, 10);
+				setTimeout(check, 100);
+				setTimeout(check, 200);
+				setTimeout(check, 400);
+				setTimeout(check, 1000);
+			}
+			fix();
 		}
 		/**
 		 * Alias for select
@@ -540,6 +578,7 @@
 		,_callCallback: function( callbackName, element, eventData ) {
 			eventData.settings = settings;
 			eventData.current = current;
+			eventData.container = container;
 			var result = {};
 			$.each( settings[callbackName], function(idx, callback) {
 				result.value = callback.call( jmpress, element, eventData ) || result.value;
@@ -921,6 +960,10 @@
 	(function() { // use hash in url
 		$.jmpress('defaults').hash = {
 			use: true
+			,update: true
+			,bindChange: true
+			// NOTICE: {use: true, update: false, bindChange: true}
+			// will cause a error after clicking on a link to the current step
 		};
 		$.jmpress('selectInitialStep', function( step, eventData ) {
 			/**
@@ -931,17 +974,25 @@
 			function getElementFromUrl() {
 				// get id from url # by removing `#` or `#/` from the beginning,
 				// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+				// TODO SECURITY check user input to be valid!
 				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
 				return el.length > 0 ? el : undefined;
 			}
 			// HASH CHANGE EVENT
-			if ( eventData.settings.hash.use ) {
+			if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
 				var jmpress = this;
 				$(window).bind('hashchange', function() {
 					var id = getElementFromUrl();
-					if(id != $(jmpress).jmpress("active").attr("id")) {
-						$.jmpress('select', id);
+					$(jmpress).jmpress("scrollFix");
+					if(id) {
+						if($(id).attr("id") != $(jmpress).jmpress("active").attr("id")) {
+							$.jmpress('select', id);
+						}
+						var shouldBeHash = "#/" + $(id).attr("id");
+						if(window.location.hash != shouldBeHash)
+							window.location.hash = shouldBeHash;
 					}
+					$(jmpress).jmpress("scrollFix");
 				});
 				return getElementFromUrl();
 			}
@@ -949,7 +1000,7 @@
 		$.jmpress('setActive', function( step, eventData ) {
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
-			if ( eventData.settings.hash.use ) {
+			if ( eventData.settings.hash.use && eventData.settings.hash.update ) {
 				clearTimeout(eventData.current.hashtimeout);
 				eventData.current.hashtimeout = setTimeout(function() {
 					window.location.hash = "#/" + $(step).attr('id');
@@ -1005,7 +1056,8 @@
 
 
 			// tabindex make it focusable so that it can recieve key events
-			$(this).attr("tabindex", 0);
+			if(!eventData.settings.fullscreen)
+				$(this).attr("tabindex", 0);
 
 			// KEYDOWN EVENT
 			$(document).keydown(function( event ) {
@@ -1036,8 +1088,7 @@
 					}
 					if( nextFocus && nextFocus.length > 0 ) {
 						nextFocus.focus();
-						if(eventData.settings.fullscreen)
-							window.scrollTo(0, 0);
+						$(jmpress).jmpress("scrollFix");
 						event.preventDefault();
 						return;
 					} else {
@@ -1063,8 +1114,7 @@
 					// tab
 					nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").last();
 					nextFocus.focus();
-					if(eventData.settings.fullscreen)
-						window.scrollTo(0, 0);
+					$(jmpress).jmpress("scrollFix");
 				}
 			});
 		});
@@ -1086,8 +1136,8 @@
 		$.jmpress("setActive", function( step, eventData ) {
 			var viewPort = eventData.settings.viewPort;
 			// Correct the scale based on the window's size
-			var windowScaleY = viewPort.height && $(window).innerHeight()/viewPort.height;
-			var windowScaleX = viewPort.width && $(window).innerWidth()/viewPort.width;
+			var windowScaleY = viewPort.height && $(eventData.container).innerHeight()/viewPort.height;
+			var windowScaleX = viewPort.width && $(eventData.container).innerWidth()/viewPort.width;
 			var windowScale = (windowScaleX || windowScaleY) && Math.min( windowScaleX || windowScaleY, windowScaleY || windowScaleX );
 
 			if(windowScale) {

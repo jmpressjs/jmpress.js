@@ -11,8 +11,11 @@
 
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jmpress.js"></script>
 </head>
-<body class="ui-state-default">
+<body>
 
 <ul id="nav">
 	<li><a href="#about">ABOUT</a></li>
@@ -21,7 +24,7 @@
 	<li><a href="#contribute">CONTRIBUTE</a></li>
 </ul>
 
-<div id="jmpress">
+<div id="jmpress" style="width: 60%; height: 400px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">
 
 	<div id="about" class="step" data-x="-900" data-y="-1500">
 		<h4>introducing</h4>
@@ -111,17 +114,22 @@
 			<li>Simple to use for new users, but flexible for advanded</li>
 			<li>Community for plugins</li>
 		</ul>
-		<a href="#" class="next">home</a>
+		<a href="#" class="next">next &gt;</a>
 	</div>
 
+	<div id="cool-features" class="step" data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8">
+		<h1>cool features</h1>
+		<ul>
+			<li>embed this in a container. Try it: <a href="?container#/cool-features">Container</a> <a href="?#/cool-features">Fullscreen</a></li>
+		</ul>
+		<a href="#" class="next">home</a>
+	</div>
 </div>
 
 <div class="hint">
     <p>Use arrow keys to navigate</p>
 </div>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/jmpress.js"></script>
 <script type="text/javascript">
 $(function() {
 	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
@@ -147,10 +155,19 @@ $(function() {
 				$(this).text($(this).html()).html();
 			});
 		}
+		,containerClass: "ui-widget-content"
+		,areaClass: ""
+		,canvasClass: ""
+		,fullscreen: window.location.search.indexOf("container") == -1
 	});
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
 		return false;
+	});
+	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all").hover(function() {
+		$(this).addClass("ui-state-hover");
+	}, function() {
+		$(this).removeClass("ui-state-hover");
 	});
 	// HACK TO CHANGE HINT IF IPAD
 	var ua = navigator.userAgent.toLowerCase();

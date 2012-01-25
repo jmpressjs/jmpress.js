@@ -37,6 +37,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	font-weight: bold;
 }
 ol, ul {
 	list-style: none;
@@ -74,9 +75,6 @@ a {
 	-ms-transition:     0.5s;
 	-o-transition:      0.5s;
 	transition:         0.5s;
-}
-a:hover {
-	background-color: rgba(51,51,51,1);
 }
 h1, h1 a {
 	font-size: 68px;
