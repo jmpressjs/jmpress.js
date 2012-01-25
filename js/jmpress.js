@@ -821,11 +821,12 @@
 			}
 			// HASH CHANGE EVENT
 			if ( eventData.settings.hash.use ) {
+				var jmpress = this;
 				$(window).bind('hashchange', function() {
-					if (eventData.current.ignoreHashChange === false) {
-						$.jmpress('select', getElementFromUrl() );
+					var id = getElementFromUrl();
+					if(id != $(jmpress).jmpress("active").attr("id")) {
+						$.jmpress('select', id);
 					}
-					eventData.current.ignoreHashChange = false;
 				});
 				return getElementFromUrl();
 			}
@@ -834,10 +835,9 @@
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
 			// scrolling to element in hash
 			if ( eventData.settings.hash.use ) {
-				eventData.current.ignoreHashChange = true;
-				setTimeout(function() {
+				clearTimeout(eventData.current.hashtimeout);
+				eventData.current.hashtimeout = setTimeout(function() {
 					window.location.hash = "#/" + $(step).attr('id');
-					eventData.current.ignoreHashChange = false;
 				}, 1500); // TODO: Use animation duration
 			}
 		});
