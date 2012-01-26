@@ -243,7 +243,7 @@
 			$(container).addClass(settings.containerClass);
 			$(area).addClass(settings.areaClass);
 			$(canvas).addClass(settings.canvasClass);
-			
+
 			steps = $(settings.stepSelector, jmpress);
 
 			document.documentElement.style.height = "100%";
@@ -353,7 +353,7 @@
 					cancelSelect = true;
 				}
 			});
-			if(cancelSelect) {
+			if (cancelSelect) {
 				return;
 			}
 
@@ -390,9 +390,12 @@
 				,reason: type
 				,target: target
 			});
-			if(current.jmpressClass)
-				$(jmpress).addClass(current.jmpressClass);
-			$(jmpress).addClass(current.jmpressClass = 'step-' + $(el).attr('id'));
+
+			// Set on step class on root element
+			current.jmpressClass = ( $(jmpress).attr('class') || '' )
+				.replace(/step-[A-Za-z0-9_-]+/gi, '').trim()
+				+ ' step-' + $(el).attr('id');
+			$(jmpress).attr('class', current.jmpressClass);
 
 			var props,
 				zoomin = target.scale.x >= current.scalex;
