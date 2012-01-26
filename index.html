@@ -121,7 +121,7 @@
 	<div id="showcase" class="step" data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8">
 		<h1>cool features</h1>
 		<ul>
-			<li>embed this in a container. Try it: <a href="?container#showcase">Container</a> <a href="?#showcase">Fullscreen</a></li>
+			<li>embed this in a container. Try it: <a id="toggle-fullscreen" href="#">Toggle Fullscreen</a></li>
 			<li>jquery ui themes. Try it:
 			<a href="#" data-theme="excite-bike">excite-bike</a>
 			<a href="#" data-theme="sunny">sunny</a> <br/>
@@ -143,6 +143,7 @@
 <script type="text/javascript">
 $(function() {
 	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
+	var fullscreen = window.location.search.indexOf("container") == -1;
 	$('#jmpress').jmpress({
 		// SET THE VIEW PORT
 		viewPort: {
@@ -168,7 +169,7 @@ $(function() {
 		,containerClass: "ui-widget-content"
 		,areaClass: ""
 		,canvasClass: ""
-		,fullscreen: window.location.search.indexOf("container") == -1
+		,fullscreen: fullscreen
 	});
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
@@ -187,6 +188,10 @@ $(function() {
 	if ( ua.search(/(ipad)/) != -1 ) {
 		$('.hint').text('Swipe support is coming :)');
 	}
+
+	$("#toggle-fullscreen").click(function(event) {
+		window.location.search = fullscreen ? "?container" : "";
+	});
 	$("a[data-theme]").click(function(event) {
 		var theme = $(this).data("theme");
 
