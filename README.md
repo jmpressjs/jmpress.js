@@ -7,6 +7,7 @@ idea behind prezi.com.
 ## DEMO
 
 jmpress.js demo: [http://shama.github.com/jmpress.js]
+
 jmpress.js beta demo: [http://sokra.github.com/jmpress.js]
 
 ## BROWSER SUPPORT
