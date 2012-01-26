@@ -483,10 +483,10 @@
 		});
 
 		// Set on step class on root element
-		current.jmpressClass = ( $(jmpress).attr('class') || '' )
-			.replace(/step-[A-Za-z0-9_-]+/gi, '').trim()
-			+ ' step-' + $(el).attr('id');
-		$(jmpress).attr('class', current.jmpressClass);
+		if ( current.jmpressClass ) {
+			$(jmpress).removeClass(current.jmpressClass);
+		}
+		$(jmpress).addClass(current.jmpressClass = 'step-' + $(el).attr('id'));
 
 		var props,
 			zoomin = target.scale.x >= current.scalex;
