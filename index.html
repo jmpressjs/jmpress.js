@@ -124,6 +124,8 @@
 <script type="text/javascript" src="js/jmpress.js"></script>
 <script type="text/javascript">
 $(function() {
+	var pageviewTimeout;
+
 	$('#jmpress').jmpress({
 		// SET THE VIEW PORT
 		viewPort: {
@@ -139,6 +141,12 @@ $(function() {
 			}
 			$('#nav a').removeClass( 'active' );
 			$('#nav a[href=#' + id + ']').addClass( 'active' );
+
+			// Track each step as page
+			if(pageviewTimeout) clearTimeout(pageviewTimeout);
+			pageviewTimeout = setTimeout(function() {
+				_gaq.push(['_trackPageview', "/jmpress.js/step-" + id]);
+			}, 1500);
 		}
 		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
