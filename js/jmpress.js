@@ -60,32 +60,20 @@
 		/* TEST */
 		,test: false
 	};
-
-	/**
-	 * Vars used throughout plugin
-	 */
-	var jmpress = null
-		,settings = null
-		,container = null
-		,area = null
-		,canvas = null
-		,steps = null
-		,current = null
-		,active = false
-		,callbacks = {
-			'beforeChange': 1
-			,'initStep': 1
-			,'afterInit': 1
-			,'applyStep': 1
-			,'setInactive': 1
-			,'setActive': 1
-			,'selectInitialStep': 1
-			,'selectPrev': 1
-			,'selectNext': 1
-			,'selectHome': 1
-			,'selectEnd': 1
-			,'loadStep': 1
-		};
+	var callbacks = {
+		'beforeChange': 1
+		,'initStep': 1
+		,'afterInit': 1
+		,'applyStep': 1
+		,'setInactive': 1
+		,'setActive': 1
+		,'selectInitialStep': 1
+		,'selectPrev': 1
+		,'selectNext': 1
+		,'selectHome': 1
+		,'selectEnd': 1
+		,'loadStep': 1
+	};
 
 	/**
 	 * 3D and 2D engines
@@ -245,53 +233,12 @@
 
 
 
-	/*** MEMBERS ***/
-	// functions have to be called with this
-
-	/**
-	 * Call a callback
-	 *
-	 * @param callbackName String callback which should be called
-	 * @param arguments some arguments to the callback
-	 */
-	function callCallback( callbackName, element, eventData ) {
-		eventData.settings = settings;
-		eventData.current = current;
-		eventData.container = container;
-		var result = {};
-		$.each( settings[callbackName], function(idx, callback) {
-			result.value = callback.call( jmpress, element, eventData ) || result.value;
-		});
-		return result.value;
-	}
-	/**
-	 * Load Siblings
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	function loadSiblings() {
-		if (!active) {
-			return false;
-		}
-		var siblings = $(active).siblings( settings.stepSelector );
-		siblings.push( active );
-		siblings.each(function() {
-			if ($(this).hasClass( settings.loadedClass )) {
-				return;
-			}
-			callCallback.call(this, 'loadStep', this, {
-				stepData: $(this).data('stepData')
-			});
-			$(this).addClass( settings.loadedClass );
-		});
-	}
 	/**
 	 * Initialize jmpress
 	 */
 	function init( args ) {
 		// MERGE SETTINGS
-		settings = $.extend(true, {}, defaults, args);
+		var settings = $.extend(true, {}, defaults, args);
 
 		// accept functions and arrays of functions as callbacks
 		for (var callbackName in callbacks) {
@@ -302,11 +249,319 @@
 			}
 		}
 
+		/*** MEMBER VARS ***/
+
+		var jmpress = $( this )
+			,container = null
+			,area = null
+			,canvas = null
+			,steps = null
+			,current = null
+			,active = false
+
+
+		/*** MEMBER FUNCTIONS ***/
+		// functions have to be called with this
+
+		/**
+		 * Call a callback
+		 *
+		 * @param callbackName String callback which should be called
+		 * @param arguments some arguments to the callback
+		 */
+		function callCallback( callbackName, element, eventData ) {
+			eventData.settings = settings;
+			eventData.current = current;
+			eventData.container = container;
+			var result = {};
+			$.each( settings[callbackName], function(idx, callback) {
+				result.value = callback.call( jmpress, element, eventData ) || result.value;
+			});
+			return result.value;
+		}
+		/**
+		 * Load Siblings
+		 *
+		 * @access protected
+		 * @return void
+		 */
+		function loadSiblings() {
+			if (!active) {
+				return false;
+			}
+			var siblings = $(active).siblings( settings.stepSelector );
+			siblings.push( active );
+			siblings.each(function() {
+				if ($(this).hasClass( settings.loadedClass )) {
+					return;
+				}
+				callCallback.call(this, 'loadStep', this, {
+					stepData: $(this).data('stepData')
+				});
+				$(this).addClass( settings.loadedClass );
+			});
+		}
+		/**
+		 * Select a given step
+		 *
+		 * @param Object|String el element to select
+		 * @param String type reason of changing step
+		 * @return Object element selected
+		 */
+		function select( el, type ) {
+			if ( typeof el === 'string') {
+				el = jmpress.find( el ).first();
+			}
+			if ( !el || !$(el).data('stepData') ) {
+				return false;
+			}
+
+			// Sometimes it's possible to trigger focus on first link with some keyboard action.
+			// Browser in such a case tries to scroll the page to make this element visible
+			// (even that body overflow is set to hidden) and it breaks our careful positioning.
+			//
+			// So, as a lousy (and lazy) workaround we will make the page scroll back to the top
+			// whenever slide is selected
+			//
+			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
+			scrollFix.call(this);
+
+			var step = $(el).data('stepData');
+
+			var cancelSelect = false;
+			callCallback.call(this, "beforeChange", el, {
+				stepData: step
+				,reason: type
+				,cancel: function() {
+					cancelSelect = true;
+				}
+			});
+			if (cancelSelect) {
+				return;
+			}
+
+			var target = {
+				rotate: {
+					x: -parseInt(step.rotate.x, 10)
+					,y: -parseInt(step.rotate.y, 10)
+					,z: -parseInt(step.rotate.z, 10)
+					,revert: false
+				},
+				scale: {
+					x: 1 / parseFloat(step.scale.x)
+					,y: 1 / parseFloat(step.scale.y)
+					,z: 1 / parseFloat(step.scale.z)
+				},
+				translate: {
+					x: -step.translate.x
+					,y: -step.translate.y
+					,z: -step.translate.z
+				}
+			};
+
+			if ( active ) {
+				callCallback.call(this, 'setInactive', active, {
+					stepData: $(active).data('stepData')
+					,reason: type
+					,target: target
+					,nextStep: el
+					,nextStepData: step
+				} );
+			}
+			callCallback.call(this, 'setActive', el, {
+				stepData: step
+				,reason: type
+				,target: target
+			});
+
+			// Set on step class on root element
+			current.jmpressClass = ( $(jmpress).attr('class') || '' )
+				.replace(/step-[A-Za-z0-9_-]+/gi, '').trim()
+				+ ' step-' + $(el).attr('id');
+			$(jmpress).attr('class', current.jmpressClass);
+
+			var props,
+				zoomin = target.scale.x >= current.scalex;
+
+			props = {
+				// to keep the perspective look similar for different scales
+				// we need to 'scale' the perspective, too
+				perspective: step.scale.x * 1000 + "px"
+			};
+			props = $.extend({}, settings.animation, props);
+			if (!zoomin) {
+				props.transitionDelay = '0';
+			}
+			if (!active) {
+				props.transitionDuration = '0';
+				props.transitionDelay = '0';
+			}
+			css(area, props);
+			engine._transform(area, {
+				scale: target.scale
+			});
+
+			target.rotate.revert = true;
+			props = {
+			};
+			props = $.extend({}, settings.animation, props);
+			if (zoomin) {
+				props.transitionDelay = '0';
+			}
+			if (!active) {
+				props.transitionDuration = '0';
+				props.transitionDelay = '0';
+			}
+			//css(canvas, props);
+			engine._transform(canvas, {
+				translate: target.translate
+				,rotate: target.rotate
+				,css: props
+			});
+
+			$( settings.stepSelector ).css('z-index', 9);
+			$(el).css('z-index', 10);
+
+			current.scalex = target.scale.x;
+			active = el;
+
+			loadSiblings.call(this);
+
+			return el;
+		}
+		/**
+		 * This should fix ANY kind of buggy scrolling
+		 */
+		function scrollFix() {
+			function fix() {
+				if($(container)[0].tagName == "BODY")
+					window.scrollTo(0, 0);
+				$(container).scrollTop(0);
+				$(container).scrollLeft(0);
+				function check() {
+					if($(container).scrollTop() != 0 ||
+						$(container).scrollLeft() != 0)
+						fix();
+				}
+				setTimeout(check, 1);
+				setTimeout(check, 10);
+				setTimeout(check, 100);
+				setTimeout(check, 200);
+				setTimeout(check, 400);
+				setTimeout(check, 1000);
+			}
+			fix();
+		}
+		/**
+		 * Alias for select
+		 */
+		function goTo( el ) {
+			return select.call(this, el, "jump" );
+		}
+		/**
+		 * Goto Next Slide
+		 *
+		 * @return Object newly active slide
+		 */
+		function next() {
+			return select.call(this, callCallback.call(this, 'selectNext', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "next" );
+		}
+		/**
+		 * Goto Previous Slide
+		 *
+		 * @return Object newly active slide
+		 */
+		function prev() {
+			return select.call(this, callCallback.call(this, 'selectPrev', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "prev" );
+		}
+		/**
+		 * Goto First Slide
+		 *
+		 * @return Object newly active slide
+		 */
+		function home() {
+			return select.call(this, callCallback.call(this, 'selectHome', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "home" );
+		}
+		/**
+		 * Goto Last Slide
+		 *
+		 * @return Object newly active slide
+		 */
+		function end() {
+			return select.call(this,   callCallback.call(this, 'selectEnd', active, {
+				stepData: $(active).data('stepData')
+				,steps: steps
+			}), "end" );
+		}
+		/**
+		 * Manipulate the canvas
+		 *
+		 * @param Object props
+		 * @return Object canvas
+		 */
+		function canvas( props ) {
+			css(canvas, props);
+			return canvas;
+		}
+		/**
+		 * Return current settings
+		 *
+		 * @return Object
+		 */
+		function getSettings() {
+			return settings;
+		}
+		/**
+		 * Return current step
+		 *
+		 * @return Object
+		 */
+		function getActive() {
+			return active && $(active);
+		}
+		/**
+		 * fire a callback
+		 */
+		function fire( callbackName, element, eventData ) {
+			if( !callbacks[callbackName] ) {
+				$.error( "callback " + callbackName + " is not registered." );
+			} else {
+				callCallback.call(this, callbackName, element, eventData);
+			}
+		}
+
+		/**
+		 * PUBLIC METHODS LIST
+		 */
+		jmpress.data("jmpressmethods", {
+			select: select
+			,scrollFix: scrollFix
+			,goTo: goTo
+			,next: next
+			,prev: prev
+			,home: home
+			,end: end
+			,canvas: canvas
+			,settings: getSettings
+			,active: getActive
+			,fire: fire
+		});
+
+
 		// BEGIN INIT
-		jmpress = $( this );
 
 		// CHECK FOR SUPPORT
 		if (checkSupport() === false) {
+			jmpress.addClass(settings.notSupportedClass);
 			return;
 		}
 
@@ -410,270 +665,12 @@
 
 	}
 	/**
-	 * Select a given step
-	 *
-	 * @param Object|String el element to select
-	 * @param String type reason of changing step
-	 * @return Object element selected
-	 */
-	function select( el, type ) {
-		if ( typeof el === 'string') {
-			el = jmpress.find( el ).first();
-		}
-		if ( !el || !$(el).data('stepData') ) {
-			return false;
-		}
-
-		// Sometimes it's possible to trigger focus on first link with some keyboard action.
-		// Browser in such a case tries to scroll the page to make this element visible
-		// (even that body overflow is set to hidden) and it breaks our careful positioning.
-		//
-		// So, as a lousy (and lazy) workaround we will make the page scroll back to the top
-		// whenever slide is selected
-		//
-		// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
-		scrollFix.call(this);
-
-		var step = $(el).data('stepData');
-
-		var cancelSelect = false;
-		callCallback.call(this, "beforeChange", el, {
-			stepData: step
-			,reason: type
-			,cancel: function() {
-				cancelSelect = true;
-			}
-		});
-		if (cancelSelect) {
-			return;
-		}
-
-		var target = {
-			rotate: {
-				x: -parseInt(step.rotate.x, 10)
-				,y: -parseInt(step.rotate.y, 10)
-				,z: -parseInt(step.rotate.z, 10)
-				,revert: false
-			},
-			scale: {
-				x: 1 / parseFloat(step.scale.x)
-				,y: 1 / parseFloat(step.scale.y)
-				,z: 1 / parseFloat(step.scale.z)
-			},
-			translate: {
-				x: -step.translate.x
-				,y: -step.translate.y
-				,z: -step.translate.z
-			}
-		};
-
-		if ( active ) {
-			callCallback.call(this, 'setInactive', active, {
-				stepData: $(active).data('stepData')
-				,reason: type
-				,target: target
-				,nextStep: el
-				,nextStepData: step
-			} );
-		}
-		callCallback.call(this, 'setActive', el, {
-			stepData: step
-			,reason: type
-			,target: target
-		});
-
-		// Set on step class on root element
-		if ( current.jmpressClass ) {
-			$(jmpress).removeClass(current.jmpressClass);
-		}
-		$(jmpress).addClass(current.jmpressClass = 'step-' + $(el).attr('id'));
-
-		var props,
-			zoomin = target.scale.x >= current.scalex;
-
-		props = {
-			// to keep the perspective look similar for different scales
-			// we need to 'scale' the perspective, too
-			perspective: step.scale.x * 1000 + "px"
-		};
-		props = $.extend({}, settings.animation, props);
-		if (!zoomin) {
-			props.transitionDelay = '0';
-		}
-		if (!active) {
-			props.transitionDuration = '0';
-			props.transitionDelay = '0';
-		}
-		css(area, props);
-		engine._transform(area, {
-			scale: target.scale
-		});
-
-		target.rotate.revert = true;
-		props = {
-		};
-		props = $.extend({}, settings.animation, props);
-		if (zoomin) {
-			props.transitionDelay = '0';
-		}
-		if (!active) {
-			props.transitionDuration = '0';
-			props.transitionDelay = '0';
-		}
-		//css(canvas, props);
-		engine._transform(canvas, {
-			translate: target.translate
-			,rotate: target.rotate
-			,css: props
-		});
-
-		$( settings.stepSelector ).css('z-index', 9);
-		$(el).css('z-index', 10);
-
-		current.scalex = target.scale.x;
-		active = el;
-
-		loadSiblings.call(this);
-
-		return el;
-	}
-	/**
-	 * This should fix ANY kind of buggy scrolling
-	 */
-	function scrollFix() {
-		function fix() {
-			if($(container)[0].tagName == "BODY")
-				window.scrollTo(0, 0);
-			$(container).scrollTop(0);
-			$(container).scrollLeft(0);
-			function check() {
-				if($(container).scrollTop() != 0 ||
-					$(container).scrollLeft() != 0)
-					fix();
-			}
-			setTimeout(check, 1);
-			setTimeout(check, 10);
-			setTimeout(check, 100);
-			setTimeout(check, 200);
-			setTimeout(check, 400);
-			setTimeout(check, 1000);
-		}
-		fix();
-	}
-	/**
-	 * Alias for select
-	 */
-	function goTo( el ) {
-		return select.call(this, el, "jump" );
-	}
-	/**
-	 * Goto Next Slide
-	 *
-	 * @return Object newly active slide
-	 */
-	function next() {
-		return select.call(this, callCallback.call(this, 'selectNext', active, {
-			stepData: $(active).data('stepData')
-			,steps: steps
-		}), "next" );
-	}
-	/**
-	 * Goto Previous Slide
-	 *
-	 * @return Object newly active slide
-	 */
-	function prev() {
-		return select.call(this, callCallback.call(this, 'selectPrev', active, {
-			stepData: $(active).data('stepData')
-			,steps: steps
-		}), "prev" );
-	}
-	/**
-	 * Goto First Slide
-	 *
-	 * @return Object newly active slide
-	 */
-	function home() {
-		return select.call(this, callCallback.call(this, 'selectHome', active, {
-			stepData: $(active).data('stepData')
-			,steps: steps
-		}), "home" );
-	}
-	/**
-	 * Goto Last Slide
-	 *
-	 * @return Object newly active slide
-	 */
-	function end() {
-		return select.call(this,   callCallback.call(this, 'selectEnd', active, {
-			stepData: $(active).data('stepData')
-			,steps: steps
-		}), "end" );
-	}
-	/**
-	 * Manipulate the canvas
-	 *
-	 * @param Object props
-	 * @return Object canvas
-	 */
-	function canvas( props ) {
-		css(canvas, props);
-		return canvas;
-	}
-	/**
-	 * Set CSS on element w/ prefixes
-	 *
-	 * @return Object element which properties were set
-	 *
-	 * TODO: Consider bypassing pfx and blindly set as jQuery
-	 * already checks for support
-	 */
-	function css( el, props ) {
-		var key, pkey, css = {};
-		for ( key in props ) {
-			if ( props.hasOwnProperty(key) ) {
-				pkey = pfx(key);
-				if ( pkey != null ) {
-					css[pkey] = props[key];
-				}
-			}
-		}
-		el.css(css);
-		return el;
-	}
-	/**
 	 * Return default settings
 	 *
 	 * @return Object
 	 */
 	function getDefaults() {
 		return defaults;
-	}
-	/**
-	 * Return current settings
-	 *
-	 * @return Object
-	 */
-	function getSettings() {
-		return settings;
-	}
-	/**
-	 * Return current step
-	 *
-	 * @return Object
-	 */
-	function getActive() {
-		return active && $(active);
-	}
-	/**
-	 *
-	 */
-	function fire( callbackName, element, eventData ) {
-		if( !callbacks[callbackName] ) {
-			$.error( "callback " + callbackName + " is not registered." );
-		} else {
-			callCallback.call(this, callbackName, element, eventData);
-		}
 	}
 	/**
 	 * Register a callback or a jmpress function
@@ -697,6 +694,27 @@
 				defaults[name] = [];
 			}
 		}
+	}
+	/**
+	 * Set CSS on element w/ prefixes
+	 *
+	 * @return Object element which properties were set
+	 *
+	 * TODO: Consider bypassing pfx and blindly set as jQuery
+	 * already checks for support
+	 */
+	function css( el, props ) {
+		var key, pkey, css = {};
+		for ( key in props ) {
+			if ( props.hasOwnProperty(key) ) {
+				pkey = pfx(key);
+				if ( pkey != null ) {
+					css[pkey] = props[key];
+				}
+			}
+		}
+		el.css(css);
+		return el;
 	}
 	/**
 	 * Return dataset for element
@@ -727,23 +745,12 @@
 
 
 	/**
-	 * PUBLIC METHODS LIST
+	 * PUBLIC STATIC METHODS LIST
 	 */
 	var methods = {
 		init: init
-		,select: select
-		,scrollFix: scrollFix
-		,goTo: goTo
-		,next: next
-		,prev: prev
-		,home: home
-		,end: end
-		,canvas: canvas
 		,css: css
 		,defaults: getDefaults
-		,settings: getSettings
-		,active: getActive
-		,fire: fire
 		,register: register
 		,dataset: dataset
 	};
@@ -752,30 +759,46 @@
 	 * $.jmpress()
 	 */
 	$.fn.jmpress = function( method ) {
-		if ( methods[method] ) {
-			if ( method.substr(0, 1) == '_' && settings.test === false) {
-				$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+		function f() {
+			var jmpressmethods = $(this).data("jmpressmethods");
+			if( jmpressmethods && jmpressmethods[method] ) {
+				if ( method.substr(0, 1) == '_' && jmpressmethods.settings().test === false) {
+					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+				} else {
+					return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				}
+			} else if ( methods[method] ) {
+				if ( method.substr(0, 1) == '_' && defaults.test === false) {
+					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
+				} else {
+					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				}
+			} else if ( callbacks[method] && jmpressmethods ) {
+				var settings = jmpressmethods.settings();
+				var func = Array.prototype.slice.call( arguments, 1 )[0];
+				if ($.isFunction( func )) {
+					settings[method] = settings[method] || [];
+					settings[method].push(func);
+				}
+			} else if ( typeof method === 'object' || ! method ) {
+				return init.apply( this, arguments );
 			} else {
-				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+				$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
 			}
-		} else if ( callbacks[method] ) {
-			var func = Array.prototype.slice.call( arguments, 1 )[0];
-			if ($.isFunction( func )) {
-				settings[method] = settings[method] || [];
-				settings[method].push(func);
-			}
-		} else if ( typeof method === 'object' || ! method ) {
-			return init.apply( this, arguments );
-		} else {
-			$.error( 'Method ' +  method + ' does not exist on jQuery.jmpress' );
+			// to allow chaining
+			return this;
 		}
-		// to allow chaining
-		return this;
+		var args = arguments;
+		var result;
+		$(this).each(function(idx, element) {
+			result = f.apply(element, args);
+		});
+		return result;
 	};
 	$.extend({
 		jmpress: function( method ) {
 			if ( methods[method] ) {
-				if ( method.substr(0, 1) == '_' && settings.test === false) {
+				if ( method.substr(0, 1) == '_' && defaults.test === false) {
 					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 				} else {
 					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
@@ -1023,7 +1046,7 @@
 				clearTimeout(eventData.current.hashtimeout);
 				eventData.current.hashtimeout = setTimeout(function() {
 					window.location.hash = "#/" + $(step).attr('id');
-				}, 1500); // TODO: Use animation duration
+				}, 2000); // TODO: Use animation duration
 			}
 		});
 	})();
