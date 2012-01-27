@@ -524,9 +524,6 @@
 				,css: props
 			});
 
-			$( settings.stepSelector ).css('z-index', 9);
-			$(el).css('z-index', 10);
-
 			current.scalex = target.scale.x;
 			active = el;
 
