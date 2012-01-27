@@ -18,70 +18,6 @@
 	'use strict';
 
 	/**
-	 * Default Settings
-	 */
-	var defaults = {
-		/* CLASSES */
-		stepSelector: '.step'
-		,containerClass: ''
-		,canvasClass: ''
-		,areaClass: ''
-		,notSupportedClass: 'not-supported'
-		,loadedClass: 'loaded'
-
-		/* CONFIG */
-		,fullscreen: true
-
-		/* ANIMATION */
-		,animation: {
-			transformOrigin: 'top left'
-			,transitionProperty: 'all'
-			,transitionDuration: '1s'
-			,transitionDelay: '500ms'
-			,transitionTimingFunction: 'ease-in-out'
-			,transformStyle: "preserve-3d"
-		}
-
-		/* CALLBACKS */
-		// TODO documentation
-		,beforeChange: []
-		,initStep: []
-		,afterInit: []
-		,beforeDeinit: []
-		,afterDeinit: []
-		,applyStep: []
-		,unapplyStep: []
-		,setInactive: []
-		,setActive: []
-		,selectInitialStep: []
-		,selectPrev: []
-		,selectNext: []
-		,selectHome: []
-		,selectEnd: []
-		,loadStep: []
-
-		/* TEST */
-		,test: false
-	};
-	var callbacks = {
-		'beforeChange': 1
-		,'initStep': 1
-		,'afterInit': 1
-		,'beforeDeinit': 1
-		,'afterDeinit': 1
-		,'applyStep': 1
-		,'unapplyStep': 1
-		,'setInactive': 1
-		,'setActive': 1
-		,'selectInitialStep': 1
-		,'selectPrev': 1
-		,'selectNext': 1
-		,'selectHome': 1
-		,'selectEnd': 1
-		,'loadStep': 1
-	};
-
-	/**
 	 * 3D and 2D engines
 	 */
 	var engines = {
@@ -234,6 +170,76 @@
 		}
 	})();
 
+	// TODO write function for this
+	var propertyBrowserMapping = {
+		"WebkitTransform": "-webkit-transform"
+		,"OTransform": "-o-transform"
+		,"MozTransform": "-mov-transform"
+	}
+
+	/**
+	 * Default Settings
+	 */
+	var defaults = {
+		/* CLASSES */
+		stepSelector: '.step'
+		,containerClass: ''
+		,canvasClass: ''
+		,areaClass: ''
+		,notSupportedClass: 'not-supported'
+		,loadedClass: 'loaded'
+
+		/* CONFIG */
+		,fullscreen: true
+
+		/* ANIMATION */
+		,animation: {
+			transformOrigin: 'top left'
+			,transitionProperty: propertyBrowserMapping[pfx('transform')] + ', opacity'
+			,transitionDuration: '1s'
+			,transitionDelay: '500ms'
+			,transitionTimingFunction: 'ease-in-out'
+			,transformStyle: "preserve-3d"
+		}
+
+		/* CALLBACKS */
+		// TODO documentation
+		,beforeChange: []
+		,initStep: []
+		,afterInit: []
+		,beforeDeinit: []
+		,afterDeinit: []
+		,applyStep: []
+		,unapplyStep: []
+		,setInactive: []
+		,setActive: []
+		,selectInitialStep: []
+		,selectPrev: []
+		,selectNext: []
+		,selectHome: []
+		,selectEnd: []
+		,loadStep: []
+
+		/* TEST */
+		,test: false
+	};
+	var callbacks = {
+		'beforeChange': 1
+		,'initStep': 1
+		,'afterInit': 1
+		,'beforeDeinit': 1
+		,'afterDeinit': 1
+		,'applyStep': 1
+		,'unapplyStep': 1
+		,'setInactive': 1
+		,'setActive': 1
+		,'selectInitialStep': 1
+		,'selectPrev': 1
+		,'selectNext': 1
+		,'selectHome': 1
+		,'selectEnd': 1
+		,'loadStep': 1
+	};
 
 
 	/**
@@ -342,7 +348,7 @@
 
 			container.attr("style", oldStyle.container);
 			area.attr("style", oldStyle.area);
-			canvas.children().each(function() {
+			$(jmpress).children().filter(steps).each(function() {
 				jmpress.append( $( this ) );
 			});
 			if( settings.fullscreen ) {
@@ -660,11 +666,14 @@
 				jmpress.removeClass(settings.notSupportedClass);
 		}
 
+		// grabbing all steps
+		steps = $(settings.stepSelector, jmpress);
+
 		// GERNERAL INIT OF FRAME
 		container = jmpress;
 		area = $('<div />');
 		canvas = $('<div />');
-		jmpress.children().each(function() {
+		$(jmpress).children().filter(steps).each(function() {
 			canvas.append( $( this ) );
 		});
 		if(settings.fullscreen) {
@@ -711,9 +720,6 @@
 		current = {
 			scalex: 1
 		};
-
-		// grabbing all steps
-		steps = $(settings.stepSelector, jmpress);
 
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {

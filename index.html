@@ -10,11 +10,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta http-equiv="expires" content="0">
 
-	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
+	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/start/jquery-ui.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jmpress.js"></script>
+	<script type="text/javascript" src="plugins/duration.js"></script>
 </head>
 <body>
 
@@ -28,7 +29,7 @@
 </ul>
 <ul id="nav-themes">
 	<li><h3>jQuery ui themes</h3></li>
-	<li><a href="#" data-theme="excite-bike"><span>excite-bike</span></a></li>
+	<li><a href="#" data-theme="start"><span>start</span></a></li>
 	<li><a href="#" data-theme="sunny"><span>sunny</span></a></li>
 	<li><a href="#" data-theme="base"><span>base</span></a></li>
 	<li><a href="#" data-theme="le-frog"><span>le-frog</span></a></li>
@@ -159,8 +160,8 @@
 			<h1>nested step</h1>
 			<p>with a nested jmpress. (click it to navigate there)</p>
 			<div id="nested-jmpress" style="height: 100px; width: 700px;">
-				<div class="nested-step">
-					<h2>Cool usecases for that:</h2>
+				<div class="nested-step" data-duration="-1">
+					<h2>Cool usecases for that: <a href="#" class="nested-next">start &gt;</a></h2>
 				</div>
 				<div class="nested-step" data-x="1000" data-rotate-y="90">
 					<h2>Embed this into your blog</h2>
@@ -176,6 +177,9 @@
 				<div class="nested-step" data-y="1000" data-x="1000" data-rotate-x="90">
 					<h2>Combine this with duration-plugin</h2>
 					<h2>TODO: add more points</h2>
+				</div>
+				<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" style="position: absolute; left: 5px; right: 5px; bottom: 5px; height: 10px">
+					<div id="nested-jmpress-bar" class="ui-progressbar-value ui-widget-header ui-corner-left"></div>
 				</div>
 			</div>
 			<p style="font-size: 70%">NOTICE: the nested jmpress presentation uses 3d much more the the outer presentation. 
@@ -222,6 +226,10 @@ $(function() {
 	$('#jmpress').jmpress(jmpressConfig);
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
+		return false;
+	});
+	$('.nested-next').click(function() {
+		$('#nested-jmpress').jmpress('next');
 		return false;
 	});
 	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
@@ -281,6 +289,7 @@ $(function() {
 			height: 200
 			,width: 1000
 		}
+		,duration: { defaultValue: 3500, barSelector: "#nested-jmpress-bar" }
 		,containerClass: "ui-widget-content"
 		,hash: { use: false }
 		,stepSelector: ".nested-step"
