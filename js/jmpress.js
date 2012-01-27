@@ -944,6 +944,12 @@
 		});
 	})();
 
+	(function() { // start on defined step
+		$.jmpress( 'selectInitialStep', function( nil, eventData ) {
+			return eventData.settings.start;
+		});
+	})();
+
 	(function() { // ways
 		// TODO allow call of route after init
 		function routeFunc( route, type ) {
