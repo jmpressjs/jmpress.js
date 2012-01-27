@@ -613,7 +613,7 @@
 		 * @param Object props
 		 * @return Object canvas
 		 */
-		function canvas( props ) {
+		function canvasMod( props ) {
 			css(canvas, props);
 			return canvas;
 		}
@@ -655,7 +655,7 @@
 			,prev: prev
 			,home: home
 			,end: end
-			,canvas: canvas
+			,canvas: canvasMod
 			,settings: getSettings
 			,active: getActive
 			,fire: fire
@@ -839,7 +839,7 @@
 	$.fn.jmpress = function( method ) {
 		function f() {
 			var jmpressmethods = $(this).data("jmpressmethods");
-			if( jmpressmethods && jmpressmethods[method] ) {
+			if ( jmpressmethods && jmpressmethods[method] ) {
 				if ( method.substr(0, 1) == '_' && jmpressmethods.settings().test === false) {
 					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 				} else {
