@@ -236,6 +236,8 @@ $(function() {
 		$("#jmpress").addClass("not-supported");
 		$("#reinit-jmpress").show();
 		$("#uninit-jmpress").hide();
+		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
+		$('#home').find('.intro-bottom').hide();
 		event.preventDefault();
 	});
 	$("#reinit-jmpress").click(function(event) {
@@ -244,6 +246,8 @@ $(function() {
 		$("#jmpress").removeClass("not-supported");
 		$("#reinit-jmpress").hide();
 		$("#uninit-jmpress").show();
+		$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
+		$('#home').find('.intro-bottom').show();
 		event.preventDefault();
 	});
 	$("#reinit-jmpress").hide();
