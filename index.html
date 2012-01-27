@@ -134,6 +134,20 @@
 			<li>Uninit jmpress style. <a href="#" id="uninit-jmpress">Do It</a> <a href="#" id="reinit-jmpress">Reinit</a>
 		</ul>
 		<a href="#" class="next">home</a>
+		<div id="showcase-nested" class="step" data-x="250" data-y="-50" data-rotate-z="20" data-scale="0.3">
+			<h1>nested step</h1>
+			<p>with a nested jmpress</p>
+			<div id="nested-jmpress" style="height: 250px; width: 500px;">
+				<div class="nested-step">
+					<h1>A Step</h1>
+				</div>
+				<div class="nested-step" data-x="1000" data-rotate-y="90">
+					<h1>Another Step</h1>
+				</div>
+			</div>
+			<a href="#" class="next">next &gt;</a>
+		</div>
+
 	</div>
 </div>
 
@@ -222,6 +236,16 @@ $(function() {
 		event.preventDefault();
 	});
 	$("#reinit-jmpress").hide();
+	$("#nested-jmpress").jmpress({
+		viewPort: {
+			height: 500
+			,width: 1000
+		}
+		,containerClass: "ui-widget-content"
+		,hash: { use: false }
+		,stepSelector: ".nested-step"
+		,fullscreen: false
+	});
 });
 </script>
 
