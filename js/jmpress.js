@@ -240,6 +240,8 @@
 	 * Initialize jmpress
 	 */
 	function init( args ) {
+		args = args || {};
+
 		// accept functions and arrays of functions as callbacks
 		var callbackArgs = {}
 		for (var callbackName in callbacks) {
