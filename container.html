@@ -115,8 +115,7 @@
 
 <script type="text/javascript">
 $(function() {
-	var impress2 = $('#jmpress')[0].cloneNode(true);
-	$(impress2).appendTo($('body'));
+	$('#jmpress').clone().insertAfter('#jmpress');
 	
 	$('.jmpress').jmpress({
 		// SET THE VIEW PORT
