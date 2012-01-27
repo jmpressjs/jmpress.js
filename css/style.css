@@ -177,8 +177,9 @@ h4 {
 }
 
 /** COMMON STEP STYLES **/
-.step {
+.step, .nested-step {
 	width: 900px;
+	min-height: 50px;
 	padding: 40px;
 
 	-webkit-box-sizing: border-box;
@@ -194,14 +195,14 @@ h4 {
 }
 
 /* fade out inactive slides */
-.step {
+.step, .nested-step {
 	-webkit-transition: opacity 1s;
 	-moz-transition:    opacity 1s;
 	-ms-transition:     opacity 1s;
 	-o-transition:      opacity 1s;
 	transition:         opacity 1s;
 }
-.step:not(.active) {
+.step:not(.active):not(.nested-active) {
 	opacity: 0.3;
 }
 .step ul {
