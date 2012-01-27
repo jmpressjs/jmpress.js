@@ -28,7 +28,7 @@
 	<li><a href="#showcase"><span>SHOWCASE</span></a></li>
 </ul>
 <ul id="nav-themes">
-	<li><h3>jQuery ui themes</h3></li>
+	<li><h3>jQuery ui themes&nbsp;</h3></li>
 	<li><a href="#" data-theme="start"><span>start</span></a></li>
 	<li><a href="#" data-theme="sunny"><span>sunny</span></a></li>
 	<li><a href="#" data-theme="base"><span>base</span></a></li>
@@ -148,15 +148,18 @@
 	</div>
 
 	<div id="showcase" class="step" data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8">
-		<h1>cool features</h1>
+		<h1>some cool features</h1>
 		<ul>
 			<li>embed this in a container <a href="container.html">Show Sample</a></li>
 			<li>jquery ui themes</li>
-			<li>Uninit jmpress style: <a href="#" id="uninit-jmpress">Do It</a> <a href="#" id="reinit-jmpress">Reinit</a>
+			<li>Switch to normal view: <a href="#" id="uninit-jmpress">Switch</a> <a href="#" id="reinit-jmpress">Switch back :)</a></li>
+			<li>nice plugin interface <br>(most core functionality is also build on this interface)</li>
+			<li>multiinstanceable, embedable, many config options</li>
+			<li>tree-like hierachies possible</li>
 		</ul>
-		<p>See new features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
+		<p>See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
 		<a href="#" class="next">next &gt;</a>
-		<div id="showcase-nested" class="step" data-x="250" data-y="-50" data-rotate-z="20" data-scale="0.3">
+		<div id="showcase-nested" class="step" data-x="250" data-y="-30" data-rotate-z="20" data-scale="0.3">
 			<h1>nested step</h1>
 			<p>with a nested jmpress. (click it to navigate there)</p>
 			<div id="nested-jmpress" style="height: 100px; width: 700px;">
@@ -261,8 +264,12 @@ $(function() {
 		});
 		$("head").append( link )
 
+		$("a[data-theme]").removeClass("ui-state-active");
+		$(this).addClass("ui-state-active");
+
 		event.preventDefault();
 	});
+	$("a[data-theme=start]").addClass("ui-state-active");
 	$("#uninit-jmpress").click(function(event) {
 		$("#jmpress").jmpress("deinit");
 		$("#nav").css("opacity", 0);
@@ -271,6 +278,7 @@ $(function() {
 		$("#uninit-jmpress").hide();
 		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
 		$('#home').find('.intro-bottom').hide();
+		window.location.hash = ""
 		event.preventDefault();
 	});
 	$("#reinit-jmpress").click(function(event) {

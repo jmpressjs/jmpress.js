@@ -348,7 +348,7 @@
 
 			container.attr("style", oldStyle.container);
 			area.attr("style", oldStyle.area);
-			$(jmpress).children().filter(steps).each(function() {
+			$(canvas).children().each(function() {
 				jmpress.append( $( this ) );
 			});
 			if( settings.fullscreen ) {
