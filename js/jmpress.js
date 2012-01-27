@@ -274,8 +274,9 @@
 		 * Init a single step
 		 *
 		 * @param element the element of the step
+		 * @param number of step
 		 */
-		function doStepInit( element ) {
+		function doStepInit( element, idx ) {
 			var data = dataset( element );
 			var step = {
 				oldStyle: $(element).attr("style") || ""
@@ -729,7 +730,7 @@
 
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {
-			doStepInit( this );
+			doStepInit( this, idx );
 		});
 
 		callCallback.call(this, 'afterInit', $(this), {
