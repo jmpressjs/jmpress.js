@@ -137,7 +137,7 @@ h4 {
 	background: transparent;
 	position: fixed;
 	right: 0px;
-	bottom: 10px;
+	bottom: 50px;
 	z-index: 99;
 }
 #nav-themes h3 {
@@ -345,7 +345,7 @@ h4 {
 	transition:         opacity 1s,         transform 0.5s 1s;
 }
 
-.step-about + .hint {
+.step-home + .hint {
 	opacity: 1;
 
 	-webkit-transition: opacity 1s 5s, -webkit-transform 0.5s;
