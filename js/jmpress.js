@@ -1201,6 +1201,18 @@
 			// HASH CHANGE EVENT
 			if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
 				var jmpress = this;
+				$(window).bind('hashchange', function() {
+					var id = getElementFromUrl();
+					$(jmpress).jmpress("scrollFix");
+					if(id) {
+						if($(id).attr("id") != $(jmpress).jmpress("active").attr("id")) {
+							$(jmpress).jmpress('select', id);
+						}
+						var shouldBeHash = "#/" + $(id).attr("id");
+						if(window.location.hash != shouldBeHash)
+						window.location.hash = shouldBeHash;
+					}
+				});
 				$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {
 					var href = $(this).attr("href");
 					try {
