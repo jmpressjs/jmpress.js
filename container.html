@@ -17,15 +17,9 @@
 </head>
 <body>
 
-<ul id="nav">
-	<li><a href="#about"><span>ABOUT</span></a></li>
-	<li><a href="#download"><span>DOWNLOAD</span></a></li>
-	<li><a href="#docs"><span>DOCS</span></a></li>
-	<li><a href="#contribute"><span>CONTRIBUTE</span></a></li>
-	<li><a href="#showcase"><span>SHOWCASE</span></a></li>
-</ul>
+<p style="text-align: center"><a href="index.html#/showcase">Back to Fullscreen Slides</a></p>
 
-<div id="jmpress" style="width: 60%; height: 400px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">
+<div id="jmpress" class="jmpress">
 
 	<div id="about" class="step" data-x="-900" data-y="-1500">
 		<h4>introducing</h4>
@@ -117,33 +111,13 @@
 		</ul>
 		<a href="#" class="next">next &gt;</a>
 	</div>
-
-	<div id="showcase" class="step" data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8">
-		<h1>cool features</h1>
-		<ul>
-			<li>embed this in a container. <a href="container.html">Show Sample</a></li>
-			<li>jquery ui themes. Try it:
-			<a href="#" data-theme="excite-bike">excite-bike</a>
-			<a href="#" data-theme="sunny">sunny</a> <br/>
-			<a href="#" data-theme="base">base</a>
-			<a href="#" data-theme="le-frog">le-frog</a>
-			<a href="#" data-theme="black-tie">black-tie</a>
-			<a href="#" data-theme="ui-darkness">ui-darkness</a>
-			<a href="#" data-theme="ui-lightness">ui-lightness</a>
-			</li>
-		</ul>
-		<a href="#" class="next">home</a>
-	</div>
-</div>
-
-<div class="hint">
-    <p>Use arrow keys to navigate</p>
 </div>
 
 <script type="text/javascript">
 $(function() {
-	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
-	$('#jmpress').jmpress({
+	$('#jmpress').clone().insertAfter('#jmpress');
+	
+	$('.jmpress').jmpress({
 		// SET THE VIEW PORT
 		viewPort: {
 			height: 600
@@ -168,40 +142,17 @@ $(function() {
 		,containerClass: "ui-widget-content"
 		,areaClass: ""
 		,canvasClass: ""
+		,fullscreen: false
+		,hash: { use: false }
 	});
 	$('.next').click(function() {
-		$('#jmpress').jmpress('next');
+		$(this).closest(".jmpress").jmpress('next');
 		return false;
 	});
-	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
-	$("#nav a").addClass("ui-button ui-widget ui-state-default");
-	$("#nav a span").addClass("ui-button-text");
-	$("#jmpress a[href], #nav a").hover(function() {
+	$("a[href]").addClass("ui-state-default ui-corner-all").hover(function() {
 		$(this).addClass("ui-state-hover");
 	}, function() {
 		$(this).removeClass("ui-state-hover");
-	});
-	// HACK TO CHANGE HINT IF IPAD
-	var ua = navigator.userAgent.toLowerCase();
-	if ( ua.search(/(ipad)/) != -1 ) {
-		$('.hint').text('Swipe support is coming :)');
-	}
-
-	$("a[data-theme]").click(function(event) {
-		var theme = $(this).data("theme");
-
-		$("#theme").remove();
-
-		var link = $("<link>");
-		link.attr({
-				id: "theme",
-				type: 'text/css',
-				rel: 'stylesheet',
-				href: "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/"+theme+"/jquery-ui.css"
-		});
-		$("head").append( link )
-
-		event.preventDefault();
 	});
 });
 </script>

@@ -58,7 +58,6 @@ table {
 /** GENERAL **/
 body {
 	font-family: 'Quicksand', Verdana, sans-serif;
-	min-height: 740px;
 	-webkit-font-smoothing: antialiased;
 }
 b, strong { font-weight: bold }
@@ -90,6 +89,14 @@ h4 {
 	font-size: 32px;
 	line-height: 32px;
 	margin-left: 50px;
+}
+
+.jmpress {
+	margin-left: 10%;
+	margin-top: 30px;
+	width: 35%;
+	height: 400px;
+	display: inline-block;
 }
 
 /** NAV **/
