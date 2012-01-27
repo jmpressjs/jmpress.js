@@ -146,7 +146,7 @@ $(function() {
 		,hash: { use: false }
 	});
 	$('.next').click(function() {
-		$('#jmpress').jmpress('next');
+		$(this).closest(".jmpress").jmpress('next');
 		return false;
 	});
 	$("a[href]").addClass("ui-state-default ui-corner-all").hover(function() {
