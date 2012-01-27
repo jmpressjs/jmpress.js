@@ -170,6 +170,20 @@ h4 {
 	right: 0px;
 }
 
+#jmpress.init-css {
+	opacity: 0;
+}
+
+#jmpress {
+	opacity: 1;
+
+	-webkit-transition: 0.5s;
+	-moz-transition:    0.5s;
+	-ms-transition:     0.5s;
+	-o-transition:      0.5s;
+	transition:         0.5s;
+}
+
 .next {
 	float: right;
 	margin-top: 50px;
@@ -244,6 +258,12 @@ h4 {
 #home h1 {
 	text-shadow: none;
 }
+
+#home {
+	opacity: 1;
+	z-index: 10;
+}
+
 .intro-top, .intro-bottom {
 	width: 3000px;
 	height: 1000px;
@@ -269,7 +289,7 @@ h4 {
 .intro-bottom {
 	margin: 0 0 0 -1500px;
 }
-.step:not(.active) .intro-top {
+.step:not(.active):not(.init-css) .intro-top {
 	margin-top: -1500px;
 	-webkit-transform: rotate(-30deg);
 	-moz-transform:    rotate(-30deg);
@@ -277,7 +297,7 @@ h4 {
 	-o-transform:      rotate(-30deg);
 	transform:         rotate(-30deg);
 }
-.step:not(.active) .intro-bottom {
+.step:not(.active):not(.init-css) .intro-bottom {
 	margin-top: 500px;
 	-webkit-transform: rotate(-30deg);
 	-moz-transform:    rotate(-30deg);
@@ -364,7 +384,7 @@ h4 {
 
 /** NOT SUPPORTED STYLES **/
 
-.not-supported .step {
+.not-supported .step, .not-supported .step:not(.active) {
 	position: relative;
 	opacity: 1;
 	margin: 20px auto;

@@ -324,6 +324,7 @@
 			if ( active ) {
 				callCallback.call(this, 'setInactive', active, {
 					stepData: $(active).data('stepData')
+					,parents: getStepParents(active)
 					,reason: "deinit"
 				} );
 			}
@@ -722,6 +723,7 @@
 		// START
 		select.call(this,  callCallback.call(this, 'selectInitialStep', "init", { steps: steps }) );
 
+		$(steps).removeClass(settings.initClass);
 	}
 	/**
 	 * Return default settings

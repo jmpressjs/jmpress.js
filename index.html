@@ -36,10 +36,10 @@
 	<li><a href="#" data-theme="ui-lightness"><span>ui-lightness</span></a></li>
 </ul>
 
-<div id="jmpress">
+<div id="jmpress" class="init-css">
 
-	<div id="home" class="step active" data-scale="10">
-		<div class="intro-top">
+	<div id="home" class="step init-css" data-scale="10">
+		<div class="intro-top ui-state-default">
 			<div class="inner">
 				<h4>introducing</h4>
 				<h1 class="ui-state-text">jmpress.js</h1>
@@ -48,7 +48,7 @@
 				<a href="#" class="next">next &gt;</a>
 			</div>
 		</div>
-		<div class="intro-bottom">
+		<div class="intro-bottom ui-state-default">
 			<div class="inner">
 				<h4>introducing</h4>
 				<h1 class="ui-state-text">jmpress.js</h1>
@@ -150,7 +150,7 @@
 			<li>Uninit jmpress style: <a href="#" id="uninit-jmpress">Do It</a> <a href="#" id="reinit-jmpress">Reinit</a>
 		</ul>
 		<p>See new features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
-		<a href="#" class="next">home</a>
+		<a href="#" class="next">next &gt;</a>
 		<div id="showcase-nested" class="step" data-x="250" data-y="-50" data-rotate-z="20" data-scale="0.3">
 			<h1>nested step</h1>
 			<p>with a nested jmpress</p>
@@ -162,7 +162,7 @@
 					<h1>Another Step</h1>
 				</div>
 			</div>
-			<a href="#" class="next">next &gt;</a>
+			<a href="#" class="next">home</a>
 		</div>
 
 	</div>
@@ -200,6 +200,7 @@ $(function() {
 		,containerClass: "ui-widget-content"
 		,areaClass: ""
 		,canvasClass: ""
+		,initClass: "init-css"
 	};
 	$('#jmpress').jmpress(jmpressConfig);
 	$('.next').click(function() {
@@ -209,7 +210,7 @@ $(function() {
 	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
 	$("#nav a, #nav-themes a").addClass("ui-button ui-widget ui-state-default");
 	$("#nav a span").addClass("ui-button-text");
-	$('#home .intro-top, #home .intro-bottom').addClass('ui-state-default');
+	//$('#home .intro-top, #home .intro-bottom').addClass('');
 	$("#jmpress a[href], #nav a, #nav-themes a").hover(function() {
 		$(this).addClass("ui-state-hover");
 	}, function() {
@@ -268,6 +269,9 @@ $(function() {
 		,stepSelector: ".nested-step"
 		,fullscreen: false
 	});
+	setTimeout(function() {
+		$("#jmpress").removeClass("init-css");
+	}, 500);
 });
 </script>
 
