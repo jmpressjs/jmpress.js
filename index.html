@@ -45,7 +45,8 @@
 				<h1 class="ui-state-text">jmpress.js</h1>
 				<p>a jQuery plugin to build a website on the infinite canvas</p>
 				<span class="ui-icon ui-icon-star"></span>
-				<a href="#" class="next">next &gt;</a>
+				<!-- no tabbable things here -->
+				<a href="#" style="visibility: hidden" class="next">next &gt;</a>
 			</div>
 		</div>
 		<div class="intro-bottom ui-state-default">
@@ -153,18 +154,31 @@
 		<a href="#" class="next">next &gt;</a>
 		<div id="showcase-nested" class="step" data-x="250" data-y="-50" data-rotate-z="20" data-scale="0.3">
 			<h1>nested step</h1>
-			<p>with a nested jmpress</p>
-			<div id="nested-jmpress" style="height: 250px; width: 500px;">
+			<p>with a nested jmpress. (click it to navigate there)</p>
+			<div id="nested-jmpress" style="height: 100px; width: 700px;">
 				<div class="nested-step">
-					<h1>A Step</h1>
+					<h2>Cool usecases for that:</h2>
 				</div>
 				<div class="nested-step" data-x="1000" data-rotate-y="90">
-					<h1>Another Step</h1>
+					<h2>Embed this into your blog</h2>
+					<p>for a presentation</p>
+				</div>
+				<div class="nested-step" data-y="-1000" data-rotate-x="90" data-rotate-z="-90">
+					<h2>Make a cool slideshow of your images</h2>
+					<p>images can be loaded on demand by ajax</p>
+				</div>
+				<div class="nested-step" data-y="1000" data-rotate-y="45">
+					<h2>Do even more cool things:</h2>
+				</div>
+				<div class="nested-step" data-y="1000" data-x="1000" data-rotate-x="90">
+					<h2>Combine this with duration-plugin</h2>
+					<h2>TODO: add more points</h2>
 				</div>
 			</div>
+			<p style="font-size: 70%">NOTICE: the nested jmpress presentation uses 3d much more the the outer presentation. 
+			Browser support may be more limited.</p>
 			<a href="#" class="next">home</a>
 		</div>
-
 	</div>
 </div>
 
@@ -261,7 +275,7 @@ $(function() {
 	$("#reinit-jmpress").hide();
 	$("#nested-jmpress").jmpress({
 		viewPort: {
-			height: 500
+			height: 200
 			,width: 1000
 		}
 		,containerClass: "ui-widget-content"

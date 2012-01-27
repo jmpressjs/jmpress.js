@@ -650,10 +650,12 @@
 
 		// CHECK FOR SUPPORT
 		if (checkSupport() === false) {
-			jmpress.addClass(settings.notSupportedClass);
+			if(settings.notSupportedClass)
+				jmpress.addClass(settings.notSupportedClass);
 			return;
 		} else {
-			jmpress.removeClass(settings.notSupportedClass);
+			if(settings.notSupportedClass)
+				jmpress.removeClass(settings.notSupportedClass);
 		}
 
 		// GERNERAL INIT OF FRAME
@@ -723,7 +725,8 @@
 		// START
 		select.call(this,  callCallback.call(this, 'selectInitialStep', "init", { steps: steps }) );
 
-		$(steps).removeClass(settings.initClass);
+		if(settings.initClass)
+			$(steps).removeClass(settings.initClass);
 	}
 	/**
 	 * Return default settings
@@ -1001,9 +1004,10 @@
 			$.jmpress("engine")._transform( $(step), eventData.stepData );
 		});
 		$.jmpress("setInactive", function( step, eventData ) {
-			$.each(eventData.parents, function(idx, element) {
-				$(element).removeClass(eventData.settings.nestedActiveClass);
-			});
+			if(eventData.settings.nestedActiveClass)
+				$.each(eventData.parents, function(idx, element) {
+					$(element).removeClass(eventData.settings.nestedActiveClass);
+				});
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var target = eventData.target;
@@ -1057,10 +1061,12 @@
 	(function() { // active class
 		$.jmpress( 'defaults' ).activeClass = "active";
 		$.jmpress( 'setInactive', function( step, eventData ) {
-			$(step).removeClass( eventData.settings.activeClass );
+			if(eventData.settings.activeClass)
+				$(step).removeClass( eventData.settings.activeClass );
 		});
 		$.jmpress( 'setActive', function( step, eventData ) {
-			$(step).addClass( eventData.settings.activeClass );
+			if(eventData.settings.activeClass)
+				$(step).addClass( eventData.settings.activeClass );
 		});
 	})();
 
@@ -1078,7 +1084,7 @@
 				return false;
 			}
 			var prev = $(step).near( eventData.settings.stepSelector, true );
-			if (prev.length < 1) {
+			if (prev.length == 0 || $(prev).closest(this).length == 0) {
 				prev = eventData.steps.last( eventData.settings.stepSelector );
 			}
 			if (prev.length > 0) {
@@ -1090,7 +1096,7 @@
 				return false;
 			}
 			var next = $(step).near( eventData.settings.stepSelector );
-			if (next.length < 1) {
+			if (next.length == 0 || $(next).closest(this).length == 0) {
 				next = eventData.steps.first( eventData.settings.stepSelector );
 			}
 			if (next.length > 0) {
@@ -1292,7 +1298,9 @@
 						}
 					} else {
 						nextFocus = $(event.target).near( mysettings.tabSelector, event.shiftKey );
-						if( !$(nextFocus).closest( $(jmpress).jmpress('active') ).length )
+						if( !$(nextFocus)
+							.closest( eventData.settings.stepSelector )
+							.is($(jmpress).jmpress('active') ) )
 							nextFocus = undefined;
 					}
 					if( nextFocus && nextFocus.length > 0 ) {
@@ -1378,7 +1386,9 @@
 				if(!eventData.settings.mouse.clickSelects)
 					return;
 				// clicks on the active step do default
-				if( $(event.target).closest($(this).jmpress("active")).length )
+				if( $(event.target)
+					.closest( eventData.settings.stepSelector)
+					.is( $(this).jmpress("active") ).length )
 					return;
 
 				// get clicked step

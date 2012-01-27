@@ -195,6 +195,7 @@ h4 {
 	width: 900px;
 	min-height: 50px;
 	padding: 40px;
+	z-index: 2;
 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing:    border-box;
@@ -216,7 +217,9 @@ h4 {
 	-o-transition:      opacity 1s;
 	transition:         opacity 1s;
 }
+
 .step:not(.active):not(.nested-active) {
+	z-index: 1;
 	opacity: 0.3;
 }
 .step ul {
