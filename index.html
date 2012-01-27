@@ -25,7 +25,7 @@
 	<li><a href="#showcase"><span>SHOWCASE</span></a></li>
 </ul>
 
-<div id="jmpress" style="width: 60%; height: 400px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">
+<div id="jmpress">
 
 	<div id="about" class="step" data-x="-900" data-y="-1500">
 		<h4>introducing</h4>
@@ -131,6 +131,7 @@
 			<a href="#" data-theme="ui-darkness">ui-darkness</a>
 			<a href="#" data-theme="ui-lightness">ui-lightness</a>
 			</li>
+			<li>Uninit jmpress style. <a href="#" id="uninit-jmpress">Do It</a> <a href="#" id="reinit-jmpress">Reinit</a>
 		</ul>
 		<a href="#" class="next">home</a>
 	</div>
@@ -143,7 +144,7 @@
 <script type="text/javascript">
 $(function() {
 	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
-	$('#jmpress').jmpress({
+	var jmpressConfig = {
 		// SET THE VIEW PORT
 		viewPort: {
 			height: 600
@@ -168,7 +169,8 @@ $(function() {
 		,containerClass: "ui-widget-content"
 		,areaClass: ""
 		,canvasClass: ""
-	});
+	};
+	$('#jmpress').jmpress(jmpressConfig);
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
 		return false;
@@ -203,6 +205,23 @@ $(function() {
 
 		event.preventDefault();
 	});
+	$("#uninit-jmpress").click(function(event) {
+		$("#jmpress").jmpress("deinit");
+		$("#nav").css("opacity", 0);
+		$("#jmpress").addClass("not-supported");
+		$("#reinit-jmpress").show();
+		$("#uninit-jmpress").hide();
+		event.preventDefault();
+	});
+	$("#reinit-jmpress").click(function(event) {
+		$("#jmpress").jmpress(jmpressConfig);
+		$("#nav").css("opacity", 1);
+		$("#jmpress").removeClass("not-supported");
+		$("#reinit-jmpress").hide();
+		$("#uninit-jmpress").show();
+		event.preventDefault();
+	});
+	$("#reinit-jmpress").hide();
 });
 </script>
 

@@ -47,7 +47,10 @@
 		,beforeChange: []
 		,initStep: []
 		,afterInit: []
+		,beforeDeinit: []
+		,afterDeinit: []
 		,applyStep: []
+		,unapplyStep: []
 		,setInactive: []
 		,setActive: []
 		,selectInitialStep: []
@@ -64,7 +67,10 @@
 		'beforeChange': 1
 		,'initStep': 1
 		,'afterInit': 1
+		,'beforeDeinit': 1
+		,'afterDeinit': 1
 		,'applyStep': 1
+		,'unapplyStep': 1
 		,'setInactive': 1
 		,'setActive': 1
 		,'selectInitialStep': 1
@@ -213,9 +219,6 @@
 	function checkSupport() {
 		var ua = navigator.userAgent.toLowerCase();
 		var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
-		if (!supported) {
-			jmpress.addClass( settings.notSupportedClass );
-		}
 		return supported;
 	}
 	/**
@@ -254,6 +257,10 @@
 		var jmpress = $( this )
 			,container = null
 			,area = null
+			,oldStyle = {
+				container: ""
+				,area: ""
+			}
 			,canvas = null
 			,steps = null
 			,current = null
@@ -263,6 +270,105 @@
 		/*** MEMBER FUNCTIONS ***/
 		// functions have to be called with this
 
+		/**
+		 * Init a single step
+		 *
+		 * @param element the element of the step
+		 */
+		function doStepInit( element ) {
+			var data = dataset( element );
+			var step = {
+				oldStyle: $(element).attr("style") || ""
+				,translate: {
+					x: data.x || 0
+					,y: data.y || 0
+					,z: data.z || 0
+				}
+				,rotate: {
+					x: data.rotateX || 0
+					,y: data.rotateY || 0
+					,z: data.rotateZ || data.rotate || 0
+				}
+				,scale: {
+					x: data.scaleX || data.scale || 1
+					,y: data.scaleY || data.scale || 1
+					,z: data.scaleZ || 1
+				}
+				,prepend: 'translate(-50%,-50%)'
+			};
+
+			var callbackData = {
+				data: data
+				,stepData: step
+			}
+			callCallback('initStep', $(element), callbackData);
+
+			$(element).data('stepData', step);
+
+			if ( !$(element).attr('id') ) {
+				$(element).attr('id', 'step-' + (idx + 1));
+			}
+
+			css($(element), {
+				position: "absolute"
+				,transformStyle: "preserve-3d"
+			});
+			callCallback('applyStep', $(element), callbackData);
+			engine._transform( $(element), step );
+		}
+		/**
+		 * Deinit a single step
+		 *
+		 * @param element the element of the step
+		 */
+		function doStepDeinit( element ) {
+			var stepData = $(element).data('stepData');
+
+			$(element).attr("style", stepData.oldStyle);
+
+			callCallback('unapplyStep', $(element), {
+				stepData: stepData
+			});
+		}
+		/**
+		 * Completly deinit jmpress
+		 *
+		 */
+		function deinit() {
+			if ( active ) {
+				callCallback.call(this, 'setInactive', active, {
+					stepData: $(active).data('stepData')
+					,reason: "deinit"
+				} );
+			}
+			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
+
+			callCallback.call(this, 'beforeDeinit', $(this), {
+				steps: steps
+			});
+
+			steps.each(function( idx ) {
+				doStepDeinit( this );
+			});
+
+			container.attr("style", oldStyle.container);
+			area.attr("style", oldStyle.area);
+			canvas.children().each(function() {
+				jmpress.append( $( this ) );
+			});
+			if( settings.fullscreen ) {
+				canvas.remove();
+			} else {
+				canvas.remove();
+				area.remove();
+			}
+
+			callCallback.call(this, 'afterDeinit', $(this), {
+				steps: steps
+			});
+
+			$(jmpress).data("jmpressmethods", undefined);
+		}
 		/**
 		 * Call a callback
 		 *
@@ -375,10 +481,8 @@
 			});
 
 			// Set on step class on root element
-			current.jmpressClass = ( $(jmpress).attr('class') || '' )
-				.replace(/step-[A-Za-z0-9_-]+/gi, '').trim()
-				+ ' step-' + $(el).attr('id');
-			$(jmpress).attr('class', current.jmpressClass);
+			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
+			$(jmpress).addClass(current.jmpressClass = ' step-' + $(el).attr('id') );
 
 			var props,
 				zoomin = target.scale.x >= current.scalex;
@@ -554,6 +658,7 @@
 			,settings: getSettings
 			,active: getActive
 			,fire: fire
+			,deinit: deinit
 		});
 
 
@@ -563,8 +668,11 @@
 		if (checkSupport() === false) {
 			jmpress.addClass(settings.notSupportedClass);
 			return;
+		} else {
+			jmpress.removeClass(settings.notSupportedClass);
 		}
 
+		// GERNERAL INIT OF FRAME
 		container = jmpress;
 		area = $('<div />');
 		canvas = $('<div />');
@@ -574,6 +682,10 @@
 		if(settings.fullscreen) {
 			container = $('body');
 			area = jmpress;
+		}
+		oldStyle.area = area.attr("style") || "";
+		oldStyle.container = container.attr("style") || "";
+		if(settings.fullscreen) {
 			container.css({
 				height: '100%'
 			});
@@ -589,8 +701,6 @@
 		$(container).addClass(settings.containerClass);
 		$(area).addClass(settings.areaClass);
 		$(canvas).addClass(settings.canvasClass);
-
-		steps = $(settings.stepSelector, jmpress);
 
 		document.documentElement.style.height = "100%";
 		container.css({
@@ -614,46 +724,12 @@
 			scalex: 1
 		};
 
+		// grabbing all steps
+		steps = $(settings.stepSelector, jmpress);
+
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {
-			var data = dataset( this );
-			var step = {
-				translate: {
-					x: data.x || 0
-					,y: data.y || 0
-					,z: data.z || 0
-				}
-				,rotate: {
-					x: data.rotateX || 0
-					,y: data.rotateY || 0
-					,z: data.rotateZ || data.rotate || 0
-				}
-				,scale: {
-					x: data.scaleX || data.scale || 1
-					,y: data.scaleY || data.scale || 1
-					,z: data.scaleZ || 1
-				}
-				,prepend: 'translate(-50%,-50%)'
-			};
-
-			var callbackData = {
-				data: data
-				,stepData: step
-			}
-			callCallback.call(this, 'initStep', $(this), callbackData);
-
-			$(this).data('stepData', step);
-
-			if ( !$(this).attr('id') ) {
-				$(this).attr('id', 'step-' + (idx + 1));
-			}
-
-			css($(this), {
-				position: "absolute"
-				,transformStyle: "preserve-3d"
-			});
-			callCallback.call(this, 'applyStep', $(this), callbackData);
-			engine._transform( $(this), step );
+			doStepInit( this );
 		});
 
 		callCallback.call(this, 'afterInit', $(this), {
@@ -749,6 +825,7 @@
 	 */
 	var methods = {
 		init: init
+		,deinit: function() {}
 		,css: css
 		,defaults: getDefaults
 		,register: register
@@ -891,6 +968,10 @@
 		}
 	})();
 
+	function randomString() {
+		return "" + Math.round(Math.random() * 100000, 0);
+	}
+
 	/* DEFAULT PLUGINS */
 	// The plugins should be independent from above code
 	// They may read settings from eventData.settings and
@@ -1028,10 +1109,11 @@
 				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
 				return el.length > 0 ? el : undefined;
 			}
+			eventData.current.hashNamespace = ".jmpress-"+randomString();
 			// HASH CHANGE EVENT
 			if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
 				var jmpress = this;
-				$("a[href^=#]").live("click", function(event) {
+				$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {
 					var href = $(this).attr("href");
 					try {
 						if($(href).is(eventData.settings.stepSelector)) {
@@ -1044,6 +1126,9 @@
 			if ( eventData.settings.hash.use ) {
 				return getElementFromUrl();
 			}
+		});
+		$.jmpress('afterDeinit', function( nil, eventData ) {
+			$("a[href^=#]").off(eventData.current.hashNamespace);
 		});
 		$.jmpress('setActive', function( step, eventData ) {
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
@@ -1108,7 +1193,8 @@
 				$(this).attr("tabindex", 0);
 
 			// KEYDOWN EVENT
-			$(document).keydown(function( event ) {
+			eventData.current.keyboardNamespace = ".jmpress-"+randomString();
+			$(document).bind("keydown"+eventData.current.keyboardNamespace, function( event ) {
 				if ( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use ) {
 					return;
 				}
@@ -1166,6 +1252,9 @@
 				}
 			});
 		});
+		$.jmpress('afterDeinit', function( nil, eventData ) {
+			$(document).unbind(eventData.current.keyboardNamespace);
+		});
 	})();
 
 	(function() { // viewPort
@@ -1177,9 +1266,13 @@
 		};
 		$.jmpress("afterInit", function( nil, eventData ) {
 			var jmpress = this;
-			$(window).resize(function (event) {
+			eventData.current.viewPortNamespace = ".jmpress-"+randomString();
+			$(window).bind("resize"+eventData.current.viewPortNamespace, function (event) {
 				$(jmpress).jmpress("select", $(jmpress).jmpress("active"), "resize");
 			});
+		});
+		$.jmpress('afterDeinit', function( nil, eventData ) {
+			$(window).unbind("resize"+eventData.current.viewPortNamespace);
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var viewPort = eventData.settings.viewPort;
@@ -1203,7 +1296,8 @@
 			clickSelects: true
 		};
 		$.jmpress("afterInit", function( nil, eventData ) {
-			$(this).click(function(event) {
+			eventData.current.clickableStepsNamespace = ".jmpress-"+randomString();
+			$(this).bind("click"+eventData.current.clickableStepsNamespace, function(event) {
 				if(!eventData.settings.mouse.clickSelects)
 					return;
 				// clicks on the active step do default
@@ -1219,6 +1313,9 @@
 					event.preventDefault();
 				}
 			});
+		});
+		$.jmpress('afterDeinit', function( nil, eventData ) {
+			$(this).unbind(eventData.current.clickableStepsNamespace);
 		});
 	})();
 
