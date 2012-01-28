@@ -1514,9 +1514,11 @@
 				} else {
 					template = $.extend(true, {}, tmpl);
 				}
-				var tmpl = $(selector).data("_template_") || {}
-				addUndefined(tmpl, template);
-				$(selector).data("_template_", tmpl);
+				$(selector).each(function(idx, element) {
+					var tmpl = $(element).data("_template_") || {}
+					addUndefined(tmpl, template);
+					$(element).data("_template_", tmpl);
+				});
 			}
 		});
 	})();
