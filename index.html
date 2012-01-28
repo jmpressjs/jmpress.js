@@ -38,9 +38,9 @@
 	<li><a href="#" data-theme="ui-lightness"><span>ui-lightness</span></a></li>
 </ul>
 
-<div id="jmpress" class="init-css">
+<div id="jmpress" class="init-css" data-template="main">
 
-	<div id="home" class="step init-css" data-scale="10">
+	<div id="home" class="step init-css">
 		<div class="intro-top ui-state-default">
 			<div class="inner">
 				<h4>introducing</h4>
@@ -62,14 +62,14 @@
 		</div>
 	</div>
 
-	<div id="about" class="step" data-x="-800" data-y="-1100" data-rotate="-20" data-scale="1.2">
+	<div id="about" class="step">
 		<h4>started as a jQuery port of</h4>
 		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js</a><sup>created by Bartek Szopka</sup></div>
 		<p>but with a different goal in mind. Why keep it behind a podium? Let's make websites!</p>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="about-jquery" class="step" data-x="-700" data-y="-500" data-rotate="-40" data-scale="1.4">
+	<div id="about-jquery" class="step">
 		<h1>why jQuery?</h1>
 		<ul>
 			<li>great plugin framework that is familiar to a lot of people</li>
@@ -84,7 +84,7 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="about-impress" class="step" data-x="0" data-y="100" data-rotate="-60" data-scale="1.6">
+	<div id="about-impress" class="step">
 		<h4>why not contribute to the</h4>
 		<h1>original?</h1>
 		<p>I have contributed and will continue to send pull requests :)<br/>
@@ -96,14 +96,14 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-    <div id="download" class="step" data-x="1000" data-y="200" data-rotate="-95" data-scale="1.8">
+    <div id="download" class="step">
 		<h1>download</h1>
 		<p>Download, clone, submodule or fork on <a href="https://github.com/shama/jmpress.js/">github</a></p>
 		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
 		<a href="#" class="next">next &gt;</a>
     </div>
 
-	<div id="docs" class="step" data-x="1800" data-y="-100" data-rotate="-120" data-scale="2">
+	<div id="docs" class="step">
 		<h1>docs</h1>
 		<p>Available <a href="https://github.com/shama/jmpress.js">in the readme</a> for now</p>
 		<span class="ui-icon ui-icon-document"></span>
@@ -120,7 +120,7 @@
 	</div>
 	-->
 
-	<div id="contribute" class="step" data-x="2500" data-y="-900" data-rotate="-160" data-scale="2.2">
+	<div id="contribute" class="step">
 		<h1>contribute</h1>
 		<p>Good news! I accept pull requests ;)</p>
 		<p>Please work and pull against the <i>dev</i> or <i>beta</i> branch. Thanks!</p>
@@ -128,13 +128,13 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="contribute-tests" class="step" data-x="2600" data-y="-1700" data-rotate="-180" data-scale="2.4">
+	<div id="contribute-tests" class="step">
 		<h1>tests</h1>
 		<p>jmpress.js uses the <a href="http://pivotal.github.com/jasmine/" target="_blank">jasmine bdd</a> library for testing. Please load <i>test.html</i> in your browser to run the tests.</p>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="contribute-wishlist" class="step" data-x="2600" data-y="-2500" data-rotate="-210" data-scale="2.6">
+	<div id="contribute-wishlist" class="step">
 		<h1>wishlist</h1>
 		<ul>
 			<li>Browser Support (hard but important)</li>
@@ -147,7 +147,7 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="showcase" class="step" data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8">
+	<div id="showcase" class="step">
 		<h1>some cool features</h1>
 		<ul>
 			<li>embed this in a container <a href="container.html">Show Sample</a></li>
@@ -159,7 +159,7 @@
 		</ul>
 		<p>See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
 		<a href="#" class="next">next &gt;</a>
-		<div id="showcase-nested" class="step" data-x="250" data-y="-30" data-rotate-z="20" data-scale="0.3">
+		<div id="showcase-nested" class="step">
 			<h1>nested step</h1>
 			<p>with a nested jmpress. (click it to navigate there)</p>
 			<div id="nested-jmpress" style="height: 100px; width: 700px;">
@@ -198,6 +198,73 @@
 
 <script type="text/javascript">
 $(function() {
+	// data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8"
+	// data-x="250" data-y="-30" data-rotate-z="20" data-scale="0.3"
+	$.jmpress("apply", "#showcase-nested", {
+		x: 250
+		,y: -30
+		,rotateZ: 20
+		,scale: 0.3
+	});
+	$.jmpress("template", "main", { children: [
+		{
+			scale: 10
+		},
+		{
+			x: -800
+			,y: -1100
+			,rotate: -20
+			,scale: 1.2
+		},
+		{
+			x: -700
+			,y: -500
+			,rotate: -40
+			,scale: 1.4
+		},
+		{
+			x: 0
+			,y: 100
+			,rotate: -60
+			,scale: 1.6
+		},
+		{
+			x: 1000
+			,y: 200
+			,rotate: -95
+			,scale: 1.8
+		},
+		{
+			x: 1800
+			,y: -100
+			,rotate: -120
+			,scale: 2
+		},
+		{
+			x: 2500
+			,y: -900
+			,rotate: -160
+			,scale: 2.2
+		},
+		{
+			x: 2600
+			,y: -1700
+			,rotate: -180
+			,scale: 2.4
+		},
+		{
+			x: 2600
+			,y: -2500
+			,rotate: -210
+			,scale: 2.6
+		},
+		{
+			x: 2700
+			,y: -3700
+			,rotate: -230
+			,scale: 2.8
+		},
+	]});
 	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
 	var jmpressConfig = {
 		// SET THE VIEW PORT

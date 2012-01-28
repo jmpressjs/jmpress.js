@@ -205,7 +205,9 @@
 		/* CALLBACKS */
 		// TODO documentation
 		,beforeChange: []
+		,beforeInitStep: []
 		,initStep: []
+		,beforeInit: []
 		,afterInit: []
 		,beforeDeinit: []
 		,afterDeinit: []
@@ -225,7 +227,9 @@
 	};
 	var callbacks = {
 		'beforeChange': 1
+		,'beforeInitStep': 1
 		,'initStep': 1
+		,'beforeInit': 1
 		,'afterInit': 1
 		,'beforeDeinit': 1
 		,'afterDeinit': 1
@@ -300,6 +304,7 @@
 				,stepData: step
 				,parents: getStepParents( element )
 			}
+			callCallback('beforeInitStep', $(element), callbackData);
 			callCallback('initStep', $(element), callbackData);
 
 			$(element).data('stepData', step);
@@ -721,12 +726,16 @@
 			scalex: 1
 		};
 
+		callCallback.call(this, 'beforeInit', null, {
+			steps: steps
+		});
+
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {
 			doStepInit( this, idx );
 		});
 
-		callCallback.call(this, 'afterInit', $(this), {
+		callCallback.call(this, 'afterInit', null, {
 			steps: steps
 		});
 
@@ -795,8 +804,8 @@
 	 * @return Object
 	 */
 	function dataset( el ) {
-		if ( el.dataset ) {
-			return el.dataset;
+		if ( $(el)[0].dataset ) {
+			return $(el)[0].dataset;
 		}
 		function toCamelcase( str ) {
 			str = str.split( '-' );
@@ -1136,12 +1145,12 @@
 				routeFunc.call(this, route.reverse(), reversedRoute ? "next" : "prev");
 		});
 		$.jmpress( 'initStep', function( step, eventData ) {
-			eventData.stepData.nextStep = eventData.data.next;
-			eventData.stepData.prevStep = eventData.data.prev;
+			eventData.stepData.next = eventData.data.next;
+			eventData.stepData.prev = eventData.data.prev;
 		});
 		$.jmpress( 'selectNext', function( step, eventData ) {
-			if(eventData.stepData.nextStep) {
-				var near = $(step).near(eventData.stepData.nextStep);
+			if(eventData.stepData.next) {
+				var near = $(step).near(eventData.stepData.next);
 				if(near && near.length) return near;
 				near = $(eventData.stepData.nextStep, this);
 				if(near && near.length) return near;
@@ -1423,6 +1432,83 @@
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$(this).unbind(eventData.current.clickableStepsNamespace);
+		});
+	})();
+
+	(function() { // templates
+		var templates = {};
+		function addUndefined( target, values ) {
+			for( var name in values ) {
+				if( target[name] == undefined ) {
+					target[name] = values[name];
+				} else if( $.isObject(target[name]) ) {
+					if( !$.isObject(values[name]) )
+						$.error(name + "should be a object too");
+					else
+						addUndefined( target[name], values[name] );
+				}
+			}
+		}
+		function applyChildrenTemplates( children, templateChildren ) {
+			if($.isArray(templateChildren)) {
+				if(templateChildren.length < children.length)
+					$.error("more nested steps than children in template");
+				else {
+					children.each(function(idx, child) {
+						var tmpl = $(child).data("_template_") || {}
+						addUndefined(tmpl, templateChildren[idx]);
+						$(child).data("_template_", tmpl);
+					});
+				}
+			} // TODO: else if(function) else if(object)
+		}
+		$.jmpress("beforeInitStep", function( step, eventData ) {
+			function applyTemplate( data, element, template ) {
+				if(template.children) {
+					var children = $(element).children( eventData.settings.stepSelector );
+					applyChildrenTemplates( children, template.children );
+				}
+				applyTemplateData( data, template );
+			}
+			function applyTemplateData( data, template ) {
+				addUndefined(data, template);
+			}
+			var templateToApply = eventData.data.template;
+			if(templateToApply) {
+				var template = templates[templateToApply]
+				applyTemplate( eventData.data, step, template );
+			}
+			var templateFromParent = $(step).data("_template_");
+			if(templateFromParent) {
+				applyTemplate( eventData.data, step, templateFromParent );
+				step.data("_template_", null);
+			}
+		});
+		$.jmpress("beforeInit", function( nil, eventData ) {
+			var data = $.jmpress("dataset", this);
+			if(data.template) {
+				var template = templates[data.template];
+				applyChildrenTemplates( $(eventData.steps).filter(function() {
+					return !$(this).parent().is(eventData.settings.stepSelector);
+				}), template.children );
+			}
+		});
+		$.jmpress("register", "template", function( name, tmpl ) {
+			if(templates[name])
+				templates[name] = $.extend(true, {}, templates[name], tmpl);
+			else
+				templates[name] = $.extend(true, {}, tmpl);
+		});
+		$.jmpress("register", "apply", function( selector, tmpl ) {
+			if( !tmpl ) {
+				applyChildrenTemplates( $(eventData.steps).filter(function() {
+					return !$(this).parent().is(eventData.settings.stepSelector);
+				}), selector );
+			} else if($.isArray(tmpl)) {
+				applyChildrenTemplates( $(selector), tmpl );
+			} else {
+				$(selector).data("_template_", $.extend(true, {}, tmpl));
+			}
 		});
 	})();
 
