@@ -549,7 +549,6 @@
 				setTimeout(check, 100);
 				setTimeout(check, 200);
 				setTimeout(check, 400);
-				setTimeout(check, 1000);
 			}
 			fix();
 		}
@@ -805,7 +804,7 @@
 	 */
 	function dataset( el ) {
 		if ( $(el)[0].dataset ) {
-			return $(el)[0].dataset;
+			return $.extend({}, $(el)[0].dataset);
 		}
 		function toCamelcase( str ) {
 			str = str.split( '-' );
@@ -1411,13 +1410,14 @@
 		};
 		$.jmpress("afterInit", function( nil, eventData ) {
 			eventData.current.clickableStepsNamespace = ".jmpress-"+randomString();
+			var jmpress = this;
 			$(this).bind("click"+eventData.current.clickableStepsNamespace, function(event) {
 				if(!eventData.settings.mouse.clickSelects)
 					return;
 				// clicks on the active step do default
 				if( $(event.target)
 					.closest( eventData.settings.stepSelector)
-					.is( $(this).jmpress("active") ).length )
+					.is( $(jmpress).jmpress("active") ) )
 					return;
 
 				// get clicked step
@@ -1441,8 +1441,8 @@
 			for( var name in values ) {
 				if( target[name] == undefined ) {
 					target[name] = values[name];
-				} else if( $.isObject(target[name]) ) {
-					if( !$.isObject(values[name]) )
+				} else if( $.isPlainObject(target[name]) ) {
+					if( !$.isPlainObject(values[name]) )
 						$.error(name + "should be a object too");
 					else
 						addUndefined( target[name], values[name] );
@@ -1477,6 +1477,10 @@
 			if(templateToApply) {
 				var template = templates[templateToApply]
 				applyTemplate( eventData.data, step, template );
+			}
+			var templateFromApply = $(step).data("_applied_template_");
+			if(templateFromApply) {
+				applyTemplate( eventData.data, step, templateFromApply );
 			}
 			var templateFromParent = $(step).data("_template_");
 			if(templateFromParent) {
@@ -1515,9 +1519,9 @@
 					template = $.extend(true, {}, tmpl);
 				}
 				$(selector).each(function(idx, element) {
-					var tmpl = $(element).data("_template_") || {}
+					var tmpl = $(element).data("_applied_template_") || {}
 					addUndefined(tmpl, template);
-					$(element).data("_template_", tmpl);
+					$(element).data("_applied_template_", tmpl);
 				});
 			}
 		});
