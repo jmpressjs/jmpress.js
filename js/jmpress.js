@@ -1501,13 +1501,22 @@
 		});
 		$.jmpress("register", "apply", function( selector, tmpl ) {
 			if( !tmpl ) {
-				applyChildrenTemplates( $(eventData.steps).filter(function() {
-					return !$(this).parent().is(eventData.settings.stepSelector);
+				var stepSelector = $(jmpress).jmpress("settings").stepSelector
+				applyChildrenTemplates( $(this).find(stepSelector).filter(function() {
+					return !$(this).parent().is(stepSelector);
 				}), selector );
 			} else if($.isArray(tmpl)) {
 				applyChildrenTemplates( $(selector), tmpl );
 			} else {
-				$(selector).data("_template_", $.extend(true, {}, tmpl));
+				var template;
+				if(typeof tmpl == "string") {
+					template = templates[tmpl];
+				} else {
+					template = $.extend(true, {}, tmpl);
+				}
+				var tmpl = $(selector).data("_template_") || {}
+				addUndefined(tmpl, template);
+				$(selector).data("_template_", tmpl);
 			}
 		});
 	})();
