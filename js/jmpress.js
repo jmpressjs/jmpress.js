@@ -1486,6 +1486,10 @@
 			if(templateFromParent) {
 				applyTemplate( eventData.data, step, templateFromParent );
 				step.data("_template_", null);
+				if(templateFromParent.template) {
+					var template = templates[templateFromParent.template]
+					applyTemplate( eventData.data, step, template );
+				}
 			}
 		});
 		$.jmpress("beforeInit", function( nil, eventData ) {
