@@ -36,8 +36,8 @@
 			if( eventData.settings.duration.barSelector ) {
 				var css = {
 					transitionProperty: eventData.settings.duration.barProperty
-					,transitionDuration: (dur-1000)+"ms"
-					,transitionDelay: '1000ms' // TODO use step transition time
+					,transitionDuration: (dur-eventData.transitionDuration*2/3)+"ms"
+					,transitionDelay: (eventData.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
 				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd

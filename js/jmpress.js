@@ -201,6 +201,7 @@
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
+		,transitionDuration: 1500
 
 		/* CALLBACKS */
 		// TODO documentation
@@ -1245,7 +1246,7 @@
 				clearTimeout(eventData.current.hashtimeout);
 				eventData.current.hashtimeout = setTimeout(function() {
 					window.location.hash = "#/" + $(step).attr('id');
-				}, 2000); // TODO: Use animation duration
+				}, eventData.settings.transitionDuration + 200);
 			}
 		});
 	})();
