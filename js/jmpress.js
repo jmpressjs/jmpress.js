@@ -174,7 +174,7 @@
 	var propertyBrowserMapping = {
 		"WebkitTransform": "-webkit-transform"
 		,"OTransform": "-o-transform"
-		,"MozTransform": "-mov-transform"
+		,"MozTransform": "-moz-transform"
 	}
 
 	/**
