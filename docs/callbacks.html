@@ -1,12 +1,15 @@
 <h1>Callbacks</h1>
 
-<p>Callbacks are a way to trigger a specific action when an event is fired within jmpress.js. For instance if we want to fire some code before a slide change we use the beforeChange callback:</p>
+<p>Callbacks are a way to trigger a specific action when an event is fired
+within jmpress.js. For instance if we want to fire some code before a slide
+change we use the beforeChange callback:</p>
 <pre><code>$('#jmpress').jmpress({
 	'beforeChange': function( element, eventData ) {
 		// ...
 	}
 });</code></pre>
-<p>All callbacks supply the same two parameters: element, the element the event pertains to and eventData, various data associated with the event.</p>
+<p>All callbacks supply the same two parameters: element, the element the event
+	pertains to and eventData, various data associated with the event.</p>
 
 <h2>Available Callbacks</h2>
 <ul>
@@ -26,6 +29,7 @@
 	<li>selectNext: When a next step is selected.</li>
 	<li>selectPrev: When a previous step is selected.</li>
 	<li>setActive: When a step is activated or selected.</li>
-	<li>setInactive: When a previously active step is de-activated or not selected.</li>
+	<li>setInactive: When a previously active step is de-activated or not
+	selected.</li>
 	<li>unapplyStep: Called last on each step after is is de-initialized.</li>
 </ul>
