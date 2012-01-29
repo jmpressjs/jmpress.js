@@ -115,8 +115,9 @@ h4 {
 	display: block;
 	position: relative;
 	left: -50px;
-	padding-left: 60px;
+	padding-left: 30px;
 	text-align: right;
+	width: 100%;
 
 	-webkit-transition: 0.5s;
 	-moz-transition:    0.5s;
@@ -131,43 +132,27 @@ h4 {
 #nav a.ui-state-hover, #nav a.ui-state-active {
 	left: 0px;
 }
-
-/** NAV THEMES **/
-#nav-themes {
-	background: transparent;
-	position: fixed;
-	right: -5px;
-	bottom: 50px;
-	z-index: 99;
-}
-#nav-themes h3 {
-	padding-right: 5px;
-	font-size: 12px;
-}
-#nav-themes li {
-	list-style: none;
-	margin: 8px 0px;
-	text-align: right;"
-}
-#nav-themes a {
-	display: block;
-	position: relative;
-	right: -50px;
-	padding-right: 60px;
-	text-align: left;
-	font-size: 12px;
-
+#nav ul {
+	position: absolute;
+	width: 80%;
+	left: -300px;
 	-webkit-transition: 0.5s;
 	-moz-transition:    0.5s;
 	-ms-transition:     0.5s;
 	-o-transition:      0.5s;
 	transition:         0.5s;
 }
-#nav-themes a span {
-	padding: 0px 10px;
+#nav li:hover ul {
+	position: relative;
+	left: 0px;
 }
-#nav-themes a.ui-state-hover, #nav a.ui-state-active {
-	right: 0px;
+#nav ul li {
+	font-size: 0.6em;
+	margin: 3px 0px;
+}
+#nav ul li b {
+	padding-left: 10px;
+	display: block;
 }
 
 #jmpress.init-css {
@@ -303,6 +288,7 @@ h4 {
 	-ms-transform:     rotate(-30deg);
 	-o-transform:      rotate(-30deg);
 	transform:         rotate(-30deg);
+	opacity: 0;
 }
 .step:not(.active):not(.init-css) .intro-bottom {
 	margin-top: 500px;
@@ -311,6 +297,7 @@ h4 {
 	-ms-transform:     rotate(-30deg);
 	-o-transform:      rotate(-30deg);
 	transform:         rotate(-30deg);
+	opacity: 0;
 }
 
 /* DOCS */
