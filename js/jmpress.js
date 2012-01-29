@@ -42,7 +42,7 @@
 			 * @return String CSS for translate3d
 			 */
 			,_translate: function ( t ) {
-				return t.x || t.y || t.z ? " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px)" : "";
+				return t.x || t.y || t.z ? " translate3d(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px," + Math.round(t.z,4) + "px)" : "";
 			}
 			/**
 			 * Rotate
@@ -51,9 +51,9 @@
 			 * @return String CSS for rotate
 			 */
 			,_rotate: function ( r ) {
-				var rX = r.rotateX ? " rotateX(" + r.rotateX + "deg)" : "",
-					rY = r.rotateY ? " rotateY(" + r.rotateY + "deg)" : "",
-					rZ = r.rotateZ ? " rotateZ(" + r.rotateZ + "deg)" : "";
+				var rX = r.rotateX ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
+					rY = r.rotateY ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
+					rZ = r.rotateZ ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
 				return r.revertRotate ? rZ + rY + rX : rX + rY + rZ;
 			}
 			/**
@@ -398,6 +398,7 @@
 			eventData.current = current;
 			eventData.container = container;
 			eventData.parents = element ? getStepParents(element) : null;
+			eventData.current = current;
 			eventData.jmpress = this;
 			var result = {};
 			$.each( settings[callbackName], function(idx, callback) {
@@ -1017,6 +1018,8 @@
 				x: parseFloat(data.x) || 0
 				,y: parseFloat(data.y) || 0
 				,z: parseFloat(data.z) || 0
+				,r: parseFloat(data.r) || 0
+				,phi: parseFloat(data.phi) || 0
 				,rotate: parseFloat(data.rotate) || 0
 				,rotateX: parseFloat(data.rotateX) || 0
 				,rotateY: parseFloat(data.rotateY) || 0
@@ -1042,6 +1045,8 @@
 			transform.rotateZ = transform.rotateZ || transform.rotate;
 			transform.scaleX = transform.scaleX || transform.scale;
 			transform.scaleY = transform.scaleY || transform.scale;
+			transform.x = transform.x || (transform.r * Math.sin(transform.phi*Math.PI/180));
+			transform.y = transform.y || (-transform.r * Math.cos(transform.phi*Math.PI/180));
 			$.jmpress("engine")._transform( $(step), transform );
 		});
 		$.jmpress("setActive", function( step, eventData ) {
@@ -1055,10 +1060,25 @@
 				,scaleX: 1 / (step.scaleX || step.scale)
 				,scaleY: 1 / (step.scaleY || step.scale)
 				,scaleZ: 1 / (step.scaleZ)
-				,x: -step.x
-				,y: -step.y
+				,x: -(step.x || (step.r * Math.sin(step.phi*Math.PI/180)))
+				,y: -(step.y || (-step.r * Math.cos(step.phi*Math.PI/180)))
 				,z: -step.z
 			});
+			function lowRotate(name) {
+				if(!eventData.current[name])
+					eventData.current[name] = target[name];
+				var cur = eventData.current[name], tar = target[name],
+					curmod = cur % 360, tarmod = tar % 360;
+				if(curmod < 0) curmod += 360;
+				if(tarmod < 0) tarmod += 360;
+				var diff = tarmod - curmod;
+				if(diff < -90) diff += 360;
+				if(diff > 90) diff -= 360;
+				eventData.current[name] = target[name] = cur + diff;
+			}
+			lowRotate("rotateX");
+			lowRotate("rotateY");
+			lowRotate("rotateZ");
 			$.each(eventData.parents, function(idx, element) {
 				var stepD = $(element).data("stepData");
 				var inverseScale = {
@@ -1078,8 +1098,8 @@
 				target.rotateX -= (stepD.rotateX);
 				target.rotateY -= (stepD.rotateY);
 				target.rotateZ -= (stepD.rotateZ || stepD.rotate);
-				target.x -= stepD.x;
-				target.y -= stepD.y;
+				target.x -= stepD.x || (stepD.r * Math.sin(stepD.phi*Math.PI/180));
+				target.y -= stepD.y || (-stepD.r * Math.cos(stepD.phi*Math.PI/180));
 				target.z -= stepD.z;
 				target.scaleX *= inverseScale.x;
 				target.scaleY *= inverseScale.y;
@@ -1532,6 +1552,7 @@
 		});
 		$.jmpress("register", "apply", function( selector, tmpl ) {
 			if( !tmpl ) {
+				// TODO ERROR because settings not found
 				var stepSelector = $(jmpress).jmpress("settings").stepSelector
 				applyChildrenTemplates( $(this).find(stepSelector).filter(function() {
 					return !$(this).parent().is(stepSelector);
