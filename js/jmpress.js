@@ -414,13 +414,20 @@
 			if (!active) {
 				return false;
 			}
-			var siblings = $(active).siblings( settings.stepSelector );
+			var siblings = $(active).near( settings.stepSelector )
+				.add( $(active).near( settings.stepSelector, true) )
+				.add( callCallback.call(this, 'selectPrev', active, {
+					stepData: $(active).data('stepData')
+				}))
+				.add( callCallback.call(this, 'selectNext', active, {
+					stepData: $(active).data('stepData')
+				}));
 			siblings.push( active );
 			siblings.each(function() {
 				if ($(this).hasClass( settings.loadedClass )) {
 					return;
 				}
-				callCallback.call(this, 'loadStep', this, {
+				callCallback.call(jmpress, 'loadStep', this, {
 					stepData: $(this).data('stepData')
 				});
 				$(this).addClass( settings.loadedClass );
@@ -1230,7 +1237,7 @@
 			var href = eventData.stepData.src;
 			if ( href ) {
 				$(step).load(href, function(response, status, xhr) {
-					$.jmpress('fire', 'afterStepLoaded', step, $.extend({}, eventData, {
+					$(eventData.jmpress).jmpress('fire', 'afterStepLoaded', step, $.extend({}, eventData, {
 						response: response
 						,status: status
 						,xhr: xhr
@@ -1283,6 +1290,7 @@
 						if($(href).is(eventData.settings.stepSelector)) {
 							$(jmpress).jmpress("select", href);
 							event.preventDefault();
+							event.stopPropagation();
 						}
 					} catch(e) {}
 				});
@@ -1391,6 +1399,7 @@
 						nextFocus.focus();
 						$(jmpress).jmpress("scrollFix");
 						event.preventDefault();
+						event.stopPropagation();
 						return;
 					} else {
 						if(event.shiftKey)
@@ -1483,6 +1492,7 @@
 					// select the clicked step
 					$(this).jmpress("select", clickedStep[0], "click");
 					event.preventDefault();
+					event.stopPropagation();
 				}
 			});
 		});
