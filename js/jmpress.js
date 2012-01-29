@@ -218,7 +218,7 @@
 		,applyStep: []
 		,unapplyStep: []
 		,setInactive: []
-		,beforeSetActive: []
+		,beforeActive: []
 		,setActive: []
 		,selectInitialStep: []
 		,selectPrev: []
@@ -241,7 +241,7 @@
 		,'applyStep': 1
 		,'unapplyStep': 1
 		,'setInactive': 1
-		,'beforeSetActive': 1
+		,'beforeActive': 1
 		,'setActive': 1
 		,'selectInitialStep': 1
 		,'selectPrev': 1
@@ -288,6 +288,7 @@
 			,steps = null
 			,current = null
 			,active = false
+			,activeDelegated = false
 
 
 		/*** MEMBER FUNCTIONS ***/
@@ -310,6 +311,7 @@
 				,stepData: step
 			}
 			callCallback.call(this, 'beforeInitStep', $(element), callbackData);
+			step.delegate = data.delegate;
 			callCallback.call(this, 'initStep', $(element), callbackData);
 
 			$(element).data('stepData', step);
@@ -482,28 +484,40 @@
 
 			var target = {};
 
-			if ( active ) {
-				callCallback.call(this, 'setInactive', active, {
-					stepData: $(active).data('stepData')
+			var delegated = el;
+			if($(el).data("stepData").delegate) {
+				delegated = $(el).parentsUntil(jmpress).filter(settings.stepSelector).filter(step.delegate) ||
+					$(el).near(step.delegate) ||
+					$(el).near(step.delegate, true) ||
+					$(step.delegate, jmpress);
+				step = delegated.data("stepData");
+			}
+			if ( activeDelegated ) {
+				callCallback.call(this, 'setInactive', activeDelegated, {
+					stepData: $(activeDelegated).data('stepData')
+					,delegatedFrom: active
 					,reason: type
 					,target: target
-					,nextStep: el
+					,nextStep: delegated
 					,nextStepData: step
 				} );
 			}
 			var callbackData = {
 				stepData: step
+				,delegatedFrom: el
 				,reason: type
 				,target: target
-				,prevStep: active
-				,prevStepData: active && $(active).data('stepData')
+				,prevStep: activeDelegated
+				,prevStepData: activeDelegated && $(activeDelegated).data('stepData')
 			};
-			callCallback.call(this, 'beforeSetActive', el, callbackData);
-			callCallback.call(this, 'setActive', el, callbackData);
+			callCallback.call(this, 'beforeActive', delegated, callbackData);
+			callCallback.call(this, 'setActive', delegated, callbackData);
 
 			// Set on step class on root element
 			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
-			$(jmpress).addClass(current.jmpressClass = ' step-' + $(el).attr('id') );
+			$(jmpress).addClass(current.jmpressClass = 'step-' + $(delegated).attr('id') );
+			if(current.jmpressDelegatedClass) $(jmpress).removeClass(current.jmpressDelegatedClass);
+			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
 			var props,
 				zoomin = target.scaleX >= current.scalex;
@@ -548,10 +562,11 @@
 			}, target));
 
 			active = el;
+			activeDelegated = delegated;
 
 			loadSiblings.call(this);
 
-			return el;
+			return delegated;
 		}
 		/**
 		 * This should fix ANY kind of buggy scrolling
@@ -1286,7 +1301,7 @@
 			if ( eventData.settings.hash.use && eventData.settings.hash.update ) {
 				clearTimeout(eventData.current.hashtimeout);
 				eventData.current.hashtimeout = setTimeout(function() {
-					window.location.hash = "#/" + $(step).attr('id');
+					window.location.hash = "#/" + $(eventData.delegatedFrom).attr('id');
 				}, eventData.settings.transitionDuration + 200);
 			}
 		});

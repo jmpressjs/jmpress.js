@@ -21,7 +21,7 @@
 			$(this).jmpress("reapply", $(step));
 		}
 	}
-	$.jmpress("beforeSetActive", function( step, eventData ) {
+	$.jmpress("beforeActive", function( step, eventData ) {
 		var parent = $(step).parent();
 		$(parent)
 			.children(eventData.settings.stepSelector)
