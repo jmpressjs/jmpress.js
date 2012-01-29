@@ -29,6 +29,14 @@
 				var childStepData = $(child).data("stepData");
 				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
 			});
+		for(var i = 1; i < eventData.parents.length; i++) {
+			$(eventData.parents[i])
+				.children(eventData.settings.stepSelector)
+				.each(function(idx, child) {
+					var childStepData = $(child).data("stepData");
+					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+				});
+		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
 		var parent = $(step).parent();
@@ -38,5 +46,13 @@
 				var childStepData = $(child).data("stepData");
 				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
 			});
+		for(var i = 1; i < eventData.parents.length; i++) {
+			$(eventData.parents[i])
+				.children(eventData.settings.stepSelector)
+				.each(function(idx, child) {
+					var childStepData = $(child).data("stepData");
+					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+				});
+		}
 	});
 })(jQuery, document, window);
