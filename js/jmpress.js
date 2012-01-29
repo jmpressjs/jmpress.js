@@ -51,9 +51,9 @@
 			 * @return String CSS for rotate
 			 */
 			,_rotate: function ( r ) {
-				var rX = r.rotateX ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
-					rY = r.rotateY ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
-					rZ = r.rotateZ ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
+				var rX = r.rotateX !== undefined ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
+					rY = r.rotateY !== undefined ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
+					rZ = r.rotateZ !== undefined ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
 				return r.revertRotate ? rZ + rY + rX : rX + rY + rZ;
 			}
 			/**
@@ -1079,21 +1079,6 @@
 				,y: -(step.y || (-step.r * Math.cos(step.phi*Math.PI/180)))
 				,z: -step.z
 			});
-			function lowRotate(name) {
-				if(!eventData.current[name])
-					eventData.current[name] = target[name];
-				var cur = eventData.current[name], tar = target[name],
-					curmod = cur % 360, tarmod = tar % 360;
-				if(curmod < 0) curmod += 360;
-				if(tarmod < 0) tarmod += 360;
-				var diff = tarmod - curmod;
-				if(diff < -90) diff += 360;
-				if(diff > 90) diff -= 360;
-				eventData.current[name] = target[name] = cur + diff;
-			}
-			lowRotate("rotateX");
-			lowRotate("rotateY");
-			lowRotate("rotateZ");
 			$.each(eventData.parents, function(idx, element) {
 				var stepD = $(element).data("stepData");
 				var inverseScale = {
@@ -1120,6 +1105,21 @@
 				target.scaleY *= inverseScale.y;
 				target.scaleZ *= inverseScale.z;
 			});
+			function lowRotate(name) {
+				if(eventData.current[name] === undefined)
+					eventData.current[name] = target[name];
+				var cur = eventData.current[name], tar = target[name],
+					curmod = cur % 360, tarmod = tar % 360;
+				if(curmod < 0) curmod += 360;
+				if(tarmod < 0) tarmod += 360;
+				var diff = tarmod - curmod;
+				if(diff < -90) diff += 360;
+				else if(diff > 90) diff -= 360;
+				eventData.current[name] = target[name] = cur + diff;
+			}
+			lowRotate("rotateX");
+			lowRotate("rotateY");
+			lowRotate("rotateZ");
 		});
 	})();
 
