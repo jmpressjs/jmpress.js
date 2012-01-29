@@ -285,7 +285,6 @@
 				,area: ""
 			}
 			,canvas = null
-			,steps = null
 			,current = null
 			,active = false
 			,activeDelegated = false
@@ -363,11 +362,9 @@
 			}
 			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
 
-			callCallback.call(this, 'beforeDeinit', $(this), {
-				steps: steps
-			});
+			callCallback.call(this, 'beforeDeinit', $(this), {});
 
-			steps.each(function( idx ) {
+			$(settings.stepSelector, jmpress).each(function( idx ) {
 				doStepDeinit.call(jmpress, this );
 			});
 
@@ -383,9 +380,7 @@
 				area.remove();
 			}
 
-			callCallback.call(this, 'afterDeinit', $(this), {
-				steps: steps
-			});
+			callCallback.call(this, 'afterDeinit', $(this), {});
 
 			$(jmpress).data("jmpressmethods", undefined);
 		}
@@ -604,7 +599,6 @@
 		function next() {
 			return select.call(this, callCallback.call(this, 'selectNext', active, {
 				stepData: $(active).data('stepData')
-				,steps: steps
 			}), "next" );
 		}
 		/**
@@ -615,7 +609,6 @@
 		function prev() {
 			return select.call(this, callCallback.call(this, 'selectPrev', active, {
 				stepData: $(active).data('stepData')
-				,steps: steps
 			}), "prev" );
 		}
 		/**
@@ -626,7 +619,6 @@
 		function home() {
 			return select.call(this, callCallback.call(this, 'selectHome', active, {
 				stepData: $(active).data('stepData')
-				,steps: steps
 			}), "home" );
 		}
 		/**
@@ -637,7 +629,6 @@
 		function end() {
 			return select.call(this,   callCallback.call(this, 'selectEnd', active, {
 				stepData: $(active).data('stepData')
-				,steps: steps
 			}), "end" );
 		}
 		/**
@@ -710,7 +701,7 @@
 		}
 
 		// grabbing all steps
-		steps = $(settings.stepSelector, jmpress);
+		var steps = $(settings.stepSelector, jmpress);
 
 		// GERNERAL INIT OF FRAME
 		container = jmpress;
@@ -764,21 +755,17 @@
 			scalex: 1
 		};
 
-		callCallback.call(this, 'beforeInit', null, {
-			steps: steps
-		});
+		callCallback.call(this, 'beforeInit', null, {});
 
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {
 			doStepInit.call(jmpress, this, idx );
 		});
 
-		callCallback.call(this, 'afterInit', null, {
-			steps: steps
-		});
+		callCallback.call(this, 'afterInit', null, {});
 
 		// START
-		select.call(this,  callCallback.call(this, 'selectInitialStep', "init", { steps: steps }) );
+		select.call(this,  callCallback.call(this, 'selectInitialStep', "init", {}) );
 
 		if(settings.initClass)
 			$(steps).removeClass(settings.initClass);
@@ -1144,37 +1131,48 @@
 	})();
 
 	(function() { // circular stepping
+		$.jmpress( 'initStep', function( step, eventData ) {
+			eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) == -1;
+		});
 		function firstSlide( step, eventData ) {
-			return eventData.steps[0];
+			return $(this).find(eventData.settings.stepSelector).first();
 		}
 		$.jmpress( 'selectInitialStep', firstSlide);
 		$.jmpress( 'selectHome', firstSlide);
 		$.jmpress( 'selectEnd', function( step, eventData ) {
-			return eventData.steps[eventData.steps.length - 1];
+			return $(this).find(eventData.settings.stepSelector).last();
 		});
 		$.jmpress( 'selectPrev', function( step, eventData ) {
 			if (!step) {
 				return false;
 			}
-			var prev = $(step).near( eventData.settings.stepSelector, true );
-			if (prev.length == 0 || $(prev).closest(this).length == 0) {
-				prev = eventData.steps.last( eventData.settings.stepSelector );
-			}
-			if (prev.length > 0) {
-				return prev;
-			}
+			do {
+				var prev = $(step).near( eventData.settings.stepSelector, true );
+				if (prev.length == 0 || $(prev).closest(this).length == 0) {
+					prev = $(this).find(eventData.settings.stepSelector).last();
+				}
+				if (!prev) {
+					return false;
+				}
+				step = prev;
+			} while( step.data("stepData").exclude );
+			return step;
 		});
 		$.jmpress( 'selectNext', function( step, eventData ) {
 			if (!step) {
 				return false;
 			}
-			var next = $(step).near( eventData.settings.stepSelector );
-			if (next.length == 0 || $(next).closest(this).length == 0) {
-				next = eventData.steps.first( eventData.settings.stepSelector );
-			}
-			if (next.length > 0) {
-				return next;
-			}
+			do {
+				var next = $(step).near( eventData.settings.stepSelector );
+				if (next.length == 0 || $(next).closest(this).length == 0) {
+					next = $(this).find(eventData.settings.stepSelector).first();
+				}
+				if (!next) {
+					return false;
+				}
+				step = next;
+			} while( step.data("stepData").exclude );
+			return step;
 		});
 	})();
 
@@ -1554,7 +1552,7 @@
 			var data = $.jmpress("dataset", this);
 			if(data.template) {
 				var template = templates[data.template];
-				applyChildrenTemplates( $(eventData.steps).filter(function() {
+				applyChildrenTemplates( $(this).find(eventData.settings.stepSelector).filter(function() {
 					return !$(this).parent().is(eventData.settings.stepSelector);
 				}), template.children );
 			}
