@@ -133,9 +133,10 @@ h4 {
 	left: 0px;
 }
 #nav ul {
-	position: absolute;
+	position: relative;
 	width: 80%;
 	left: -300px;
+	max-height: 0px;
 	-webkit-transition: 0.5s;
 	-moz-transition:    0.5s;
 	-ms-transition:     0.5s;
@@ -143,7 +144,7 @@ h4 {
 	transition:         0.5s;
 }
 #nav li:hover ul {
-	position: relative;
+	max-height: 170px;
 	left: 0px;
 }
 #nav ul li {
