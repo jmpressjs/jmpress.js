@@ -1173,15 +1173,15 @@
 			if(eventData.stepData.next) {
 				var near = $(step).near(eventData.stepData.next);
 				if(near && near.length) return near;
-				near = $(eventData.stepData.nextStep, this);
+				near = $(eventData.stepData.next, this).first();
 				if(near && near.length) return near;
 			}
 		});
 		$.jmpress( 'selectPrev', function( step, eventData ) {
-			if(eventData.stepData.prevStep) {
-				var near = $(step).near(eventData.stepData.prevStep, true);
+			if(eventData.stepData.prev) {
+				var near = $(step).near(eventData.stepData.prev, true);
 				if(near && near.length) return near;
-				near = $(eventData.stepData.prevStep, this).last();
+				near = $(eventData.stepData.prev, this).last();
 				if(near && near.length) return near;
 			}
 		});
