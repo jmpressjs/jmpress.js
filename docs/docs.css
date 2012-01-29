@@ -5,6 +5,12 @@ body {
 	background-color: #ddd;
 	-webkit-font-smoothing: antialiased;
 }
+p {
+	margin: 0px 0px 10px 0px;
+}
+h4 {
+	margin: 0px;
+}
 
 /** STEP STYLES **/
 .step {
