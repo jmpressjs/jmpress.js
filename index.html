@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jmpress.js"></script>
 	<script type="text/javascript" src="plugins/duration.js"></script>
+	<script type="text/javascript" src="plugins/secondary.js"></script>
 </head>
 <body>
 
@@ -204,7 +205,11 @@ $(function() {
 	$.jmpress("apply", "#showcase-nested", {
 		x: 250
 		,y: -30
-		,rotateZ: 20
+		,rotate: { z: 380 }
+		,secondary: {
+			rotateZ: 20
+			,"": "siblings"
+		}
 		,scale: 0.3
 	});
 	$.jmpress("template", "main", { children: [
@@ -213,9 +218,11 @@ $(function() {
 		},
 		{
 			x: -800
-			,y: -1100
+			,y: 0
 			,rotate: -20
 			,scale: 1.2
+			,secondary: "siblings"
+			,secondaryY: -1100
 		},
 		{
 			x: -700

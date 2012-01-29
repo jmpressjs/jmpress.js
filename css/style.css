@@ -211,11 +211,11 @@ h4 {
 
 /* fade out inactive slides */
 .step, .nested-step {
-	-webkit-transition: opacity 1s;
-	-moz-transition:    opacity 1s;
-	-ms-transition:     opacity 1s;
-	-o-transition:      opacity 1s;
-	transition:         opacity 1s;
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
 }
 
 .step:not(.active):not(.nested-active) {
