@@ -200,8 +200,6 @@
 
 <script type="text/javascript">
 $(function() {
-	// data-x="2700" data-y="-3700" data-rotate="-230" data-scale="2.8"
-	// data-x="250" data-y="-30" data-rotate-z="20" data-scale="0.3"
 	$.jmpress("apply", "#showcase-nested", {
 		x: 250
 		,y: -30
@@ -273,7 +271,7 @@ $(function() {
 			,scale: 2.8
 		},
 	]});
-	// $('#jmpress').jmpress("route", ["#about-impress", "#docs", "#download", "#contribute"]);
+	$('#jmpress').jmpress("route", ["#showcase-nested", "#about"]);
 	var jmpressConfig = {
 		// SET THE VIEW PORT
 		viewPort: {
