@@ -1101,8 +1101,8 @@
 				if(curmod < 0) curmod += 360;
 				if(tarmod < 0) tarmod += 360;
 				var diff = tarmod - curmod;
-				if(diff < -90) diff += 360;
-				else if(diff > 90) diff -= 360;
+				if(diff < -180) diff += 360;
+				else if(diff > 180) diff -= 360;
 				eventData.current[name] = target[name] = cur + diff;
 			}
 			lowRotate("rotateX");

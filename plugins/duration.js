@@ -46,7 +46,7 @@
 			if( eventData.settings.duration.barSelector ) {
 				var css = {
 					transitionProperty: eventData.settings.duration.barProperty
-					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3)+"ms"
+					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3-100)+"ms"
 					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
