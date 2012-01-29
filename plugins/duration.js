@@ -22,7 +22,17 @@
 					,transitionTimingFunction: 'linear'
 				};
 				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart
-				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
+				var bars = $(eventData.settings.duration.barSelector);
+				$.jmpress("css", bars, css);
+				bars.each(function(idx, element) {
+					var next = $(element).next();
+					var parent = $(element).parent();
+					$(element).detach();
+					if(next.length)
+						next.insertBefore(element);
+					else
+						parent.append(element);
+				});
 			}
 			if(eventData.current.durationTimeout) {
 				clearTimeout(eventData.current.durationTimeout);
@@ -36,14 +46,12 @@
 			if( eventData.settings.duration.barSelector ) {
 				var css = {
 					transitionProperty: eventData.settings.duration.barProperty
-					,transitionDuration: (dur-eventData.transitionDuration*2/3)+"ms"
-					,transitionDelay: (eventData.transitionDuration*2/3)+'ms'
+					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3)+"ms"
+					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
 				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd
-				setTimeout(function() {
-					$.jmpress("css", $(eventData.settings.duration.barSelector), css);
-				}, 10);
+				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
 			}
 			var jmpress = this;
 			if(eventData.current.durationTimeout) {

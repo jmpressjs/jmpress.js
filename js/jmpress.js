@@ -69,17 +69,16 @@
 			}
 		}
 		,2: {
-		// TODO
 			_transform: function( el, data ) {
 				var transform = 'translate(-50%,-50%)';
-				if ( data.rotate && data.rotate.revert ) {
-					transform += data.rotate ? engine._rotate(data.rotate) : '';
-					transform += data.translate ? engine._translate(data.translate) : '';
+				if ( data.revertRotate ) {
+					transform += engine._rotate(data);
+					transform += engine._translate(data);
 				} else {
-					transform += data.translate ? engine._translate(data.translate) : '';
-					transform += data.rotate ? engine._rotate(data.rotate) : '';
+					transform += engine._translate(data);
+					transform += engine._rotate(data);
 				}
-				transform += data.scale ? engine._scale(data.scale) : '';
+				transform += engine._scale(data);
 				css(el, $.extend({}, { transform: transform }, data.css));
 				return true;
 			}
@@ -90,7 +89,7 @@
 			 * @return String CSS for translate3d
 			 */
 			,_translate: function ( t ) {
-				return " translate(" + t.x + "px," + t.y + "px) ";
+				return t.x || t.y ? " translate(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px)" : "";
 			}
 			/**
 			 * Rotate
@@ -99,7 +98,7 @@
 			 * @return String CSS for rotate
 			 */
 			,_rotate: function ( r ) {
-				return " rotate(" + r.z + "deg) ";
+				return r.rotateZ !== undefined ? " rotate(" + r.rotateZ + "deg) " : "";
 			}
 			/**
 			 * Scale
@@ -108,12 +107,13 @@
 			 * @return String CSS for scale
 			 */
 			,_scale: function ( s ) {
-				return " scaleX(" + s.x + ") scaleY(" + s.y + ") ";
+				return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
+					(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "");
 			}
 		}
 		,1: {
 			_transform: function( el, data ) {
-				if ( data.translate ) {
+				if ( data.x || data.y ) {
 					el.animate({
 						top: data.y - ( el.height() / 2 ) + 'px'
 						,left: data.x - ( el.width() / 2 ) + 'px'
@@ -178,6 +178,7 @@
 		"WebkitTransform": "-webkit-transform"
 		,"OTransform": "-o-transform"
 		,"MozTransform": "-moz-transform"
+		,"MsTransform": "-ms-transform"
 	}
 
 	/**
@@ -1151,7 +1152,7 @@
 				if (prev.length == 0 || $(prev).closest(this).length == 0) {
 					prev = $(this).find(eventData.settings.stepSelector).last();
 				}
-				if (!prev) {
+				if (!prev.length) {
 					return false;
 				}
 				step = prev;
@@ -1167,7 +1168,7 @@
 				if (next.length == 0 || $(next).closest(this).length == 0) {
 					next = $(this).find(eventData.settings.stepSelector).first();
 				}
-				if (!next) {
+				if (!next.length) {
 					return false;
 				}
 				step = next;
