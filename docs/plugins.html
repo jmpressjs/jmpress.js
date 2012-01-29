@@ -1,0 +1,60 @@
+<h1>Plugins</h1>
+<p>Plugins are a way to package additional functionality into jmpress.js.</p>
+
+
+<h2>Default Plugins</h2>
+<p>jmpress.js comes loaded with a default set of plugins to handle the common 
+uses.</p>
+
+<h3>Translate, Scale &amp; Rotate</h3>
+
+<h3>Active Class</h3>
+
+<h3>Circular Stepping</h3>
+
+<h3>Starting Step</h3>
+
+<h3>Routing</h3>
+
+<h3>Ajax Load Steps</h3>
+
+<h3>Hash in URL</h3>
+
+<h3>Keyboard Navigation</h3>
+
+<h3>Viewport</h3>
+
+<h3>Clickable Inactive Steps</h3>
+
+<h3>Templates</h3>
+
+
+<h2>Extra Plugins</h2>
+<p>jmpress.js also comes with extra plugins located in the /plugins folder that
+you might choose to use. To load the plugin simply add a script tag including
+the plugin js file.</p>
+
+<h3>Duration</h3>
+<p>For automatically changing steps after a given duration. Can also display a
+jQuery UI progress bar indicating how long until the change will occur. Adds the
+following object to the jmpress.js config:</p>
+<pre><code>duration: {
+	defaultValue: -1 // Duration in ms, default is -1 which mean inactive
+	,defaultAction: "next" // Event to fire, ie: next or prev
+	,barSelector: undefined // jQuery UI progress bar element
+	,barProperty: "width" // Width of progress bar
+	,barPropertyStart: "0" // Starting position of progress bar
+	,barPropertyEnd: "100%" // Ending position of progress bar
+}</code></pre>
+
+
+<h2>Writing a Plugin</h2>
+<p>To extend jmpress.js, simply create a new plugin js file and wrap all your
+plugin code within a closure. Then to alter or add new configuration settings:</p>
+<pre><code>$.jmpress("defaults").mynewsetting = '';</code></pre>
+<p>Now you can hook in functionality by adding callbacks:</p>
+<pre><code>$.jmpress("setActive", function( step, eventData ) {
+	// Do something new when a step is activated
+}</code></pre>
+<p>Take a look at the core plugins in jmpress.js or the extra plugins in the
+/plugins folder for examples.</p>
