@@ -1,17 +1,44 @@
-<h1>Getting Started</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | a jQuery plugin to build a website on the infinite canvas</title>
 
-<p>The only required files are <a href="http://jquery.com" target="_blank">jQuery</a> and <a href="https://github.com/shama/jmpress.js/blob/master/js/jmpress.js" target="_blank">js/jmpress.js</a> to use.<br/>
-For a quick and simple example look at the <a href="https://github.com/shama/jmpress.js/blob/beta/examples/simple/index.html" target="_blank">examples/simple/index.html</a> and <a href="https://github.com/shama/jmpress.js/blob/beta/examples/simple/simple.css" target="_blank">examples/simple/simple.css</a>.</p>
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+	<link href="docs.css" rel="stylesheet" type="text/css" />
 
-<h2>Migrating From impress.js</h2>
-<p>Currently jmpress.js includes all of the impress.js features and a lot more. To migrate simply add jQuery, change impress.js to jmpress.js and call $(selector).jmpress(); to initialize. Take a look at the <a href="http://shama.github.com/jmpress.js/examples/impress/" target="_blank">impress.js running on jmpress.js</a> example.</p>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jmpress.js"></script>
+</head>
+<body>
 
-<h3>Contents</h3>
-<ul>
-	<li><a href="#docs-inline">Basic Inline Usage</a>
-	<li><a href="#docs-templates">Templates</a>
-	<li><a href="#docs-route">Routing</a>
-	<li><a href="#docs-plugins">Plugins</a>
-	<li><a href="#docs-callbacks">Callbacks</a>
-</ul>
+<div id="docs">
+	<div id="docs-start" data-src="start.html" class="step docs">
+		Loading...
+	</div>
+	<div id="docs-inline" data-src="inline.html" class="step docs" data-x="1000" data-y="0" data-rotate="-10">
+		Loading...
+	</div>
+	<div id="docs-plugins" data-src="plugins.html" class="step docs" data-x="2000" data-y="0" data-rotate="20">
+		Loading...
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#docs').jmpress({
+		// UPON STEP LOAD/ENCODE CODE SAMPLES
+		afterStepLoaded: function( step, eventData ) {
+			$(step).find('code').each(function() {console.log(step);
+				$(this).text($(this).html()).html();
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>
