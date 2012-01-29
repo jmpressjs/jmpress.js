@@ -265,6 +265,10 @@ h4 {
 	transition-delay:         2s;
 }
 
+#jmpress:not(.step-home):not(.step-about) #home {
+	display: none;
+}
+
 .intro-top, .intro-bottom {
 	width: 3000px;
 	height: 1000px;
