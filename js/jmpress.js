@@ -422,16 +422,28 @@
 				.add( callCallback.call(this, 'selectNext', active, {
 					stepData: $(active).data('stepData')
 				}));
-			siblings.push( active );
 			siblings.each(function() {
-				if ($(this).hasClass( settings.loadedClass )) {
+				var step = this;
+				if ($(step).hasClass( settings.loadedClass )) {
 					return;
 				}
-				callCallback.call(jmpress, 'loadStep', this, {
-					stepData: $(this).data('stepData')
-				});
-				$(this).addClass( settings.loadedClass );
+				setTimeout(function() {
+					if ($(step).hasClass( settings.loadedClass )) {
+						return;
+					}
+					callCallback.call(jmpress, 'loadStep', step, {
+						stepData: $(step).data('stepData')
+					});
+					$(step).addClass( settings.loadedClass );
+				}, settings.transitionDuration - 100);
 			});
+			if ($(active).hasClass( settings.loadedClass )) {
+				return;
+			}
+			callCallback.call(jmpress, 'loadStep', active, {
+				stepData: $(active).data('stepData')
+			});
+			$(active).addClass( settings.loadedClass );
 		}
 		/**
 		 *
