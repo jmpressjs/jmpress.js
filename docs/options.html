@@ -1,17 +1,19 @@
 <h1>Options</h1>
 
+<h2>Core</h2>
+
 <h4>stepSelector</h4>
 <p><em>Default: '.step'</em><br/>
 The jQuery selector to specify each step.</p>
 
 <h4>containerClass</h4>
-<p>A class name to set on the container.</p>
+<p>A class name to set on the container. The overall container of the camera. It has no transformation applied so you can set some background on it.</p>
 
 <h4>canvasClass</h4>
-<p>A class name to set on the canvas.</p>
+<p>A class name to set on the canvas. The canvas is the element, which contains the steps.</p>
 
 <h4>areaClass</h4>
-<p></p>
+<p>A class name to set on the area. The area is some middle element, which is needed to build this camera.</p>
 
 <h4>notSupportedClass</h4>
 <p><em>Default: 'not-supported'</em><br/>
@@ -19,7 +21,7 @@ Class name to remove on root element if jmpress.js is not supported.</p>
 
 <h4>loadedClass</h4>
 <p><em>Default: 'loaded'</em><br/>
-Class name to set on each step that has been AJAX loaded.</p>
+Class name to set on each step that has been started loading.</p>
 
 <h4>fullscreen</h4>
 <p><em>Default: true</em><br/>
@@ -27,3 +29,47 @@ Whether jmpress.js should run in full screen mode or in a container.</p>
 
 <h4>animation</h4>
 <p>Set the CSS animation values for transitions between slides.</p>
+
+<h2>Integrated functionality</h2>
+
+<h3>activeClass</h3>
+<p>A class name to set on the current step.</p>
+
+<h3>nestedActiveClass</h3>
+<p>A class name to set on all parents of the current step.</p>
+
+<h3>hash.use</h3>
+<p><em>Default: true</em><br/>
+<p>Whether the url hash should be used with jmpress.</p>
+
+<h3>hash.update</h3>
+<p><em>Default: true</em><br/>
+<p>Whether the url hash should be updated on step change.</p>
+
+<h3>hash.bindChange</h3>
+<p><em>Default: true</em><br/>
+<p>Whether changes of the url hash and clicks on link should be converted into step selects.</p>
+
+<h3>keyboard.use</h3>
+<p><em>Default: true</em><br/>
+<p>Whether the keyboard should be used to navigate in jmpress.</p>
+
+<h3>keyboard.key</h3>
+<p><em>Default: {33: "prev", 32: "next", ...}</em><br/>
+<p>Bind a key to a jmpress commando. Set it to null to remove keybinding. 
+Set it to a string to get the jmpress commando invoced. 
+Set it to a string containing ":" (ex. "next:prev") to get the first commando on default and the second on modified with shift. 
+Set it to a array to apply the array as arguments a jmpress commando (ex. ["select", "#some-cool-step"]).</p>
+
+<h3>keyboard.ignore[TAGNAME]</h3>
+<p><em>Default: [32, 37, ...] as TAGNAME = "INPUT"</em><br/>
+<p>Ignore some keys on a specific tag name.</p>
+
+<h3>viewPort.width, viewPort.height</h3>
+<p>Let camera zoom to contain at least width and/or height.</p>
+
+<h3>viewPort.maxScale, viewPort.minScale</h3>
+<p>Minimum and maximum zoom factor of camera.</p>
+
+<h3>mouse.clickSelects</h3>
+<p>Whether a mouse click on another step select it.</p>
