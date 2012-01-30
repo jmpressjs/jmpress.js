@@ -1304,7 +1304,7 @@
 			// HASH CHANGE EVENT
 			if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
 				var jmpress = this;
-				$(window).bind('hashchange', function() {
+				$(window).bind('hashchange'+eventData.current.hashNamespace, function() {
 					var id = getElementFromUrl();
 					$(jmpress).jmpress("scrollFix");
 					if(id) {
@@ -1333,6 +1333,7 @@
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$("a[href^=#]").off(eventData.current.hashNamespace);
+			$(window).unbind(eventData.current.hashNamespace);
 		});
 		$.jmpress('setActive', function( step, eventData ) {
 			// `#/step-id` is used instead of `#step-id` to prevent default browser
