@@ -1084,11 +1084,29 @@
 				target.y /= inverseScale.y;
 				target.z /= inverseScale.z;
 				// TODO: implement complete matrix transformation
-				// for now only rotateZ applies correctly from parent to childs
-				var ty = -target.x * Math.sin(-(stepD.rotateZ || stepD.rotate)/180*Math.PI) + target.y * Math.cos(-(stepD.rotateZ || stepD.rotate)/180*Math.PI);
-				var tx = target.x * Math.cos(-(stepD.rotateZ || stepD.rotate)/180*Math.PI) + target.y * Math.sin(-(stepD.rotateZ || stepD.rotate)/180*Math.PI);
-				target.x = tx;
-				target.y = ty;
+				var rZ = -(stepD.rotateZ || stepD.rotate)/180*Math.PI
+					,sinZ = Math.sin(rZ), cosZ = Math.cos(rZ);
+				var rY = -(stepD.rotateY)/180*Math.PI
+					,sinY = Math.sin(rY), cosY = Math.cos(rY);
+				var rX = -(stepD.rotateX)/180*Math.PI
+					,sinX = Math.sin(rX), cosX = Math.cos(rX);
+				var tx, ty, tz;
+				// apply rZ
+				ty = -target.x * sinZ + target.y * cosZ;
+				tx = target.x * cosZ + target.y * sinZ;
+				tz = target.z;
+				target.x = tx; target.y = ty; target.z = tz;
+				// apply rY
+				ty = target.y;
+				tx = target.x * cosY + target.z * sinY;
+				tz = target.x * sinY + target.z * cosY;
+				target.x = tx; target.y = ty; target.z = tz;
+				// apply rX
+				ty = target.y * cosX + target.z * sinX;
+				tx = target.x;
+				tz = - target.y * sinX + target.z * cosX;
+				target.x = tx; target.y = ty; target.z = tz;
+
 				target.rotateX -= (stepD.rotateX);
 				target.rotateY -= (stepD.rotateY);
 				target.rotateZ -= (stepD.rotateZ || stepD.rotate);
