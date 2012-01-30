@@ -1,0 +1,35 @@
+<h1>Callbacks</h1>
+
+<p>Callbacks are a way to trigger a specific action when an event is fired
+within jmpress.js. For instance if we want to fire some code before a slide
+change we use the beforeChange callback:</p>
+<pre><code>$('#jmpress').jmpress({
+	'beforeChange': function( element, eventData ) {
+		// ...
+	}
+});</code></pre>
+<p>All callbacks supply the same two parameters: element, the element the event
+	pertains to and eventData, various data associated with the event.</p>
+
+<h2>Available Callbacks</h2>
+<ul>
+	<li>afterDeinit: After all the steps are de-initialized.</li>
+	<li>afterInit: After all the steps are initialized.</li>
+	<li>afterStepLoaded: Called after the AJAX step has finished loading.</li>
+	<li>applyStep: Called last on each step after it is initialized.</li>
+	<li>beforeChange: Before each step change.</li>
+	<li>beforeDeinit: Before all the steps are de-initialized.</li>
+	<li>beforeInit: Before all the steps are initialized.</li>
+	<li>beforeInitStep: On each step as it is initialized.</li>
+	<li>initStep: On each step as it is initialized.</li>
+	<li>loadStep: When a step has began loading via AJAX.</li>
+	<li>selectEnd: When the last step is selected.</li>
+	<li>selectHome: When the home step or first step is selected.</li>
+	<li>selectInitialStep: When the first step is selected.</li>
+	<li>selectNext: When a next step is selected.</li>
+	<li>selectPrev: When a previous step is selected.</li>
+	<li>setActive: When a step is activated or selected.</li>
+	<li>setInactive: When a previously active step is de-activated or not
+	selected.</li>
+	<li>unapplyStep: Called last on each step after is is de-initialized.</li>
+</ul>

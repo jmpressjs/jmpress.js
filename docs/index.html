@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | a jQuery plugin to build a website on the infinite canvas</title>
+
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="docs.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jmpress.js"></script>
+</head>
+<body>
+
+<div id="docs">
+	<div id="docs-start" data-src="start.html" class="step docs">
+		Loading...
+	</div>
+	<div id="docs-options" data-src="options.html" class="step docs" data-x="1000">
+		Loading...
+	</div>
+	<div id="docs-inline" data-src="inline.html" class="step docs" data-x="2000">
+		Loading...
+	</div>
+	<div id="docs-templates" data-src="templates.html" class="step docs" data-x="3000">
+		Loading...
+	</div>
+	<div id="docs-route" data-src="route.html" class="step docs" data-x="4000">
+		Loading...
+	</div>
+	<div id="docs-plugins" data-src="plugins.html" class="step docs" data-x="5000">
+		Loading...
+	</div>
+	<div id="docs-callbacks" data-src="callbacks.html" class="step docs" data-x="6000">
+		Loading...
+	</div>
+	<div id="docs-methods" data-src="methods.html" class="step docs" data-x="7000">
+		Loading...
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#docs').jmpress({
+		// UPON STEP LOAD/ENCODE CODE SAMPLES
+		afterStepLoaded: function( step, eventData ) {
+			$(step).find('code').each(function() {console.log(step);
+				$(this).text($(this).html()).html();
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>

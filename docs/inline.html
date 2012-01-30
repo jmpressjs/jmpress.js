@@ -1,7 +1,4 @@
-<h1>BASIC USAGE</h1>
-
-<p>Take a look at the <a href="https://github.com/shama/jmpress.js/blob/master/index.html" target="_blank">index.html</a> and <a href="https://github.com/shama/jmpress.js/blob/master/css/style.css" target="_blank">css/style.css</a> for an example.<br/>
-The only required files are <a href="http://jquery.com" target="_blank">jQuery</a> and <a href="https://github.com/shama/jmpress.js/blob/master/js/jmpress.js" target="_blank">js/jmpress.js</a> to use.</p>
+<h1>Basic Usage</h1>
 
 <p><strong>Create a root element:</strong></p>
 <pre><code><div id="jmpress"></div></code></pre>
@@ -22,13 +19,16 @@ Don't want to use `.step` as a selector? Okay:</p>
 <pre><code>$('#jmpress').jmpress({
 	stepSelector: 'li'
 });</code></pre>
+<p>See more option on next slide</p>
 
 <p><strong>Customize the hash id of each slide</strong><br/>
 The id of the step will appear as the URI hash to recall the slide later. If you
 don't give your steps ids then the id `step-N` will be used.</p>
-<pre><code><div id="name-of-slide" class="step" data-x="3500" data-y="-850" data-rotate="270" data-scale="6">
+<pre><code class="noconvert">&lt;div id=&quot;name-of-slide&quot; class=&quot;step&quot; 
+		data-x=&quot;3500&quot; data-y=&quot;-850&quot; 
+		data-rotate=&quot;270&quot; data-scale=&quot;6&quot;&gt;
 	Slide 1
-</div></code></pre>
+&lt;/div&gt;</code></pre>
 
 <p><strong>Load slides dynamically</strong><br/>
 You can load a slide dynamically by setting the `data-src` or `href` attribute
