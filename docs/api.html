@@ -2,15 +2,23 @@
 
 <p>Each step element can have the following data properties set:</p>
 <ul>
-	<li>data-x: X Position
-	<li>data-y: Y Position
-	<li>data-z: Z Position
-	<li>data-scale: Scale of element
+	<li>data-x: cartesian coordinates: X Position
+	<li>data-y: cartesian coordinates: Y Position
+	<li>data-z: cartesian coordinates: Z Position
+	<li>data-r: polar coordinates: radius
+	<li>data-phi: polar coordinates: angle (starting at top, counterclockwise)
+	<li>data-scale: Scale of element (also scale-x, scale-y, scale-z)
 	<li>data-rotation: Degree of rotation
 	<li>data-rotation-x: Degree of rotation on x-axis
 	<li>data-rotation-y: Degree of rotation on y-axis
 	<li>data-rotation-z: Degree of rotation on z-axis
+	<li>data-delegate: delegate the activeness to another step choosen by selector
 	<li>data-src: Load content of slide dynamically
+	<li>data-exclude: do not use step in natural flow, but it can be selected with the route commando
+	<li>data-next: selector of the next step
+	<li>data-prev: selector of the prev step
+	<li>data-template: apply a template, which must be defined before init jmpress
+	<li>even more with plugins
 </ul>
 
 <p><strong>jQuery.jmpress()</strong></p>
@@ -56,3 +64,36 @@ $(selector).jmpress('css', $('#step-1'), {
 $(selector).jmpress('beforeChange', function( slide ) {
 	// Called on the start of each slide change
 });</code></pre>
+
+<p>Static functions</p>
+<ul>
+	<li>css( element, cssAsObject ): applies css with the corrent prefix
+	<li>[plugin] defaults(): returns the default config, you may add elements in plugins
+	<li>[plugin] register( eventName ): register a new event
+	<li>[plugin] register( funcName, func ): adds a new function to jmpress
+	<li>[plugin] engine(): returns the engine
+	<li>[plugin] dataset( element ): returns the dataset of a element
+</ul>
+
+<p>Need to called on jmpress object: $("#jmpress").jmpress("xxx", ...):</p>
+<ul>
+	<li>init(): inits jmpress with default config (like impress.js)
+	<li>init( config ): inits jmpress
+	<li>select( selector ): set the first step matching the selector active
+	<li>goTo( selector ): same as select( selector )
+	<li>next(): select next step in flow
+	<li>prev(): select prev step in flow
+	<li>home(): select first step in DOM
+	<li>end(): select last step in DOM
+	<li>settings(): returns the settings object, you may modify it
+	<li>deinit(): deinits jmpress, returning to orginal state, if already deinited it does nothing
+	<li>template( templateName, templateData ): adds or modify a template, if already defined the old template is extends with the new properties.
+	<li>apply( selector, templateName ): applies the template to all selected steps
+	<li>apply( selector, templateData ): applies template directly by template data object
+	<li>apply( selector, arrayOfTemplateDatas ): applies template datas to more selected items
+	<li>[plugin] active(): returns the active step as jQuery object
+	<li>[plugin] fire( callbackName, element, eventData ): fire a event
+	<li>[plugin] canvas(): returns the canvas element as jQuery object
+	<li>[plugin] canvas( css ): sets styles on the canvas element and returns it
+	<li>[plugin] reapply( step ): reapplies styles on step, should be called after modifying stepData
+</ul>
