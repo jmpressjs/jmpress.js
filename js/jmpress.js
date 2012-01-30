@@ -646,8 +646,8 @@
 		 * @return Object canvas
 		 */
 		function canvasMod( props ) {
-			css(canvas, props);
-			return canvas;
+			css(canvas, props || {});
+			return $(canvas);
 		}
 		/**
 		 * Return current settings
@@ -663,7 +663,7 @@
 		 * @return Object
 		 */
 		function getActive() {
-			return active && $(active);
+			return activeDelegated && $(activeDelegated);
 		}
 		/**
 		 * fire a callback
