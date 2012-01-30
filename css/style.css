@@ -320,7 +320,7 @@ h4 {
 	width: 80%;
 	height: 80%;
 
-	border-radius: 20px;
+	border-top-left-radius: 20px;
 }
 .docs h1 {
 	font-size: 1.5em;
