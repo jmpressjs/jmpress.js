@@ -313,7 +313,7 @@ h4 {
 
 /* DOCS */
 .docs {
-	font-size: 0.9em;
+	font-size: 0.6em;
 	overflow: auto;
 	min-width: 600px;
 	min-height: 600px;
@@ -324,14 +324,18 @@ h4 {
 	font-size: 1.5em;
 	line-height: 1em;
 }
-.docs p {
+.docs h2 {
 	margin-top: 10px;
+	font-size: 1.3em;
 }
-.docs strong {
+.docs h4, .docs strong {
+	margin: 0px;
 	font-size: 1.2em;
 }
+.docs p {
+	margin-bottom: 10px;
+}
 .docs pre {
-	background: #333;
 	padding: 5px;
 	border-radius: 5px;
 }
