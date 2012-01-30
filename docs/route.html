@@ -6,16 +6,16 @@
 <pre><code><div id="jmpress">
 	<div class="step" id="a" data-next="c">A</div>
 	<div class="step" id="b">B</div>
-	<div class="step" id="c" data-prev="b">C</div>
+	<div class="step" id="c">C</div>
 	<div class="step" id="d">D</div>
 </div></code></pre>
 <p>The flow will start with A, goto C, then D and back to A. Only when the user is on C and goes back will they be shown B.</p>
 
 <p><strong>Using route:</strong></p>
-<p>You can set the flow using the route method. You also don't have to define all the steps. The example below will preserve the natural flow and only modify the indicated steps:</p>
-<pre><code>$("#jmpress").jmpress("route", ["#b", "#d", "#c"]);</code></pre>
-<p>The flow will start with A, goto B, goto D, goto C and back to A.</p>
+<p>You can set the flow using the route method. You also don't have to define all the steps. The commando will preserve the natural flow and only modify the indicated steps.</p>
+<pre><code>$("#jmpress").jmpress("route", ["#a", "#c", "#b", "#d"]);</code></pre>
+<p>The flow will start with A, goto C, goto B, goto D and back to A. If the user go backwards he will get the same flow D -> B -> C -> A -> D.</p>
 
 <p><strong>Unidirectional:</strong></p>
-<pre><code>$("#jmpress").jmpress("route", ["#d", "#b"], true);</code></pre>
-<p>The flow will be A -> B -> C -> D -> B -> C -> D -> A.</p>
+<pre><code>$("#jmpress").jmpress("route", ["#a", "#c"], true);</code></pre>
+<p>The flow will be as the flow above with data attributes. <br />Forwards: A -> C -> D -> A. Backwards: D -> C -> B -> A -> D.</p>
