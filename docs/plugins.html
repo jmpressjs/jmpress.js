@@ -3,30 +3,43 @@
 
 
 <h2>Default Plugins</h2>
-<p>jmpress.js comes loaded with a default set of plugins to handle the common 
-uses.</p>
+<p>jmpress.js comes loaded with a default set of plugins to handle the common uses.</p>
 
 <h3>Translate, Scale &amp; Rotate</h3>
+<p>This default plugin handles the transformation stuff.</p>
 
 <h3>Active Class</h3>
+<p>This default plugin handles the toggling of activeClass and nestedActiveClass.</p>
 
 <h3>Circular Stepping</h3>
+<p>This default plugin handles the natural flow of the steps, taken from the dom order.</p>
 
 <h3>Starting Step</h3>
+<p>This default plugin handles the config option "start".</p>
 
 <h3>Routing</h3>
+<p>This default plugin handles the data-next and data-prev attributes and the route commando.</p>
 
 <h3>Ajax Load Steps</h3>
+<p>This default plugin enables you to load step via ajax.
+It handles the data-src and href attribute and offers the "afterStepLoaded" event.</p>
 
 <h3>Hash in URL</h3>
+<p>This default plugin handles updates to and change events from the url hash.
+It also handles clicks on link to other steps.</p>
 
 <h3>Keyboard Navigation</h3>
+<p>This default plugin handles navigation with the keyboard.</p>
 
 <h3>Viewport</h3>
+<p>This default plugin handles camera zooming to window size.</p>
 
 <h3>Clickable Inactive Steps</h3>
+<p>This default plugin handles click on other steps.</p>
 
 <h3>Templates</h3>
+<p>This default plugin handles templates.
+It handles the data-template attribute and registers template and apply commando.</p>
 
 
 <h2>Extra Plugins</h2>
@@ -35,26 +48,36 @@ you might choose to use. To load the plugin simply add a script tag including
 the plugin js file.</p>
 
 <h3>Duration</h3>
-<p>For automatically changing steps after a given duration. Can also display a
-jQuery UI progress bar indicating how long until the change will occur. Adds the
-following object to the jmpress.js config:</p>
-<pre><code>duration: {
-	defaultValue: -1 // Duration in ms, default is -1 which mean inactive
-	,defaultAction: "next" // Event to fire, ie: next or prev
-	,barSelector: undefined // jQuery UI progress bar element
-	,barProperty: "width" // Width of progress bar
-	,barPropertyStart: "0" // Starting position of progress bar
-	,barPropertyEnd: "100%" // Ending position of progress bar
-}</code></pre>
+<p>For automatically changing steps after a given duration.
+Can also use a progress bar indicating how long until the change will occur.
+It handles the data-duration and data-duration-action attributes.
+Adds the following config options to jmpress:</p>
 
+<h4>duration.barSelector</h4>
+<p>A jQuery selector to the bar element on which a property should be changed.</p>
+
+<h4>duration.barProperty, duration.barPropertyStart, duration.barPropertyEnd</h4>
+<p><em>Default: "width", "0", "100%"</em><br />
+Set to property and property values which should be changed.
+The values are set in on step, so transition should be enabled on element.</p>
+
+<h4>duration.defaultAction</h4>
+<p><em>Default: "next"</em><br />
+The action that should be executed if no data-duration-action is defined.</p>
+
+<h4>duration.defaultValue</h4>
+<p>The duration that should be taken if no data-duration is defined.</p>
+
+<h3>Secondary</h3>
+<p>Documentation coming soon.</p>
 
 <h2>Writing a Plugin</h2>
 <p>To extend jmpress.js, simply create a new plugin js file and wrap all your
 plugin code within a closure. Then to alter or add new configuration settings:</p>
-<pre><code>$.jmpress("defaults").mynewsetting = '';</code></pre>
+<pre><code>$.jmpress("defaults").myNewConfigOption = '';</code></pre>
 <p>Now you can hook in functionality by adding callbacks:</p>
 <pre><code>$.jmpress("setActive", function( step, eventData ) {
 	// Do something new when a step is activated
-}</code></pre>
+});</code></pre>
 <p>Take a look at the core plugins in jmpress.js or the extra plugins in the
 /plugins folder for examples.</p>
