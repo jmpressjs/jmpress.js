@@ -201,35 +201,42 @@
 		<a href="#" class="next">next &gt;</a>
 		<div id="showcase-nested" class="step">
 			<h1>nested step</h1>
+			<p>This steps is nested in another step so it's position is relative to parent (as you know from html/css).
+			This can make is really easy the position steps. You can group up step and move that group alltogether.</p>
 			<p style="font-size: 70%">it has secondary rotation, which is applied on enter (secondary-plugin).</p>
-			<p>with a nested jmpress. (click it to navigate there)</p>
-			<div id="nested-jmpress" style="height: 100px; width: 700px;">
-				<div class="nested-step" data-duration="-1">
-					<h2>Cool usecases for that: <a href="#" class="nested-next">start &gt;</a></h2>
-				</div>
-				<div class="nested-step" data-x="1000" data-rotate-y="90">
-					<h2>Embed this into your blog</h2>
-					<p>for a presentation</p>
-				</div>
-				<div class="nested-step" data-y="-1000" data-rotate-x="90" data-rotate-z="-90">
-					<h2>Make a cool slideshow of your images</h2>
-					<p>images can be loaded on demand by ajax</p>
-				</div>
-				<div class="nested-step" data-y="1000" data-rotate-y="45">
-					<h2>Do even more cool things:</h2>
-				</div>
-				<div class="nested-step" data-y="1000" data-x="1000" data-rotate-x="90">
-					<h2>Combine this with duration-plugin</h2>
-					<p>As here</p>
-				</div>
-				<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" style="position: absolute; left: 5px; right: 5px; bottom: 5px; height: 10px">
-					<div id="nested-jmpress-bar" class="ui-progressbar-value ui-widget-header ui-corner-left" style="width:0"></div>
-				</div>
-			</div>
-			<p style="font-size: 70%">NOTICE: the nested jmpress presentation uses 3d much more the the outer presentation.
-			Browser support may be more limited.</p>
-			<a href="#" class="next">home</a>
+			<a href="#" class="next">next &gt;</a>
 		</div>
+	</div>
+
+	<div id="showcase-jmpress-nested" class="step">
+		<h1>jmpress also nested</h1>
+		<p>jmpress is not only running in a container, but also nested in another jmpress as container.</p>
+		<p>(click it to navigate there)</p>
+		<div id="nested-jmpress" style="height: 100px; width: 700px;">
+			<div class="nested-step" data-duration="-1">
+				<h2>Cool usecases for that: <a href="#" class="nested-next">start &gt;</a></h2>
+			</div>
+			<div class="nested-step" data-x="1000" data-rotate-y="90">
+				<h2>Embed this into your blog</h2>
+				<p>for a presentation</p>
+			</div>
+			<div class="nested-step" data-y="-1000" data-rotate-x="90" data-rotate-z="-90">
+				<h2>Make a cool slideshow of your images</h2>
+				<p>images can be loaded on demand by ajax</p>
+			</div>
+			<div class="nested-step" data-y="1000" data-rotate-y="45">
+				<h2>Do even more cool things:</h2>
+			</div>
+			<div class="nested-step" data-y="1000" data-x="1000" data-rotate-x="90">
+				<h2>Combine this with duration-plugin</h2>
+				<p>As here</p>
+			</div>
+			<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" style="position: absolute; left: 5px; right: 5px; bottom: 5px; height: 10px">
+				<div id="nested-jmpress-bar" class="ui-progressbar-value ui-widget-header ui-corner-left" style="width:0"></div>
+			</div>
+		</div>
+		<p style="font-size: 70%">NOTICE: Chrome 16 buggy, but fix in Chrome 17, sorry.</p>
+		<a href="#" class="next">home</a>
 	</div>
 </div>
 
@@ -309,8 +316,14 @@ $(function() {
 			,rotate: -230
 			,scale: 2.8
 		},
+		{
+			x: 1500
+			,y: -4500
+			,rotate: -230
+			,scale: 2.8
+		},
 	]});
-	$('#jmpress').jmpress("route", ["#showcase-nested", "#about"]);
+	$('#jmpress').jmpress("route", ["#showcase-jmpress-nested", "#about"]);
 	$('#jmpress').jmpress("route", ["#docs", "#contribute"]);
 	var jmpressConfig = {
 		// SET THE VIEW PORT
