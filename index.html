@@ -330,7 +330,7 @@ $(function() {
 		}
 		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
-			$(step).find('code').each(function() {
+			$(step).find('code:not(.noconvert)').each(function() {
 				$(this).text($(this).html()).html();
 			});
 			$("pre").addClass('ui-state-default');
