@@ -1020,7 +1020,6 @@
 	// own callbacks may be fired with $.jmpress( 'fire', step, eventData )
 
 	(function() { // translate scale rotate
-		$.jmpress("defaults").nestedActiveClass = "nested-active";
 		$.jmpress("initStep", function( step, eventData ) {
 			var data = eventData.data;
 			var stepData = eventData.stepData;
@@ -1119,6 +1118,7 @@
 	})();
 
 	(function() { // active class
+		$.jmpress("defaults").nestedActiveClass = "nested-active";
 		$.jmpress( 'defaults' ).activeClass = "active";
 		$.jmpress( 'setInactive', function( step, eventData ) {
 			if(eventData.settings.activeClass)
@@ -1317,7 +1317,6 @@
 	(function() { // keyboard
 		$.jmpress('defaults').keyboard = {
 			use: true
-			,focusable: true
 			,keys: {
 				33: "prev" // pg up
 				,37: "prev" // left
