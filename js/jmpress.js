@@ -1283,8 +1283,10 @@
 				// get id from url # by removing `#` or `#/` from the beginning,
 				// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
 				// TODO SECURITY check user input to be valid!
-				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
-				return el.length > 0 && el.is(eventData.settings.stepSelector) ? el : undefined;
+				try {
+					var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
+					return el.length > 0 && el.is(eventData.settings.stepSelector) ? el : undefined;
+				} catch(e) {}
 			}
 			eventData.current.hashNamespace = ".jmpress-"+randomString();
 			// HASH CHANGE EVENT
