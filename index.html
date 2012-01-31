@@ -11,36 +11,79 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta http-equiv="expires" content="0">
 
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
+	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/start/jquery-ui.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jmpress.js"></script>
+	<script type="text/javascript" src="plugins/duration.js"></script>
+	<script type="text/javascript" src="plugins/secondary.js"></script>
 </head>
-<body class="ui-state-default">
+<body>
 
 <ul id="nav">
-	<li><a href="#about">ABOUT</a></li>
-	<li><a href="#download">DOWNLOAD</a></li>
-	<li><a href="#docs">DOCS</a></li>
-	<li><a href="#contribute">CONTRIBUTE</a></li>
+	<li><a href="#home"><span>HOME</span></a></li>
+	<li><a href="#about"><span>ABOUT</span></a></li>
+	<li><a href="#download"><span>DOWNLOAD</span></a></li>
+	<li><a href="#docs"><span>DOCS</span></a>
+		<ul>
+			<li><a href="#docs-start"><span>Getting Started</span></a></li>
+			<li><a href="#docs-inline"><span>Basic Usage</span></a></li>
+			<li><a href="#docs-options"><span>Options</span></a></li>
+			<li><a href="#docs-templates"><span>Templates</span></a></li>
+			<li><a href="#docs-route"><span>Routes</span></a></li>
+			<li><a href="#docs-plugins"><span>Plugins</span></a></li>
+			<li><a href="#docs-callbacks"><span>Callbacks</span></a></li>
+			<li><a href="#docs-methods"><span>Methods</span></a></li>
+		</ul>
+	</li>
+	<li><a href="#contribute"><span>CONTRIBUTE</span></a></li>
+	<li><a href="#showcase"><span>SHOWCASE</span></a>
+		<ul>
+			<li><b>THEMES</b></li>
+			<li><a href="#" data-theme="start"><span>start</span></a></li>
+			<li><a href="#" data-theme="sunny"><span>sunny</span></a></li>
+			<li><a href="#" data-theme="base"><span>base</span></a></li>
+			<li><a href="#" data-theme="le-frog"><span>le-frog</span></a></li>
+			<li><a href="#" data-theme="black-tie"><span>black-tie</span></a></li>
+			<li><a href="#" data-theme="ui-darkness"><span>ui-darkness</span></a></li>
+			<li><a href="#" data-theme="ui-lightness"><span>ui-lightness</span></a></li>
+		</ul>
+	</li>
 </ul>
 
-<div id="jmpress">
+<div id="jmpress" class="init-css" data-template="main">
 
-	<div id="about" class="step" data-x="-900" data-y="-1500">
-		<h4>introducing</h4>
-		<h1>jmpress.js</h1>
-		<p>a jQuery plugin to build a website on the infinite canvas</p>
-		<span class="ui-icon ui-icon-star"></span>
-		<a href="#" class="next">next &gt;</a>
+	<div id="home" class="step init-css">
+		<div class="intro-top ui-state-default">
+			<div class="inner">
+				<h4>introducing</h4>
+				<h1 class="ui-state-text">jmpress.js</h1>
+				<p>a jQuery plugin to build a website on the infinite canvas</p>
+				<span class="ui-icon ui-icon-star"></span>
+				<!-- no tabbable things here -->
+				<a href="#" style="visibility: hidden" class="next">next &gt;</a>
+			</div>
+		</div>
+		<div class="intro-bottom ui-state-default">
+			<div class="inner">
+				<h4>introducing</h4>
+				<h1 class="ui-state-text">jmpress.js</h1>
+				<p>a jQuery plugin to build a website on the infinite canvas</p>
+				<span class="ui-icon ui-icon-star"></span>
+				<a href="#" class="next">start &gt;</a>
+			</div>
+		</div>
 	</div>
 
-	<div id="about-port" class="step" data-x="-800" data-y="-1100" data-rotate="-20" data-scale="1.2">
-		<h4>a jQuery port of</h4>
-		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js*</a><sup>created by Bartek Szopka</sup></div>
+	<div id="about" class="step">
+		<h4>started as a jQuery port of</h4>
+		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js</a><sup>created by Bartek Szopka</sup></div>
 		<p>but with a different goal in mind. Why keep it behind a podium? Let's make websites!</p>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="about-jquery" class="step" data-x="-700" data-y="-500" data-rotate="-40" data-scale="1.4">
+	<div id="about-jquery" class="step">
 		<h1>why jQuery?</h1>
 		<ul>
 			<li>great plugin framework that is familiar to a lot of people</li>
@@ -55,81 +98,226 @@
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="about-impress" class="step" data-x="0" data-y="100" data-rotate="-60" data-scale="1.6">
+	<div id="about-impress" class="step">
 		<h4>why not contribute to the</h4>
 		<h1>original?</h1>
-		<p>I have contributed and will continue to send pull requests :)<br/>
-		@bartaz has a very specific vision for impress.js which I respect.<br/>
+		<p>We have contributed and will continue to send pull requests :)<br/>
+		@bartaz has a very specific vision for impress.js which we respect.<br/>
 		<br/>
-		Plus I asked him and he <a href="https://twitter.com/#!/bartaz/status/156123781037957123" target="_blank">said no</a>.</p>
+		Plus he was asked and he <a href="https://twitter.com/#!/bartaz/status/156123781037957123" target="_blank">said no</a>.</p>
+		<p style="font-size:70%">jmpress.js currently includes all of the impress.js features.<br/>
+		Migration from impress.js is possible with only one additional line.</p>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-    <div id="download" class="step" data-x="1000" data-y="200" data-rotate="-95" data-scale="1.8">
+    <div id="download" class="step">
 		<h1>download</h1>
 		<p>Download, clone, submodule or fork on <a href="https://github.com/shama/jmpress.js/">github</a></p>
 		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
 		<a href="#" class="next">next &gt;</a>
     </div>
 
-	<div id="docs" class="step" data-x="1800" data-y="-100" data-rotate="-120" data-scale="2">
+	<div id="docs" class="step">
 		<h1>docs</h1>
-		<p>Available <a href="https://github.com/shama/jmpress.js">in the readme</a> for now</p>
+		<p>Read them <a href="#docs-start">&lt; over there ;)</a></p>
 		<span class="ui-icon ui-icon-document"></span>
 		<a href="#" class="next">next &gt;</a>
+		
+		<div id="docs-start" data-src="docs/start.html" class="step docs ui-widget-content" data-x="-1000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-inline" data-src="docs/inline.html" class="step docs ui-widget-content" data-x="-2000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-options" data-src="docs/options.html" class="step docs ui-widget-content" data-x="-3000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-templates" data-src="docs/templates.html" class="step docs ui-widget-content" data-x="-4000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-route" data-src="docs/route.html" class="step docs ui-widget-content" data-x="-5000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-plugins" data-src="docs/plugins.html" class="step docs ui-widget-content" data-x="-6000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-callbacks" data-src="docs/callbacks.html" class="step docs ui-widget-content" data-x="-7000" data-rotate="180">
+			Loading...
+		</div>
+		<div id="docs-methods" data-src="docs/methods.html" class="step docs ui-widget-content" data-x="-8000" data-rotate="180">
+			Loading...
+		</div>
 	</div>
 
-	<!--
-	<div id="docs-basic" data-src="docs/basic.html" class="step docs" data-x="2800" data-y="1400" data-rotate="-130" data-scale="2">
-		Loading...
-	</div>
-
-	<div id="docs-api" data-src="docs/api.html" class="step docs" data-x="3900" data-y="2500" data-rotate="-140" data-scale="2">
-		Loading...
-	</div>
-	-->
-
-	<div id="contribute" class="step" data-x="2500" data-y="-900" data-rotate="-160" data-scale="2.2">
+	<div id="contribute" class="step">
 		<h1>contribute</h1>
-		<p>Good news! I accept pull requests ;)</p>
+		<p>Good news! We accept pull requests ;)</p>
 		<p>Please work and pull against the <i>dev</i> or <i>beta</i> branch. Thanks!</p>
+		<p>You can also contribute by writing <a href="https://github.com/shama/jmpress.js/issues" target="_blank">issues</a> for bugs or features requests.</p>
 		<span class="ui-icon ui-icon-person"></span>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="contribute-tests" class="step" data-x="2600" data-y="-1700" data-rotate="-180" data-scale="2.4">
+	<div id="contribute-tests" class="step">
 		<h1>tests</h1>
 		<p>jmpress.js uses the <a href="http://pivotal.github.com/jasmine/" target="_blank">jasmine bdd</a> library for testing. Please load <i>test.html</i> in your browser to run the tests.</p>
 		<a href="#" class="next">next &gt;</a>
 	</div>
 
-	<div id="contribute-wishlist" class="step" data-x="2600" data-y="-2500" data-rotate="-210" data-scale="2.6">
+	<div id="contribute-wishlist" class="step">
 		<h1>wishlist</h1>
 		<ul>
 			<li>Browser Support (hard but important)</li>
 			<li>Better fallback support for older browsers</li>
 			<li>Mobile/Touch (use jQuery mobile)</li>
 			<li>Integrate an option for jQuery UI theme support</li>
-			<li>Simple to use for new users, but flexible for advanded</li>
+			<li>Simple to use for new users, but flexible for advanced</li>
 			<li>Community for plugins</li>
 		</ul>
-		<p>See new features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
-		<a href="#" class="next">home</a>
+		<a href="#" class="next">next &gt;</a>
 	</div>
 
+	<div id="showcase" class="step">
+		<h1>some cool features</h1>
+		<ul>
+			<li>embed this in a container <a href="container.html">Show Sample</a></li>
+			<li>jquery ui themes</li>
+			<li>Switch to normal view: <a href="#" id="uninit-jmpress">Switch</a> <a href="#" id="reinit-jmpress">Switch back to presentation view :)</a></li>
+			<li>nice plugin interface <br>(most of the core functionality is built on this interface)</li>
+			<li>many config options</li>
+			<li>tree-like hierarchies are possible</li>
+		</ul>
+		<p>See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
+		<a href="#" class="next">next &gt;</a>
+		<div id="showcase-nested" class="step">
+			<h1>nested step</h1>
+			<p>This steps is nested in another step so it's position is relative to parent (as you know from html/css).
+			This can make is really easy the position steps. You can group up step and move that group alltogether.</p>
+			<p style="font-size: 70%">it has secondary rotation, which is applied on enter (secondary-plugin).</p>
+			<a href="#" class="next">next &gt;</a>
+		</div>
+	</div>
+
+	<div id="showcase-jmpress-nested" class="step">
+		<h1>jmpress also nested</h1>
+		<p>jmpress is not only running in a container, but also nested in another jmpress as container.</p>
+		<p>(click it to navigate there)</p>
+		<div id="nested-jmpress" style="height: 100px; width: 700px;">
+			<div class="nested-step" data-duration="-1">
+				<h2>Cool usecases for that: <a href="#" class="nested-next">start &gt;</a></h2>
+			</div>
+			<div class="nested-step" data-x="1000" data-rotate-y="90">
+				<h2>Embed this into your blog</h2>
+				<p>for a presentation</p>
+			</div>
+			<div class="nested-step" data-y="-1000" data-rotate-x="90" data-rotate-z="-90">
+				<h2>Make a cool slideshow of your images</h2>
+				<p>images can be loaded on demand by ajax</p>
+			</div>
+			<div class="nested-step" data-y="1000" data-rotate-y="45">
+				<h2>Do even more cool things:</h2>
+			</div>
+			<div class="nested-step" data-y="1000" data-x="1000" data-rotate-x="90">
+				<h2>Combine this with duration-plugin</h2>
+				<p>As here</p>
+			</div>
+			<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" style="position: absolute; left: 5px; right: 5px; bottom: 5px; height: 10px">
+				<div id="nested-jmpress-bar" class="ui-progressbar-value ui-widget-header ui-corner-left" style="width:0"></div>
+			</div>
+		</div>
+		<p style="font-size: 70%">NOTICE: Chrome 16 buggy, but fix in Chrome 17, sorry.</p>
+		<a href="#" class="next">home</a>
+	</div>
 </div>
 
 <div class="hint">
     <p>Use arrow keys to navigate</p>
 </div>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/jmpress.js"></script>
 <script type="text/javascript">
 $(function() {
 	var pageviewTimeout;
 
-	$('#jmpress').jmpress({
+	$.jmpress("apply", "#showcase-nested", {
+		x: 250
+		,y: -30
+		,rotate: { z: 20 }
+		,secondary: {
+			rotateZ: 90
+			,y: 30
+			,"": "siblings"
+		}
+		,scale: 0.3
+	});
+	$.jmpress("template", "main", { children: [
+		{
+			scale: 10
+			,z: 1
+		},
+		{
+			x: -800
+			,y: -1100
+			,rotate: -20
+			,scale: 1.2
+		},
+		{
+			x: -700
+			,y: -500
+			,rotate: -40
+			,scale: 1.4
+		},
+		{
+			x: 0
+			,y: 100
+			,rotate: -60
+			,scale: 1.6
+		},
+		{
+			x: 1000
+			,y: 200
+			,rotate: -95
+			,scale: 1.8
+		},
+		{
+			x: 1800
+			,y: -100
+			,rotate: -120
+			,scale: 2
+		},
+		{
+			x: 2500
+			,y: -900
+			,rotate: -160
+			,scale: 2.2
+		},
+		{
+			x: 2600
+			,y: -1700
+			,rotate: -180
+			,scale: 2.4
+		},
+		{
+			x: 2600
+			,y: -2500
+			,rotate: -210
+			,scale: 2.6
+		},
+		{
+			x: 2700
+			,y: -3700
+			,rotate: -230
+			,scale: 2.8
+		},
+		{
+			x: 1500
+			,y: -4500
+			,rotate: -230
+			,scale: 2.8
+		},
+	]});
+	$('#jmpress').jmpress("route", ["#showcase-jmpress-nested", "#about"]);
+	$('#jmpress').jmpress("route", ["#docs", "#contribute"]);
+	var jmpressConfig = {
 		// SET THE VIEW PORT
 		viewPort: {
 			height: 600
@@ -138,12 +326,21 @@ $(function() {
 		}
 		// SET THE ACTIVE SLIDE IN THE NAV
 		,setActive: function( slide ) {
+			$('#nav a')
+				.removeClass( 'ui-state-active' )
+				.parent( 'li' )
+					.removeClass( 'active' );
 			var id = $(slide).attr('id');
-			if (id.indexOf('-') != -1) {
-				id = id.substr(0, id.indexOf('-'));
+			var idArr = id.split("-");
+			id = "";
+			for(var i = 0; i < idArr.length; i ++) {
+				if(id) id += "-";
+				id += idArr[i];
+				$('#nav a[href=\"#' + id + '\"]')
+					.addClass( 'ui-state-active' )
+					.parent( 'li' )
+						.addClass( 'active' );
 			}
-			$('#nav a').removeClass( 'active' );
-			$('#nav a[href=#' + id + ']').addClass( 'active' );
 
 			// Track each step as page
 			if(pageviewTimeout) clearTimeout(pageviewTimeout);
@@ -153,20 +350,97 @@ $(function() {
 		}
 		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
-			$(step).find('code').each(function() {
+			$(step).find('code:not(.noconvert)').each(function() {
 				$(this).text($(this).html()).html();
 			});
+			$("pre").addClass('ui-state-default');
 		}
-	});
+		,containerClass: "ui-widget-content"
+		,areaClass: ""
+		,canvasClass: ""
+		,initClass: "init-css"
+		,animation: { transitionDelay: "0ms" }
+	};
+	$('#jmpress').jmpress(jmpressConfig);
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
 		return false;
+	});
+	$('.nested-next').click(function() {
+		$('#nested-jmpress').jmpress('next');
+		return false;
+	});
+	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
+	$("#nav a, #nav-themes a").addClass("ui-button ui-widget ui-state-default");
+	$("#nav a span").addClass("ui-button-text");
+	//$('#home .intro-top, #home .intro-bottom').addClass('');
+	$("#jmpress a[href], #nav a, #nav-themes a").hover(function() {
+		$(this).addClass("ui-state-hover");
+	}, function() {
+		$(this).removeClass("ui-state-hover");
 	});
 	// HACK TO CHANGE HINT IF IPAD
 	var ua = navigator.userAgent.toLowerCase();
 	if ( ua.search(/(ipad)/) != -1 ) {
 		$('.hint').text('Swipe support is coming :)');
 	}
+
+	$("a[data-theme]").click(function(event) {
+		var theme = $(this).data("theme");
+
+		$("#theme").remove();
+
+		var link = $("<link>");
+		link.attr({
+				id: "theme",
+				type: 'text/css',
+				rel: 'stylesheet',
+				href: "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/"+theme+"/jquery-ui.css"
+		});
+		$("head").append( link )
+
+		$("a[data-theme]").removeClass("ui-state-active");
+		$(this).addClass("ui-state-active");
+
+		event.preventDefault();
+	});
+	$("a[data-theme=start]").addClass("ui-state-active");
+	$("#uninit-jmpress").click(function(event) {
+		$("#jmpress").jmpress("deinit");
+		$("#nav").css("opacity", 0);
+		$("#jmpress").addClass("not-supported");
+		$("#reinit-jmpress").show();
+		$("#uninit-jmpress").hide();
+		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
+		$('#home').find('.intro-bottom').hide();
+		window.location.hash = ""
+		event.preventDefault();
+	});
+	$("#reinit-jmpress").click(function(event) {
+		$("#jmpress").jmpress(jmpressConfig);
+		$("#nav").css("opacity", 1);
+		$("#jmpress").removeClass("not-supported");
+		$("#reinit-jmpress").hide();
+		$("#uninit-jmpress").show();
+		$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
+		$('#home').find('.intro-bottom').show();
+		event.preventDefault();
+	});
+	$("#reinit-jmpress").hide();
+	$("#nested-jmpress").jmpress({
+		viewPort: {
+			height: 200
+			,width: 1000
+		}
+		,duration: { defaultValue: 3500, barSelector: "#nested-jmpress-bar" }
+		,containerClass: "ui-widget-content"
+		,hash: { use: false }
+		,stepSelector: ".nested-step"
+		,fullscreen: false
+	});
+	setTimeout(function() {
+		$("#jmpress").removeClass("init-css");
+	}, 500);
 });
 </script>
 

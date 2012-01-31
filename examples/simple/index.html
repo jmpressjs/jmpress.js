@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | a jQuery plugin to build a website on the infinite canvas</title>
+
+	<meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+	<meta name="author" content="Kyle Robinson Young @shama" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="simple.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/jmpress.js"></script>
+</head>
+<body>
+
+<div id="simple">
+	<div id="home" class="step">
+		<p>Hello! My name is jmpress.js...</p>
+	</div>
+	<div class="step" data-x="1000">
+		<p>and this is a really simple demo.</p>
+	</div>
+	<div class="step" data-x="2000">
+		<p>You might think it is boring...</p>
+	</div>
+	<div class="step" data-x="3000">
+		<p>but that is the point. This is a simple example.</p>
+	</div>
+</div>
+
+<div class="hint">
+    <p>Use arrow keys to navigate</p>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#simple').jmpress();
+});
+</script>
+
+</body>
+</html>
