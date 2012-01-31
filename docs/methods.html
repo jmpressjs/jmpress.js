@@ -1,10 +1,89 @@
 <h1>Methods</h1>
 
-<h4>$.jmpress( 'defaults' )</h4>
+<p>Methods are called on the jmpress object like such:</p>
+<pre><code>$(selector).jmpress( 'methodName', param1, param2, paramN );</code></pre>
+
+<h2>Navigational</h2>
+
+<h4>select( selector )</h4>
+<p>Move to the first step matching the given selector.</p>
+
+<h4>goTo( selector )</h4>
+<p>Same as select( selector )</p>
+
+<h4>next()</h4>
+<p>Select the next step in flow</p>
+
+<h4>prev()</h4>
+<p>Select the previous step in flow</p>
+
+<h4>home()</h4>
+<p>Select the first step in DOM</p>
+
+<h4>end()</h4>
+<p>Select the last step in DOM</p>
+
+
+<h2>Setup & Tear Down</h2>
+
+<h4>init()</h4>
+<p>Initializes jmpress with the default config (like impress.js).</p>
+
+<h4>init( config )</h4>
+<p>Initializes jmpress with a custom config object.</p>
+
+<h4>deinit()</h4>
+<p>Deinits jmpress, returning to it's original state. If already deinited it
+does nothing. This is useful for enabling a print mode.</p>
+
+<h4>settings()</h4>
+<p>Returns the settings object which you can modify.</p>
+
+
+<h2>Template</h2>
+
+<h4>template( templateName, templateData )</h4>
+<p>Adds or modify a template. If it's already defined then the old template is
+extended with the new properties.</p>
+
+<h4>apply( selector, templateName )</h4>
+<p>Applies the template to all selected steps.</p>
+
+<h4>apply( selector, templateData )</h4>
+<p>Applies the template directly by template data object.</p>
+
+<h4>apply( selector, arrayOfTemplateDatas )</h4>
+<p>Applies template data to an array of selected items.</p>
+
+
+<h2>Miscellaneous</h2>
+
+<h4>active()</h4>
+<p>Returns the active step as jQuery object.</p>
+
+<h4>fire( callbackName, element, eventData )</h4>
+<p>fire a event</p>
+
+<h4>canvas()</h4>
+<p>returns the canvas element as jQuery object</p>
+
+<h4>canvas( css )</h4>
+<p>sets styles on the canvas element and returns it</p>
+
+<h4>css( element, cssAsObject )</h4>
+<p>Applies css with the correct browser prefix.</p>
+
+<h4>reapply( step )</h4>
+<p>reapplies styles on step, should be called after modifying stepData</p>
+
+<h4>defaults()</h4>
 <p>Return or modify the default settings used in jmpress.js.</p>
 
-<h4>$.jmpress( 'fire', element, eventData )</h4>
-<p>Manually fire a jmpress.js callback.</p>
-
-<h4>$.jmpress( 'register', name, callback )</h4>
+<h4>register( name, callback )</h4>
 <p>Register a new callback.</p>
+
+<h4>engine()</h4>
+<p>Returns the engine.</p>
+
+<h4>dataset( element )</h4>
+<p>Returns the dataset of an element.</p>
