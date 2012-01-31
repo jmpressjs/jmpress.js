@@ -546,13 +546,14 @@
 
 		/**
 		 * Check for support
+		 * This will be removed in near future, when support is coming
 		 *
 		 * @access protected
 		 * @return void
 		 */
 		function checkSupport() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( ua.search(/(iphone)|(ipod)/) == -1 );
+			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
 			return supported;
 		}
 
