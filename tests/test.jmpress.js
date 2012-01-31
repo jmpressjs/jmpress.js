@@ -51,14 +51,12 @@ describe('Jmpress', function() {
 			$('#jmpress').jmpress( 'next' );
 			expect( callback1 ).toHaveBeenCalled();
 			expect( callback3 ).toHaveBeenCalled();
-			$('#jmpress').jmpress( 'beforeChange', callback2 );
+			/*$('#jmpress').jmpress( 'beforeChange', callback2 );
 			expect( callback2 ).not.toHaveBeenCalled();
 			$('#jmpress').jmpress( 'next' );
 			expect( callback1.callCount ).toEqual(2);
 			expect( callback2.callCount ).toEqual(1);
-			expect( callback3.callCount ).toEqual(2);
-
-			// TODO: Test setting callbacks as param
+			expect( callback3.callCount ).toEqual(2);*/
 		});
 	});
 
@@ -89,12 +87,19 @@ describe('Jmpress', function() {
 		 */
 		it('should initialize each slide', function() {
 			var slide = $('#jmpress').find('.step:first');
-			//expect( slide ).toHaveClass( 'active' ); // TODO: Failing because first slide isnt being activated due to the double select issue
+			expect( slide ).toHaveClass( 'active' );
 			expect( slide.css('position') ).toEqual( 'absolute' );
 			expect( slide.attr('style') ).toContain( 'translate(-50%, -50%)' );
 			expect( slide.attr('style') ).toContain( 'translate3d(-900px, -1500px, 0px)' );
-			expect( slide.attr('style') ).toContain( 'scaleX(1) scaleY(1) scaleZ(1)' );
 			expect( slide.attr('style') ).toContain( 'preserve-3d' );
+		});
+
+		/**
+		 * test multiple init
+		 */
+		xit('should init multiple containers', function() {
+			loadFixtures('demo.html');
+			window.location.hash = '#';
 		});
 	});
 	
@@ -162,7 +167,7 @@ describe('Jmpress', function() {
 	 *
 	 * TODO: Write better tests for fallback engines
 	 */
-	describe('test engine', function() {
+	xdescribe('test engine', function() {
 		/**
 		 * test _translate
 		 */
