@@ -170,6 +170,11 @@ h4 {
 	transition:         0.5s;
 }
 
+#reinit-jmpress {
+	position: fixed;
+	top: 2px;
+}
+
 .next {
 	float: right;
 	margin-top: 50px;
