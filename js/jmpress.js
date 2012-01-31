@@ -18,113 +18,6 @@
 	'use strict';
 
 	/**
-	 * 3D and 2D engines
-	 */
-	var engines = {
-		3: {
-			_transform: function( el, data ) {
-				var transform = 'translate(-50%,-50%)';
-				if ( data.revertRotate ) {
-					transform += engine._rotate(data);
-					transform += engine._translate(data);
-				} else {
-					transform += engine._translate(data);
-					transform += engine._rotate(data);
-				}
-				transform += engine._scale(data);
-				css(el, $.extend({}, { transform: transform }, data.css));
-				return true;
-			}
-			/**
-			 * Translate
-			 *
-			 * @access protected
-			 * @return String CSS for translate3d
-			 */
-			,_translate: function ( t ) {
-				return t.x || t.y || t.z ? " translate3d(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px," + Math.round(t.z,4) + "px)" : "";
-			}
-			/**
-			 * Rotate
-			 *
-			 * @access protected
-			 * @return String CSS for rotate
-			 */
-			,_rotate: function ( r ) {
-				var rX = r.rotateX !== undefined ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
-					rY = r.rotateY !== undefined ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
-					rZ = r.rotateZ !== undefined ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
-				return r.revertRotate ? rZ + rY + rX : rX + rY + rZ;
-			}
-			/**
-			 * Scale
-			 *
-			 * @access protected
-			 * @return String CSS for scale
-			 */
-			,_scale: function ( s ) {
-				return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
-					(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "") +
-					(s.scaleZ && s.scaleZ != 1 ? " scaleZ(" + s.scaleZ + ")" : "");
-			}
-		}
-		,2: {
-			_transform: function( el, data ) {
-				var transform = 'translate(-50%,-50%)';
-				if ( data.revertRotate ) {
-					transform += engine._rotate(data);
-					transform += engine._translate(data);
-				} else {
-					transform += engine._translate(data);
-					transform += engine._rotate(data);
-				}
-				transform += engine._scale(data);
-				css(el, $.extend({}, { transform: transform }, data.css));
-				return true;
-			}
-			/**
-			 * Translate
-			 *
-			 * @access protected
-			 * @return String CSS for translate3d
-			 */
-			,_translate: function ( t ) {
-				return t.x || t.y ? " translate(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px)" : "";
-			}
-			/**
-			 * Rotate
-			 *
-			 * @access protected
-			 * @return String CSS for rotate
-			 */
-			,_rotate: function ( r ) {
-				return r.rotateZ !== undefined ? " rotate(" + r.rotateZ + "deg) " : "";
-			}
-			/**
-			 * Scale
-			 *
-			 * @access protected
-			 * @return String CSS for scale
-			 */
-			,_scale: function ( s ) {
-				return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
-					(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "");
-			}
-		}
-		,1: {
-			_transform: function( el, data ) {
-				if ( data.x || data.y ) {
-					el.animate({
-						top: data.y - ( el.height() / 2 ) + 'px'
-						,left: data.x - ( el.width() / 2 ) + 'px'
-					}, 1000); // TODO: Use animation duration
-				}
-				return true;
-			}
-		}
-	};
-
-	/**
 	 * Set supported prefixes
 	 *
 	 * @access protected
@@ -149,31 +42,10 @@
 			return memory[ prop ];
 		}
 	})();
-	/**
-	 * Check for support
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	function checkSupport() {
-		var ua = navigator.userAgent.toLowerCase();
-		var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
-		return supported;
-	}
-	/**
-	 * Engine to power cross-browser translate, scale and rotate.
-	 */
-	var engine = (function() {
-		if (pfx("perspective")) {
-			return engines[3];
-		} else if (pfx("transform")) {
-			return engines[2];
-		} else {
-			return engines[1];
-		}
-	})();
 
-	// map ex. "WebkitTransform" to "-webkit-transform"
+	/**
+	 * map ex. "WebkitTransform" to "-webkit-transform"
+	 */
 	function mapProperty( name ) {
 		var index = 1 + name.substr(1).search(/[A-Z]/);
 		var prefix = name.substr(0, index).toLowerCase();
@@ -227,6 +99,7 @@
 		,selectHome: []
 		,selectEnd: []
 		,loadStep: []
+		,applyTarget: []
 
 		/* TEST */
 		,test: false
@@ -250,6 +123,7 @@
 		,'selectHome': 1
 		,'selectEnd': 1
 		,'loadStep': 1
+		,'applyTarget': 1
 	};
 
 
@@ -534,47 +408,10 @@
 			if(current.jmpressDelegatedClass) $(jmpress).removeClass(current.jmpressDelegatedClass);
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
-			var props,
-				zoomin = target.scaleX >= current.scalex;
-
-			props = {
-				// to keep the perspective look similar for different scales
-				// we need to 'scale' the perspective, too
-				perspective: step.scaleX * 1000 + "px"
-			};
-			props = $.extend({}, settings.animation, props);
-			if (!zoomin) {
-				props.transitionDelay = '0';
-			}
-			if (!active) {
-				props.transitionDuration = '0';
-				props.transitionDelay = '0';
-			}
-			css(area, props);
-			engine._transform(area, {
-				scaleX: target.scaleX
-				,scaleY: target.scaleY
-				,scaleZ: target.scaleZ
-			});
-
-			props = {
-			};
-			props = $.extend({}, settings.animation, props);
-			if (zoomin) {
-				props.transitionDelay = '0';
-			}
-			if (!active) {
-				props.transitionDuration = '0';
-				props.transitionDelay = '0';
-			}
-			current.scalex = target.scaleX;
-
-			target.scaleX = 1;
-			target.scaleY = 1;
-			target.scaleZ = 1;
-			engine._transform(canvas, $.extend({}, {
-				css: props
-			}, target));
+			callCallback.call(this, "applyTarget", active, $.extend({
+				canvas: canvas
+				,area: area
+			}, callbackData));
 
 			active = el;
 			activeDelegated = delegated;
@@ -707,6 +544,17 @@
 			,reapply: doStepReapply
 		});
 
+		/**
+		 * Check for support
+		 *
+		 * @access protected
+		 * @return void
+		 */
+		function checkSupport() {
+			var ua = navigator.userAgent.toLowerCase();
+			var supported = ( ua.search(/(iphone)|(ipod)/) == -1 );
+			return supported;
+		}
 
 		// BEGIN INIT
 
@@ -839,7 +687,7 @@
 				}
 			}
 		}
-		el.css(css);
+		$(el).css(css);
 		return el;
 	}
 	/**
@@ -877,7 +725,7 @@
 		init: init
 		,deinit: function() {}
 		,css: css
-		,engine: function() { return engine; }
+		,pfx: pfx
 		,defaults: getDefaults
 		,register: register
 		,dataset: dataset
@@ -1032,6 +880,127 @@
 	// own callbacks may be fired with $.jmpress( 'fire', step, eventData )
 
 	(function() { // translate scale rotate
+
+		/**
+		 * 3D and 2D engines
+		 */
+		var engines = {
+			3: {
+				_transform: function( el, data ) {
+					var transform = 'translate(-50%,-50%)';
+					if ( data.revertRotate ) {
+						transform += engine._rotate(data);
+						transform += engine._translate(data);
+					} else {
+						transform += engine._translate(data);
+						transform += engine._rotate(data);
+					}
+					transform += engine._scale(data);
+					$.jmpress("css", el, $.extend({}, { transform: transform }, data.css));
+					return true;
+				}
+				/**
+				 * Translate
+				 *
+				 * @access protected
+				 * @return String CSS for translate3d
+				 */
+				,_translate: function ( t ) {
+					return t.x || t.y || t.z ? " translate3d(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px," + Math.round(t.z,4) + "px)" : "";
+				}
+				/**
+				 * Rotate
+				 *
+				 * @access protected
+				 * @return String CSS for rotate
+				 */
+				,_rotate: function ( r ) {
+					var rX = r.rotateX !== undefined ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
+						rY = r.rotateY !== undefined ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
+						rZ = r.rotateZ !== undefined ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
+					return r.revertRotate ? rZ + rY + rX : rX + rY + rZ;
+				}
+				/**
+				 * Scale
+				 *
+				 * @access protected
+				 * @return String CSS for scale
+				 */
+				,_scale: function ( s ) {
+					return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
+						(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "") +
+						(s.scaleZ && s.scaleZ != 1 ? " scaleZ(" + s.scaleZ + ")" : "");
+				}
+			}
+			,2: {
+				_transform: function( el, data ) {
+					var transform = 'translate(-50%,-50%)';
+					if ( data.revertRotate ) {
+						transform += engine._rotate(data);
+						transform += engine._translate(data);
+					} else {
+						transform += engine._translate(data);
+						transform += engine._rotate(data);
+					}
+					transform += engine._scale(data);
+					$.jmpress("css", el, $.extend({}, { transform: transform }, data.css));
+					return true;
+				}
+				/**
+				 * Translate
+				 *
+				 * @access protected
+				 * @return String CSS for translate3d
+				 */
+				,_translate: function ( t ) {
+					return t.x || t.y ? " translate(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px)" : "";
+				}
+				/**
+				 * Rotate
+				 *
+				 * @access protected
+				 * @return String CSS for rotate
+				 */
+				,_rotate: function ( r ) {
+					return r.rotateZ !== undefined ? " rotate(" + r.rotateZ + "deg) " : "";
+				}
+				/**
+				 * Scale
+				 *
+				 * @access protected
+				 * @return String CSS for scale
+				 */
+				,_scale: function ( s ) {
+					return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
+						(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "");
+				}
+			}
+			,1: {
+				_transform: function( el, data ) {
+					if ( data.x || data.y ) {
+						el.animate({
+							top: data.y - ( el.height() / 2 ) + 'px'
+							,left: data.x - ( el.width() / 2 ) + 'px'
+						}, 1000); // TODO: Use animation duration
+					}
+					return true;
+				}
+			}
+		};
+
+		/**
+		 * Engine to power cross-browser translate, scale and rotate.
+		 */
+		var engine = (function() {
+			if ($.jmpress("pfx", "perspective")) {
+				return engines[3];
+			} else if ($.jmpress("pfx", "transform")) {
+				return engines[2];
+			} else {
+				return engines[1];
+			}
+		})();
+
 		$.jmpress("initStep", function( step, eventData ) {
 			var data = eventData.data;
 			var stepData = eventData.stepData;
@@ -1068,7 +1037,7 @@
 			transform.scaleY = transform.scaleY || transform.scale;
 			transform.x = transform.x || (transform.r * Math.sin(transform.phi*Math.PI/180));
 			transform.y = transform.y || (-transform.r * Math.cos(transform.phi*Math.PI/180));
-			$.jmpress("engine")._transform( $(step), transform );
+			engine._transform( $(step), transform );
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var target = eventData.target;
@@ -1144,6 +1113,50 @@
 			lowRotate("rotateX");
 			lowRotate("rotateY");
 			lowRotate("rotateZ");
+		});
+		$.jmpress("applyTarget", function( active, eventData ) {
+
+			var target = eventData.target,
+				props, step = eventData.stepData,
+				settings = eventData.settings,
+				zoomin = target.scaleX >= eventData.current.scalex;
+
+			props = {
+				// to keep the perspective look similar for different scales
+				// we need to 'scale' the perspective, too
+				perspective: step.scaleX * 1000 + "px"
+			};
+			props = $.extend({}, settings.animation, props);
+			if (!zoomin) {
+				props.transitionDelay = '0';
+			}
+			if (!active) {
+				props.transitionDuration = '0';
+				props.transitionDelay = '0';
+			}
+			$.jmpress("css", eventData.area, props);
+			engine._transform(eventData.area, {
+				scaleX: target.scaleX
+				,scaleY: target.scaleY
+				,scaleZ: target.scaleZ
+			});
+
+			props = $.extend({}, settings.animation);
+			if (zoomin) {
+				props.transitionDelay = '0';
+			}
+			if (!active) {
+				props.transitionDuration = '0';
+				props.transitionDelay = '0';
+			}
+			eventData.current.scalex = target.scaleX;
+
+			target.scaleX = 1;
+			target.scaleY = 1;
+			target.scaleZ = 1;
+			engine._transform(eventData.canvas, $.extend({}, {
+				css: props
+			}, target));
 		});
 	})();
 
