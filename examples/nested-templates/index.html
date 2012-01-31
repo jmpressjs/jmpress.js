@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | a jQuery plugin to build a website on the infinite canvas</title>
+
+	<meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+	<meta name="author" content="Kyle Robinson Young @shama" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="nested-template.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/jmpress.js"></script>
+</head>
+<body>
+
+<div id="simple">
+	<div id="home" class="step">
+		<p>This is a normal step.</p>
+	</div>
+	<div class="step" data-template="step2">
+		<p>This is a step with a template applied.</p>
+	</div>
+	<div class="step" data-template="step3">
+		<p>This step has a template applied with two children.</p>
+		<div class="step">
+			<p>Children 1, but excluded from flow via template</p>
+		</div>
+		<div class="step" data-exclude="true">
+			<p>Children 2, but excluded from flow (direct applied)</p>
+		</div>
+	</div>
+	<div class="step" data-template="step4">
+		<p>This step has a template applied with two children.</p>
+		<p>Some children has a template applied, which defines it attributes.</p>
+		<div class="step">
+			<p>Children 1, but excluded from flow via parent template</p>
+		</div>
+		<div class="step">
+			<p>Children 2, but excluded from flow via own template</p>
+		</div>
+		<div class="step" data-template="exl">
+			<p>Children 3, but excluded from flow via direct template</p>
+		</div>
+		<div class="step" data-exclude="true">
+			<p>Children 4, but excluded from flow (direct applied)</p>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$.jmpress("template", "step2", {
+	x: 1000
+});
+$.jmpress("template", "step3", {
+	x: 2000
+	,children: [
+		{ x: -250, y: 0, z: 1, scale: 0.3, exclude: true },
+		{ x: 250, y: 150, z: 1, scale: 0.2 },
+	]
+});
+$.jmpress("template", "exl", {
+	exclude: true
+});
+$.jmpress("template", "step43", {
+	x: -250, y: 150, z: 1, scale: 0.2
+});
+$.jmpress("template", "step44", {
+	x: 250, y: 150, z: 1, scale: 0.2
+});
+$.jmpress("template", "step4", {
+	x: 3000
+	,children: [
+		{ x: -250, y: 0, z: 1, scale: 0.2, exclude: true },
+		{ x: 250, y: 0, z: 1, scale: 0.2, template: "exl" },
+		{ template: "step43" },
+		{ template: "step44" }
+	]
+});
+$(function() {
+	$('#simple').jmpress();
+});
+</script>
+
+</body>
+</html>
