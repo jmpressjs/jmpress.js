@@ -148,16 +148,6 @@
 		</div>
 	</div>
 
-	<!--
-	<div id="docs-basic" data-src="docs/basic.html" class="step docs" data-x="2800" data-y="1400" data-rotate="-130" data-scale="2">
-		Loading...
-	</div>
-
-	<div id="docs-api" data-src="docs/api.html" class="step docs" data-x="3900" data-y="2500" data-rotate="-140" data-scale="2">
-		Loading...
-	</div>
-	-->
-
 	<div id="contribute" class="step">
 		<h1>contribute</h1>
 		<p>Good news! We accept pull requests ;)</p>
@@ -337,8 +327,14 @@ $(function() {
 			if (id.indexOf('-') != -1) {
 				id = id.substr(0, id.indexOf('-'));
 			}
-			$('#nav a').removeClass( 'ui-state-active' );
-			$('#nav a[href=#' + id + ']').addClass( 'ui-state-active' );
+			$('#nav a')
+				.removeClass( 'ui-state-active' )
+				.parent( 'li' )
+					.removeClass( 'active' );
+			$('#nav a[href=#' + id + ']')
+				.addClass( 'ui-state-active' )
+				.parent( 'li' )
+					.addClass( 'active' );
 		}
 		// UPON STEP LOAD/ENCODE CODE SAMPLES
 		,afterStepLoaded: function( step, eventData ) {
