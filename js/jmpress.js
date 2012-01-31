@@ -1396,8 +1396,23 @@
 			if(!eventData.settings.fullscreen)
 				$(this).attr("tabindex", 0);
 
-			// KEYDOWN EVENT
 			eventData.current.keyboardNamespace = ".jmpress-"+randomString();
+
+			// KEYPRESS EVENT: this fixes a Opera bug
+			$(eventData.settings.fullscreen ? document : this)
+				.bind("keypress"+eventData.current.keyboardNamespace, function( event ) {
+
+				for( var nodeName in mysettings.ignore ) {
+					if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+						return;
+					}
+				}
+				if(event.keyCode == 39 || event.keyCode == 40) {
+					event.preventDefault();
+					event.stopPropagation();
+				}
+			});
+			// KEYDOWN EVENT
 			$(eventData.settings.fullscreen ? document : this)
 				.bind("keydown"+eventData.current.keyboardNamespace, function( event ) {
 				if ( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use ) {
