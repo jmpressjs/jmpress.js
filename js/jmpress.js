@@ -1407,7 +1407,7 @@
 						return;
 					}
 				}
-				if(event.keyCode == 39 || event.keyCode == 40) {
+				if(event.keyCode >= 37 && event.keyCode <= 40) {
 					event.preventDefault();
 					event.stopPropagation();
 				}
