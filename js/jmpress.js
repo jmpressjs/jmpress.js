@@ -173,12 +173,12 @@
 		}
 	})();
 
-	// TODO write function for this
-	var propertyBrowserMapping = {
-		"WebkitTransform": "-webkit-transform"
-		,"OTransform": "-o-transform"
-		,"MozTransform": "-moz-transform"
-		,"MsTransform": "-ms-transform"
+	// map ex. "WebkitTransform" to "-webkit-transform"
+	function mapProperty( name ) {
+		var index = 1 + name.substr(1).search(/[A-Z]/);
+		var prefix = name.substr(0, index).toLowerCase();
+		var postfix = name.substr(index).toLowerCase();
+		return "-" + prefix + "-" + postfix;
 	}
 
 	/**
@@ -199,7 +199,7 @@
 		/* ANIMATION */
 		,animation: {
 			transformOrigin: 'top left'
-			,transitionProperty: propertyBrowserMapping[pfx('transform')] + ', opacity'
+			,transitionProperty: mapProperty(pfx('transform')) + ', opacity'
 			,transitionDuration: '1s'
 			,transitionDelay: '500ms'
 			,transitionTimingFunction: 'ease-in-out'
