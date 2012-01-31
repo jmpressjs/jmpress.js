@@ -1,8 +1,9 @@
 # jmpress.js 0.3
 
-A jQuery port of [impress.js](https://github.com/bartaz/impress.js) based on the
-power of CSS3 transforms and transitions in modern browsers and inspired by the
-idea behind prezi.com.
+A jQuery plugin to build a website on the infinite canvas.
+
+Started as a jQuery port of [impress.js](https://github.com/bartaz/impress.js)
+and utilizes the power of CSS3 transforms and transitions in modern browsers.
 
 ## DEMO
 
@@ -12,27 +13,21 @@ jmpress.js beta demo: [http://sokra.github.com/jmpress.js] [beta branch](https:/
 
 ## BROWSER SUPPORT
 
-jmpress.js currently uses CSS3 transform and transition as its engine. As of
-this writing only the latest Chrome, Safari and Firefox 10 supports this engine.
-I think we should support all browsers. Which is the main reason I ported this
-to jQuery.
-
-The next step is to build a fallback engine for older browsers (this might mean
-Modernizr). So until then older browsers just get older styles. Eventually I
-would like to put a giant YES on each of the browser/devices below:
+jmpress.js attempts to use CSS3 transform and transition as its engine and then
+falls back to jQuery.animate(). Here is the current browser support list:
 
 * Chrome/Chromium: YES
 * Safari: YES
 * Firefox: YES
-* IE: PARTIAL
+* IE: MOSTLY
 * Opera: YES
-* iPad: YES (but could be better)
-* iPhone/iPod: PARTIAL
+* iPad: YES
+* iPhone/iPod: NO
 * Android: NO
 
 ## USAGE
 
-See DOCS on presentation for infos.
+See the [DOCS](http://shama.github.com/jmpress.js/#/docs-start) in the main presentation.
 
 ## CONTRIBUTING
 
