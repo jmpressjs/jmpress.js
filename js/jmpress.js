@@ -1660,4 +1660,15 @@
 		});
 	})();
 
+	(function() { // jquery event
+		// the events should not bubble up the tree
+		// elsewise nested jmpress would cause buggy behavior
+		$.jmpress("setActive", function( step, eventData ) {
+			$(step).triggerHandler("enterStep");
+		});
+		$.jmpress("setInactive", function( step, eventData ) {
+			$(step).triggerHandler("leaveStep");
+		});
+	})();
+
 })(jQuery, document, window);
