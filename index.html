@@ -401,6 +401,7 @@ $(function() {
 		$("a[data-theme]").removeClass("ui-state-active");
 		$(this).addClass("ui-state-active");
 
+		_gaq.push(['_trackEvent', 'Feature', 'Theme', theme]);
 		event.preventDefault();
 	});
 	$("a[data-theme=start]").addClass("ui-state-active");
