@@ -1,4 +1,4 @@
-# jmpress.js 0.3
+# jmpress.js (Version 0.3)
 
 A jQuery plugin to build a website on the infinite canvas.
 
