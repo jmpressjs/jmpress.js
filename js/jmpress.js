@@ -1719,7 +1719,8 @@
 			var listOfSubsteps = [];
 			$(step).find("[data-"+eventData.settings.customAnimationDataAttribute+"]")
 					.each(function(idx, element) {
-				listOfSubsteps.push({element: element});
+				if($(element).closest(eventData.settings.stepSelector).is(step))
+					listOfSubsteps.push({element: element});
 			});
 			if(listOfSubsteps.length == 0)
 				return;
