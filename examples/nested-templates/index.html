@@ -41,7 +41,7 @@
 		<div class="step">
 			<p>Children 2, but excluded from flow via own template</p>
 		</div>
-		<div class="step" data-template="exl">
+		<div class="step" data-template="exl step43sec">
 			<p>Children 3, but excluded from flow via direct template</p>
 		</div>
 		<div class="step" data-exclude="true">
@@ -65,10 +65,20 @@ $.jmpress("template", "exl", {
 	exclude: true
 });
 $.jmpress("template", "step43", {
-	x: -250, y: 150, z: 1, scale: 0.2
+	x: -250,
+	y: -200, // should not be applied
+	z: 1, scale: 0.2
+});
+$.jmpress("template", "step43sec", {
+	y: 150,
+	exclude: false // should not be applied
 });
 $.jmpress("template", "step44", {
-	x: 250, y: 150, z: 1, scale: 0.2
+	x: 250, z: 1, scale: 0.2
+});
+$.jmpress("template", "step44sec", {
+	y: 150, // should be applied
+	scale: 1 // should not be applied
 });
 $.jmpress("template", "step4", {
 	x: 3000
@@ -76,7 +86,7 @@ $.jmpress("template", "step4", {
 		{ x: -250, y: 0, z: 1, scale: 0.2, exclude: true },
 		{ x: 250, y: 0, z: 1, scale: 0.2, template: "exl" },
 		{ template: "step43" },
-		{ template: "step44" }
+		{ template: "step44 step44sec" }
 	]
 });
 $(function() {
