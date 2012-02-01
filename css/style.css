@@ -429,6 +429,9 @@ h4 {
 .fade {
 	opacity: 1;
 }
+.not-supported .will-fade {
+	opacity: 1;
+}
 
 /** PRINT STYLE **/
 
