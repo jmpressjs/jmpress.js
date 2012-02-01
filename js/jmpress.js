@@ -1588,7 +1588,13 @@
 						$(child).data("_template_", tmpl);
 					});
 				}
-			} // TODO: else if(function) else if(object)
+			} else if($.isFunction(templateChildren)) {
+				children.each(function(idx, child) {
+					var tmpl = $(child).data("_template_") || {}
+					addUndefined(tmpl, templateChildren(idx, child));
+					$(child).data("_template_", tmpl);
+				});
+			} // TODO: else if(object)
 		}
 		$.jmpress("beforeInitStep", function( step, eventData ) {
 			function applyTemplate( data, element, template ) {
@@ -1603,8 +1609,10 @@
 			}
 			var templateToApply = eventData.data.template;
 			if(templateToApply) {
-				var template = templates[templateToApply]
-				applyTemplate( eventData.data, step, template );
+				$.each(templateToApply.split(" "), function(idx, tmpl) {
+					var template = templates[tmpl];
+					applyTemplate( eventData.data, step, template );
+				});
 			}
 			var templateFromApply = $(step).data("_applied_template_");
 			if(templateFromApply) {
@@ -1615,8 +1623,10 @@
 				applyTemplate( eventData.data, step, templateFromParent );
 				step.data("_template_", null);
 				if(templateFromParent.template) {
-					var template = templates[templateFromParent.template]
-					applyTemplate( eventData.data, step, template );
+					$.each(templateFromParent.template.split(" "), function(idx, tmpl) {
+						var template = templates[tmpl];
+						applyTemplate( eventData.data, step, template );
+					});
 				}
 			}
 		});
