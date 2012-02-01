@@ -416,6 +416,20 @@ h4 {
 	display: none;
 }
 
+/** ANIMATION **/
+.will-fade {
+	-webkit-transition: opacity 1s;
+	-moz-transition:    opacity 1s;
+	-ms-transition:     opacity 1s;
+	-o-transition:      opacity 1s;
+	transition:         opacity 1s;
+
+	opacity: 0;
+}
+.fade {
+	opacity: 1;
+}
+
 /** PRINT STYLE **/
 
 @media print {
