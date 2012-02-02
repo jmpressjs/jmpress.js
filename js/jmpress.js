@@ -47,10 +47,15 @@
 	 * map ex. "WebkitTransform" to "-webkit-transform"
 	 */
 	function mapProperty( name ) {
+		if(!name) return;
 		var index = 1 + name.substr(1).search(/[A-Z]/);
 		var prefix = name.substr(0, index).toLowerCase();
 		var postfix = name.substr(index).toLowerCase();
 		return "-" + prefix + "-" + postfix;
+	}
+	function addComma( attribute ) {
+		if(!attribute) return "";
+		return attribute + ",";
 	}
 
 	/**
@@ -71,13 +76,14 @@
 		/* ANIMATION */
 		,animation: {
 			transformOrigin: 'top left'
-			,transitionProperty: mapProperty(pfx('transform')) + ', opacity'
+			,transitionProperty: addComma(mapProperty(pfx('transform'))) + addComma(mapProperty(pfx('perspective'))) + 'opacity'
 			,transitionDuration: '1s'
 			,transitionDelay: '500ms'
 			,transitionTimingFunction: 'ease-in-out'
 			,transformStyle: "preserve-3d"
 		}
 		,transitionDuration: 1500
+		,maxNestedDepth: 10
 
 		/* CALLBACKS */
 		// TODO documentation
@@ -641,9 +647,7 @@
 		});
 		css(canvas, props);
 
-		current = {
-			scalex: 1
-		};
+		current = {};
 
 		callCallback.call(this, 'beforeInit', null, {});
 
@@ -908,104 +912,55 @@
 		 */
 		var engines = {
 			3: {
-				_transform: function( el, data ) {
+				transform: function( el, data ) {
 					var transform = 'translate(-50%,-50%)';
-					if ( data.revertRotate ) {
-						transform += engine._rotate(data);
-						transform += engine._translate(data);
-					} else {
-						transform += engine._translate(data);
-						transform += engine._rotate(data);
-					}
-					transform += engine._scale(data);
-					$.jmpress("css", el, $.extend({}, { transform: transform }, data.css));
-					return true;
-				}
-				/**
-				 * Translate
-				 *
-				 * @access protected
-				 * @return String CSS for translate3d
-				 */
-				,_translate: function ( t ) {
-					return t.x || t.y || t.z ? " translate3d(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px," + Math.round(t.z,4) + "px)" : "";
-				}
-				/**
-				 * Rotate
-				 *
-				 * @access protected
-				 * @return String CSS for rotate
-				 */
-				,_rotate: function ( r ) {
-					var rX = r.rotateX !== undefined ? " rotateX(" + Math.round(r.rotateX,4) + "deg)" : "",
-						rY = r.rotateY !== undefined ? " rotateY(" + Math.round(r.rotateY,4) + "deg)" : "",
-						rZ = r.rotateZ !== undefined ? " rotateZ(" + Math.round(r.rotateZ,4) + "deg)" : "";
-					return r.revertRotate ? rZ + rY + rX : rX + rY + rZ;
-				}
-				/**
-				 * Scale
-				 *
-				 * @access protected
-				 * @return String CSS for scale
-				 */
-				,_scale: function ( s ) {
-					return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
-						(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "") +
-						(s.scaleZ && s.scaleZ != 1 ? " scaleZ(" + s.scaleZ + ")" : "");
+					$.each(data, function(idx, item) {
+						var coord = ["X", "Y", "Z"];
+						if(item[0] == "translate") { // ["translate", x, y, z]
+							transform += " translate3d(" + (item[1] || 0) + "px," + (item[2] || 0) + "px," + (item[3] || 0) + "px)";
+						} else if(item[0] == "rotate") {
+							var order = item[4] ? [1, 2, 3] : [3, 2, 1];
+							for(var i = 0; i < 3; i++)
+								transform += " rotate" + coord[order[i]-1] + "(" + (item[order[i]] || 0) + "deg)";
+						} else if(item[0] == "scale") {
+							for(var i = 0; i < 3; i++)
+								transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
+					});
+					$.jmpress("css", el, $.extend({}, { transform: transform }));
 				}
 			}
 			,2: {
-				_transform: function( el, data ) {
+				transform: function( el, data ) {
 					var transform = 'translate(-50%,-50%)';
-					if ( data.revertRotate ) {
-						transform += engine._rotate(data);
-						transform += engine._translate(data);
-					} else {
-						transform += engine._translate(data);
-						transform += engine._rotate(data);
-					}
-					transform += engine._scale(data);
-					$.jmpress("css", el, $.extend({}, { transform: transform }, data.css));
-					return true;
-				}
-				/**
-				 * Translate
-				 *
-				 * @access protected
-				 * @return String CSS for translate3d
-				 */
-				,_translate: function ( t ) {
-					return t.x || t.y ? " translate(" + Math.round(t.x,4) + "px," + Math.round(t.y,4) + "px)" : "";
-				}
-				/**
-				 * Rotate
-				 *
-				 * @access protected
-				 * @return String CSS for rotate
-				 */
-				,_rotate: function ( r ) {
-					return r.rotateZ !== undefined ? " rotate(" + r.rotateZ + "deg) " : "";
-				}
-				/**
-				 * Scale
-				 *
-				 * @access protected
-				 * @return String CSS for scale
-				 */
-				,_scale: function ( s ) {
-					return (s.scaleX && s.scaleX != 1 ? " scaleX(" + s.scaleX + ")" : "") +
-						(s.scaleY && s.scaleY != 1 ? " scaleY(" + s.scaleY + ")" : "");
+					$.each(data, function(idx, item) {
+						var coord = ["X", "Y"];
+						if(item[0] == "translate") { // ["translate", x, y, z]
+							transform += " translate(" + (item[1] || 0) + "px," + (item[2] || 0) + "px)";
+						} else if(item[0] == "rotate") {
+							transform += " rotate(" + (item[3] || 0) + "deg)";
+						} else if(item[0] == "scale") {
+							for(var i = 0; i < 2; i++)
+								transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
+					});
+					$.jmpress("css", el, $.extend({}, { transform: transform }));
 				}
 			}
 			,1: {
-				_transform: function( el, data ) {
-					if ( data.x || data.y ) {
-						el.animate({
-							top: data.y - ( el.height() / 2 ) + 'px'
-							,left: data.x - ( el.width() / 2 ) + 'px'
-						}, 1000); // TODO: Use animation duration
-					}
-					return true;
+				// CHECK IF SUPPORT IS REALLY NEEDED?
+				// this not even work without scaling...
+				// it may better to display the normal view
+				transform: function( el, data ) {
+					var anitarget = { top: 0, left: 0 };
+					$.each(data, function(idx, item) {
+						var coord = ["X", "Y"];
+						if(item[0] == "translate") { // ["translate", x, y, z]
+							anitarget.left = (item[1] || 0) + "px";
+							anitarget.top = (item[2] || 0) + "px";
+						}
+					});
+					el.animate(anitarget, 1000); // TODO: Use animation duration
 				}
 			}
 		};
@@ -1019,6 +974,7 @@
 			} else if ($.jmpress("pfx", "transform")) {
 				return engines[2];
 			} else {
+				// CHECK IF SUPPORT IS REALLY NEEDED?
 				return engines[1];
 			}
 		})();
@@ -1043,6 +999,9 @@
 				,scaleZ: parseFloat(data.scaleZ) || 1
 			});
 		});
+		$.jmpress("afterInit", function( nil, eventData ) {
+			eventData.current.perspectiveScale = 1;
+		});
 		$.jmpress("applyStep", function( step, eventData ) {
 			$.jmpress("css", $(step), {
 				position: "absolute"
@@ -1053,100 +1012,111 @@
 					top: "50%"
 					,left: "50%"
 				});
-			var transform = $.extend({}, eventData.stepData);
-			transform.rotateZ = transform.rotateZ || transform.rotate;
-			transform.scaleX = transform.scaleX || transform.scale;
-			transform.scaleY = transform.scaleY || transform.scale;
-			transform.x = transform.x || (transform.r * Math.sin(transform.phi*Math.PI/180));
-			transform.y = transform.y || (-transform.r * Math.cos(transform.phi*Math.PI/180));
-			engine._transform( $(step), transform );
+			var sd = eventData.stepData;
+			var transform = [
+				["translate",
+					sd.x || (sd.r * Math.sin(sd.phi*Math.PI/180)),
+					sd.y || (-sd.r * Math.cos(sd.phi*Math.PI/180)),
+					sd.z],
+				["rotate",
+					sd.rotateX,
+					sd.rotateY,
+					sd.rotateZ || sd.rotate,
+					true],
+				["scale",
+					sd.scaleX || sd.scale,
+					sd.scaleY || sd.scale,
+					sd.scaleZ || sd.scale]
+			];
+			engine.transform( step, transform );
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var target = eventData.target;
 			var step = eventData.stepData;
-			$.extend(target, {
-				rotateX: -step.rotateX
-				,rotateY: -step.rotateY
-				,rotateZ: -(step.rotateZ || step.rotate)
-				,revertRotate: true
-				,scaleX: 1 / (step.scaleX || step.scale)
-				,scaleY: 1 / (step.scaleY || step.scale)
-				,scaleZ: 1 / (step.scaleZ)
-				,x: -(step.x || (step.r * Math.sin(step.phi*Math.PI/180)))
-				,y: -(step.y || (-step.r * Math.cos(step.phi*Math.PI/180)))
-				,z: -step.z
-			});
-			$.each(eventData.parents, function(idx, element) {
-				var stepD = $(element).data("stepData");
-				var inverseScale = {
-					x: 1 / (stepD.scaleX || stepD.scale)
-					,y: 1 / (stepD.scaleY || stepD.scale)
-					,z: 1 / (stepD.scaleZ)
-				}
-				target.x /= inverseScale.x;
-				target.y /= inverseScale.y;
-				target.z /= inverseScale.z;
-				// TODO: implement complete matrix transformation
-				var rZ = -(stepD.rotateZ || stepD.rotate)/180*Math.PI
-					,sinZ = Math.sin(rZ), cosZ = Math.cos(rZ);
-				var rY = -(stepD.rotateY)/180*Math.PI
-					,sinY = Math.sin(rY), cosY = Math.cos(rY);
-				var rX = -(stepD.rotateX)/180*Math.PI
-					,sinX = Math.sin(rX), cosX = Math.cos(rX);
-				var tx, ty, tz;
-				// apply rZ
-				ty = -target.x * sinZ + target.y * cosZ;
-				tx = target.x * cosZ + target.y * sinZ;
-				tz = target.z;
-				target.x = tx; target.y = ty; target.z = tz;
-				// apply rY
-				ty = target.y;
-				tx = target.x * cosY + target.z * sinY;
-				tz = target.x * sinY + target.z * cosY;
-				target.x = tx; target.y = ty; target.z = tz;
-				// apply rX
-				ty = target.y * cosX + target.z * sinX;
-				tx = target.x;
-				tz = - target.y * sinX + target.z * cosX;
-				target.x = tx; target.y = ty; target.z = tz;
+			var tf = target.transform = [];
+			target.perspectiveScale = 1;
 
-				target.rotateX -= (stepD.rotateX);
-				target.rotateY -= (stepD.rotateY);
-				target.rotateZ -= (stepD.rotateZ || stepD.rotate);
-				target.x -= stepD.x || (stepD.r * Math.sin(stepD.phi*Math.PI/180));
-				target.y -= stepD.y || (-stepD.r * Math.cos(stepD.phi*Math.PI/180));
-				target.z -= stepD.z;
-				target.scaleX *= inverseScale.x;
-				target.scaleY *= inverseScale.y;
-				target.scaleZ *= inverseScale.z;
-			});
-			function lowRotate(name) {
-				if(eventData.current[name] === undefined)
-					eventData.current[name] = target[name];
-				var cur = eventData.current[name], tar = target[name],
-					curmod = cur % 360, tarmod = tar % 360;
-				if(curmod < 0) curmod += 360;
-				if(tarmod < 0) tarmod += 360;
-				var diff = tarmod - curmod;
-				if(diff < -180) diff += 360;
-				else if(diff > 180) diff -= 360;
-				eventData.current[name] = target[name] = cur + diff;
+			for(var i = eventData.settings.maxNestedDepth; i > (eventData.parents.length || 0); i--) {
+				tf.push(["scale"], ["rotate"], ["translate"]);
 			}
-			lowRotate("rotateX");
-			lowRotate("rotateY");
-			lowRotate("rotateZ");
+
+			tf.push(["scale",
+				1 / (step.scaleX || step.scale),
+				1 / (step.scaleY || step.scale),
+				1 / (step.scaleZ)]);
+			tf.push(["rotate",
+				-step.rotateX,
+				-step.rotateY,
+				-(step.rotateZ || step.rotate)]);
+			tf.push(["translate",
+				-(step.x || (step.r * Math.sin(step.phi*Math.PI/180))),
+				-(step.y || (-step.r * Math.cos(step.phi*Math.PI/180))),
+				-step.z]);
+			target.perspectiveScale *= (step.scaleX || step.scale);
+
+			$.each(eventData.parents, function(idx, element) {
+				var step = $(element).data("stepData");
+				tf.push(["scale",
+					1 / (step.scaleX || step.scale),
+					1 / (step.scaleY || step.scale),
+					1 / (step.scaleZ)]);
+				tf.push(["rotate",
+					-step.rotateX,
+					-step.rotateY,
+					-(step.rotateZ || step.rotate)]);
+				tf.push(["translate",
+					-(step.x || (step.r * Math.sin(step.phi*Math.PI/180))),
+					-(step.y || (-step.r * Math.cos(step.phi*Math.PI/180))),
+					-step.z]);
+				target.perspectiveScale *= (step.scaleX || step.scale);
+			});
+
+			$.each(tf, function(idx, item) {
+				if(item[0] != "rotate") return;
+				function lowRotate(name) {
+					if(item[name] == undefined) return;
+					if(eventData.current["rotate"+name+"-"+idx] === undefined)
+						eventData.current["rotate"+name+"-"+idx] = item[name];
+					var cur = eventData.current["rotate"+name+"-"+idx], tar = item[name],
+						curmod = cur % 360, tarmod = tar % 360;
+					if(curmod < 0) curmod += 360;
+					if(tarmod < 0) tarmod += 360;
+					var diff = tarmod - curmod;
+					if(diff < -180) diff += 360;
+					else if(diff > 180) diff -= 360;
+					eventData.current["rotate"+name+"-"+idx] = item[name] = cur + diff;
+				}
+				lowRotate(1);
+				lowRotate(2);
+				lowRotate(3);
+			});
 		});
 		$.jmpress("applyTarget", function( active, eventData ) {
 
 			var target = eventData.target,
 				props, step = eventData.stepData,
 				settings = eventData.settings,
-				zoomin = target.scaleX >= eventData.current.scalex;
+				zoomin = target.perspectiveScale <= eventData.current.perspectiveScale;
+
+			// extract first scale from transform
+			var lastScale = -1;
+			$.each(target.transform, function(idx, item) {
+				if(item.length <= 1) return;
+				if(item[0] == "scale")
+					lastScale = idx;
+				else
+					return false;
+			});
+			var extracted = [];
+			if(lastScale != -1) {
+				extracted.push(target.transform[lastScale]);
+				target.transform[lastScale] = ["scale"];
+			}
 
 			props = {
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
-				perspective: step.scaleX * 1000 + "px"
+				perspective: Math.round(target.perspectiveScale * 1000) + "px"
 			};
 			props = $.extend({}, settings.animation, props);
 			if (!zoomin) {
@@ -1157,11 +1127,7 @@
 				props.transitionDelay = '0';
 			}
 			$.jmpress("css", eventData.area, props);
-			engine._transform(eventData.area, {
-				scaleX: target.scaleX
-				,scaleY: target.scaleY
-				,scaleZ: target.scaleZ
-			});
+			engine.transform(eventData.area, extracted);
 
 			props = $.extend({}, settings.animation);
 			if (zoomin) {
@@ -1171,14 +1137,11 @@
 				props.transitionDuration = '0';
 				props.transitionDelay = '0';
 			}
-			eventData.current.scalex = target.scaleX;
 
-			target.scaleX = 1;
-			target.scaleY = 1;
-			target.scaleZ = 1;
-			engine._transform(eventData.canvas, $.extend({}, {
-				css: props
-			}, target));
+			eventData.current.perspectiveScale = target.perspectiveScale;
+
+			engine.transform(eventData.canvas, target.transform);
+			$.jmpress("css", eventData.canvas, props);
 		});
 	})();
 
@@ -1552,9 +1515,9 @@
 			if(windowScale) {
 				if(viewPortMaxScale) windowScale = Math.min(windowScale, viewPortMaxScale);
 				if(viewPortMinScale) windowScale = Math.max(windowScale, viewPortMinScale);
-				eventData.target.scaleX *= windowScale;
-				eventData.target.scaleY *= windowScale;
-				eventData.target.scaleZ *= windowScale;
+				eventData.target.transform.reverse();
+				eventData.target.transform.push(["scale", windowScale, windowScale, windowScale]);
+				eventData.target.transform.reverse();
 			}
 		});
 	})();
