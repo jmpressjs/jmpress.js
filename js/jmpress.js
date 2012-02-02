@@ -1524,6 +1524,10 @@
 			,maxScale: 0
 			,minScale: 0
 		};
+		$.jmpress("initStep", function( step, eventData ) {
+			for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1})
+				eventData.stepData[variable] = eventData.data[variable] && parseFloat(eventData.data[variable]);
+		});
 		$.jmpress("afterInit", function( nil, eventData ) {
 			var jmpress = this;
 			eventData.current.viewPortNamespace = ".jmpress-"+randomString();
@@ -1536,14 +1540,18 @@
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var viewPort = eventData.settings.viewPort;
+			var viewPortHeight = eventData.stepData.viewPortHeight || viewPort.height;
+			var viewPortWidth = eventData.stepData.viewPortWidth || viewPort.width;
+			var viewPortMaxScale = eventData.stepData.viewPortMaxScale || viewPort.maxScale;
+			var viewPortMinScale = eventData.stepData.viewPortMinScale || viewPort.minScale;
 			// Correct the scale based on the window's size
-			var windowScaleY = viewPort.height && $(eventData.container).innerHeight()/viewPort.height;
-			var windowScaleX = viewPort.width && $(eventData.container).innerWidth()/viewPort.width;
+			var windowScaleY = viewPortHeight && $(eventData.container).innerHeight()/viewPortHeight;
+			var windowScaleX = viewPortWidth && $(eventData.container).innerWidth()/viewPortWidth;
 			var windowScale = (windowScaleX || windowScaleY) && Math.min( windowScaleX || windowScaleY, windowScaleY || windowScaleX );
 
 			if(windowScale) {
-				if(viewPort.maxScale) windowScale = Math.min(windowScale, viewPort.maxScale);
-				if(viewPort.minScale) windowScale = Math.max(windowScale, viewPort.minScale);
+				if(viewPortMaxScale) windowScale = Math.min(windowScale, viewPortMaxScale);
+				if(viewPortMinScale) windowScale = Math.max(windowScale, viewPortMinScale);
 				eventData.target.scaleX *= windowScale;
 				eventData.target.scaleY *= windowScale;
 				eventData.target.scaleZ *= windowScale;
