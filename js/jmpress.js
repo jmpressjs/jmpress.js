@@ -131,7 +131,7 @@
 	 * Initialize jmpress
 	 */
 	function init( args ) {
-		args = args || {};
+		args = $.extend(true, {}, args || {});
 
 		// accept functions and arrays of functions as callbacks
 		var callbackArgs = {}
