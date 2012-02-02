@@ -82,6 +82,10 @@ h1, h1 a {
 
 	text-shadow: #333 -2px 2px 3px;
 }
+.big h1 {
+	font-size: 108px;
+	margin-bottom: 20px;
+}
 h2 {
 	font-size: 42px;
 }
@@ -207,6 +211,15 @@ h4 {
 	-ms-transition:     1s;
 	-o-transition:      1s;
 	transition:         1s;
+}
+
+.big.step {
+	width: 2700px;
+	min-height: 50px;
+
+	font-size: 72px;
+
+	border: 2px solid black;
 }
 
 .step:not(.active):not(.nested-active) {

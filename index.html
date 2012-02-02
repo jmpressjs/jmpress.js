@@ -228,6 +228,11 @@
 		<p style="font-size: 70%">NOTICE: Chrome 16 buggy, but fixed in Chrome 17, sorry.</p>
 		<a href="#" class="next">home</a>
 	</div>
+
+	<div id="showcase-zoom" class="big step">
+		<h1>Zoomable steps</h1>
+		<p>Use the mouse wheel or [+] / [-] keys...</p>
+	</div>
 </div>
 
 <div class="hint">
@@ -314,8 +319,19 @@ $(function() {
 			,rotate: -230
 			,scale: 2.8
 		},
+		{
+			x: 1500
+			,y: -9000
+			,z: 5000
+			,rotate: -230
+			,scale: 2
+			,viewPort: {
+				height: 2000
+				,width: 3000
+			}
+		},
 	]});
-	$('#jmpress').jmpress("route", ["#showcase-jmpress-nested", "#about"]);
+	$('#jmpress').jmpress("route", ["#showcase-zoom", "#about"]);
 	$('#jmpress').jmpress("route", ["#docs", "#contribute"]);
 	var jmpressConfig = {
 		// SET THE VIEW PORT
