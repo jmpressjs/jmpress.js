@@ -1096,7 +1096,8 @@
 			var target = eventData.target,
 				props, step = eventData.stepData,
 				settings = eventData.settings,
-				zoomin = target.perspectiveScale <= eventData.current.perspectiveScale;
+				zoomin = target.perspectiveScale * 1.3 < eventData.current.perspectiveScale,
+				zoomout = target.perspectiveScale > eventData.current.perspectiveScale * 1.3;
 
 			// extract first scale from transform
 			var lastScale = -1;
@@ -1130,7 +1131,7 @@
 			engine.transform(eventData.area, extracted);
 
 			props = $.extend({}, settings.animation);
-			if (zoomin) {
+			if (!zoomout) {
 				props.transitionDelay = '0';
 			}
 			if (!active) {
