@@ -334,6 +334,14 @@
 			return parents;
 		}
 		/**
+		 * Reselect the active step
+		 *
+		 * @param String type reason of reselecting step
+		 */
+		function reselect( type ) {
+			return select( { step: active, substep: activeSubstep }, type);
+		}
+		/**
 		 * Select a given step
 		 *
 		 * @param Object|String el element to select
@@ -542,6 +550,7 @@
 		 */
 		jmpress.data("jmpressmethods", {
 			select: select
+			,reselect: reselect
 			,scrollFix: scrollFix
 			,goTo: goTo
 			,next: next
@@ -1519,7 +1528,7 @@
 			var jmpress = this;
 			eventData.current.viewPortNamespace = ".jmpress-"+randomString();
 			$(window).bind("resize"+eventData.current.viewPortNamespace, function (event) {
-				$(jmpress).jmpress("select", $(jmpress).jmpress("active"), "resize");
+				$(jmpress).jmpress("reselect", "resize");
 			});
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
