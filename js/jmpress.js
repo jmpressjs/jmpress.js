@@ -1499,6 +1499,15 @@
 			,height: false
 			,maxScale: 0
 			,minScale: 0
+			,zoomable: 0
+		};
+		$.jmpress("defaults").reasonableAnimation.resize = {
+			transitionDuration: '0s'
+			,transitionDelay: '0ms'
+		};
+		$.jmpress("defaults").reasonableAnimation.zoom = {
+			transitionDuration: '0s'
+			,transitionDelay: '0ms'
 		};
 		$.jmpress("initStep", function( step, eventData ) {
 			for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1})
@@ -1510,6 +1519,54 @@
 			$(window).bind("resize"+eventData.current.viewPortNamespace, function (event) {
 				$(jmpress).jmpress("reselect", "resize");
 			});
+			eventData.current.userZoom = 0;
+			eventData.current.userTranslateX = 0;
+			eventData.current.userTranslateY = 0;
+			$(eventData.settings.fullscreen ? document : this)
+				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event ) {
+				var direction = (event.originalEvent.wheelDelta / Math.abs(event.originalEvent.wheelDelta));
+				if(direction < 0)
+					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
+				else if(direction > 0)
+					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
+			});
+		});
+		function zoom(x, y, direction) {
+			function maxAbs(value, range) {
+				return Math.max(Math.min(value, range), -range);
+			}
+			var current = $(this).jmpress("current"),
+				settings = $(this).jmpress("settings"),
+				stepData = $(this).jmpress("active").data("stepData"),
+				container = $(this).jmpress("container");
+			if(current.userZoom == 0 && direction < 0)
+				return;
+			var zoomableSteps = stepData.viewPortZoomable || settings.viewPort.zoomable;
+			if(current.userZoom == zoomableSteps && direction > 0)
+				return;
+			current.userZoom += direction;
+
+			var halfWidth = $(container).innerWidth()/2,
+				halfHeight = $(container).innerHeight()/2;
+
+			var x = x - halfWidth;
+			var y = y - halfHeight;
+
+			// TODO this is not perfect... too much math... :(
+			current.userTranslateX =
+				maxAbs(current.userTranslateX - direction * x / current.zoomOriginWindowScale / zoomableSteps,
+				halfWidth * current.userZoom * current.userZoom / zoomableSteps);
+			current.userTranslateY =
+				maxAbs(current.userTranslateY - direction * y / current.zoomOriginWindowScale / zoomableSteps,
+				halfHeight * current.userZoom * current.userZoom / zoomableSteps);
+
+			$(this).jmpress("reselect", "zoom");
+		}
+		$.jmpress("register", "zoomIn", function(x, y) {
+			zoom.call(this, x, y, 1);
+		});
+		$.jmpress("register", "zoomOut", function(x, y) {
+			zoom.call(this, x, y, -1);
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$(window).unbind("resize"+eventData.current.viewPortNamespace);
@@ -1526,11 +1583,35 @@
 			var windowScale = (windowScaleX || windowScaleY) && Math.min( windowScaleX || windowScaleY, windowScaleY || windowScaleX );
 
 			if(windowScale) {
+				windowScale = windowScale || 1;
 				if(viewPortMaxScale) windowScale = Math.min(windowScale, viewPortMaxScale);
 				if(viewPortMinScale) windowScale = Math.max(windowScale, viewPortMinScale);
+
+				var zoomableSteps = eventData.stepData.viewPortZoomable || eventData.settings.viewPort.zoomable;
+				if(zoomableSteps) {
+					var diff = (1/windowScale) - (1/viewPortMaxScale);
+					diff /= zoomableSteps;
+					windowScale = 1/((1/windowScale) - diff * eventData.current.userZoom);
+				}
+
 				eventData.target.transform.reverse();
-				eventData.target.transform.push(["scale", windowScale, windowScale, windowScale]);
+				if(eventData.current.userTranslateX && eventData.current.userTranslateY)
+					eventData.target.transform.push(["translate", eventData.current.userTranslateX, eventData.current.userTranslateY, 0]);
+				else
+					eventData.target.transform.push(["translate"]);
+				eventData.target.transform.push(["scale",
+					windowScale,
+					windowScale,
+					1]);
 				eventData.target.transform.reverse();
+			}
+			eventData.current.zoomOriginWindowScale = windowScale;
+		});
+		$.jmpress("setInactive", function( step, eventData ) {
+			if(eventData.nextStep != step) {
+				eventData.current.userZoom = 0;
+				eventData.current.userTranslateX = 0;
+				eventData.current.userTranslateY = 0;
 			}
 		});
 	})();
