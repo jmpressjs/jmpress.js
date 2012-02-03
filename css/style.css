@@ -180,8 +180,30 @@ h4 {
 
 .next {
 	float: right;
+}
+.prev {
+	float: left;
+}
+.next, .prev {
 	margin-top: 50px;
 	font-size: 22px;
+}
+
+#global-next, #global-prev {
+	position: fixed;
+	bottom: 5px;
+	width: 20%;
+	padding: 0.2em;
+	margin-left: 5px;
+	margin-right: 5px;
+	z-index: 99;
+	text-align: center;
+}
+#global-next {
+	left: 50%;
+}
+#global-prev {
+	right: 50%;
 }
 
 /** COMMON STEP STYLES **/
