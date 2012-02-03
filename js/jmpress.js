@@ -1102,6 +1102,12 @@
 				else
 					return false;
 			});
+
+			if(lastScale != eventData.current.oldLastScale) {
+				zoomin = zoomout = false;
+				eventData.current.oldLastScale = lastScale;
+			}
+
 			var extracted = [];
 			if(lastScale != -1) {
 				extracted.push(target.transform[lastScale]);
