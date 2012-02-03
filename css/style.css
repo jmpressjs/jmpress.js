@@ -75,6 +75,7 @@ a {
 	-ms-transition:     0.5s;
 	-o-transition:      0.5s;
 	transition:         0.5s;
+	pointer-events: 	auto;
 }
 h1, h1 a {
 	font-size: 68px;
