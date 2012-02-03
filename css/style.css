@@ -38,6 +38,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	font-weight: bold;
+	pointer-events: none;
 }
 ol, ul {
 	list-style: none;
@@ -106,6 +107,7 @@ h4 {
 	left: -5px;
 	top: 10px;
 	z-index: 99;
+	pointer-events: auto;
 }
 #nav li {
 	list-style: none;
@@ -198,6 +200,8 @@ h4 {
 
 	font-size: 26px;
 	line-height: 1.5;
+
+	pointer-events: auto;
 }
 
 /* fade out inactive slides */
