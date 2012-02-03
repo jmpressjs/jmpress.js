@@ -94,11 +94,11 @@ plugin:</p>
 
 <pre><code>(function( $, document, window, undefined ) {
 	$.jmpress("defaults").withMeat = 'Yum! Meat!';
-	function meat( step ) {
-		step.html( $.jmpress("defaults").withMeat );
+	function meat( step, what ) {
+		$(step).html( what );
 	}
 	$.jmpress('initStep', function( step, eventData ) {
-		meat( step );
+		meat( step, eventData.settings.withMeat );
 	});
 })(jQuery, document, window);</code></pre>
 
@@ -116,7 +116,7 @@ call it upon an event:</p>
 	});
 	$.jmpress("register", "meat", function() {
 		var step = $(this).jmpress('active')
-		step.html( $.jmpress("defaults").withMeat );
+		step.html( $(this).jmpress("settings").withMeat );
 	});
 })(jQuery, document, window);</code></pre>
 
