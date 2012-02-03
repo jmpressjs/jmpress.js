@@ -384,24 +384,18 @@ h4 {
 	font-size: 1em;
 }
 
-/* hint on the first slide */
-
+/* keyboard hint on the first step */
 .hint {
 	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0px;
-
-	background: rgba(255,204,0,1);
-	color: #000;
-	text-align: right;
-
-	font-size: 22px;
+	left: 50%;
+	bottom: 40px;
+	text-align: center;
+	font-size: 16px;
 	padding: 10px;
-
+	margin-left: -150px;
 	z-index: 100;
-
 	opacity: 0;
+	color: #fff;
 
 	-webkit-transform: translateY(400px);
 	-moz-transform:    translateY(400px);
