@@ -525,14 +525,6 @@
 			return $(canvas);
 		}
 		/**
-		 * Return current settings
-		 *
-		 * @return Object
-		 */
-		function getSettings() {
-			return settings;
-		}
-		/**
 		 * Return current step
 		 *
 		 * @return Object
@@ -564,8 +556,10 @@
 			,home: home
 			,end: end
 			,canvas: canvasMod
-			,settings: getSettings
+			,container: function() { return container; }
+			,settings: function() { return settings; }
 			,active: getActive
+			,current: function() { return current; }
 			,fire: fire
 			,deinit: deinit
 			,reapply: doStepReapply
