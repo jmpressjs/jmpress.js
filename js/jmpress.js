@@ -973,6 +973,7 @@
 			}
 		})();
 
+		$.jmpress("defaults").reasonableAnimation = {}
 		$.jmpress("initStep", function( step, eventData ) {
 			var data = eventData.data;
 			var stepData = eventData.stepData;
@@ -1114,12 +1115,18 @@
 				target.transform[lastScale] = ["scale"];
 			}
 
+			var animation = settings.animation;
+			if(settings.reasonableAnimation[eventData.reason])
+				animation = $.extend({},
+					animation,
+					settings.reasonableAnimation[eventData.reason]);
+
 			props = {
 				// to keep the perspective look similar for different scales
 				// we need to 'scale' the perspective, too
 				perspective: Math.round(target.perspectiveScale * 1000) + "px"
 			};
-			props = $.extend({}, settings.animation, props);
+			props = $.extend({}, animation, props);
 			if (!zoomin) {
 				props.transitionDelay = '0';
 			}
@@ -1130,7 +1137,7 @@
 			$.jmpress("css", eventData.area, props);
 			engine.transform(eventData.area, extracted);
 
-			props = $.extend({}, settings.animation);
+			props = $.extend({}, animation);
 			if (!zoomout) {
 				props.transitionDelay = '0';
 			}
