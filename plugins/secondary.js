@@ -1,4 +1,5 @@
 (function( $, document, window, undefined ) {
+	'use strict';
 	$.jmpress("initStep", function( step, eventData ) {
 		for(var name in eventData.data) {
 			if(name.indexOf("secondary")==0) {
