@@ -322,12 +322,13 @@ $(function() {
 		{
 			x: 1500
 			,y: -9000
-			,z: 5000
+			,z: 0
 			,rotate: -230
-			,scale: 2
+			,scale: 10
 			,viewPort: {
 				height: 2000
-				,width: 3000
+				,width: 4500
+				,zoomable: 10
 			}
 		},
 	]});
@@ -339,6 +340,7 @@ $(function() {
 			height: 600
 			,width: 1000
 			,maxScale: 1 // do not scale up
+			,zoomable: 10
 		}
 		// SET THE ACTIVE SLIDE IN THE NAV
 		,setActive: function( slide ) {
