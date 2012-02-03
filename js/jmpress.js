@@ -1111,8 +1111,13 @@
 
 			var extracted = [];
 			if(lastScale != -1) {
-				extracted.push(target.transform[lastScale]);
-				target.transform[lastScale] = ["scale"];
+				while(lastScale >= 0) {
+					if(target.transform[lastScale][0] == "scale") {
+						extracted.push(target.transform[lastScale]);
+						target.transform[lastScale] = ["scale"];
+					}
+					lastScale--;
+				}
 			}
 
 			var animation = settings.animation;
