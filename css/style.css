@@ -436,8 +436,13 @@ h4 {
 	display: none;
 }
 
-/** PRINT STYLE **/
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+	#nav { display: none; }
+	.hint { display: none; }
+}
 
+/** PRINT STYLE **/
 @media print {
 	body, .ui-state-default {
 		background: white;
