@@ -174,7 +174,7 @@
 		 * Init a single step
 		 *
 		 * @param element the element of the step
-		 * @param number of step
+		 * @param idx number of step
 		 */
 		function doStepInit( element, idx ) {
 			var data = dataset( element );
@@ -267,7 +267,8 @@
 		 * Call a callback
 		 *
 		 * @param callbackName String callback which should be called
-		 * @param arguments some arguments to the callback
+		 * @param element some arguments to the callback
+		 * @param eventData
 		 */
 		function callCallback( callbackName, element, eventData ) {
 			eventData.settings = settings;
@@ -290,7 +291,7 @@
 		 */
 		function loadSiblings() {
 			if (!active) {
-				return false;
+				return;
 			}
 			var siblings = $(active).near( settings.stepSelector )
 				.add( $(active).near( settings.stepSelector, true) )
@@ -339,8 +340,8 @@
 		/**
 		 * Select a given step
 		 *
-		 * @param Object|String el element to select
-		 * @param String type reason of changing step
+		 * @param el element to select
+		 * @param type reason of changing step
 		 * @return Object element selected
 		 */
 		function select( el, type ) {
@@ -372,7 +373,7 @@
 				}
 			});
 			if (cancelSelect) {
-				return;
+				return undefined;
 			}
 
 			var target = {};
@@ -501,8 +502,8 @@
 		/**
 		 * Manipulate the canvas
 		 *
-		 * @param Object props
-		 * @return Object canvas
+		 * @param props
+		 * @return Object
 		 */
 		function canvasMod( props ) {
 			css(canvas, props || {});
@@ -526,6 +527,11 @@
 		}
 		/**
 		 * fire a callback
+		 * 
+		 * @param callbackName
+		 * @param element
+		 * @param eventData
+		 * @return void
 		 */
 		function fire( callbackName, element, eventData ) {
 			if( !callbacks[callbackName] ) {
@@ -707,7 +713,7 @@
 	/**
 	 * Return dataset for element
 	 *
-	 * @param Object element
+	 * @param el element
 	 * @return Object
 	 */
 	function dataset( el ) {
