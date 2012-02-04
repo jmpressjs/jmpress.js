@@ -696,7 +696,7 @@
 		for ( key in props ) {
 			if ( props.hasOwnProperty(key) ) {
 				pkey = pfx(key);
-				if ( pkey != null ) {
+				if ( pkey !== null ) {
 					cssObj[pkey] = props[key];
 				}
 			}
@@ -1214,7 +1214,7 @@
 			}
 			do {
 				var prev = $(step).near( eventData.settings.stepSelector, true );
-				if (prev.length == 0 || $(prev).closest(this).length == 0) {
+				if (prev.length === 0 || $(prev).closest(this).length === 0) {
 					prev = $(this).find(eventData.settings.stepSelector).last();
 				}
 				if (!prev.length) {
@@ -1230,7 +1230,7 @@
 			}
 			do {
 				var next = $(step).near( eventData.settings.stepSelector );
-				if (next.length == 0 || $(next).closest(this).length == 0) {
+				if (next.length === 0 || $(next).closest(this).length === 0) {
 					next = $(this).find(eventData.settings.stepSelector).first();
 				}
 				if (!next.length) {
@@ -1254,15 +1254,14 @@
 			for(var i = 0; i < route.length - 1; i++) {
 				var from = route[i];
 				var to = route[i+1];
-				$(from, this).each(function(idx, element) {
-					$(element).attr("data-"+type, to);
-				});
+				$(from, this).attr('data-' + type, to);
 			}
 		}
 		$.jmpress( 'register', 'route', function( route, unidirectional, reversedRoute ) {
 			routeFunc.call(this, route, reversedRoute ? "prev" : "next");
-			if(!unidirectional)
+			if (!unidirectional) {
 				routeFunc.call(this, route.reverse(), reversedRoute ? "next" : "prev");
+			}
 		});
 		$.jmpress( 'initStep', function( step, eventData ) {
 			eventData.stepData.next = eventData.data.next;
@@ -1289,7 +1288,7 @@
 	(function() { // load steps from ajax
 		$.jmpress('register', 'afterStepLoaded');
 		$.jmpress('initStep', function( step, eventData ) {
-			eventData.stepData.src = $(step).attr('href') || eventData.data['src'] || false;
+			eventData.stepData.src = $(step).attr('href') || eventData.data.src || false;
 		});
 		$.jmpress('loadStep', function( step, eventData ) {
 			var href = eventData.stepData.src;
@@ -1454,9 +1453,9 @@
 				}
 
 				var reverseSelect = false;
+				var nextFocus;
 				if (event.which == 9) {
 					// tab
-					var nextFocus;
 					if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
 						if ( !event.shiftKey ) {
 							nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").first();
@@ -1587,12 +1586,12 @@
 		function addUndefined( target, values, prefix ) {
 			for( var name in values ) {
 				var targetName = name;
-				if(prefix) {
+				if ( prefix ) {
 					targetName = prefix + targetName.substr(0, 1).toUpperCase() + targetName.substr(1);
 				}
-				if( $.isPlainObject(values[name]) ) {
+				if ( $.isPlainObject(values[name]) ) {
 					addUndefined( target, values[name], targetName );
-				} else if( target[targetName] == undefined ) {
+				} else if( target[targetName] === undefined ) {
 					target[targetName] = values[name];
 				}
 			}
@@ -1657,7 +1656,7 @@
 		$.jmpress("register", "apply", function( selector, tmpl ) {
 			if( !tmpl ) {
 				// TODO ERROR because settings not found
-				var stepSelector = $(jmpress).jmpress("settings").stepSelector;
+				var stepSelector = $(this).jmpress("settings").stepSelector;
 				applyChildrenTemplates( $(this).find(stepSelector).filter(function() {
 					return !$(this).parent().is(stepSelector);
 				}), selector );
