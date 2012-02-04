@@ -1,9 +1,9 @@
 {
-	"name": "jmpress",
+	"name": "jmpress.js",
 	"version": "0.3.0",
 	"title": "jQuery.jmpress()",
 	"author": {
-		"name": "jmpress project",
+		"name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
 		"url": "https://github.com/shama/jmpress.js"
 	},
 	"licenses": [
