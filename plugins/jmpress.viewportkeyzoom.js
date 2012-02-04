@@ -5,7 +5,7 @@
  * Adds the option:
  * $(selector).jmpress({ viewPort: { keyZoomAmount: 1000 } });
  */
-(function() {
+(function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("defaults").viewPort.keyZoomAmount = 100;
 	$.extend(true, $.jmpress('defaults').keyboard.keys, {
@@ -32,4 +32,4 @@
 		}
 		$(this).jmpress("select", $(this).jmpress("active"), "resize");
 	});
-})();
+}(jQuery, document, window));
