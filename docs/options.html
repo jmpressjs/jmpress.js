@@ -1,3 +1,4 @@
+<section>
 <h1>Options</h1>
 
 <p>Options and callbacks can be set when you initialize jmpress as such:</p>
@@ -87,8 +88,9 @@ Ignore some keys on a specific tag name.</p>
 <h4>keyboard.use</h4>
 <p><em>Default: true</em><br/>
 Whether the keyboard should be used to navigate in jmpress.</p>
+</section>
 
-
+<section>
 <h1>Advanced Options</h1>
 
 <h4>containerClass</h4>
@@ -98,10 +100,12 @@ It has no transformation applied so you can set some background on it.
 </p>
 
 <h4>canvasClass</h4>
-<p>A class name to set on the canvas. The canvas is the element, which contains the steps.</p>
+<p>A class name to set on the canvas. The canvas is the element, which contains
+the steps.</p>
 
 <h4>areaClass</h4>
-<p>A class name to set on the area. The area is some middle element, which is needed to build this camera.</p>
+<p>A class name to set on the area. The area is some middle element, which is
+needed to build this camera.</p>
 
 <h4>animation</h4>
 <p>Set the CSS animation values for transitions between slides.</p>
@@ -109,3 +113,37 @@ It has no transformation applied so you can set some background on it.
 <h4>loadedClass</h4>
 <p><em>Default: 'loaded'</em><br/>
 Class name to set on each step that has been started loading.</p>
+</section>
+
+<section>
+<h1>Inline Options</h1>
+
+<p>You may set a series of data attributes on your steps. This method of
+building your steps will be familiar if you're coming from impress.js.</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-x="100" data-y="2000" data-rotate="90">...</div>
+	<div class="step" data-rotate="120">...</div>
+</div></code></pre>
+
+<p>Each step element can have the following data attributes set:</p>
+<ul>
+	<li>data-x: cartesian coordinates: X Position
+	<li>data-y: cartesian coordinates: Y Position
+	<li>data-z: cartesian coordinates: Z Position
+	<li>data-r: polar coordinates: radius
+	<li>data-phi: polar coordinates: angle (starting at top, counterclockwise)
+	<li>data-scale: Scale of element (also scale-x, scale-y, scale-z)
+	<li>data-rotation: Degree of rotation
+	<li>data-rotation-x: Degree of rotation on x-axis
+	<li>data-rotation-y: Degree of rotation on y-axis
+	<li>data-rotation-z: Degree of rotation on z-axis
+	<li>data-delegate: delegate the activeness to another step chosen by selector
+	<li>data-src: Load content of slide dynamically
+	<li>data-exclude: do not use step in natural flow, but it can be selected with the route command
+	<li>data-next: selector of the next step
+	<li>data-prev: selector of the prev step
+	<li>data-template: apply a template, which must be defined before init jmpress
+	<li>even more with plugins
+</ul>
+</section>

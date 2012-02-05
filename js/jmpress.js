@@ -40,8 +40,8 @@
 				}
 			}
 			return memory[ prop ];
-		}
-	})();
+		};
+	}());
 
 	/**
 	 * map ex. "WebkitTransform" to "-webkit-transform"
@@ -140,8 +140,9 @@
 		args = $.extend(true, {}, args || {});
 
 		// accept functions and arrays of functions as callbacks
-		var callbackArgs = {}
-		for (var callbackName in callbacks) {
+		var callbackArgs = {};
+		var callbackName = null;
+		for (callbackName in callbacks) {
 			callbackArgs[callbackName] = $.isFunction( args[callbackName] ) ?
 				[ args[callbackName] ] :
 				args[callbackName];
@@ -151,9 +152,10 @@
 		// MERGE SETTINGS
 		var settings = $.extend(true, {}, defaults, args);
 
-		for (var callbackName in callbacks) {
-			if(callbackArgs[callbackName])
+		for (callbackName in callbacks) {
+			if (callbackArgs[callbackName]) {
 				Array.prototype.push.apply(settings[callbackName], callbackArgs[callbackName]);
+			}
 		}
 
 		/*** MEMBER VARS ***/
@@ -169,7 +171,7 @@
 			,current = null
 			,active = false
 			,activeSubstep = null
-			,activeDelegated = false
+			,activeDelegated = false;
 
 
 		/*** MEMBER FUNCTIONS ***/
@@ -179,7 +181,7 @@
 		 * Init a single step
 		 *
 		 * @param element the element of the step
-		 * @param number of step
+		 * @param idx number of step
 		 */
 		function doStepInit( element, idx ) {
 			var data = dataset( element );
@@ -190,7 +192,7 @@
 			var callbackData = {
 				data: data
 				,stepData: step
-			}
+			};
 			callCallback.call(this, 'beforeInitStep', $(element), callbackData);
 			step.delegate = data.delegate;
 			callCallback.call(this, 'initStep', $(element), callbackData);
@@ -242,7 +244,9 @@
 					,reason: "deinit"
 				} );
 			}
-			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
+			if (current.jmpressClass) {
+				$(jmpress).removeClass(current.jmpressClass);
+			}
 
 			callCallback.call(this, 'beforeDeinit', $(this), {});
 
@@ -270,7 +274,8 @@
 		 * Call a callback
 		 *
 		 * @param callbackName String callback which should be called
-		 * @param arguments some arguments to the callback
+		 * @param element some arguments to the callback
+		 * @param eventData
 		 */
 		function callCallback( callbackName, element, eventData ) {
 			eventData.settings = settings;
@@ -293,7 +298,7 @@
 		 */
 		function loadSiblings() {
 			if (!active) {
-				return false;
+				return;
 			}
 			var siblings = $(active).near( settings.stepSelector )
 				.add( $(active).near( settings.stepSelector, true) )
@@ -350,8 +355,8 @@
 		/**
 		 * Select a given step
 		 *
-		 * @param Object|String el element to select
-		 * @param String type reason of changing step
+		 * @param el element to select
+		 * @param type reason of changing step
 		 * @return Object element selected
 		 */
 		function select( el, type ) {
@@ -388,7 +393,7 @@
 				}
 			});
 			if (cancelSelect) {
-				return;
+				return undefined;
 			}
 
 			var target = {};
@@ -426,9 +431,13 @@
 			callCallback.call(this, 'setActive', delegated, callbackData);
 
 			// Set on step class on root element
-			if(current.jmpressClass) $(jmpress).removeClass(current.jmpressClass);
+			if (current.jmpressClass) {
+				$(jmpress).removeClass(current.jmpressClass);
+			}
 			$(jmpress).addClass(current.jmpressClass = 'step-' + $(delegated).attr('id') );
-			if(current.jmpressDelegatedClass) $(jmpress).removeClass(current.jmpressDelegatedClass);
+			if (current.jmpressDelegatedClass) {
+				$(jmpress).removeClass(current.jmpressDelegatedClass);
+			}
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
 			callCallback.call(this, "applyTarget", active, $.extend({
@@ -449,14 +458,16 @@
 		 */
 		function scrollFix() {
 			function fix() {
-				if($(container)[0].tagName == "BODY")
+				if ($(container)[0].tagName === "BODY") {
 					window.scrollTo(0, 0);
+				}
 				$(container).scrollTop(0);
 				$(container).scrollLeft(0);
 				function check() {
-					if($(container).scrollTop() != 0 ||
-						$(container).scrollLeft() != 0)
-						fix();
+					if ($(container).scrollTop() !== 0 ||
+						$(container).scrollLeft() !== 0) {
+							fix();
+						}
 				}
 				setTimeout(check, 1);
 				setTimeout(check, 10);
@@ -517,8 +528,8 @@
 		/**
 		 * Manipulate the canvas
 		 *
-		 * @param Object props
-		 * @return Object canvas
+		 * @param props
+		 * @return Object
 		 */
 		function canvasMod( props ) {
 			css(canvas, props || {});
@@ -534,6 +545,11 @@
 		}
 		/**
 		 * fire a callback
+		 * 
+		 * @param callbackName
+		 * @param element
+		 * @param eventData
+		 * @return void
 		 */
 		function fire( callbackName, element, eventData ) {
 			if( !callbacks[callbackName] ) {
@@ -574,7 +590,7 @@
 		 */
 		function checkSupport() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) == -1 );
+			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) === -1 );
 			return supported;
 		}
 
@@ -582,12 +598,14 @@
 
 		// CHECK FOR SUPPORT
 		if (checkSupport() === false) {
-			if(settings.notSupportedClass)
+			if (settings.notSupportedClass) {
 				jmpress.addClass(settings.notSupportedClass);
+			}
 			return;
 		} else {
-			if(settings.notSupportedClass)
+			if (settings.notSupportedClass) {
 				jmpress.removeClass(settings.notSupportedClass);
+			}
 		}
 
 		// grabbing all steps
@@ -655,8 +673,9 @@
 		// START
 		select.call(this,  callCallback.call(this, 'selectInitialStep', "init", {}) );
 
-		if(settings.initClass)
+		if (settings.initClass) {
 			$(steps).removeClass(settings.initClass);
+		}
 	}
 	/**
 	 * Return default settings
@@ -698,22 +717,22 @@
 	 * already checks for support
 	 */
 	function css( el, props ) {
-		var key, pkey, css = {};
+		var key, pkey, cssObj = {};
 		for ( key in props ) {
 			if ( props.hasOwnProperty(key) ) {
 				pkey = pfx(key);
-				if ( pkey != null ) {
-					css[pkey] = props[key];
+				if ( pkey !== null ) {
+					cssObj[pkey] = props[key];
 				}
 			}
 		}
-		$(el).css(css);
+		$(el).css(cssObj);
 		return el;
 	}
 	/**
 	 * Return dataset for element
 	 *
-	 * @param Object element
+	 * @param el element
 	 * @return Object
 	 */
 	function dataset( el ) {
@@ -727,14 +746,14 @@
 			}
 			return str.join( '' );
 		}
-		var dataset = {};
+		var returnDataset = {};
 		var attrs = $(el)[0].attributes;
 		$.each(attrs, function ( idx, attr ) {
-			if ( attr.nodeName.substr(0, 5) == "data-" ) {
-				dataset[ toCamelcase(attr.nodeName.substr(5)) ] = attr.nodeValue;
+			if ( attr.nodeName.substr(0, 5) === "data-" ) {
+				returnDataset[ toCamelcase(attr.nodeName.substr(5)) ] = attr.nodeValue;
 			}
 		});
-		return dataset;
+		return returnDataset;
 	}
 
 
@@ -758,13 +777,13 @@
 		function f() {
 			var jmpressmethods = $(this).data("jmpressmethods");
 			if ( jmpressmethods && jmpressmethods[method] ) {
-				if ( method.substr(0, 1) == '_' && jmpressmethods.settings().test === false) {
+				if ( method.substr(0, 1) === '_' && jmpressmethods.settings().test === false) {
 					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 				} else {
 					return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 				}
 			} else if ( methods[method] ) {
-				if ( method.substr(0, 1) == '_' && defaults.test === false) {
+				if ( method.substr(0, 1) === '_' && defaults.test === false) {
 					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 				} else {
 					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
@@ -794,7 +813,7 @@
 	$.extend({
 		jmpress: function( method ) {
 			if ( methods[method] ) {
-				if ( method.substr(0, 1) == '_' && defaults.test === false) {
+				if ( method.substr(0, 1) === '_' && defaults.test === false) {
 					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
 				} else {
 					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
@@ -813,7 +832,7 @@
 		}
 	});
 
-})(jQuery, document, window);
+}(jQuery, document, window));
 
 (function( $, document, window, undefined ) {
 
@@ -884,8 +903,8 @@
 				}
 			});
 			return $(array);
-		}
-	})();
+		};
+	}());
 
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
@@ -971,7 +990,7 @@
 				// CHECK IF SUPPORT IS REALLY NEEDED?
 				return engines[1];
 			}
-		})();
+		}());
 
 		$.jmpress("defaults").reasonableAnimation = {}
 		$.jmpress("initStep", function( step, eventData ) {
@@ -1002,11 +1021,12 @@
 				position: "absolute"
 				,transformStyle: "preserve-3d"
 			});
-			if( eventData.parents.length > 0 )
+			if ( eventData.parents.length > 0 ) {
 				$.jmpress("css", $(step), {
 					top: "50%"
 					,left: "50%"
 				});
+			}
 			var sd = eventData.stepData;
 			var transform = [
 				["translate",
@@ -1156,7 +1176,7 @@
 			engine.transform(eventData.canvas, target.transform);
 			$.jmpress("css", eventData.canvas, props);
 		});
-	})();
+	}());
 
 	(function() { // active class
 		$.jmpress("defaults").nestedActiveClass = "nested-active";
@@ -1177,7 +1197,7 @@
 					$(element).addClass(eventData.settings.nestedActiveClass);
 				});
 		});
-	})();
+	}());
 
 	(function() { // circular stepping
 		$.jmpress( 'initStep', function( step, eventData ) {
@@ -1197,7 +1217,7 @@
 			}
 			do {
 				var prev = $(step).near( eventData.settings.stepSelector, true );
-				if (prev.length == 0 || $(prev).closest(this).length == 0) {
+				if (prev.length === 0 || $(prev).closest(this).length === 0) {
 					prev = $(this).find(eventData.settings.stepSelector).last();
 				}
 				if (!prev.length) {
@@ -1213,7 +1233,7 @@
 			}
 			do {
 				var next = $(step).near( eventData.settings.stepSelector );
-				if (next.length == 0 || $(next).closest(this).length == 0) {
+				if (next.length === 0 || $(next).closest(this).length === 0) {
 					next = $(this).find(eventData.settings.stepSelector).first();
 				}
 				if (!next.length) {
@@ -1223,13 +1243,13 @@
 			} while( step.data("stepData").exclude );
 			return step;
 		});
-	})();
+	}());
 
 	(function() { // start on defined step
 		$.jmpress( 'selectInitialStep', function( nil, eventData ) {
 			return eventData.settings.start;
 		});
-	})();
+	}());
 
 	(function() { // ways
 		// TODO allow call of route after init
@@ -1237,15 +1257,14 @@
 			for(var i = 0; i < route.length - 1; i++) {
 				var from = route[i];
 				var to = route[i+1];
-				$(from, this).each(function(idx, element) {
-					$(element).attr("data-"+type, to);
-				});
+				$(from, this).attr('data-' + type, to);
 			}
 		}
 		$.jmpress( 'register', 'route', function( route, unidirectional, reversedRoute ) {
 			routeFunc.call(this, route, reversedRoute ? "prev" : "next");
-			if(!unidirectional)
+			if (!unidirectional) {
 				routeFunc.call(this, route.reverse(), reversedRoute ? "next" : "prev");
+			}
 		});
 		$.jmpress( 'initStep', function( step, eventData ) {
 			eventData.stepData.next = eventData.data.next;
@@ -1267,12 +1286,12 @@
 				if(near && near.length) return near;
 			}
 		});
-	})();
+	}());
 
 	(function() { // load steps from ajax
 		$.jmpress('register', 'afterStepLoaded');
 		$.jmpress('initStep', function( step, eventData ) {
-			eventData.stepData.src = $(step).attr('href') || eventData.data['src'] || false;
+			eventData.stepData.src = $(step).attr('href') || eventData.data.src || false;
 		});
 		$.jmpress('loadStep', function( step, eventData ) {
 			var href = eventData.stepData.src;
@@ -1286,7 +1305,7 @@
 				});
 			}
 		});
-	})();
+	}());
 
 	(function() { // use hash in url
 		$.jmpress('defaults').hash = {
@@ -1356,7 +1375,7 @@
 				}, eventData.settings.transitionDuration + 200);
 			}
 		});
-	})();
+	}());
 
 	(function() { // keyboard
 		$.jmpress('defaults').keyboard = {
@@ -1378,21 +1397,21 @@
 			}
 			,ignore: {
 				"INPUT": [
-					,32 // space
+					32 // space
 					,37 // left
 					,38 // up
 					,39 // right
 					,40 // down
 				]
 				,"TEXTAREA": [
-					,32 // space
+					32 // space
 					,37 // left
 					,38 // up
 					,39 // right
 					,40 // down
 				]
 				,"SELECT": [
-					,38 // up
+					38 // up
 					,40 // down
 				]
 			}
@@ -1437,9 +1456,9 @@
 				}
 
 				var reverseSelect = false;
+				var nextFocus;
 				if (event.which == 9) {
 					// tab
-					var nextFocus;
 					if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
 						if ( !event.shiftKey ) {
 							nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").first();
@@ -1466,8 +1485,8 @@
 				}
 
 				var action = mysettings.keys[ event.which ];
-				if( typeof action == "string" ) {
-					if(action.indexOf(":") != -1) {
+				if ( typeof action == "string" ) {
+					if (action.indexOf(":") !== -1) {
 						action = action.split(":");
 						action = event.shiftKey ? action[1] : action[0];
 					}
@@ -1480,7 +1499,7 @@
 					event.stopPropagation();
 				}
 
-				if(reverseSelect) {
+				if (reverseSelect) {
 					// tab
 					nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").last();
 					nextFocus.focus();
@@ -1491,7 +1510,7 @@
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$(document).unbind(eventData.current.keyboardNamespace);
 		});
-	})();
+	}());
 
 	(function() { // viewPort
 		$.jmpress("defaults").viewPort = {
@@ -1614,7 +1633,7 @@
 				eventData.current.userTranslateY = 0;
 			}
 		});
-	})();
+	}());
 
 	(function() { // clickable inactive steps
 		$.jmpress("defaults").mouse = {
@@ -1624,18 +1643,20 @@
 			eventData.current.clickableStepsNamespace = ".jmpress-"+randomString();
 			var jmpress = this;
 			$(this).bind("click"+eventData.current.clickableStepsNamespace, function(event) {
-				if(!eventData.settings.mouse.clickSelects)
+				if (!eventData.settings.mouse.clickSelects) {
 					return;
+				}
 				// clicks on the active step do default
-				if( $(event.target)
+				if ( $(event.target)
 					.closest( eventData.settings.stepSelector)
-					.is( $(jmpress).jmpress("active") ) )
-					return;
+					.is( $(jmpress).jmpress("active") ) ) {
+						return;
+					}
 
 				// get clicked step
 				var clickedStep = $(event.target).closest(eventData.settings.stepSelector);
 
-				if(clickedStep.length) {
+				if (clickedStep.length) {
 					// select the clicked step
 					$(this).jmpress("select", clickedStep[0], "click");
 					event.preventDefault();
@@ -1646,30 +1667,30 @@
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$(this).unbind(eventData.current.clickableStepsNamespace);
 		});
-	})();
+	}());
 
 	(function() { // templates
 		var templates = {};
 		function addUndefined( target, values, prefix ) {
 			for( var name in values ) {
 				var targetName = name;
-				if(prefix) {
+				if ( prefix ) {
 					targetName = prefix + targetName.substr(0, 1).toUpperCase() + targetName.substr(1);
 				}
-				if( $.isPlainObject(values[name]) ) {
+				if ( $.isPlainObject(values[name]) ) {
 					addUndefined( target, values[name], targetName );
-				} else if( target[targetName] == undefined ) {
+				} else if( target[targetName] === undefined ) {
 					target[targetName] = values[name];
 				}
 			}
 		}
 		function applyChildrenTemplates( children, templateChildren ) {
-			if($.isArray(templateChildren)) {
-				if(templateChildren.length < children.length)
+			if ($.isArray(templateChildren)) {
+				if (templateChildren.length < children.length) {
 					$.error("more nested steps than children in template");
-				else {
+				} else {
 					children.each(function(idx, child) {
-						var tmpl = $(child).data("_template_") || {}
+						var tmpl = $(child).data("_template_") || {};
 						addUndefined(tmpl, templateChildren[idx]);
 						$(child).data("_template_", tmpl);
 					});
@@ -1684,7 +1705,7 @@
 		}
 		$.jmpress("beforeInitStep", function( step, eventData ) {
 			function applyTemplate( data, element, template ) {
-				if(template.children) {
+				if (template.children) {
 					var children = $(element).children( eventData.settings.stepSelector );
 					applyChildrenTemplates( children, template.children );
 				}
@@ -1701,11 +1722,11 @@
 				});
 			}
 			var templateFromApply = $(step).data("_applied_template_");
-			if(templateFromApply) {
+			if (templateFromApply) {
 				applyTemplate( eventData.data, step, templateFromApply );
 			}
 			var templateFromParent = $(step).data("_template_");
-			if(templateFromParent) {
+			if (templateFromParent) {
 				applyTemplate( eventData.data, step, templateFromParent );
 				step.data("_template_", null);
 				if(templateFromParent.template) {
@@ -1718,7 +1739,7 @@
 		});
 		$.jmpress("beforeInit", function( nil, eventData ) {
 			var data = $.jmpress("dataset", this);
-			if(data.template) {
+			if (data.template) {
 				var template = templates[data.template];
 				applyChildrenTemplates( $(this).find(eventData.settings.stepSelector).filter(function() {
 					return !$(this).parent().is(eventData.settings.stepSelector);
@@ -1726,15 +1747,16 @@
 			}
 		});
 		$.jmpress("register", "template", function( name, tmpl ) {
-			if(templates[name])
+			if (templates[name]) {
 				templates[name] = $.extend(true, {}, templates[name], tmpl);
-			else
+			} else {
 				templates[name] = $.extend(true, {}, tmpl);
+			}
 		});
 		$.jmpress("register", "apply", function( selector, tmpl ) {
 			if( !tmpl ) {
 				// TODO ERROR because settings not found
-				var stepSelector = $(jmpress).jmpress("settings").stepSelector
+				var stepSelector = $(this).jmpress("settings").stepSelector;
 				applyChildrenTemplates( $(this).find(stepSelector).filter(function() {
 					return !$(this).parent().is(stepSelector);
 				}), selector );
@@ -1742,19 +1764,19 @@
 				applyChildrenTemplates( $(selector), tmpl );
 			} else {
 				var template;
-				if(typeof tmpl == "string") {
+				if(typeof tmpl === "string") {
 					template = templates[tmpl];
 				} else {
 					template = $.extend(true, {}, tmpl);
 				}
 				$(selector).each(function(idx, element) {
-					var tmpl = $(element).data("_applied_template_") || {}
+					var tmpl = $(element).data("_applied_template_") || {};
 					addUndefined(tmpl, template);
 					$(element).data("_applied_template_", tmpl);
 				});
 			}
 		});
-	})();
+	}());
 
 	(function() { // jquery event
 		// the events should not bubble up the tree
@@ -1877,4 +1899,4 @@
 		});
 	})();
 
-})(jQuery, document, window);
+}(jQuery, document, window));
