@@ -1609,7 +1609,7 @@
 		,transitionDelay: '0ms'
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1}) {
+		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1, "viewPortZoomable":1}) {
 			eventData.stepData[variable] = eventData.data[variable] && parseFloat(eventData.data[variable]);
 		}
 	});
@@ -1715,7 +1715,7 @@
 		$(this).jmpress("reselect", "zoom");
 	});
 	$.jmpress('afterDeinit', function( nil, eventData ) {
-		$(window).unbind(eventData.current.viewPortNamespace);
+		$(eventData.settings.fullscreen ? document : this).unbind(eventData.current.viewPortNamespace);
 	});
 	$.jmpress("setActive", function( step, eventData ) {
 		var viewPort = eventData.settings.viewPort;
