@@ -1519,7 +1519,11 @@
 			,maxScale: 0
 			,minScale: 0
 			,zoomable: 0
+			,zoomBindMove: true
+			,zoomBindWheel: true
 		};
+		$.jmpress("defaults").keyboard.keys[$.browser.mozilla?107:187] = "zoomIn";  // +
+		$.jmpress("defaults").keyboard.keys[$.browser.mozilla?109:189] = "zoomOut"; // -
 		$.jmpress("defaults").reasonableAnimation.resize = {
 			transitionDuration: '0s'
 			,transitionDelay: '0ms'
@@ -1541,20 +1545,46 @@
 			eventData.current.userZoom = 0;
 			eventData.current.userTranslateX = 0;
 			eventData.current.userTranslateY = 0;
-			$(eventData.settings.fullscreen ? document : this)
-				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
-				delta = delta || event.originalEvent.wheelDelta;
-				var direction = (delta / Math.abs(delta));
-				if(direction < 0)
-					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
-				else if(direction > 0)
-					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
-			});
-		});
-		function zoom(x, y, direction) {
-			function maxAbs(value, range) {
-				return Math.max(Math.min(value, range), -range);
+			if(eventData.settings.viewPort.zoomBindWheel) {
+				$(eventData.settings.fullscreen ? document : this)
+					.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
+					delta = delta || event.originalEvent.wheelDelta;
+					var direction = (delta / Math.abs(delta));
+					if(direction < 0)
+						$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
+					else if(direction > 0)
+						$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
+				});
 			}
+			if(eventData.settings.viewPort.zoomBindMove) {
+				$(eventData.settings.fullscreen ? document : this).bind("mousedown"+eventData.current.viewPortNamespace, function (event) {
+					if(eventData.current.userZoom) {
+						eventData.current.userTranslating = { x: event.clientX, y: event.clientY };
+						event.preventDefault();
+						event.stopImmediatePropagation();
+					}
+				}).bind("mousemove"+eventData.current.viewPortNamespace, function (event) {
+					var userTranslating = eventData.current.userTranslating;
+					if(userTranslating) {
+						$(jmpress).jmpress("zoomTranslate", event.clientX - userTranslating.x, event.clientY - userTranslating.y);
+						userTranslating.x = event.clientX;
+						userTranslating.y = event.clientY;
+						event.preventDefault();
+						event.stopImmediatePropagation();
+					}
+				}).bind("mouseup"+eventData.current.viewPortNamespace, function (event) {
+					if(eventData.current.userTranslating) {
+						eventData.current.userTranslating = undefined;
+						event.preventDefault();
+						event.stopImmediatePropagation();
+					}
+				});
+			}
+		});
+		function maxAbs(value, range) {
+			return Math.max(Math.min(value, range), -range);
+		}
+		function zoom(x, y, direction) {
 			var current = $(this).jmpress("current"),
 				settings = $(this).jmpress("settings"),
 				stepData = $(this).jmpress("active").data("stepData"),
@@ -1569,8 +1599,8 @@
 			var halfWidth = $(container).innerWidth()/2,
 				halfHeight = $(container).innerHeight()/2;
 
-			var x = x - halfWidth;
-			var y = y - halfHeight;
+			var x = x ? x - halfWidth : x;
+			var y = y ? y - halfHeight : y;
 
 			// TODO this is not perfect... too much math... :(
 			current.userTranslateX =
@@ -1587,6 +1617,22 @@
 		});
 		$.jmpress("register", "zoomOut", function(x, y) {
 			zoom.call(this, x||0, y||0, -1);
+		});
+		$.jmpress("register", "zoomTranslate", function(x, y) {
+			var current = $(this).jmpress("current"),
+				settings = $(this).jmpress("settings"),
+				stepData = $(this).jmpress("active").data("stepData"),
+				container = $(this).jmpress("container");
+			var zoomableSteps = stepData.viewPortZoomable || settings.viewPort.zoomable;
+			var halfWidth = $(container).innerWidth(),
+				halfHeight = $(container).innerHeight();
+			current.userTranslateX =
+				maxAbs(current.userTranslateX + x / current.zoomOriginWindowScale,
+				halfWidth * current.userZoom * current.userZoom / zoomableSteps);
+			current.userTranslateY =
+				maxAbs(current.userTranslateY + y / current.zoomOriginWindowScale,
+				halfHeight * current.userZoom * current.userZoom / zoomableSteps);
+			$(this).jmpress("reselect", "zoom");
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
 			$(window).unbind(eventData.current.viewPortNamespace);
@@ -1644,7 +1690,7 @@
 			eventData.current.clickableStepsNamespace = ".jmpress-"+randomString();
 			var jmpress = this;
 			$(this).bind("click"+eventData.current.clickableStepsNamespace, function(event) {
-				if (!eventData.settings.mouse.clickSelects) {
+				if (!eventData.settings.mouse.clickSelects || eventData.current.userZoom) {
 					return;
 				}
 				// clicks on the active step do default
