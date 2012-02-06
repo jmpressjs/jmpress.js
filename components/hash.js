@@ -36,12 +36,13 @@
 				var id = getElementFromUrl();
 				$(jmpress).jmpress("scrollFix");
 				if(id) {
-					if($(id).attr("id") != $(jmpress).jmpress("active").attr("id")) {
+					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
 						$(jmpress).jmpress('select', id);
 					}
 					var shouldBeHash = "#/" + $(id).attr("id");
-					if(window.location.hash != shouldBeHash)
-					window.location.hash = shouldBeHash;
+					if(window.location.hash !== shouldBeHash) {
+						window.location.hash = shouldBeHash;
+					}
 				}
 			});
 			$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {

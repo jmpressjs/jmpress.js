@@ -51,8 +51,9 @@
 
 
 		// tabindex make it focusable so that it can recieve key events
-		if(!eventData.settings.fullscreen)
+		if(!eventData.settings.fullscreen) {
 			$(this).attr("tabindex", 0);
+		}
 
 		eventData.current.keyboardNamespace = ".jmpress-"+randomString();
 
@@ -61,7 +62,7 @@
 			.bind("keypress"+eventData.current.keyboardNamespace, function( event ) {
 
 			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
@@ -78,14 +79,14 @@
 			}
 
 			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
 
 			var reverseSelect = false;
 			var nextFocus;
-			if (event.which == 9) {
+			if (event.which === 9) {
 				// tab
 				if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
 					if ( !event.shiftKey ) {
@@ -97,8 +98,9 @@
 					nextFocus = $(event.target).near( mysettings.tabSelector, event.shiftKey );
 					if( !$(nextFocus)
 						.closest( eventData.settings.stepSelector )
-						.is($(jmpress).jmpress('active') ) )
+						.is($(jmpress).jmpress('active') ) ) {
 						nextFocus = undefined;
+					}
 				}
 				if( nextFocus && nextFocus.length > 0 ) {
 					nextFocus.focus();
@@ -107,13 +109,14 @@
 					event.stopPropagation();
 					return;
 				} else {
-					if(event.shiftKey)
+					if(event.shiftKey) {
 						reverseSelect = true;
+					}
 				}
 			}
 
 			var action = mysettings.keys[ event.which ];
-			if ( typeof action == "string" ) {
+			if ( typeof action === "string" ) {
 				if (action.indexOf(":") !== -1) {
 					action = action.split(":");
 					action = event.shiftKey ? action[1] : action[0];

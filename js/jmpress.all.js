@@ -58,14 +58,18 @@
 	 * map ex. "WebkitTransform" to "-webkit-transform"
 	 */
 	function mapProperty( name ) {
-		if(!name) return;
+		if(!name) {
+			return;
+		}
 		var index = 1 + name.substr(1).search(/[A-Z]/);
 		var prefix = name.substr(0, index).toLowerCase();
 		var postfix = name.substr(index).toLowerCase();
 		return "-" + prefix + "-" + postfix;
 	}
 	function addComma( attribute ) {
-		if(!attribute) return "";
+		if(!attribute) {
+			return "";
+		}
 		return attribute + ",";
 	}
 
@@ -934,15 +938,18 @@
 				var transform = 'translate(-50%,-50%)';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y", "Z"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					var i;
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						transform += " translate3d(" + (item[1] || 0) + "px," + (item[2] || 0) + "px," + (item[3] || 0) + "px)";
-					} else if(item[0] == "rotate") {
+					} else if(item[0] === "rotate") {
 						var order = item[4] ? [1, 2, 3] : [3, 2, 1];
-						for(var i = 0; i < 3; i++)
+						for(i = 0; i < 3; i++) {
 							transform += " rotate" + coord[order[i]-1] + "(" + (item[order[i]] || 0) + "deg)";
-					} else if(item[0] == "scale") {
-						for(var i = 0; i < 3; i++)
+						}
+					} else if(item[0] === "scale") {
+						for(i = 0; i < 3; i++) {
 							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
 					}
 				});
 				$.jmpress("css", el, $.extend({}, { transform: transform }));
@@ -953,13 +960,14 @@
 				var transform = 'translate(-50%,-50%)';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						transform += " translate(" + (item[1] || 0) + "px," + (item[2] || 0) + "px)";
-					} else if(item[0] == "rotate") {
+					} else if(item[0] === "rotate") {
 						transform += " rotate(" + (item[3] || 0) + "deg)";
-					} else if(item[0] == "scale") {
-						for(var i = 0; i < 2; i++)
+					} else if(item[0] === "scale") {
+						for(var i = 0; i < 2; i++) {
 							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
 					}
 				});
 				$.jmpress("css", el, $.extend({}, { transform: transform }));
@@ -973,7 +981,7 @@
 				var anitarget = { top: 0, left: 0 };
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						anitarget.left = (item[1] || 0) + "px";
 						anitarget.top = (item[2] || 0) + "px";
 					}
@@ -997,7 +1005,7 @@
 		}
 	}());
 
-	$.jmpress("defaults").reasonableAnimation = {}
+	$.jmpress("defaults").reasonableAnimation = {};
 	$.jmpress("initStep", function( step, eventData ) {
 		var data = eventData.data;
 		var stepData = eventData.stepData;
@@ -1050,7 +1058,7 @@
 		];
 		engine.transform( step, transform );
 	});
-	$.jmpress("setActive", function( step, eventData ) {
+	$.jmpress("setActive", function( element, eventData ) {
 		var target = eventData.target;
 		var step = eventData.stepData;
 		var tf = target.transform = [];
@@ -1092,18 +1100,30 @@
 		});
 
 		$.each(tf, function(idx, item) {
-			if(item[0] != "rotate") return;
+			if(item[0] !== "rotate") {
+				return;
+			}
 			function lowRotate(name) {
-				if(item[name] == undefined) return;
-				if(eventData.current["rotate"+name+"-"+idx] === undefined)
+				if(item[name] === undefined) {
+					return;
+				}
+				if(eventData.current["rotate"+name+"-"+idx] === undefined) {
 					eventData.current["rotate"+name+"-"+idx] = item[name];
+				}
 				var cur = eventData.current["rotate"+name+"-"+idx], tar = item[name],
 					curmod = cur % 360, tarmod = tar % 360;
-				if(curmod < 0) curmod += 360;
-				if(tarmod < 0) tarmod += 360;
+				if(curmod < 0) {
+					curmod += 360;
+				}
+				if(tarmod < 0) {
+					tarmod += 360;
+				}
 				var diff = tarmod - curmod;
-				if(diff < -180) diff += 360;
-				else if(diff > 180) diff -= 360;
+				if(diff < -180) {
+					diff += 360;
+				} else if(diff > 180) {
+					diff -= 360;
+				}
 				eventData.current["rotate"+name+"-"+idx] = item[name] = cur + diff;
 			}
 			lowRotate(1);
@@ -1122,22 +1142,25 @@
 		// extract first scale from transform
 		var lastScale = -1;
 		$.each(target.transform, function(idx, item) {
-			if(item.length <= 1) return;
-			if(item[0] == "scale")
+			if(item.length <= 1) {
+				return;
+			}
+			if(item[0] === "scale") {
 				lastScale = idx;
-			else
+			} else {
 				return false;
+			}
 		});
 
-		if(lastScale != eventData.current.oldLastScale) {
+		if(lastScale !== eventData.current.oldLastScale) {
 			zoomin = zoomout = false;
 			eventData.current.oldLastScale = lastScale;
 		}
 
 		var extracted = [];
-		if(lastScale != -1) {
+		if(lastScale !== -1) {
 			while(lastScale >= 0) {
-				if(target.transform[lastScale][0] == "scale") {
+				if(target.transform[lastScale][0] === "scale") {
 					extracted.push(target.transform[lastScale]);
 					target.transform[lastScale] = ["scale"];
 				}
@@ -1146,10 +1169,11 @@
 		}
 
 		var animation = settings.animation;
-		if(settings.reasonableAnimation[eventData.reason])
+		if(settings.reasonableAnimation[eventData.reason]) {
 			animation = $.extend({},
 				animation,
 				settings.reasonableAnimation[eventData.reason]);
+		}
 
 		props = {
 			// to keep the perspective look similar for different scales
@@ -1190,20 +1214,24 @@
 	$.jmpress("defaults").nestedActiveClass = "nested-active";
 	$.jmpress( 'defaults' ).activeClass = "active";
 	$.jmpress( 'setInactive', function( step, eventData ) {
-		if(eventData.settings.activeClass)
+		if(eventData.settings.activeClass) {
 			$(step).removeClass( eventData.settings.activeClass );
-		if(eventData.settings.nestedActiveClass)
+		}
+		if(eventData.settings.nestedActiveClass) {
 			$.each(eventData.parents, function(idx, element) {
 				$(element).removeClass(eventData.settings.nestedActiveClass);
 			});
+		}
 	});
 	$.jmpress( 'setActive', function( step, eventData ) {
-		if(eventData.settings.activeClass)
+		if(eventData.settings.activeClass) {
 			$(step).addClass( eventData.settings.activeClass );
-		if(eventData.settings.nestedActiveClass)
+		}
+		if(eventData.settings.nestedActiveClass) {
 			$.each(eventData.parents, function(idx, element) {
 				$(element).addClass(eventData.settings.nestedActiveClass);
 			});
+		}
 	});
 
 }(jQuery, document, window));
@@ -1212,7 +1240,7 @@
 	'use strict';
 
 	$.jmpress( 'initStep', function( step, eventData ) {
-		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) == -1;
+		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) === -1;
 	});
 	function firstSlide( step, eventData ) {
 		return $(this).find(eventData.settings.stepSelector).first();
@@ -1293,17 +1321,25 @@
 	$.jmpress( 'selectNext', function( step, eventData ) {
 		if(eventData.stepData.next) {
 			var near = $(step).near(eventData.stepData.next);
-			if(near && near.length) return near;
+			if(near && near.length) {
+				return near;
+			}
 			near = $(eventData.stepData.next, this).first();
-			if(near && near.length) return near;
+			if(near && near.length) {
+				return near;
+			}
 		}
 	});
 	$.jmpress( 'selectPrev', function( step, eventData ) {
 		if(eventData.stepData.prev) {
 			var near = $(step).near(eventData.stepData.prev, true);
-			if(near && near.length) return near;
+			if(near && near.length) {
+				return near;
+			}
 			near = $(eventData.stepData.prev, this).last();
-			if(near && near.length) return near;
+			if(near && near.length) {
+				return near;
+			}
 		}
 	});
 
@@ -1372,12 +1408,13 @@
 				var id = getElementFromUrl();
 				$(jmpress).jmpress("scrollFix");
 				if(id) {
-					if($(id).attr("id") != $(jmpress).jmpress("active").attr("id")) {
+					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
 						$(jmpress).jmpress('select', id);
 					}
 					var shouldBeHash = "#/" + $(id).attr("id");
-					if(window.location.hash != shouldBeHash)
-					window.location.hash = shouldBeHash;
+					if(window.location.hash !== shouldBeHash) {
+						window.location.hash = shouldBeHash;
+					}
 				}
 			});
 			$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {
@@ -1464,8 +1501,9 @@
 
 
 		// tabindex make it focusable so that it can recieve key events
-		if(!eventData.settings.fullscreen)
+		if(!eventData.settings.fullscreen) {
 			$(this).attr("tabindex", 0);
+		}
 
 		eventData.current.keyboardNamespace = ".jmpress-"+randomString();
 
@@ -1474,7 +1512,7 @@
 			.bind("keypress"+eventData.current.keyboardNamespace, function( event ) {
 
 			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
@@ -1491,14 +1529,14 @@
 			}
 
 			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName == nodeName && mysettings.ignore[nodeName].indexOf(event.which) != -1 ) {
+				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
 
 			var reverseSelect = false;
 			var nextFocus;
-			if (event.which == 9) {
+			if (event.which === 9) {
 				// tab
 				if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
 					if ( !event.shiftKey ) {
@@ -1510,8 +1548,9 @@
 					nextFocus = $(event.target).near( mysettings.tabSelector, event.shiftKey );
 					if( !$(nextFocus)
 						.closest( eventData.settings.stepSelector )
-						.is($(jmpress).jmpress('active') ) )
+						.is($(jmpress).jmpress('active') ) ) {
 						nextFocus = undefined;
+					}
 				}
 				if( nextFocus && nextFocus.length > 0 ) {
 					nextFocus.focus();
@@ -1520,13 +1559,14 @@
 					event.stopPropagation();
 					return;
 				} else {
-					if(event.shiftKey)
+					if(event.shiftKey) {
 						reverseSelect = true;
+					}
 				}
 			}
 
 			var action = mysettings.keys[ event.which ];
-			if ( typeof action == "string" ) {
+			if ( typeof action === "string" ) {
 				if (action.indexOf(":") !== -1) {
 					action = action.split(":");
 					action = event.shiftKey ? action[1] : action[0];
@@ -1582,8 +1622,9 @@
 		,transitionDelay: '0ms'
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1})
+		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1}) {
 			eventData.stepData[variable] = eventData.data[variable] && parseFloat(eventData.data[variable]);
+		}
 	});
 	$.jmpress("afterInit", function( nil, eventData ) {
 		var jmpress = this;
@@ -1599,10 +1640,11 @@
 				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
 				delta = delta || event.originalEvent.wheelDelta;
 				var direction = (delta / Math.abs(delta));
-				if(direction < 0)
+				if(direction < 0) {
 					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
-				else if(direction > 0)
+				} else if(direction > 0) {
 					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
+				}
 			});
 		}
 		if(eventData.settings.viewPort.zoomBindMove) {
@@ -1638,18 +1680,20 @@
 			settings = $(this).jmpress("settings"),
 			stepData = $(this).jmpress("active").data("stepData"),
 			container = $(this).jmpress("container");
-		if(current.userZoom == 0 && direction < 0)
+		if(current.userZoom === 0 && direction < 0) {
 			return;
+		}
 		var zoomableSteps = stepData.viewPortZoomable || settings.viewPort.zoomable;
-		if(current.userZoom == zoomableSteps && direction > 0)
+		if(current.userZoom === zoomableSteps && direction > 0) {
 			return;
+		}
 		current.userZoom += direction;
 
 		var halfWidth = $(container).innerWidth()/2,
 			halfHeight = $(container).innerHeight()/2;
 
-		var x = x ? x - halfWidth : x;
-		var y = y ? y - halfHeight : y;
+		x = x ? x - halfWidth : x;
+		y = y ? y - halfHeight : y;
 
 		// TODO this is not perfect... too much math... :(
 		current.userTranslateX =
@@ -1699,8 +1743,12 @@
 
 		if(windowScale) {
 			windowScale = windowScale || 1;
-			if(viewPortMaxScale) windowScale = Math.min(windowScale, viewPortMaxScale);
-			if(viewPortMinScale) windowScale = Math.max(windowScale, viewPortMinScale);
+			if(viewPortMaxScale) {
+				windowScale = Math.min(windowScale, viewPortMaxScale);
+			}
+			if(viewPortMinScale) {
+				windowScale = Math.max(windowScale, viewPortMinScale);
+			}
 
 			var zoomableSteps = eventData.stepData.viewPortZoomable || eventData.settings.viewPort.zoomable;
 			if(zoomableSteps) {
@@ -1710,10 +1758,11 @@
 			}
 
 			eventData.target.transform.reverse();
-			if(eventData.current.userTranslateX && eventData.current.userTranslateY)
+			if(eventData.current.userTranslateX && eventData.current.userTranslateY) {
 				eventData.target.transform.push(["translate", eventData.current.userTranslateX, eventData.current.userTranslateY, 0]);
-			else
+			} else {
 				eventData.target.transform.push(["translate"]);
+			}
 			eventData.target.transform.push(["scale",
 				windowScale,
 				windowScale,
@@ -1723,7 +1772,7 @@
 		eventData.current.zoomOriginWindowScale = windowScale;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		if(eventData.nextStep != step) {
+		if(eventData.nextStep !== step) {
 			eventData.current.userZoom = 0;
 			eventData.current.userTranslateX = 0;
 			eventData.current.userTranslateY = 0;
@@ -1807,7 +1856,7 @@
 			}
 		} else if($.isFunction(templateChildren)) {
 			children.each(function(idx, child) {
-				var tmpl = $(child).data("_template_") || {}
+				var tmpl = $(child).data("_template_") || {};
 				addUndefined(tmpl, templateChildren(idx, child));
 				$(child).data("_template_", tmpl);
 			});
@@ -1899,12 +1948,14 @@
 	// the events should not bubble up the tree
 	// elsewise nested jmpress would cause buggy behavior
 	$.jmpress("setActive", function( step, eventData ) {
-		if(eventData.prevStep != step)
+		if(eventData.prevStep !== step) {
 			$(step).triggerHandler("enterStep");
+		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		if(eventData.nextStep != step)
+		if(eventData.nextStep !== step) {
 			$(step).triggerHandler("leaveStep");
+		}
 	});
 
 }(jQuery, document, window));
@@ -1924,8 +1975,9 @@
 		end = end || (array.length - 1);
 		start = start || 0;
 		for(var i = start; i < end + 1; i++) {
-			if($(array[i].element).is(selector))
+			if($(array[i].element).is(selector)) {
 				return i;
+			}
 		}
 	}
 	function addOn(list, substep, delay) {
@@ -1941,11 +1993,13 @@
 		var listOfSubsteps = [];
 		$(step).find("[data-"+eventData.settings.customAnimationDataAttribute+"]")
 				.each(function(idx, element) {
-			if($(element).closest(eventData.settings.stepSelector).is(step))
+			if($(element).closest(eventData.settings.stepSelector).is(step)) {
 				listOfSubsteps.push({element: element});
+			}
 		});
-		if(listOfSubsteps.length == 0)
+		if(listOfSubsteps.length === 0) {
 			return;
+		}
 		$.each(listOfSubsteps, function(idx, substep) {
 			substep.info = parseSubstepInfo(
 				$(substep.element).data(eventData.settings.customAnimationDataAttribute));
@@ -1957,15 +2011,17 @@
 		$.each(listOfSubsteps, function(idx, substep) {
 			var other = substep.on || substep.after;
 			if(other) {
-				if(other == "step")
+				if(other === "step") {
 					other = listOfSubsteps[current];
-				else if(other == "prev")
+				} else if(other === "prev") {
 					other = listOfSubsteps[idx-1];
-				else
+				} else {
 					other = find(listOfSubsteps, other, idx + 1) || find(listOfSubsteps, other) || null;
+				}
 			}
-			if(!other)
+			if(!other) {
 				other = listOfSubsteps[idx-1];
+			}
 			if(other) {
 				if(!substep.on) {
 					if(!other._after) {
@@ -1990,36 +2046,53 @@
 	});
 	$.jmpress("setActive", function(step, eventData) {
 		var substepsData = $(step).data("substepsData");
-		if(!substepsData) return;
-		if(eventData.substep == undefined)
+		if(!substepsData) {
+			return;
+		}
+		if(eventData.substep === undefined) {
 			eventData.substep =
-				(eventData.reason == "prev" ?
+				(eventData.reason === "prev" ?
 					substepsData.list.length /* or 0 (TODO: decide!) */ :
 					0
 				);
-		var substep = eventData.substep
+		}
+		var substep = eventData.substep;
 		$.each(substepsData.list, function(idx, activeSubsteps) {
 			var applyHas = idx+1 < substep;
 			var applyDo = idx+1 <= substep;
 			$.each(activeSubsteps, function(idx, substep) {
-				if(substep.substep.info.hasClass) $(substep.substep.element)[(applyHas?"add":"remove")+"Class"](substep.substep.info.hasClass);
-				if(substep.substep.info.doClass) $(substep.substep.element)[(applyDo?"add":"remove")+"Class"](substep.substep.info.doClass);
+				if(substep.substep.info.hasClass) {
+					$(substep.substep.element)[(applyHas?"add":"remove")+"Class"](substep.substep.info.hasClass);
+				}
+				if(substep.substep.info.doClass) {
+					$(substep.substep.element)[(applyDo?"add":"remove")+"Class"](substep.substep.info.doClass);
+				}
 			});
 		});
 	});
 	$.jmpress("selectNext", function( step, eventData ) {
-		if(eventData.substep == undefined) return;
+		if(eventData.substep === undefined) {
+			return;
+		}
 		var substepsData = $(step).data("substepsData");
-		if(!substepsData) return;
-		if(eventData.substep < substepsData.list.length)
+		if(!substepsData) {
+			return;
+		}
+		if(eventData.substep < substepsData.list.length) {
 			return {step: step, substep: eventData.substep+1};
+		}
 	});
 	$.jmpress("selectPrev", function( step, eventData ) {
-		if(eventData.substep == undefined) return;
+		if(eventData.substep === undefined) {
+			return;
+		}
 		var substepsData = $(step).data("substepsData");
-		if(!substepsData) return;
-		if(eventData.substep > 0)
+		if(!substepsData) {
+			return;
+		}
+		if(eventData.substep > 0) {
 			return {step: step, substep: eventData.substep-1};
+		}
 	});
 
 }(jQuery, document, window));
@@ -2047,17 +2120,18 @@
 					,transitionDelay: '0'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart;
 				var bars = $(eventData.settings.duration.barSelector);
 				$.jmpress("css", bars, css);
 				bars.each(function(idx, element) {
 					var next = $(element).next();
 					var parent = $(element).parent();
 					$(element).detach();
-					if(next.length)
+					if(next.length) {
 						next.insertBefore(element);
-					else
+					} else {
 						parent.append(element);
+					}
 				});
 			}
 			if(eventData.current.durationTimeout) {
@@ -2076,7 +2150,7 @@
 					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd;
 				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
 			}
 			var jmpress = this;
@@ -2090,22 +2164,22 @@
 			}, dur);
 		}
 	});
-})(jQuery, document, window);
+}(jQuery, document, window));
 
 (function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("initStep", function( step, eventData ) {
 		for(var name in eventData.data) {
-			if(name.indexOf("secondary")==0) {
+			if(name.indexOf("secondary") === 0) {
 				eventData.stepData[name] = eventData.data[name];
 			}
 		}
 	});
 	function exchangeIf(childStepData, condition, step) {
 		if(childStepData.secondary &&
-			childStepData.secondary.split(" ").indexOf(condition) != -1) {
+			childStepData.secondary.split(" ").indexOf(condition) !== -1) {
 			for(var name in childStepData) {
-				if(name.length > 9 && name.indexOf("secondary") == 0) {
+				if(name.length > 9 && name.indexOf("secondary") === 0) {
 					var tmp = childStepData[name];
 					var normal = name.substr(9);
 					normal = normal.substr(0, 1).toLowerCase() + normal.substr(1);
@@ -2124,13 +2198,14 @@
 				var childStepData = $(child).data("stepData");
 				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
 			});
+		function grandchildrenFunc(idx, child) {
+			var childStepData = $(child).data("stepData");
+			exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+		}
 		for(var i = 1; i < eventData.parents.length; i++) {
 			$(eventData.parents[i])
 				.children(eventData.settings.stepSelector)
-				.each(function(idx, child) {
-					var childStepData = $(child).data("stepData");
-					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
-				});
+				.each();
 		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
@@ -2141,13 +2216,14 @@
 				var childStepData = $(child).data("stepData");
 				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
 			});
+		function grandchildrenFunc(idx, child) {
+			var childStepData = $(child).data("stepData");
+			exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+		}
 		for(var i = 1; i < eventData.parents.length; i++) {
 			$(eventData.parents[i])
 				.children(eventData.settings.stepSelector)
-				.each(function(idx, child) {
-					var childStepData = $(child).data("stepData");
-					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
-				});
+				.each(grandchildrenFunc);
 		}
 	});
-})(jQuery, document, window);
+}(jQuery, document, window));

@@ -15,15 +15,18 @@
 				var transform = 'translate(-50%,-50%)';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y", "Z"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					var i;
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						transform += " translate3d(" + (item[1] || 0) + "px," + (item[2] || 0) + "px," + (item[3] || 0) + "px)";
-					} else if(item[0] == "rotate") {
+					} else if(item[0] === "rotate") {
 						var order = item[4] ? [1, 2, 3] : [3, 2, 1];
-						for(var i = 0; i < 3; i++)
+						for(i = 0; i < 3; i++) {
 							transform += " rotate" + coord[order[i]-1] + "(" + (item[order[i]] || 0) + "deg)";
-					} else if(item[0] == "scale") {
-						for(var i = 0; i < 3; i++)
+						}
+					} else if(item[0] === "scale") {
+						for(i = 0; i < 3; i++) {
 							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
 					}
 				});
 				$.jmpress("css", el, $.extend({}, { transform: transform }));
@@ -34,13 +37,14 @@
 				var transform = 'translate(-50%,-50%)';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						transform += " translate(" + (item[1] || 0) + "px," + (item[2] || 0) + "px)";
-					} else if(item[0] == "rotate") {
+					} else if(item[0] === "rotate") {
 						transform += " rotate(" + (item[3] || 0) + "deg)";
-					} else if(item[0] == "scale") {
-						for(var i = 0; i < 2; i++)
+					} else if(item[0] === "scale") {
+						for(var i = 0; i < 2; i++) {
 							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+						}
 					}
 				});
 				$.jmpress("css", el, $.extend({}, { transform: transform }));
@@ -54,7 +58,7 @@
 				var anitarget = { top: 0, left: 0 };
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
-					if(item[0] == "translate") { // ["translate", x, y, z]
+					if(item[0] === "translate") { // ["translate", x, y, z]
 						anitarget.left = (item[1] || 0) + "px";
 						anitarget.top = (item[2] || 0) + "px";
 					}
@@ -78,7 +82,7 @@
 		}
 	}());
 
-	$.jmpress("defaults").reasonableAnimation = {}
+	$.jmpress("defaults").reasonableAnimation = {};
 	$.jmpress("initStep", function( step, eventData ) {
 		var data = eventData.data;
 		var stepData = eventData.stepData;
@@ -131,7 +135,7 @@
 		];
 		engine.transform( step, transform );
 	});
-	$.jmpress("setActive", function( step, eventData ) {
+	$.jmpress("setActive", function( element, eventData ) {
 		var target = eventData.target;
 		var step = eventData.stepData;
 		var tf = target.transform = [];
@@ -173,18 +177,30 @@
 		});
 
 		$.each(tf, function(idx, item) {
-			if(item[0] != "rotate") return;
+			if(item[0] !== "rotate") {
+				return;
+			}
 			function lowRotate(name) {
-				if(item[name] == undefined) return;
-				if(eventData.current["rotate"+name+"-"+idx] === undefined)
+				if(item[name] === undefined) {
+					return;
+				}
+				if(eventData.current["rotate"+name+"-"+idx] === undefined) {
 					eventData.current["rotate"+name+"-"+idx] = item[name];
+				}
 				var cur = eventData.current["rotate"+name+"-"+idx], tar = item[name],
 					curmod = cur % 360, tarmod = tar % 360;
-				if(curmod < 0) curmod += 360;
-				if(tarmod < 0) tarmod += 360;
+				if(curmod < 0) {
+					curmod += 360;
+				}
+				if(tarmod < 0) {
+					tarmod += 360;
+				}
 				var diff = tarmod - curmod;
-				if(diff < -180) diff += 360;
-				else if(diff > 180) diff -= 360;
+				if(diff < -180) {
+					diff += 360;
+				} else if(diff > 180) {
+					diff -= 360;
+				}
 				eventData.current["rotate"+name+"-"+idx] = item[name] = cur + diff;
 			}
 			lowRotate(1);
@@ -203,22 +219,25 @@
 		// extract first scale from transform
 		var lastScale = -1;
 		$.each(target.transform, function(idx, item) {
-			if(item.length <= 1) return;
-			if(item[0] == "scale")
+			if(item.length <= 1) {
+				return;
+			}
+			if(item[0] === "scale") {
 				lastScale = idx;
-			else
+			} else {
 				return false;
+			}
 		});
 
-		if(lastScale != eventData.current.oldLastScale) {
+		if(lastScale !== eventData.current.oldLastScale) {
 			zoomin = zoomout = false;
 			eventData.current.oldLastScale = lastScale;
 		}
 
 		var extracted = [];
-		if(lastScale != -1) {
+		if(lastScale !== -1) {
 			while(lastScale >= 0) {
-				if(target.transform[lastScale][0] == "scale") {
+				if(target.transform[lastScale][0] === "scale") {
 					extracted.push(target.transform[lastScale]);
 					target.transform[lastScale] = ["scale"];
 				}
@@ -227,10 +246,11 @@
 		}
 
 		var animation = settings.animation;
-		if(settings.reasonableAnimation[eventData.reason])
+		if(settings.reasonableAnimation[eventData.reason]) {
 			animation = $.extend({},
 				animation,
 				settings.reasonableAnimation[eventData.reason]);
+		}
 
 		props = {
 			// to keep the perspective look similar for different scales

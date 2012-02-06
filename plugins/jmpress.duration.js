@@ -22,17 +22,18 @@
 					,transitionDelay: '0'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart;
 				var bars = $(eventData.settings.duration.barSelector);
 				$.jmpress("css", bars, css);
 				bars.each(function(idx, element) {
 					var next = $(element).next();
 					var parent = $(element).parent();
 					$(element).detach();
-					if(next.length)
+					if(next.length) {
 						next.insertBefore(element);
-					else
+					} else {
 						parent.append(element);
+					}
 				});
 			}
 			if(eventData.current.durationTimeout) {
@@ -51,7 +52,7 @@
 					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd;
 				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
 			}
 			var jmpress = this;
@@ -65,4 +66,4 @@
 			}, dur);
 		}
 	});
-})(jQuery, document, window);
+}(jQuery, document, window));

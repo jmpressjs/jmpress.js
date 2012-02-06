@@ -26,8 +26,9 @@
 		,transitionDelay: '0ms'
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1})
+		for(var variable in {"viewPortHeight":1, "viewPortWidth":1, "viewPortMinScale":1, "viewPortMaxScale":1}) {
 			eventData.stepData[variable] = eventData.data[variable] && parseFloat(eventData.data[variable]);
+		}
 	});
 	$.jmpress("afterInit", function( nil, eventData ) {
 		var jmpress = this;
@@ -43,10 +44,11 @@
 				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
 				delta = delta || event.originalEvent.wheelDelta;
 				var direction = (delta / Math.abs(delta));
-				if(direction < 0)
+				if(direction < 0) {
 					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
-				else if(direction > 0)
+				} else if(direction > 0) {
 					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
+				}
 			});
 		}
 		if(eventData.settings.viewPort.zoomBindMove) {
@@ -82,18 +84,20 @@
 			settings = $(this).jmpress("settings"),
 			stepData = $(this).jmpress("active").data("stepData"),
 			container = $(this).jmpress("container");
-		if(current.userZoom == 0 && direction < 0)
+		if(current.userZoom === 0 && direction < 0) {
 			return;
+		}
 		var zoomableSteps = stepData.viewPortZoomable || settings.viewPort.zoomable;
-		if(current.userZoom == zoomableSteps && direction > 0)
+		if(current.userZoom === zoomableSteps && direction > 0) {
 			return;
+		}
 		current.userZoom += direction;
 
 		var halfWidth = $(container).innerWidth()/2,
 			halfHeight = $(container).innerHeight()/2;
 
-		var x = x ? x - halfWidth : x;
-		var y = y ? y - halfHeight : y;
+		x = x ? x - halfWidth : x;
+		y = y ? y - halfHeight : y;
 
 		// TODO this is not perfect... too much math... :(
 		current.userTranslateX =
@@ -143,8 +147,12 @@
 
 		if(windowScale) {
 			windowScale = windowScale || 1;
-			if(viewPortMaxScale) windowScale = Math.min(windowScale, viewPortMaxScale);
-			if(viewPortMinScale) windowScale = Math.max(windowScale, viewPortMinScale);
+			if(viewPortMaxScale) {
+				windowScale = Math.min(windowScale, viewPortMaxScale);
+			}
+			if(viewPortMinScale) {
+				windowScale = Math.max(windowScale, viewPortMinScale);
+			}
 
 			var zoomableSteps = eventData.stepData.viewPortZoomable || eventData.settings.viewPort.zoomable;
 			if(zoomableSteps) {
@@ -154,10 +162,11 @@
 			}
 
 			eventData.target.transform.reverse();
-			if(eventData.current.userTranslateX && eventData.current.userTranslateY)
+			if(eventData.current.userTranslateX && eventData.current.userTranslateY) {
 				eventData.target.transform.push(["translate", eventData.current.userTranslateX, eventData.current.userTranslateY, 0]);
-			else
+			} else {
 				eventData.target.transform.push(["translate"]);
+			}
 			eventData.target.transform.push(["scale",
 				windowScale,
 				windowScale,
@@ -167,7 +176,7 @@
 		eventData.current.zoomOriginWindowScale = windowScale;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		if(eventData.nextStep != step) {
+		if(eventData.nextStep !== step) {
 			eventData.current.userZoom = 0;
 			eventData.current.userTranslateX = 0;
 			eventData.current.userTranslateY = 0;

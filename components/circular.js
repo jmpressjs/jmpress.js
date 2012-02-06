@@ -3,7 +3,7 @@
 	'use strict';
 
 	$.jmpress( 'initStep', function( step, eventData ) {
-		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) == -1;
+		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) === -1;
 	});
 	function firstSlide( step, eventData ) {
 		return $(this).find(eventData.settings.stepSelector).first();

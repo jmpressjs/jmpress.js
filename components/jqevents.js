@@ -9,12 +9,14 @@
 	// the events should not bubble up the tree
 	// elsewise nested jmpress would cause buggy behavior
 	$.jmpress("setActive", function( step, eventData ) {
-		if(eventData.prevStep != step)
+		if(eventData.prevStep !== step) {
 			$(step).triggerHandler("enterStep");
+		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		if(eventData.nextStep != step)
+		if(eventData.nextStep !== step) {
 			$(step).triggerHandler("leaveStep");
+		}
 	});
 
 }(jQuery, document, window));

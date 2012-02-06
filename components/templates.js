@@ -33,7 +33,7 @@
 			}
 		} else if($.isFunction(templateChildren)) {
 			children.each(function(idx, child) {
-				var tmpl = $(child).data("_template_") || {}
+				var tmpl = $(child).data("_template_") || {};
 				addUndefined(tmpl, templateChildren(idx, child));
 				$(child).data("_template_", tmpl);
 			});
