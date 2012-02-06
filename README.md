@@ -31,8 +31,8 @@ See the [DOCS](http://shama.github.com/jmpress.js/#/docs-start) in the main pres
 
 ## CONTRIBUTING
 
-Good news! We accept pull requests ;) Please work and pull against the `dev`
-branch. Thanks!
+Good news! We accept pull requests and are looking for more contributors! ;)
+Please work and pull against the `dev` branch. Thanks!
 
 ### TESTS
 
