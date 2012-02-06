@@ -362,7 +362,7 @@
 		 * @return Object element selected
 		 */
 		function select( el, type ) {
-			var substep = null;
+			var substep;
 			if ( $.isPlainObject( el ) ) {
 				substep = el.substep;
 				el = el.step;
