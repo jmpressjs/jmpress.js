@@ -11,6 +11,19 @@
  * Based on the foundation laid by Bartek Szopka @bartaz
  */
 
+/*!
+ * jmpress.js v0.3.5
+ * http://shama.github.com/jmpress.js
+ *
+ * A jQuery plugin to build a website on the infinite canvas.
+ *
+ * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
+ * Licensed MIT
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * Based on the foundation laid by Bartek Szopka @bartaz
+ */
+
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -2010,3 +2023,131 @@
 	});
 
 }(jQuery, document, window));
+(function( $, document, window, undefined ) {
+	'use strict';
+	$.jmpress("defaults").duration = {
+		defaultValue: -1
+		,defaultAction: "next"
+		,barSelector: undefined
+		,barProperty: "width"
+		,barPropertyStart: "0"
+		,barPropertyEnd: "100%"
+	};
+	$.jmpress("initStep", function( step, eventData ) {
+		eventData.stepData.duration = eventData.data.duration;
+		eventData.stepData.durationAction = eventData.data.durationAction;
+	});
+	$.jmpress("setInactive", function( step, eventData ) {
+		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		if( dur && dur > 0 ) {
+			if( eventData.settings.duration.barSelector ) {
+				var css = {
+					transitionProperty: eventData.settings.duration.barProperty
+					,transitionDuration: '0'
+					,transitionDelay: '0'
+					,transitionTimingFunction: 'linear'
+				};
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart
+				var bars = $(eventData.settings.duration.barSelector);
+				$.jmpress("css", bars, css);
+				bars.each(function(idx, element) {
+					var next = $(element).next();
+					var parent = $(element).parent();
+					$(element).detach();
+					if(next.length)
+						next.insertBefore(element);
+					else
+						parent.append(element);
+				});
+			}
+			if(eventData.current.durationTimeout) {
+				clearTimeout(eventData.current.durationTimeout);
+				eventData.current.durationTimeout = undefined;
+			}
+		}
+	});
+	$.jmpress("setActive", function( step, eventData ) {
+		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		if( dur && dur > 0 ) {
+			if( eventData.settings.duration.barSelector ) {
+				var css = {
+					transitionProperty: eventData.settings.duration.barProperty
+					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3-100)+"ms"
+					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
+					,transitionTimingFunction: 'linear'
+				};
+				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd
+				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
+			}
+			var jmpress = this;
+			if(eventData.current.durationTimeout) {
+				clearTimeout(eventData.current.durationTimeout);
+				eventData.current.durationTimeout = undefined;
+			}
+			eventData.current.durationTimeout = setTimeout(function() {
+				var action = eventData.stepData.durationAction || eventData.settings.duration.defaultAction;
+				$(jmpress).jmpress(action);
+			}, dur);
+		}
+	});
+})(jQuery, document, window);
+
+(function( $, document, window, undefined ) {
+	'use strict';
+	$.jmpress("initStep", function( step, eventData ) {
+		for(var name in eventData.data) {
+			if(name.indexOf("secondary")==0) {
+				eventData.stepData[name] = eventData.data[name];
+			}
+		}
+	});
+	function exchangeIf(childStepData, condition, step) {
+		if(childStepData.secondary &&
+			childStepData.secondary.split(" ").indexOf(condition) != -1) {
+			for(var name in childStepData) {
+				if(name.length > 9 && name.indexOf("secondary") == 0) {
+					var tmp = childStepData[name];
+					var normal = name.substr(9);
+					normal = normal.substr(0, 1).toLowerCase() + normal.substr(1);
+					childStepData[name] = childStepData[normal];
+					childStepData[normal] = tmp;
+				}
+			}
+			$(this).jmpress("reapply", $(step));
+		}
+	}
+	$.jmpress("beforeActive", function( step, eventData ) {
+		var parent = $(step).parent();
+		$(parent)
+			.children(eventData.settings.stepSelector)
+			.each(function(idx, child) {
+				var childStepData = $(child).data("stepData");
+				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
+			});
+		for(var i = 1; i < eventData.parents.length; i++) {
+			$(eventData.parents[i])
+				.children(eventData.settings.stepSelector)
+				.each(function(idx, child) {
+					var childStepData = $(child).data("stepData");
+					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+				});
+		}
+	});
+	$.jmpress("setInactive", function( step, eventData ) {
+		var parent = $(step).parent();
+		$(parent)
+			.children(eventData.settings.stepSelector)
+			.each(function(idx, child) {
+				var childStepData = $(child).data("stepData");
+				exchangeIf.call(eventData.jmpress, childStepData, "siblings", child);
+			});
+		for(var i = 1; i < eventData.parents.length; i++) {
+			$(eventData.parents[i])
+				.children(eventData.settings.stepSelector)
+				.each(function(idx, child) {
+					var childStepData = $(child).data("stepData");
+					exchangeIf.call(eventData.jmpress, childStepData, "grandchildren", child);
+				});
+		}
+	});
+})(jQuery, document, window);
