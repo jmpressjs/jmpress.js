@@ -8,19 +8,15 @@ attributes on each step.</p>
 
 <pre><code>$.jmpress("template", "mytemplate", {
   x: 1000, y: -2000, scale: 10,
-  children: [
-    { x: -300, y: -100, scale: 0.2 },
-    { x: -100, y: -100, scale: 0.2 },
-    { x: 100, y: -100, scale: 0.2 }
-  ]
+  rotateY: 60,
+  rotate: { x: 60 } // is automatically converted to camel case
 });</code></pre>
 
 <p>Then use your template in your HTML:</p>
 
-<pre><code><div id="jmpress" data-template="mytemplate">
-	<div class="step">...</div>
-	<div class="step">...</div>
-	<div class="step">...</div>
+<pre><code><div id="jmpress">
+	<div class="step" data-template="mytemplate">...</div>
+	...
 </div></code></pre>
 
 <p>Templates can also be applied to nested steps:</p>
@@ -33,8 +29,32 @@ attributes on each step.</p>
 	</div>
 </div></code></pre>
 
+<p></p>
+
+<pre><code>$.jmpress("template", "mytemplate", {
+  x: 1000, y: -2000, scale: 10,
+  children: [
+    { x: -300, y: -100, scale: 0.2 },
+    { x: -100, y: -100, scale: 0.2 },
+    { x: 100, y: -100, scale: 0.2 }
+  ]
+});</code></pre>
+
 <p>Rather then setting the values manually you can provide a method to setup
-each step programmatically:</p>
+each step programmatically: (only in beta version)</p>
+
+<pre><code><div id="jmpress" data-template="mytemplate">
+	<div class="step">
+		<div class="step">...</div>
+		<div class="step">...</div>
+		<div class="step">...</div>
+	</div>
+	<div class="step">
+		<div class="step">...</div>
+	</div>
+</div></code></pre>
+
+<p></p>
 
 <pre><code>$.jmpress("template", "mytemplate", {
 	children: function( idx ) {
