@@ -270,7 +270,7 @@
 
 			callCallback.call(this, 'afterDeinit', $(this), {});
 
-			$(jmpress).data("jmpressmethods", undefined);
+			$(jmpress).data("jmpressmethods", false);
 		}
 		/**
 		 * Call a callback
@@ -757,6 +757,14 @@
 		});
 		return returnDataset;
 	}
+	/**
+	 * Returns true, if jmpress is initialized
+	 *
+	 * @return bool
+	 */
+	function initialized() {
+		return !!$(this).data("jmpressmethods");
+	}
 
 
 	/**
@@ -764,6 +772,7 @@
 	 */
 	var methods = {
 		init: init
+		,initialized: initialized
 		,deinit: function() {}
 		,css: css
 		,pfx: pfx

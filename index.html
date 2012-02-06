@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="js/jmpress.js"></script>
 	<script type="text/javascript" src="plugins/jmpress.duration.js"></script>
 	<script type="text/javascript" src="plugins/jmpress.secondary.js"></script>
+	<script type="text/javascript" src="plugins/jmpress.toggle.js"></script>
 </head>
 <body>
 
@@ -389,7 +390,7 @@ $(function() {
 		,initClass: "init-css"
 		,notSupportedClass: "normal-mode"
 	};
-	$('#jmpress').jmpress(jmpressConfig);
+	$('#jmpress').jmpress("toggle", 27, jmpressConfig, true);
 	$('.next').click(function() {
 		$('#jmpress').jmpress('next');
 		return false;
