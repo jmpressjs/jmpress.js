@@ -109,6 +109,12 @@ h4 {
 	top: 10px;
 	z-index: 99;
 	pointer-events: auto;
+
+	-webkit-transform: translate3d(0,0,100000px);
+	-moz-transform:    translate3d(0,0,100000px);
+	-ms-transform:     translate3d(0,0,100000px);
+	-o-transform:      translate3d(0,0,100000px);
+	transform:         translate3d(0,0,100000px);
 }
 #nav li {
 	list-style: none;
@@ -198,6 +204,13 @@ h4 {
 	margin-right: 5px;
 	z-index: 99;
 	text-align: center;
+	pointer-events: auto;
+
+	-webkit-transform: translate3d(0,0,100000px);
+	-moz-transform:    translate3d(0,0,100000px);
+	-ms-transform:     translate3d(0,0,100000px);
+	-o-transform:      translate3d(0,0,100000px);
+	transform:         translate3d(0,0,100000px);
 }
 #global-next {
 	left: 50%;
