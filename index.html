@@ -409,6 +409,8 @@ $(function() {
 		$("#jmpress").addClass("not-supported");
 		$("#reinit-jmpress").show();
 		$("#uninit-jmpress").hide();
+		$("#global-next").hide();
+		$("#global-prev").hide();
 		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
 		$('#home').find('.intro-bottom').hide();
 		window.location.hash = ""
@@ -422,6 +424,8 @@ $(function() {
 		$("#jmpress").removeClass("not-supported");
 		$("#reinit-jmpress").hide();
 		$("#uninit-jmpress").show();
+		$("#global-next").show();
+		$("#global-prev").show();
 		$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
 		$('#home').find('.intro-bottom').show();
 		event.preventDefault();
