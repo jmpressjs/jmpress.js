@@ -1543,6 +1543,7 @@
 			eventData.current.userTranslateY = 0;
 			$(eventData.settings.fullscreen ? document : this)
 				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
+				delta = delta || event.originalEvent.wheelDelta;
 				var direction = (delta / Math.abs(delta));
 				if(direction < 0)
 					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
