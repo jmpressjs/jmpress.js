@@ -1,6 +1,8 @@
+<section>
 <h1>Route</h1>
 
-<p>By default, jmpress.js will flow through each step linearly down the DOM. You have a couple of ways to modify the flow.</p>
+<p>By default, jmpress.js will flow through each step linearly down the DOM. You
+have a couple of ways to modify the flow.</p>
 
 <p><strong>Inline Next / Prev</strong></p>
 <pre><code><div id="jmpress">
@@ -9,14 +11,21 @@
 	<div class="step" id="c">C</div>
 	<div class="step" id="d">D</div>
 </div></code></pre>
-<p>The flow will start with A, goto C, then D and back to A. Only when the user is on C and goes back will they be shown B.</p>
+<p>The flow will start with A, goto C, then D and back to A. Only when the user
+is on C and goes back will they be shown B.</p>
 
 <p><strong>Using route:</strong></p>
-<p>You can set the flow using the route method. You also don't have to define all the steps. The commando will preserve the natural flow and only modify the indicated steps.</p>
+<p>You can set the flow using the route method. You also don't have to define
+all the steps. The commando will preserve the natural flow and only modify the
+indicated steps.</p>
 <pre><code>$("#jmpress").jmpress("route", ["#a", "#c", "#b", "#d"]);</code></pre>
-<p>The flow will start with A, goto C, goto B, goto D and back to A. If the user go backwards he will get the same flow D -> B -> C -> A -> D.</p>
+<p>The flow will start with A, goto C, goto B, goto D and back to A. If the user
+goes backwards he will get the same flow D -> B -> C -> A -> D.</p>
 
 <p><strong>Unidirectional:</strong></p>
 <pre><code>$("#jmpress").jmpress("route", ["#a", "#c"], true);</code></pre>
-<p>The flow will be as the flow above with data attributes. <br />Forwards: A -> C -> D -> A. Backwards: D -> C -> B -> A -> D.</p>
-<p>If you omit the 4th parameter, the function will set the forward flow. Set it to true to set the backward flow.</p>
+<p>The flow will be as the flow above with data attributes. <br />Forwards:
+A -> C -> D -> A. Backwards: D -> C -> B -> A -> D.</p>
+<p>If you omit the 4th parameter, the function will set the forward flow. Set it
+to true to set the backward flow.</p>
+</section>

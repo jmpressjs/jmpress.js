@@ -1,3 +1,4 @@
+<section>
 <h1>Options</h1>
 
 <p>Options and callbacks can be set when you initialize jmpress as such:</p>
@@ -18,7 +19,7 @@ The jQuery selector to specify each step.</p>
 
 <h4>notSupportedClass</h4>
 <p><em>Default: 'not-supported'</em><br/>
-Class name to remove on root element if jmpress.js is not supported.</p>
+Class name to remove on root element if jmpress.js is supported.</p>
 
 <h4>fullscreen</h4>
 <p><em>Default: true</em><br/>
@@ -46,10 +47,6 @@ Whether the url hash should be updated on step change.</p>
 <p><em>Default: true</em><br/>
 Whether changes of the url hash and clicks on link should be converted into step selects.</p>
 
-<h4>keyboard.use</h4>
-<p><em>Default: true</em><br/>
-Whether the keyboard should be used to navigate in jmpress.</p>
-
 <h4>viewPort.width, viewPort.height</h4>
 <p>Let camera zoom to contain at least width and/or height.</p>
 
@@ -59,6 +56,41 @@ Whether the keyboard should be used to navigate in jmpress.</p>
 <h4>mouse.clickSelects</h4>
 <p>Whether a mouse click on another step select it.</p>
 
+
+<h2>Keyboard Controls</h2>
+<p>jmpress.js has a great keyboard mapping system. Mapping a key to an event is
+simple:</p>
+
+<pre><code>$(selector).jmpress({
+	keyboard: {
+		keys: {
+			189: ['select', '#overview']
+		}
+	}
+});</code></pre>
+<p>In this example we are binding the '-' key (key code 189) to select a step we
+have named 'overview'.</p>
+
+<h4>keyboard.keys</h4>
+<p><em>Default: {33: "prev", 32: "next", ...}</em><br/>
+Bind a key to a jmpress command. Set it to null to remove an existing
+key binding.<br/>
+Set it to a string to get the jmpress command invoked.<br/>
+Set it to a string containing ":" (ex. "next:prev") to get the first command on
+default and the second on modified with the shift key.<br/>
+Set it to a array to apply the array as arguments a jmpress command (ex.
+["select", "#some-cool-step"]).</p>
+
+<h4>keyboard.ignore[TAGNAME]</h4>
+<p><em>Default: [32, 37, ...] as TAGNAME = "INPUT"</em><br/>
+Ignore some keys on a specific tag name.</p>
+
+<h4>keyboard.use</h4>
+<p><em>Default: true</em><br/>
+Whether the keyboard should be used to navigate in jmpress.</p>
+</section>
+
+<section>
 <h1>Advanced Options</h1>
 
 <h4>containerClass</h4>
@@ -68,10 +100,12 @@ It has no transformation applied so you can set some background on it.
 </p>
 
 <h4>canvasClass</h4>
-<p>A class name to set on the canvas. The canvas is the element, which contains the steps.</p>
+<p>A class name to set on the canvas. The canvas is the element, which contains
+the steps.</p>
 
 <h4>areaClass</h4>
-<p>A class name to set on the area. The area is some middle element, which is needed to build this camera.</p>
+<p>A class name to set on the area. The area is some middle element, which is
+needed to build this camera.</p>
 
 <h4>animation</h4>
 <p>Set the CSS animation values for transitions between slides.</p>
@@ -79,17 +113,37 @@ It has no transformation applied so you can set some background on it.
 <h4>loadedClass</h4>
 <p><em>Default: 'loaded'</em><br/>
 Class name to set on each step that has been started loading.</p>
+</section>
 
-<h4>keyboard.key</h4>
-<p><em>Default: {33: "prev", 32: "next", ...}</em><br/>
-Bind a key to a jmpress command. Set it to null to remove an existing
-keybinding.<br/>
-Set it to a string to get the jmpress command invoked.<br/>
-Set it to a string containing ":" (ex. "next:prev") to get the first command on
-default and the second on modified with shift.<br/>
-Set it to a array to apply the array as arguments a jmpress command (ex.
-["select", "#some-cool-step"]).</p>
+<section>
+<h1>Inline Options</h1>
 
-<h4>keyboard.ignore[TAGNAME]</h4>
-<p><em>Default: [32, 37, ...] as TAGNAME = "INPUT"</em><br/>
-Ignore some keys on a specific tag name.</p>
+<p>You may set a series of data attributes on your steps. This method of
+building your steps will be familiar if you're coming from impress.js.</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-x="100" data-y="2000" data-rotate="90">...</div>
+	<div class="step" data-rotate="120">...</div>
+</div></code></pre>
+
+<p>Each step element can have the following data attributes set:</p>
+<ul>
+	<li>data-x: cartesian coordinates: X Position
+	<li>data-y: cartesian coordinates: Y Position
+	<li>data-z: cartesian coordinates: Z Position
+	<li>data-r: polar coordinates: radius
+	<li>data-phi: polar coordinates: angle (starting at top, counterclockwise)
+	<li>data-scale: Scale of element (also scale-x, scale-y, scale-z)
+	<li>data-rotation: Degree of rotation
+	<li>data-rotation-x: Degree of rotation on x-axis
+	<li>data-rotation-y: Degree of rotation on y-axis
+	<li>data-rotation-z: Degree of rotation on z-axis
+	<li>data-delegate: delegate the activeness to another step chosen by selector
+	<li>data-src: Load content of slide dynamically
+	<li>data-exclude: do not use step in natural flow, but it can be selected with the route command
+	<li>data-next: selector of the next step
+	<li>data-prev: selector of the prev step
+	<li>data-template: apply a template, which must be defined before init jmpress
+	<li>even more with plugins
+</ul>
+</section>

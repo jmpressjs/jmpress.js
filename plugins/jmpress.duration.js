@@ -1,4 +1,5 @@
 (function( $, document, window, undefined ) {
+	'use strict';
 	$.jmpress("defaults").duration = {
 		defaultValue: -1
 		,defaultAction: "next"

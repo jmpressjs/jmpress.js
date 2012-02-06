@@ -38,6 +38,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	font-weight: bold;
+	pointer-events: none;
 }
 ol, ul {
 	list-style: none;
@@ -74,6 +75,7 @@ a {
 	-ms-transition:     0.5s;
 	-o-transition:      0.5s;
 	transition:         0.5s;
+	pointer-events: 	auto;
 }
 h1, h1 a {
 	font-size: 68px;
@@ -106,6 +108,13 @@ h4 {
 	left: -5px;
 	top: 10px;
 	z-index: 99;
+	pointer-events: auto;
+
+	-webkit-transform: translate3d(0,0,100000px);
+	-moz-transform:    translate3d(0,0,100000px);
+	-ms-transform:     translate3d(0,0,100000px);
+	-o-transform:      translate3d(0,0,100000px);
+	transform:         translate3d(0,0,100000px);
 }
 #nav li {
 	list-style: none;
@@ -177,8 +186,37 @@ h4 {
 
 .next {
 	float: right;
+}
+.prev {
+	float: left;
+}
+.next, .prev {
 	margin-top: 50px;
 	font-size: 22px;
+}
+
+#global-next, #global-prev {
+	position: fixed;
+	bottom: 5px;
+	width: 20%;
+	padding: 0.2em;
+	margin-left: 5px;
+	margin-right: 5px;
+	z-index: 99;
+	text-align: center;
+	pointer-events: auto;
+
+	-webkit-transform: translate3d(0,0,100000px);
+	-moz-transform:    translate3d(0,0,100000px);
+	-ms-transform:     translate3d(0,0,100000px);
+	-o-transform:      translate3d(0,0,100000px);
+	transform:         translate3d(0,0,100000px);
+}
+#global-next {
+	left: 50%;
+}
+#global-prev {
+	right: 50%;
 }
 
 /** COMMON STEP STYLES **/
@@ -198,6 +236,8 @@ h4 {
 
 	font-size: 26px;
 	line-height: 1.5;
+
+	pointer-events: auto;
 }
 
 /* fade out inactive slides */
@@ -357,23 +397,16 @@ h4 {
 	font-size: 1em;
 }
 
-/* hint on the first slide */
-
+/* keyboard hint on the first step */
 .hint {
 	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0px;
-
-	background: rgba(255,204,0,1);
-	color: #000;
-	text-align: right;
-
-	font-size: 22px;
+	left: 50%;
+	bottom: 40px;
+	text-align: center;
+	font-size: 16px;
 	padding: 10px;
-
+	margin-left: -150px;
 	z-index: 100;
-
 	opacity: 0;
 
 	-webkit-transform: translateY(400px);
@@ -416,8 +449,13 @@ h4 {
 	display: none;
 }
 
-/** PRINT STYLE **/
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+	#nav { display: none; }
+	.hint { display: none; }
+}
 
+/** PRINT STYLE **/
 @media print {
 	body, .ui-state-default {
 		background: white;
