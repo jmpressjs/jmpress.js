@@ -113,6 +113,7 @@ h4 {
 	top: 10px;
 	z-index: 9999;
 	pointer-events: auto;
+	opacity: 0;
 
 	-webkit-transform: translate3d(0,0,100000px);
 	-moz-transform:    translate3d(0,0,100000px);
@@ -171,6 +172,12 @@ h4 {
 
 #jmpress.init-css {
 	opacity: 0;
+
+	-webkit-transition: 0s;
+	-moz-transition:    0s;
+	-ms-transition:     0s;
+	-o-transition:      0s;
+	transition:         0s;
 }
 
 #jmpress {
@@ -450,14 +457,14 @@ h4 {
 	transform:         translateY(0px);
 }
 
-/** NOT SUPPORTED STYLES **/
+/** NORMAL MODE STYLES **/
 
-.not-supported .step, .not-supported .step:not(.active) {
+.normal-mode .step, .normal-mode .step:not(.active) {
 	position: relative;
 	opacity: 1;
 	margin: 20px auto;
 }
-.not-supported .next {
+.normal-mode.next {
 	display: none;
 }
 

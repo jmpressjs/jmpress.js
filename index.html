@@ -51,10 +51,10 @@
 	</li>
 </ul>
 
-<a id="global-prev" href="#" class="prev">&lt;</a>
-<a id="global-next" href="#" class="next">&gt;</a>
+<a id="global-prev" href="#" class="prev" style="display:none">&lt;</a>
+<a id="global-next" href="#" class="next" style="display:none">&gt;</a>
 
-<div id="jmpress" class="init-css" data-template="main">
+<div id="jmpress" class="normal-mode" data-template="main">
 	<div id="home" class="step init-css">
 		<div class="intro-top ui-state-default">
 			<div class="inner">
@@ -114,9 +114,9 @@
 		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
     </div>
 
-	<div id="docs" class="step">
+	<div id="docs" class="step" style="display:none">
 		<h1>docs</h1>
-		<p>Read them <a href="#docs-start">&lt; over there ;)</a></p>
+		<p id="read-docs" style="display:none">Read them <a href="#docs-start">&lt; over there ;)</a></p>
 		<span class="ui-icon ui-icon-document"></span>
 		
 		<div id="docs-start" data-src="docs/start.html" class="step docs ui-widget-content" data-x="-1000" data-rotate="180">
@@ -180,7 +180,7 @@
 			<li data-jmpress="fade">many config options</li>
 			<li data-jmpress="drive-right">tree-like hierarchies are possible</li>
 		</ul>
-		<a href="#" id="reinit-jmpress">Switch back to presentation view :)</a>
+		<a href="#" id="reinit-jmpress" style="display:none">Switch back to presentation view :)</a>
 		<p data-jmpress="fade">See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
 
 		<div id="showcase-nested" class="step">
@@ -232,6 +232,7 @@
 </div>
 
 <script type="text/javascript">
+$("#jmpress").addClass("init-css");
 $(function() {
 	$.jmpress("apply", "#showcase-nested", {
 		x: 250
@@ -360,10 +361,34 @@ $(function() {
 			});
 			$("pre").addClass('ui-state-default');
 		}
+		,afterInit: function( nil, eventData ) {
+			$("#nav").css("opacity", 1);
+			$("#reinit-jmpress").hide();
+			$("#uninit-jmpress").show();
+			$("#global-next").show();
+			$("#global-prev").show();
+			$("#read-docs").show();
+			$("#docs").show();
+			$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
+			$('#home').find('.intro-bottom').show();
+		}
+		,afterDeinit: function( nil, eventData ) {
+			$("#nav").css("opacity", 0);
+			$("#jmpress").addClass("normal-mode");
+			$("#reinit-jmpress").show();
+			$("#uninit-jmpress").hide();
+			$("#global-next").hide();
+			$("#global-prev").hide();
+			$("#read-docs").hide();
+			$("#docs").show();
+			$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
+			$('#home').find('.intro-bottom').hide();
+		}
 		,containerClass: "ui-widget-content"
 		,areaClass: ""
 		,canvasClass: ""
 		,initClass: "init-css"
+		,notSupportedClass: "normal-mode"
 	};
 	$('#jmpress').jmpress(jmpressConfig);
 	$('.next').click(function() {
@@ -415,26 +440,13 @@ $(function() {
 	$("a[data-theme=start]").addClass("ui-state-active");
 	$("#uninit-jmpress").click(function(event) {
 		$("#jmpress").jmpress("deinit");
-		$("#nav").css("opacity", 0);
-		$("#jmpress").addClass("not-supported");
-		$("#reinit-jmpress").show();
-		$("#uninit-jmpress").hide();
-		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
-		$('#home').find('.intro-bottom').hide();
 		window.location.hash = ""
 		event.preventDefault();
 	});
 	$("#reinit-jmpress").click(function(event) {
 		$("#jmpress").jmpress(jmpressConfig);
-		$("#nav").css("opacity", 1);
-		$("#jmpress").removeClass("not-supported");
-		$("#reinit-jmpress").hide();
-		$("#uninit-jmpress").show();
-		$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
-		$('#home').find('.intro-bottom').show();
 		event.preventDefault();
 	});
-	$("#reinit-jmpress").hide();
 	$("#nested-jmpress").jmpress({
 		viewPort: {
 			height: 200
