@@ -16,8 +16,8 @@
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jmpress.js"></script>
-	<script type="text/javascript" src="plugins/duration.js"></script>
-	<script type="text/javascript" src="plugins/secondary.js"></script>
+	<script type="text/javascript" src="plugins/jmpress.duration.js"></script>
+	<script type="text/javascript" src="plugins/jmpress.secondary.js"></script>
 </head>
 <body>
 
@@ -28,7 +28,7 @@
 	<li><a href="#docs"><span>DOCS</span></a>
 		<ul>
 			<li><a href="#docs-start"><span>Getting Started</span></a></li>
-			<li><a href="#docs-inline"><span>Basic Usage</span></a></li>
+			<li><a href="#docs-basic"><span>Basic Usage</span></a></li>
 			<li><a href="#docs-options"><span>Options</span></a></li>
 			<li><a href="#docs-templates"><span>Templates</span></a></li>
 			<li><a href="#docs-route"><span>Routes</span></a></li>
@@ -52,8 +52,10 @@
 	</li>
 </ul>
 
-<div id="jmpress" class="init-css" data-template="main">
+<a id="global-prev" href="#" class="prev">&lt;</a>
+<a id="global-next" href="#" class="next">&gt;</a>
 
+<div id="jmpress" class="init-css" data-template="main">
 	<div id="home" class="step init-css">
 		<div class="intro-top ui-state-default">
 			<div class="inner">
@@ -80,7 +82,6 @@
 		<h4>started as a jQuery port of</h4>
 		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js</a><sup>created by Bartek Szopka</sup></div>
 		<p>but with a different goal in mind. Why keep it behind a podium? Let's make websites!</p>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
 	<div id="about-jquery" class="step">
@@ -95,7 +96,6 @@
 			<li>jQuery mobile for adding touch support</li>
 		</ul>
 		<h3>So why not?</h3>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
 	<div id="about-impress" class="step">
@@ -107,26 +107,23 @@
 		Plus he was asked and he <a href="https://twitter.com/#!/bartaz/status/156123781037957123" target="_blank">said no</a>.</p>
 		<p style="font-size:70%">jmpress.js currently includes all of the impress.js features.<br/>
 		Migration from impress.js is possible with only one additional line.</p>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
     <div id="download" class="step">
 		<h1>download</h1>
 		<p>Download, clone, submodule or fork on <a href="https://github.com/shama/jmpress.js/">github</a></p>
 		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
-		<a href="#" class="next">next &gt;</a>
     </div>
 
 	<div id="docs" class="step">
 		<h1>docs</h1>
 		<p>Read them <a href="#docs-start">&lt; over there ;)</a></p>
 		<span class="ui-icon ui-icon-document"></span>
-		<a href="#" class="next">next &gt;</a>
 		
 		<div id="docs-start" data-src="docs/start.html" class="step docs ui-widget-content" data-x="-1000" data-rotate="180">
 			Loading...
 		</div>
-		<div id="docs-inline" data-src="docs/inline.html" class="step docs ui-widget-content" data-x="-2000" data-rotate="180">
+		<div id="docs-basic" data-src="docs/basic.html" class="step docs ui-widget-content" data-x="-2000" data-rotate="180">
 			Loading...
 		</div>
 		<div id="docs-options" data-src="docs/options.html" class="step docs ui-widget-content" data-x="-3000" data-rotate="180">
@@ -152,16 +149,14 @@
 	<div id="contribute" class="step">
 		<h1>contribute</h1>
 		<p>Good news! We accept pull requests ;)</p>
-		<p>Please work and pull against the <i>dev</i> or <i>beta</i> branch. Thanks!</p>
+		<p>Please work and pull against the <i>dev</i> or <i>dev-next</i> branch. Thanks!</p>
 		<p>You can also contribute by writing <a href="https://github.com/shama/jmpress.js/issues" target="_blank">issues</a> for bugs or features requests.</p>
 		<span class="ui-icon ui-icon-person"></span>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
 	<div id="contribute-tests" class="step">
 		<h1>tests</h1>
 		<p>jmpress.js uses the <a href="http://pivotal.github.com/jasmine/" target="_blank">jasmine bdd</a> library for testing. Please load <i>test.html</i> in your browser to run the tests.</p>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
 	<div id="contribute-wishlist" class="step">
@@ -173,7 +168,6 @@
 			<li>Simple to use for new users, but flexible for advanced</li>
 			<li>Community for plugins</li>
 		</ul>
-		<a href="#" class="next">next &gt;</a>
 	</div>
 
 	<div id="showcase" class="step">
@@ -187,13 +181,12 @@
 			<li>tree-like hierarchies are possible</li>
 		</ul>
 		<p>See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
-		<a href="#" class="next">next &gt;</a>
+
 		<div id="showcase-nested" class="step">
 			<h1>nested step</h1>
 			<p>This step is nested in another step so it's position is relative to parent (view the html/css).
 			This can make it really easy to position the steps. You can group steps and move that group together.</p>
 			<p style="font-size: 70%">It also has secondary rotation, which is applied when selected (see secondary-plugin).</p>
-			<a href="#" class="next">next &gt;</a>
 		</div>
 	</div>
 
@@ -225,12 +218,11 @@
 			</div>
 		</div>
 		<p style="font-size: 70%">NOTICE: Nested 3D is buggy in Chrome 16 but fixed in Chrome 17, sorry.</p>
-		<a href="#" class="next">home</a>
 	</div>
 </div>
 
 <div class="hint">
-    <p>Use arrow keys to navigate</p>
+    <p>your arrow keys can help navigate</p>
 </div>
 
 <script type="text/javascript">
@@ -366,16 +358,20 @@ $(function() {
 		$('#jmpress').jmpress('next');
 		return false;
 	});
+	$('.prev').click(function() {
+		$('#jmpress').jmpress('prev');
+		return false;
+	});
 	$('.nested-next').click(function() {
 		$('#nested-jmpress').jmpress('next');
 		_gaq.push(['_trackEvent', 'Feature', 'NestedJmpress', "start"]);
 		return false;
 	});
-	$("#jmpress a[href]").addClass("ui-state-default ui-corner-all");
+	$("#jmpress a[href], #global-next, #global-prev").addClass("ui-state-default ui-corner-all");
 	$("#nav a, #nav-themes a").addClass("ui-button ui-widget ui-state-default");
 	$("#nav a span").addClass("ui-button-text");
 	//$('#home .intro-top, #home .intro-bottom').addClass('');
-	$("#jmpress a[href], #nav a, #nav-themes a").hover(function() {
+	$("#jmpress a[href], #nav a, #nav-themes a, #global-next, #global-prev").hover(function() {
 		$(this).addClass("ui-state-hover");
 	}, function() {
 		$(this).removeClass("ui-state-hover");

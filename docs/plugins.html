@@ -1,3 +1,4 @@
+<section>
 <h1>Plugins</h1>
 <p>Plugins are a way to package additional functionality into jmpress.js.</p>
 
@@ -40,8 +41,9 @@ It also handles clicks on link to other steps.</p>
 <h3>Templates</h3>
 <p>This default plugin handles templates.
 It handles the data-template attribute and registers the template.</p>
+</section>
 
-
+<section>
 <h2>Extra Plugins</h2>
 <p>jmpress.js also comes with extra plugins located in the /plugins folder that
 you might choose to use. To load the plugin simply add a script tag including
@@ -68,11 +70,11 @@ The action that should be executed if no data-duration-action is defined.</p>
 <h4>duration.defaultValue</h4>
 <p>The duration that should be taken if no data-duration is defined.</p>
 
-
 <h3>Secondary</h3>
 <p>Documentation coming soon.</p>
+</section>
 
-
+<section>
 <h2>Writing a Plugin</h2>
 <p>To extend jmpress.js, simply create a new js file and then add the script to
 your website or presentation HTML. It is wise to wrap your plugin within a
@@ -94,11 +96,11 @@ plugin:</p>
 
 <pre><code>(function( $, document, window, undefined ) {
 	$.jmpress("defaults").withMeat = 'Yum! Meat!';
-	function meat( step ) {
-		step.html( $.jmpress("defaults").withMeat );
+	function meat( step, what ) {
+		$(step).html( what );
 	}
 	$.jmpress('initStep', function( step, eventData ) {
-		meat( step );
+		meat( step, eventData.settings.withMeat );
 	});
 })(jQuery, document, window);</code></pre>
 
@@ -116,7 +118,7 @@ call it upon an event:</p>
 	});
 	$.jmpress("register", "meat", function() {
 		var step = $(this).jmpress('active')
-		step.html( $.jmpress("defaults").withMeat );
+		step.html( $(this).jmpress("settings").withMeat );
 	});
 })(jQuery, document, window);</code></pre>
 
@@ -127,3 +129,6 @@ be replace with 'Yum! Meat!'.</p>
 /plugins folder for more examples.</p>
 
 <p>If you have written a plugin for jmpress.js please let us know!</p>
+
+<p>More documentation coming soon...</p>
+</section>
