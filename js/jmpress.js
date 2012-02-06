@@ -1542,8 +1542,8 @@
 			eventData.current.userTranslateX = 0;
 			eventData.current.userTranslateY = 0;
 			$(eventData.settings.fullscreen ? document : this)
-				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event ) {
-				var direction = (event.originalEvent.wheelDelta / Math.abs(event.originalEvent.wheelDelta));
+				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
+				var direction = (delta / Math.abs(delta));
 				if(direction < 0)
 					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
 				else if(direction > 0)
@@ -1582,13 +1582,13 @@
 			$(this).jmpress("reselect", "zoom");
 		}
 		$.jmpress("register", "zoomIn", function(x, y) {
-			zoom.call(this, x, y, 1);
+			zoom.call(this, x||0, y||0, 1);
 		});
 		$.jmpress("register", "zoomOut", function(x, y) {
-			zoom.call(this, x, y, -1);
+			zoom.call(this, x||0, y||0, -1);
 		});
 		$.jmpress('afterDeinit', function( nil, eventData ) {
-			$(window).unbind("resize"+eventData.current.viewPortNamespace);
+			$(window).unbind(eventData.current.viewPortNamespace);
 		});
 		$.jmpress("setActive", function( step, eventData ) {
 			var viewPort = eventData.settings.viewPort;
