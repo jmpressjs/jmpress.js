@@ -48,6 +48,12 @@ config.init({
 			'components/hash.js',
 			'components/keyboard.js',
 			'components/mouse.js'],
+		'js/jmpress.demo.js': [
+			'js/jmpress.js',
+			'plugins/jmpress.duration.js',
+			'plugins/jmpress.secondary.js',
+			'plugins/jmpress.toggle.js',
+			'components/demo.js'],
 		'js/jmpress.all.js': ['<banner>', 'js/jmpress.js', 'plugins/*']
 	},
 	min: {
