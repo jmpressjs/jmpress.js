@@ -28,6 +28,6 @@
 		}
 	],
 	"files": [
-		"js/jmpress.js"
+		"dist/jmpress.js"
 	]
 }
