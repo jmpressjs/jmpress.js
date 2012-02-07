@@ -37,7 +37,7 @@ Please work and pull against the `dev` branch. Thanks!
 ### TESTS
 
 jmpress.js uses the [jasmine bdd](http://pivotal.github.com/jasmine/) library
-for testing. Please load `test.html` in your browser to run the tests.
+for testing. Please load `tests/` in your browser to run the tests.
 
 ## LICENSE
 

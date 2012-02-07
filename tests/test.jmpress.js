@@ -7,7 +7,7 @@
  */
 
 describe('Jmpress', function() {
-	jasmine.getFixtures().fixturesPath = 'tests/fixtures';
+	jasmine.getFixtures().fixturesPath = 'fixtures';
 	var defaults = {
 		stepSelector: '.step'
 		,canvasClass: 'canvas'
