@@ -181,13 +181,10 @@
 				return;
 			}
 			function lowRotate(name) {
-				if(item[name] === undefined) {
-					return;
-				}
 				if(eventData.current["rotate"+name+"-"+idx] === undefined) {
-					eventData.current["rotate"+name+"-"+idx] = item[name];
+					eventData.current["rotate"+name+"-"+idx] = item[name] || 0;
 				}
-				var cur = eventData.current["rotate"+name+"-"+idx], tar = item[name],
+				var cur = eventData.current["rotate"+name+"-"+idx], tar = item[name] || 0,
 					curmod = cur % 360, tarmod = tar % 360;
 				if(curmod < 0) {
 					curmod += 360;
@@ -220,6 +217,12 @@
 		var lastScale = -1;
 		$.each(target.transform, function(idx, item) {
 			if(item.length <= 1) {
+				return;
+			}
+			if(item[0] === "rotate" &&
+				item[1] % 360 === 0  &&
+				item[2] % 360 === 0  &&
+				item[3] % 360 === 0) {
 				return;
 			}
 			if(item[0] === "scale") {
