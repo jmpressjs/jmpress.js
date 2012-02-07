@@ -2187,6 +2187,7 @@
 		}
 	}
 	$.jmpress("beforeActive", function( step, eventData ) {
+		exchangeIf.call(eventData.jmpress, $(step).data("stepData"), "self", step);
 		var parent = $(step).parent();
 		$(parent)
 			.children(eventData.settings.stepSelector)
@@ -2205,6 +2206,7 @@
 		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
+		exchangeIf.call(eventData.jmpress, $(step).data("stepData"), "self", step);
 		var parent = $(step).parent();
 		$(parent)
 			.children(eventData.settings.stepSelector)
