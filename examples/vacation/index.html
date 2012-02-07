@@ -15,62 +15,45 @@
 
 	<script type="text/javascript">
 	$(function() {
+		$.jmpress("template", "pic1", {
+			scale: 0.2,
+			secondary: {"":"siblings", scale: 1}
+		});
 		$.jmpress("template", "pics1", {
 			children: [
-				{x: -250, y: 50, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 0, y: 1000}},
-				{x: 0, y: 50, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 0, y: 2000}},
-				{x: 250, y: 50, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 1000, y: 2000}},
-				{x: -250, y: 200, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 1000, y: 3000}},
-				{x: 0, y: 200, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 0, y: 3000}},
-				{x: 250, y: 200, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: 0, y: 4000}},
-				{x: -250, y: 350, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: -1000, y: 4000}},
-				{x: 0, y: 350, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: -1000, y: 3000}},
-				{x: 250, y: 350, scale: 0.2,
-					secondary: {"":"siblings", scale: 1, x: -1000, y: 2000}},
+				{x: -250, y: 50, template: "pic1",
+					secondary: {x: 0, y: 1000}},
+				{x: 0, y: 50, template: "pic1",
+					secondary: {x: 0, y: 2000}},
+				{x: 250, y: 50, template: "pic1",
+					secondary: {x: 1000, y: 2000}},
+				{x: -250, y: 200, template: "pic1",
+					secondary: {x: 1000, y: 3000}},
+				{x: 0, y: 200, template: "pic1",
+					secondary: {x: 0, y: 3000}},
+				{x: 250, y: 200, template: "pic1",
+					secondary: {x: 0, y: 4000}},
+				{x: -250, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 4000}},
+				{x: 0, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 3000}},
+				{x: 250, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 2000}},
 			]
+		});
+		$.jmpress("template", "pic2", {
+			scale: 0.2,
+			secondary: {"":"self", scale: 1, x: 0, y: 500}
 		});
 		$.jmpress("template", "pics2", {
-			children: [
-				{x: 100, y: 100, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 80, y: 80, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 70, y: 70, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 60, y: 60, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 50, y: 50, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 40, y: 40, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 30, y: 30, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 20, y: 20, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-				{x: 10, y: 10, scale: 0.2,
-					secondary: {"":"self", scale: 1, x: 0, y: 500}},
-			]
+			children: function(idx) {
+				return {x: 50-idx*10, y: 100-idx*10, z: 10-idx, template: "pic2"}
+			}
 		});
 		$.jmpress("template", "pics3", {
-			children: [
-				{r: 250, phi:  0, rotateY:  0, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 40, rotateY: 40, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 80, rotateY: 80, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 120, rotateY: 120, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 160, rotateY: 160, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 200, rotateY: 200, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 240, rotateY: 240, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 280, rotateY: 280, scale: 0.2, rotateX: 90},
-				{r: 250, phi: 320, rotateY: 320, scale: 0.2, rotateX: 90},
-			]
+			children: function(idx) {
+				return {r: 250, phi: idx*40, rotateY: idx*40, scale: 0.2, rotateX: 90}
+			}
 		});
 		$.jmpress("template", "main", {
 			children: [
