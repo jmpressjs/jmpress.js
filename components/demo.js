@@ -155,7 +155,7 @@
 				$("#global-next").hide();
 				$("#global-prev").hide();
 				$("#read-docs").hide();
-				$("#docs").show();
+				$("#docs").hide();
 				$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
 				$('#home').find('.intro-bottom').hide();
 			}
