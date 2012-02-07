@@ -1,0 +1,39 @@
+/** GENERAL **/
+body {
+	font-family: Verdana, sans-serif;
+	min-height: 740px;
+	background-color: #FFF;
+	-webkit-font-smoothing: antialiased;
+}
+
+/** STEP STYLES **/
+.step {
+	width: 900px;
+    height: 500px;
+
+	display: block;
+    padding: 40px 60px;
+    border-radius: 10px;
+
+    color: black;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	-ms-box-sizing:     border-box;
+	-o-box-sizing:      border-box;
+	box-sizing:         border-box;
+}
+
+/** ANIMATION **/
+.will-fade {
+	-webkit-transition: opacity 1s;
+	-moz-transition:    opacity 1s;
+	-ms-transition:     opacity 1s;
+	-o-transition:      opacity 1s;
+	transition:         opacity 1s;
+
+	opacity: 0;
+}
+.fade, .not-supported .will-fade {
+	opacity: 1;
+}
