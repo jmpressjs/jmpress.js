@@ -34,7 +34,9 @@
 			var jmpress = this;
 			$(window).bind('hashchange'+eventData.current.hashNamespace, function() {
 				var id = getElementFromUrl();
-				$(jmpress).jmpress("scrollFix");
+				if ( $(jmpress).jmpress('initialized') ) {
+					$(jmpress).jmpress("scrollFix");
+				}
 				if(id) {
 					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
 						$(jmpress).jmpress('select', id);
