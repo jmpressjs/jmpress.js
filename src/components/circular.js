@@ -1,3 +1,7 @@
+/*!
+ * circular.js
+ * Repeat from start after end
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

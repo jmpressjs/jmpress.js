@@ -1,3 +1,7 @@
+/*!
+ * keyboard.js
+ * Keyboard event mapping and default keyboard actions
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

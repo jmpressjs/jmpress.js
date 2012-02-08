@@ -1,3 +1,6 @@
+/*!
+ * jqevents.js
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

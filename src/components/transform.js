@@ -1,3 +1,7 @@
+/*!
+ * transform.js
+ * The engine that powers the transforms or falls back to other methods
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

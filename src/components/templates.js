@@ -1,3 +1,7 @@
+/*!
+ * templates.js
+ * The amazing template engine
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

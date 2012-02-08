@@ -1,3 +1,7 @@
+/*!
+ * jmpress.secondary plugin
+ * Apply a secondary animation when step is selected.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("initStep", function( step, eventData ) {

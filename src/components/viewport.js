@@ -1,3 +1,7 @@
+/*!
+ * viewport.js
+ * Scale to fit a given viewport
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

@@ -1,3 +1,7 @@
+/*!
+ * ajax.js
+ * Load steps via ajax
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

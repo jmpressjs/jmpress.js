@@ -11,6 +11,10 @@
  * Based on the foundation laid by Bartek Szopka @bartaz
  */
 
+/*!
+ * core.js
+ * The core of jmpress.js
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -87,28 +91,6 @@
 		,transitionDuration: 1500
 		,maxNestedDepth: 10
 
-		/* CALLBACKS */
-		// TODO documentation
-		,beforeChange: []
-		,beforeInitStep: []
-		,initStep: []
-		,beforeInit: []
-		,afterInit: []
-		,beforeDeinit: []
-		,afterDeinit: []
-		,applyStep: []
-		,unapplyStep: []
-		,setInactive: []
-		,beforeActive: []
-		,setActive: []
-		,selectInitialStep: []
-		,selectPrev: []
-		,selectNext: []
-		,selectHome: []
-		,selectEnd: []
-		,loadStep: []
-		,applyTarget: []
-
 		/* TEST */
 		,test: false
 	};
@@ -133,6 +115,9 @@
 		,'loadStep': 1
 		,'applyTarget': 1
 	};
+	for(var callbackName in callbacks) {
+		defaults[callbackName] = [];
+	}
 
 
 	/**
@@ -844,6 +829,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * near.js
+ * Find steps near each other
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -917,6 +906,10 @@
 		return $(array);
 	};
 }(jQuery, document, window));
+/*!
+ * transform.js
+ * The engine that powers the transforms or falls back to other methods
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1005,21 +998,22 @@
 	$.jmpress("initStep", function( step, eventData ) {
 		var data = eventData.data;
 		var stepData = eventData.stepData;
+		var pf = parseFloat;
 		$.extend(stepData, {
-			x: parseFloat(data.x) || 0
-			,y: parseFloat(data.y) || 0
-			,z: parseFloat(data.z) || 0
-			,r: parseFloat(data.r) || 0
-			,phi: parseFloat(data.phi) || 0
-			,rotate: parseFloat(data.rotate) || 0
-			,rotateX: parseFloat(data.rotateX) || 0
-			,rotateY: parseFloat(data.rotateY) || 0
-			,rotateZ: parseFloat(data.rotateZ) || 0
+			x: pf(data.x) || 0
+			,y: pf(data.y) || 0
+			,z: pf(data.z) || 0
+			,r: pf(data.r) || 0
+			,phi: pf(data.phi) || 0
+			,rotate: pf(data.rotate) || 0
+			,rotateX: pf(data.rotateX) || 0
+			,rotateY: pf(data.rotateY) || 0
+			,rotateZ: pf(data.rotateZ) || 0
 			,revertRotate: false
-			,scale: parseFloat(data.scale) || 1
-			,scaleX: parseFloat(data.scaleX) || false
-			,scaleY: parseFloat(data.scaleY) || false
-			,scaleZ: parseFloat(data.scaleZ) || 1
+			,scale: pf(data.scale) || 1
+			,scaleX: pf(data.scaleX) || false
+			,scaleY: pf(data.scaleY) || false
+			,scaleZ: pf(data.scaleZ) || 1
 		});
 	});
 	$.jmpress("afterInit", function( nil, eventData ) {
@@ -1206,6 +1200,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * active.js
+ * Set the active classes on steps
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1234,6 +1232,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * circular.js
+ * Repeat from start after end
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1282,6 +1284,10 @@
 		return step;
 	});
 }(jQuery, document, window));
+/*!
+ * start.js
+ * Set the first step to start on
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1291,6 +1297,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * ways.js
+ * Control the flow of the steps
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1343,6 +1353,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * ajax.js
+ * Load steps via ajax
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1356,7 +1370,7 @@
 		eventData.stepData.src = $(step).attr('href') || eventData.data.src || false;
 	});
 	$.jmpress('loadStep', function( step, eventData ) {
-		var href = eventData.stepData.src;
+		var href = eventData.stepData ? eventData.stepData.src || false : false;
 		if ( href ) {
 			$(step).load(href, function(response, status, xhr) {
 				$(eventData.jmpress).jmpress('fire', 'afterStepLoaded', step, $.extend({}, eventData, {
@@ -1369,6 +1383,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * hash.js
+ * Detect and set the URL hash
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1405,7 +1423,9 @@
 			var jmpress = this;
 			$(window).bind('hashchange'+eventData.current.hashNamespace, function() {
 				var id = getElementFromUrl();
-				$(jmpress).jmpress("scrollFix");
+				if ( $(jmpress).jmpress('initialized') ) {
+					$(jmpress).jmpress("scrollFix");
+				}
 				if(id) {
 					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
 						$(jmpress).jmpress('select', id);
@@ -1447,6 +1467,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * keyboard.js
+ * Keyboard event mapping and default keyboard actions
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1593,6 +1617,10 @@
 
 
 }(jQuery, document, window));
+/*!
+ * viewport.js
+ * Scale to fit a given viewport
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1601,7 +1629,8 @@
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
 
-	$.jmpress("defaults").viewPort = {
+	var defaults = $.jmpress("defaults");
+	defaults.viewPort = {
 		width: false
 		,height: false
 		,maxScale: 0
@@ -1610,13 +1639,14 @@
 		,zoomBindMove: true
 		,zoomBindWheel: true
 	};
-	$.jmpress("defaults").keyboard.keys[$.browser.mozilla?107:187] = "zoomIn";  // +
-	$.jmpress("defaults").keyboard.keys[$.browser.mozilla?109:189] = "zoomOut"; // -
-	$.jmpress("defaults").reasonableAnimation.resize = {
+	var keys = defaults.keyboard.keys;
+	keys[$.browser.mozilla?107:187] = "zoomIn";  // +
+	keys[$.browser.mozilla?109:189] = "zoomOut"; // -
+	defaults.reasonableAnimation.resize = {
 		transitionDuration: '0s'
 		,transitionDelay: '0ms'
 	};
-	$.jmpress("defaults").reasonableAnimation.zoom = {
+	defaults.reasonableAnimation.zoom = {
 		transitionDuration: '0s'
 		,transitionDelay: '0ms'
 	};
@@ -1779,6 +1809,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * mouse.js
+ * Clicking to select a step
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1820,6 +1854,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * templates.js
+ * The amazing template engine
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1936,6 +1974,9 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * jqevents.js
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -1958,6 +1999,10 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * animation.js
+ * Apply custom animations to steps
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
@@ -2178,8 +2223,14 @@
 	});
 
 }(jQuery, document, window));
+/*!
+ * jmpress.duration plugin
+ * For auto advancing steps after a given duration and optionally displaying a
+ * progress bar.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
+
 	$.jmpress("defaults").duration = {
 		defaultValue: -1
 		,defaultAction: "next"
@@ -2193,17 +2244,20 @@
 		eventData.stepData.durationAction = eventData.data.durationAction;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		var settings = eventData.settings,
+			durationSettings = settings.duration,
+			current = eventData.current;
+		var dur = eventData.stepData.duration || durationSettings.defaultValue;
 		if( dur && dur > 0 ) {
-			if( eventData.settings.duration.barSelector ) {
+			if( durationSettings.barSelector ) {
 				var css = {
-					transitionProperty: eventData.settings.duration.barProperty
+					transitionProperty: durationSettings.barProperty
 					,transitionDuration: '0'
 					,transitionDelay: '0'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart;
-				var bars = $(eventData.settings.duration.barSelector);
+				css[durationSettings.barProperty] = durationSettings.barPropertyStart;
+				var bars = $(durationSettings.barSelector);
 				$.jmpress("css", bars, css);
 				bars.each(function(idx, element) {
 					var next = $(element).next();
@@ -2216,38 +2270,45 @@
 					}
 				});
 			}
-			if(eventData.current.durationTimeout) {
-				clearTimeout(eventData.current.durationTimeout);
-				eventData.current.durationTimeout = undefined;
+			if(current.durationTimeout) {
+				clearTimeout(current.durationTimeout);
+				current.durationTimeout = undefined;
 			}
 		}
 	});
 	$.jmpress("setActive", function( step, eventData ) {
-		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		var settings = eventData.settings,
+			durationSettings = settings.duration,
+			current = eventData.current;
+		var dur = eventData.stepData.duration || durationSettings.defaultValue;
 		if( dur && dur > 0 ) {
-			if( eventData.settings.duration.barSelector ) {
+			if( durationSettings.barSelector ) {
 				var css = {
-					transitionProperty: eventData.settings.duration.barProperty
-					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3-100)+"ms"
-					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
+					transitionProperty: durationSettings.barProperty
+					,transitionDuration: (dur-settings.transitionDuration*2/3-100)+"ms"
+					,transitionDelay: (settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd;
-				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
+				css[durationSettings.barProperty] = durationSettings.barPropertyEnd;
+				$.jmpress("css", $(durationSettings.barSelector), css);
 			}
 			var jmpress = this;
-			if(eventData.current.durationTimeout) {
-				clearTimeout(eventData.current.durationTimeout);
-				eventData.current.durationTimeout = undefined;
+			if(current.durationTimeout) {
+				clearTimeout(current.durationTimeout);
+				current.durationTimeout = undefined;
 			}
-			eventData.current.durationTimeout = setTimeout(function() {
-				var action = eventData.stepData.durationAction || eventData.settings.duration.defaultAction;
+			current.durationTimeout = setTimeout(function() {
+				var action = eventData.stepData.durationAction || durationSettings.defaultAction;
 				$(jmpress).jmpress(action);
 			}, dur);
 		}
 	});
 }(jQuery, document, window));
 
+/*!
+ * jmpress.secondary plugin
+ * Apply a secondary animation when step is selected.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("initStep", function( step, eventData ) {
@@ -2312,6 +2373,10 @@
 	});
 }(jQuery, document, window));
 
+/*!
+ * jmpress.toggle plugin
+ * For binding a key to toggle de/initialization of jmpress.js.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("register", "toggle", function( key, config, initial ) {

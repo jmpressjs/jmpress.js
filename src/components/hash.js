@@ -1,3 +1,7 @@
+/*!
+ * hash.js
+ * Detect and set the URL hash
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

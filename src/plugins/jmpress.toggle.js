@@ -1,3 +1,7 @@
+/*!
+ * jmpress.toggle plugin
+ * For binding a key to toggle de/initialization of jmpress.js.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
 	$.jmpress("register", "toggle", function( key, config, initial ) {

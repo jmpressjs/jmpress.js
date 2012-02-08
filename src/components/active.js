@@ -1,3 +1,7 @@
+/*!
+ * active.js
+ * Set the active classes on steps
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

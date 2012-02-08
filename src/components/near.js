@@ -1,3 +1,7 @@
+/*!
+ * near.js
+ * Find steps near each other
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

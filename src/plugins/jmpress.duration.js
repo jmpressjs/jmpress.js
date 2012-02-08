@@ -1,3 +1,8 @@
+/*!
+ * jmpress.duration plugin
+ * For auto advancing steps after a given duration and optionally displaying a
+ * progress bar.
+ */
 (function( $, document, window, undefined ) {
 	'use strict';
 

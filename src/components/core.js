@@ -1,3 +1,7 @@
+/*!
+ * core.js
+ * The core of jmpress.js
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

@@ -1,3 +1,7 @@
+/*!
+ * animation.js
+ * Apply custom animations to steps
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';

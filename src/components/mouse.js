@@ -1,3 +1,7 @@
+/*!
+ * mouse.js
+ * Clicking to select a step
+ */
 (function( $, document, window, undefined ) {
 
 	'use strict';
