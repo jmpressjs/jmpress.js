@@ -13,6 +13,13 @@ config.init({
 		' * <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
 		' *\n' +
 		' * Based on the foundation laid by Bartek Szopka @bartaz\n' +
+		' */',
+		pluginbanner: '/*!\n' +
+		' * plugin for <%= pkg.name || pkg.title %> v<%= pkg.version %>\n' +
+		' *\n' +
+		' * Copyright <%= template.today("yyyy") %> <%= pkg.author.name %>\n' +
+		' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n' +
+		' * <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
 		' */'
 	},
 	watch: {
@@ -48,18 +55,29 @@ config.init({
 			'src/components/hash.js',
 			'src/components/keyboard.js',
 			'src/components/mouse.js'],
-		'dist/jmpress.demo.js': [
+		'dist/jmpress.allplugins.js': ['<banner:meta.pluginbanner>',
+			'src/plugins/toggle.js',
+			'src/plugins/secondary.js',
+			'src/plugins/duration.js'],
+		'dist/jmpress.demo.js': ['<banner>',
 			'dist/jmpress.js',
-			'src/plugins/jmpress.duration.js',
-			'src/plugins/jmpress.secondary.js',
-			'src/plugins/jmpress.toggle.js',
+			'dist/jmpress.allplugins.js',
 			'src/components/demo.js'],
-		'dist/jmpress.all.js': ['<banner>', 'dist/jmpress.js', 'src/plugins/*']
+		'dist/jmpress.all.js': ['<banner>',
+			'dist/jmpress.js',
+			'dist/jmpress.allplugins.js'],
+		'dist/plugins/jmpress.secondary.js': ['<banner:meta.pluginbanner>', 'src/plugins/secondary.js'],
+		'dist/plugins/jmpress.toggle.js': ['<banner:meta.pluginbanner>', 'src/plugins/toggle.js'],
+		'dist/plugins/jmpress.duration.js': ['<banner:meta.pluginbanner>', 'src/plugins/duration.js'],
 	},
 	min: {
 		'dist/jmpress.min.js': ['<banner>', 'dist/jmpress.js'],
 		'dist/jmpress.impress.min.js': ['<banner>', 'dist/jmpress.impress.js'],
-		'dist/jmpress.all.min.js': ['<banner>', 'dist/jmpress.all.js']
+		'dist/jmpress.all.min.js': ['<banner>', 'dist/jmpress.all.js'],
+		'dist/jmpress.allplugins.min.js': ['<banner:meta.pluginbanner>', 'dist/jmpress.allplugins.js'],
+		'dist/plugins/jmpress.secondary.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.secondary.js'],
+		'dist/plugins/jmpress.toggle.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.toggle.js'],
+		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js'],
 	},
 	jshint: {
 		options: {
