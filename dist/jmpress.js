@@ -1539,7 +1539,7 @@
 					return;
 				}
 			}
-			if(event.keyCode >= 37 && event.keyCode <= 40) {
+			if(event.which >= 37 && event.which <= 40 || event.which === 32) {
 				event.preventDefault();
 				event.stopPropagation();
 			}
@@ -1597,6 +1597,8 @@
 				$(jmpress).jmpress( action );
 				event.preventDefault();
 				event.stopPropagation();
+			} else if ( $.isFunction(action) ) {
+				action.call(jmpress, event);
 			} else if ( action ) {
 				$(jmpress).jmpress.apply( $(this), action );
 				event.preventDefault();
