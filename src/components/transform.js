@@ -86,21 +86,22 @@
 	$.jmpress("initStep", function( step, eventData ) {
 		var data = eventData.data;
 		var stepData = eventData.stepData;
+		var pf = parseFloat;
 		$.extend(stepData, {
-			x: parseFloat(data.x) || 0
-			,y: parseFloat(data.y) || 0
-			,z: parseFloat(data.z) || 0
-			,r: parseFloat(data.r) || 0
-			,phi: parseFloat(data.phi) || 0
-			,rotate: parseFloat(data.rotate) || 0
-			,rotateX: parseFloat(data.rotateX) || 0
-			,rotateY: parseFloat(data.rotateY) || 0
-			,rotateZ: parseFloat(data.rotateZ) || 0
+			x: pf(data.x) || 0
+			,y: pf(data.y) || 0
+			,z: pf(data.z) || 0
+			,r: pf(data.r) || 0
+			,phi: pf(data.phi) || 0
+			,rotate: pf(data.rotate) || 0
+			,rotateX: pf(data.rotateX) || 0
+			,rotateY: pf(data.rotateY) || 0
+			,rotateZ: pf(data.rotateZ) || 0
 			,revertRotate: false
-			,scale: parseFloat(data.scale) || 1
-			,scaleX: parseFloat(data.scaleX) || false
-			,scaleY: parseFloat(data.scaleY) || false
-			,scaleZ: parseFloat(data.scaleZ) || 1
+			,scale: pf(data.scale) || 1
+			,scaleX: pf(data.scaleX) || false
+			,scaleY: pf(data.scaleY) || false
+			,scaleZ: pf(data.scaleZ) || 1
 		});
 	});
 	$.jmpress("afterInit", function( nil, eventData ) {

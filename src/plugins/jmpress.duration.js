@@ -1,5 +1,6 @@
 (function( $, document, window, undefined ) {
 	'use strict';
+
 	$.jmpress("defaults").duration = {
 		defaultValue: -1
 		,defaultAction: "next"
@@ -13,17 +14,20 @@
 		eventData.stepData.durationAction = eventData.data.durationAction;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		var settings = eventData.settings,
+			durationSettings = settings.duration,
+			current = eventData.current;
+		var dur = eventData.stepData.duration || durationSettings.defaultValue;
 		if( dur && dur > 0 ) {
-			if( eventData.settings.duration.barSelector ) {
+			if( durationSettings.barSelector ) {
 				var css = {
-					transitionProperty: eventData.settings.duration.barProperty
+					transitionProperty: durationSettings.barProperty
 					,transitionDuration: '0'
 					,transitionDelay: '0'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyStart;
-				var bars = $(eventData.settings.duration.barSelector);
+				css[durationSettings.barProperty] = durationSettings.barPropertyStart;
+				var bars = $(durationSettings.barSelector);
 				$.jmpress("css", bars, css);
 				bars.each(function(idx, element) {
 					var next = $(element).next();
@@ -36,32 +40,35 @@
 					}
 				});
 			}
-			if(eventData.current.durationTimeout) {
-				clearTimeout(eventData.current.durationTimeout);
-				eventData.current.durationTimeout = undefined;
+			if(current.durationTimeout) {
+				clearTimeout(current.durationTimeout);
+				current.durationTimeout = undefined;
 			}
 		}
 	});
 	$.jmpress("setActive", function( step, eventData ) {
-		var dur = eventData.stepData.duration || eventData.settings.duration.defaultValue;
+		var settings = eventData.settings,
+			durationSettings = settings.duration,
+			current = eventData.current;
+		var dur = eventData.stepData.duration || durationSettings.defaultValue;
 		if( dur && dur > 0 ) {
-			if( eventData.settings.duration.barSelector ) {
+			if( durationSettings.barSelector ) {
 				var css = {
-					transitionProperty: eventData.settings.duration.barProperty
-					,transitionDuration: (dur-eventData.settings.transitionDuration*2/3-100)+"ms"
-					,transitionDelay: (eventData.settings.transitionDuration*2/3)+'ms'
+					transitionProperty: durationSettings.barProperty
+					,transitionDuration: (dur-settings.transitionDuration*2/3-100)+"ms"
+					,transitionDelay: (settings.transitionDuration*2/3)+'ms'
 					,transitionTimingFunction: 'linear'
 				};
-				css[eventData.settings.duration.barProperty] = eventData.settings.duration.barPropertyEnd;
-				$.jmpress("css", $(eventData.settings.duration.barSelector), css);
+				css[durationSettings.barProperty] = durationSettings.barPropertyEnd;
+				$.jmpress("css", $(durationSettings.barSelector), css);
 			}
 			var jmpress = this;
-			if(eventData.current.durationTimeout) {
-				clearTimeout(eventData.current.durationTimeout);
-				eventData.current.durationTimeout = undefined;
+			if(current.durationTimeout) {
+				clearTimeout(current.durationTimeout);
+				current.durationTimeout = undefined;
 			}
-			eventData.current.durationTimeout = setTimeout(function() {
-				var action = eventData.stepData.durationAction || eventData.settings.duration.defaultAction;
+			current.durationTimeout = setTimeout(function() {
+				var action = eventData.stepData.durationAction || durationSettings.defaultAction;
 				$(jmpress).jmpress(action);
 			}, dur);
 		}

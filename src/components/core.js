@@ -74,28 +74,6 @@
 		,transitionDuration: 1500
 		,maxNestedDepth: 10
 
-		/* CALLBACKS */
-		// TODO documentation
-		,beforeChange: []
-		,beforeInitStep: []
-		,initStep: []
-		,beforeInit: []
-		,afterInit: []
-		,beforeDeinit: []
-		,afterDeinit: []
-		,applyStep: []
-		,unapplyStep: []
-		,setInactive: []
-		,beforeActive: []
-		,setActive: []
-		,selectInitialStep: []
-		,selectPrev: []
-		,selectNext: []
-		,selectHome: []
-		,selectEnd: []
-		,loadStep: []
-		,applyTarget: []
-
 		/* TEST */
 		,test: false
 	};
@@ -120,6 +98,9 @@
 		,'loadStep': 1
 		,'applyTarget': 1
 	};
+	for(var callbackName in callbacks) {
+		defaults[callbackName] = [];
+	}
 
 
 	/**

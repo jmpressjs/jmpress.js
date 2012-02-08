@@ -6,7 +6,8 @@
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
 
-	$.jmpress("defaults").viewPort = {
+	var defaults = $.jmpress("defaults");
+	defaults.viewPort = {
 		width: false
 		,height: false
 		,maxScale: 0
@@ -15,13 +16,14 @@
 		,zoomBindMove: true
 		,zoomBindWheel: true
 	};
-	$.jmpress("defaults").keyboard.keys[$.browser.mozilla?107:187] = "zoomIn";  // +
-	$.jmpress("defaults").keyboard.keys[$.browser.mozilla?109:189] = "zoomOut"; // -
-	$.jmpress("defaults").reasonableAnimation.resize = {
+	var keys = defaults.keyboard.keys;
+	keys[$.browser.mozilla?107:187] = "zoomIn";  // +
+	keys[$.browser.mozilla?109:189] = "zoomOut"; // -
+	defaults.reasonableAnimation.resize = {
 		transitionDuration: '0s'
 		,transitionDelay: '0ms'
 	};
-	$.jmpress("defaults").reasonableAnimation.zoom = {
+	defaults.reasonableAnimation.zoom = {
 		transitionDuration: '0s'
 		,transitionDelay: '0ms'
 	};
