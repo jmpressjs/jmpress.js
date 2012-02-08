@@ -19,6 +19,9 @@
 		}
 	}
 	$.jmpress( 'register', 'route', function( route, unidirectional, reversedRoute ) {
+		if( typeof route === "string" ) {
+			route = [route, route];
+		}
 		routeFunc.call(this, route, reversedRoute ? "prev" : "next");
 		if (!unidirectional) {
 			routeFunc.call(this, route.reverse(), reversedRoute ? "next" : "prev");
