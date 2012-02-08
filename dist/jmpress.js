@@ -2132,6 +2132,24 @@
 		substepsData.list = substepsInOrder;
 		$(step).data("substepsData", substepsData);
 	});
+	$.jmpress("unapplyStep", function( step, eventData ) {
+		var substepsData = $(step).data("substepsData");
+		if(substepsData) {
+			$.each(substepsData.list, function(idx, activeSubsteps) {
+				$.each(activeSubsteps, function(idx, substep) {
+					if(substep.substep.info.willClass) {
+						$(substep.substep.element).removeClass(substep.substep.info.willClass);
+					}
+					if(substep.substep.info.hasClass) {
+						$(substep.substep.element).removeClass(substep.substep.info.hasClass);
+					}
+					if(substep.substep.info.doClass) {
+						$(substep.substep.element).removeClass(substep.substep.info.doClass);
+					}
+				});
+			});
+		}
+	});
 	$.jmpress("setActive", function(step, eventData) {
 		var substepsData = $(step).data("substepsData");
 		if(!substepsData) {

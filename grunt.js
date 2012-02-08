@@ -69,6 +69,9 @@ config.init({
 		'dist/plugins/jmpress.secondary.js': ['<banner:meta.pluginbanner>', 'src/plugins/secondary.js'],
 		'dist/plugins/jmpress.toggle.js': ['<banner:meta.pluginbanner>', 'src/plugins/toggle.js'],
 		'dist/plugins/jmpress.duration.js': ['<banner:meta.pluginbanner>', 'src/plugins/duration.js'],
+
+		'dist/basic-animations.css': ['<banner>', 'src/css/animations/basic/*'],
+		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*'],
 	},
 	min: {
 		'dist/jmpress.min.js': ['<banner>', 'dist/jmpress.js'],
