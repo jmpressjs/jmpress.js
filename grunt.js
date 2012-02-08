@@ -1,4 +1,5 @@
 /*global config:true, task:true*/
+require("./.grunt/css_min");
 config.init({
 	pkg: '<json:package.json>',
 	meta: {
@@ -23,8 +24,8 @@ config.init({
 		' */'
 	},
 	watch: {
-		files: '<config:lint.files>',
-		tasks: 'concat'
+		files: ['grunt.js', 'src/**'],
+		tasks: 'default'
 	},
 	lint: {
 		files: ['src/components/*', 'src/plugins/*']
@@ -82,6 +83,10 @@ config.init({
 		'dist/plugins/jmpress.toggle.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.toggle.js'],
 		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js'],
 	},
+	css_min: {
+		'dist/basic-animations.min.css': ['dist/basic-animations.css'],
+		'dist/advanced-animations.min.css': ['dist/advanced-animations.css'],
+	},
 	jshint: {
 		options: {
 			curly: true,
@@ -102,6 +107,7 @@ config.init({
 			jQuery: true
 		}
 	},
+	sqwish: {},
 	uglify: {}
 });
-task.registerTask('default', 'lint concat min');
+task.registerTask('default', 'lint concat min css_min');
