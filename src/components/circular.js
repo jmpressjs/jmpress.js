@@ -5,48 +5,44 @@
 (function( $, document, window, undefined ) {
 
 	'use strict';
+	var $jmpress = $.jmpress;
 
-	$.jmpress( 'initStep', function( step, eventData ) {
-		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) === -1;
-	});
+	/* FUNCTIONS */
 	function firstSlide( step, eventData ) {
 		return $(this).find(eventData.settings.stepSelector).first();
 	}
-	$.jmpress( 'selectInitialStep', firstSlide);
-	$.jmpress( 'selectHome', firstSlide);
-	$.jmpress( 'selectEnd', function( step, eventData ) {
+	function prevOrNext( jmpress, step, eventData, prev) {
+		if (!step) {
+			return false;
+		}
+		var stepSelector = eventData.settings.stepSelector;
+		step = $(step);
+		do {
+			var item = step.near( stepSelector, prev );
+			if (item.length === 0 || item.closest(jmpress).length === 0) {
+				item = $(jmpress).find(stepSelector).last();
+			}
+			if (!item.length) {
+				return false;
+			}
+			step = item;
+		} while( step.data("stepData").exclude );
+		return step;
+	}
+
+	/* HOOKS */
+	$jmpress( 'initStep', function( step, eventData ) {
+		eventData.stepData.exclude = eventData.data.exclude && ["false", "no"].indexOf(eventData.data.exclude) === -1;
+	});
+	$jmpress( 'selectInitialStep', firstSlide);
+	$jmpress( 'selectHome', firstSlide);
+	$jmpress( 'selectEnd', function( step, eventData ) {
 		return $(this).find(eventData.settings.stepSelector).last();
 	});
-	$.jmpress( 'selectPrev', function( step, eventData ) {
-		if (!step) {
-			return false;
-		}
-		do {
-			var prev = $(step).near( eventData.settings.stepSelector, true );
-			if (prev.length === 0 || $(prev).closest(this).length === 0) {
-				prev = $(this).find(eventData.settings.stepSelector).last();
-			}
-			if (!prev.length) {
-				return false;
-			}
-			step = prev;
-		} while( step.data("stepData").exclude );
-		return step;
+	$jmpress( 'selectPrev', function( step, eventData ) {
+		return prevOrNext(this, step, eventData, true);
 	});
-	$.jmpress( 'selectNext', function( step, eventData ) {
-		if (!step) {
-			return false;
-		}
-		do {
-			var next = $(step).near( eventData.settings.stepSelector );
-			if (next.length === 0 || $(next).closest(this).length === 0) {
-				next = $(this).find(eventData.settings.stepSelector).first();
-			}
-			if (!next.length) {
-				return false;
-			}
-			step = next;
-		} while( step.data("stepData").exclude );
-		return step;
+	$jmpress( 'selectNext', function( step, eventData ) {
+		return prevOrNext(this, step, eventData);
 	});
 }(jQuery, document, window));
