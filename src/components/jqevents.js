@@ -5,10 +5,12 @@
 
 	'use strict';
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
 
+	/* HOOKS */
 	// the events should not bubble up the tree
 	// elsewise nested jmpress would cause buggy behavior
 	$.jmpress("setActive", function( step, eventData ) {

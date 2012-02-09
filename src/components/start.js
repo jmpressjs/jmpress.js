@@ -6,6 +6,7 @@
 
 	'use strict';
 
+	/* HOOKS */
 	$.jmpress( 'selectInitialStep', function( nil, eventData ) {
 		return eventData.settings.start;
 	});

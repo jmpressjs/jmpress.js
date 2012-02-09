@@ -5,79 +5,90 @@
 (function( $, document, window, undefined ) {
 
 	'use strict';
+	var $jmpress = $.jmpress,
+		hashLink = "a[href^=#]";
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
+	/**
+	 * getElementFromUrl
+	 *
+	 * @return String or undefined
+	 */
+	function getElementFromUrl(settings) {
+		// get id from url # by removing `#` or `#/` from the beginning,
+		// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+		// TODO SECURITY check user input to be valid!
+		try {
+			var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
+			return el.length > 0 && el.is(settings.stepSelector) ? el : undefined;
+		} catch(e) {}
+	}
 
-	$.jmpress('defaults').hash = {
+	/* DEFAULTS */
+	$jmpress('defaults').hash = {
 		use: true
 		,update: true
 		,bindChange: true
 		// NOTICE: {use: true, update: false, bindChange: true}
 		// will cause a error after clicking on a link to the current step
 	};
-	$.jmpress('selectInitialStep', function( step, eventData ) {
-		/**
-		 * getElementFromUrl
-		 *
-		 * @return String or undefined
-		 */
-		function getElementFromUrl() {
-			// get id from url # by removing `#` or `#/` from the beginning,
-			// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-			// TODO SECURITY check user input to be valid!
-			try {
-				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
-				return el.length > 0 && el.is(eventData.settings.stepSelector) ? el : undefined;
-			} catch(e) {}
-		}
+
+	/* HOOKS */
+	$jmpress('selectInitialStep', function( step, eventData ) {
+		var settings = eventData.settings,
+			hashSettings = settings.hash,
+			current = eventData.current,
+			jmpress = $(this);
 		eventData.current.hashNamespace = ".jmpress-"+randomString();
 		// HASH CHANGE EVENT
-		if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
-			var jmpress = this;
-			$(window).bind('hashchange'+eventData.current.hashNamespace, function() {
-				var id = getElementFromUrl();
-				if ( $(jmpress).jmpress('initialized') ) {
-					$(jmpress).jmpress("scrollFix");
-				}
-				if(id) {
-					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
-						$(jmpress).jmpress('select', id);
+		if ( hashSettings.use ) {
+			if ( hashSettings.bindChange ) {
+				$(window).bind('hashchange'+current.hashNamespace, function() {
+					var urlItem = getElementFromUrl(settings);
+					if ( jmpress.jmpress('initialized') ) {
+						jmpress.jmpress("scrollFix");
 					}
-					var shouldBeHash = "#/" + $(id).attr("id");
-					if(window.location.hash !== shouldBeHash) {
-						window.location.hash = shouldBeHash;
+					if(urlItem && urlItem.length) {
+						if(urlItem.attr("id") !== jmpress.jmpress("active").attr("id")) {
+							jmpress.jmpress('select', urlItem);
+						}
+						var shouldBeHash = "#/" + urlItem.attr("id");
+						if(window.location.hash !== shouldBeHash) {
+							window.location.hash = shouldBeHash;
+						}
 					}
-				}
-			});
-			$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {
-				var href = $(this).attr("href");
-				try {
-					if($(href).is(eventData.settings.stepSelector)) {
-						$(jmpress).jmpress("select", href);
-						event.preventDefault();
-						event.stopPropagation();
-					}
-				} catch(e) {}
-			});
-		}
-		if ( eventData.settings.hash.use ) {
-			return getElementFromUrl();
+				});
+				$(hashLink).on("click"+current.hashNamespace, function(event) {
+					var href = $(this).attr("href");
+					try {
+						if($(href).is(settings.stepSelector)) {
+							jmpress.jmpress("select", href);
+							event.preventDefault();
+							event.stopPropagation();
+						}
+					} catch(e) {}
+				});
+			}
+			return getElementFromUrl(settings);
 		}
 	});
-	$.jmpress('afterDeinit', function( nil, eventData ) {
-		$("a[href^=#]").off(eventData.current.hashNamespace);
+	$jmpress('afterDeinit', function( nil, eventData ) {
+		$(hashLink).off(eventData.current.hashNamespace);
 		$(window).unbind(eventData.current.hashNamespace);
 	});
-	$.jmpress('setActive', function( step, eventData ) {
+	$jmpress('setActive', function( step, eventData ) {
+		var settings = eventData.settings,
+			current = eventData.current;
 		// `#/step-id` is used instead of `#step-id` to prevent default browser
 		// scrolling to element in hash
-		if ( eventData.settings.hash.use && eventData.settings.hash.update ) {
-			clearTimeout(eventData.current.hashtimeout);
-			eventData.current.hashtimeout = setTimeout(function() {
+		if ( settings.hash.use && settings.hash.update ) {
+			clearTimeout(current.hashtimeout);
+			current.hashtimeout = setTimeout(function() {
 				window.location.hash = "#/" + $(eventData.delegatedFrom).attr('id');
-			}, eventData.settings.transitionDuration + 200);
+			}, settings.transitionDuration + 200);
 		}
 	});
 

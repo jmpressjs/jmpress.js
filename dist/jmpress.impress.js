@@ -1269,7 +1269,7 @@
 		do {
 			var item = step.near( stepSelector, prev );
 			if (item.length === 0 || item.closest(jmpress).length === 0) {
-				item = $(jmpress).find(stepSelector).last();
+				item = $(jmpress).find(stepSelector)[prev?"last":"first"]();
 			}
 			if (!item.length) {
 				return false;
@@ -1302,79 +1302,90 @@
 (function( $, document, window, undefined ) {
 
 	'use strict';
+	var $jmpress = $.jmpress,
+		hashLink = "a[href^=#]";
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
+	/**
+	 * getElementFromUrl
+	 *
+	 * @return String or undefined
+	 */
+	function getElementFromUrl(settings) {
+		// get id from url # by removing `#` or `#/` from the beginning,
+		// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
+		// TODO SECURITY check user input to be valid!
+		try {
+			var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
+			return el.length > 0 && el.is(settings.stepSelector) ? el : undefined;
+		} catch(e) {}
+	}
 
-	$.jmpress('defaults').hash = {
+	/* DEFAULTS */
+	$jmpress('defaults').hash = {
 		use: true
 		,update: true
 		,bindChange: true
 		// NOTICE: {use: true, update: false, bindChange: true}
 		// will cause a error after clicking on a link to the current step
 	};
-	$.jmpress('selectInitialStep', function( step, eventData ) {
-		/**
-		 * getElementFromUrl
-		 *
-		 * @return String or undefined
-		 */
-		function getElementFromUrl() {
-			// get id from url # by removing `#` or `#/` from the beginning,
-			// so both "fallback" `#slide-id` and "enhanced" `#/slide-id` will work
-			// TODO SECURITY check user input to be valid!
-			try {
-				var el = $( '#' + window.location.hash.replace(/^#\/?/,"") );
-				return el.length > 0 && el.is(eventData.settings.stepSelector) ? el : undefined;
-			} catch(e) {}
-		}
+
+	/* HOOKS */
+	$jmpress('selectInitialStep', function( step, eventData ) {
+		var settings = eventData.settings,
+			hashSettings = settings.hash,
+			current = eventData.current,
+			jmpress = $(this);
 		eventData.current.hashNamespace = ".jmpress-"+randomString();
 		// HASH CHANGE EVENT
-		if ( eventData.settings.hash.use && eventData.settings.hash.bindChange ) {
-			var jmpress = this;
-			$(window).bind('hashchange'+eventData.current.hashNamespace, function() {
-				var id = getElementFromUrl();
-				if ( $(jmpress).jmpress('initialized') ) {
-					$(jmpress).jmpress("scrollFix");
-				}
-				if(id) {
-					if($(id).attr("id") !== $(jmpress).jmpress("active").attr("id")) {
-						$(jmpress).jmpress('select', id);
+		if ( hashSettings.use ) {
+			if ( hashSettings.bindChange ) {
+				$(window).bind('hashchange'+current.hashNamespace, function() {
+					var urlItem = getElementFromUrl(settings);
+					if ( jmpress.jmpress('initialized') ) {
+						jmpress.jmpress("scrollFix");
 					}
-					var shouldBeHash = "#/" + $(id).attr("id");
-					if(window.location.hash !== shouldBeHash) {
-						window.location.hash = shouldBeHash;
+					if(urlItem && urlItem.length) {
+						if(urlItem.attr("id") !== jmpress.jmpress("active").attr("id")) {
+							jmpress.jmpress('select', urlItem);
+						}
+						var shouldBeHash = "#/" + urlItem.attr("id");
+						if(window.location.hash !== shouldBeHash) {
+							window.location.hash = shouldBeHash;
+						}
 					}
-				}
-			});
-			$("a[href^=#]").on("click"+eventData.current.hashNamespace, function(event) {
-				var href = $(this).attr("href");
-				try {
-					if($(href).is(eventData.settings.stepSelector)) {
-						$(jmpress).jmpress("select", href);
-						event.preventDefault();
-						event.stopPropagation();
-					}
-				} catch(e) {}
-			});
-		}
-		if ( eventData.settings.hash.use ) {
-			return getElementFromUrl();
+				});
+				$(hashLink).on("click"+current.hashNamespace, function(event) {
+					var href = $(this).attr("href");
+					try {
+						if($(href).is(settings.stepSelector)) {
+							jmpress.jmpress("select", href);
+							event.preventDefault();
+							event.stopPropagation();
+						}
+					} catch(e) {}
+				});
+			}
+			return getElementFromUrl(settings);
 		}
 	});
-	$.jmpress('afterDeinit', function( nil, eventData ) {
-		$("a[href^=#]").off(eventData.current.hashNamespace);
+	$jmpress('afterDeinit', function( nil, eventData ) {
+		$(hashLink).off(eventData.current.hashNamespace);
 		$(window).unbind(eventData.current.hashNamespace);
 	});
-	$.jmpress('setActive', function( step, eventData ) {
+	$jmpress('setActive', function( step, eventData ) {
+		var settings = eventData.settings,
+			current = eventData.current;
 		// `#/step-id` is used instead of `#step-id` to prevent default browser
 		// scrolling to element in hash
-		if ( eventData.settings.hash.use && eventData.settings.hash.update ) {
-			clearTimeout(eventData.current.hashtimeout);
-			eventData.current.hashtimeout = setTimeout(function() {
+		if ( settings.hash.use && settings.hash.update ) {
+			clearTimeout(current.hashtimeout);
+			current.hashtimeout = setTimeout(function() {
 				window.location.hash = "#/" + $(eventData.delegatedFrom).attr('id');
-			}, eventData.settings.transitionDuration + 200);
+			}, settings.transitionDuration + 200);
 		}
 	});
 
@@ -1386,23 +1397,32 @@
 (function( $, document, window, undefined ) {
 
 	'use strict';
+	var $jmpress = $.jmpress,
+		jmpressNext = "next",
+		jmpressPrev = "prev";
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
+	function stopEvent(event) {
+		event.preventDefault();
+		event.stopPropagation();
+	}
 
-	$.jmpress('defaults').keyboard = {
+	/* DEFAULTS */
+	$jmpress('defaults').keyboard = {
 		use: true
 		,keys: {
-			33: "prev" // pg up
-			,37: "prev" // left
-			,38: "prev" // up
+			33: jmpressPrev // pg up
+			,37: jmpressPrev // left
+			,38: jmpressPrev // up
 
-			,9: "next:prev" // tab
-			,32: "next" // space
-			,34: "next" // pg down
-			,39: "next" // right
-			,40: "next" // down
+			,9: jmpressNext+":"+jmpressPrev // tab
+			,32: jmpressNext // space
+			,34: jmpressNext // pg down
+			,39: jmpressNext // right
+			,40: jmpressNext // down
 
 			,36: "home" // home
 
@@ -1430,41 +1450,46 @@
 		}
 		,tabSelector: "a[href]:visible, :input:visible"
 	};
-	$.jmpress('afterInit', function( nil, eventData ) {
-		var mysettings = eventData.settings.keyboard;
-		var jmpress = this;
 
+	/* HOOKS */
+	$jmpress('afterInit', function( nil, eventData ) {
+		var settings = eventData.settings,
+			keyboardSettings = settings.keyboard,
+			ignoreKeyboardSettings = keyboardSettings.ignore,
+			current = eventData.current,
+			jmpress = $(this);
 
 		// tabindex make it focusable so that it can recieve key events
-		if(!eventData.settings.fullscreen) {
-			$(this).attr("tabindex", 0);
+		if(!settings.fullscreen) {
+			jmpress.attr("tabindex", 0);
 		}
 
-		eventData.current.keyboardNamespace = ".jmpress-"+randomString();
+		current.keyboardNamespace = ".jmpress-"+randomString();
 
 		// KEYPRESS EVENT: this fixes a Opera bug
-		$(eventData.settings.fullscreen ? document : this)
-			.bind("keypress"+eventData.current.keyboardNamespace, function( event ) {
+		$(settings.fullscreen ? document : jmpress)
+			.bind("keypress"+current.keyboardNamespace, function( event ) {
 
-			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
+			for( var nodeName in ignoreKeyboardSettings ) {
+				if ( event.target.nodeName === nodeName && ignoreKeyboardSettings[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
 			if(event.which >= 37 && event.which <= 40 || event.which === 32) {
-				event.preventDefault();
-				event.stopPropagation();
+				stopEvent(event);
 			}
 		});
 		// KEYDOWN EVENT
-		$(eventData.settings.fullscreen ? document : this)
-			.bind("keydown"+eventData.current.keyboardNamespace, function( event ) {
-			if ( !eventData.settings.fullscreen && !$(event.target).closest(jmpress).length || !mysettings.use ) {
+		$(settings.fullscreen ? document : jmpress)
+			.bind("keydown"+current.keyboardNamespace, function( event ) {
+			var eventTarget = $(event.target);
+
+			if ( !settings.fullscreen && !eventTarget.closest(jmpress).length || !keyboardSettings.use ) {
 				return;
 			}
 
-			for( var nodeName in mysettings.ignore ) {
-				if ( event.target.nodeName === nodeName && mysettings.ignore[nodeName].indexOf(event.which) !== -1 ) {
+			for( var nodeName in ignoreKeyboardSettings ) {
+				if ( eventTarget[0].nodeName === nodeName && ignoreKeyboardSettings[nodeName].indexOf(event.which) !== -1 ) {
 					return;
 				}
 			}
@@ -1473,25 +1498,24 @@
 			var nextFocus;
 			if (event.which === 9) {
 				// tab
-				if ( !$(event.target).closest( $(jmpress).jmpress('active') ).length ) {
+				if ( !eventTarget.closest( jmpress.jmpress('active') ).length ) {
 					if ( !event.shiftKey ) {
-						nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").first();
+						nextFocus = jmpress.jmpress('active').find("a[href], :input").filter(":visible").first();
 					} else {
 						reverseSelect = true;
 					}
 				} else {
-					nextFocus = $(event.target).near( mysettings.tabSelector, event.shiftKey );
+					nextFocus = eventTarget.near( keyboardSettings.tabSelector, event.shiftKey );
 					if( !$(nextFocus)
-						.closest( eventData.settings.stepSelector )
-						.is($(jmpress).jmpress('active') ) ) {
+						.closest( settings.stepSelector )
+						.is(jmpress.jmpress('active') ) ) {
 						nextFocus = undefined;
 					}
 				}
 				if( nextFocus && nextFocus.length > 0 ) {
 					nextFocus.focus();
-					$(jmpress).jmpress("scrollFix");
-					event.preventDefault();
-					event.stopPropagation();
+					jmpress.jmpress("scrollFix");
+					stopEvent(event);
 					return;
 				} else {
 					if(event.shiftKey) {
@@ -1500,32 +1524,30 @@
 				}
 			}
 
-			var action = mysettings.keys[ event.which ];
+			var action = keyboardSettings.keys[ event.which ];
 			if ( typeof action === "string" ) {
 				if (action.indexOf(":") !== -1) {
 					action = action.split(":");
 					action = event.shiftKey ? action[1] : action[0];
 				}
-				$(jmpress).jmpress( action );
-				event.preventDefault();
-				event.stopPropagation();
+				jmpress.jmpress( action );
+				stopEvent(event);
 			} else if ( $.isFunction(action) ) {
 				action.call(jmpress, event);
 			} else if ( action ) {
-				$(jmpress).jmpress.apply( $(this), action );
-				event.preventDefault();
-				event.stopPropagation();
+				jmpress.jmpress.apply( jmpress, action );
+				stopEvent(event);
 			}
 
 			if (reverseSelect) {
 				// tab
-				nextFocus = $(jmpress).jmpress('active').find("a[href], :input").filter(":visible").last();
+				nextFocus = jmpress.jmpress('active').find("a[href], :input").filter(":visible").last();
 				nextFocus.focus();
-				$(jmpress).jmpress("scrollFix");
+				jmpress.jmpress("scrollFix");
 			}
 		});
 	});
-	$.jmpress('afterDeinit', function( nil, eventData ) {
+	$jmpress('afterDeinit', function( nil, eventData ) {
 		$(document).unbind(eventData.current.keyboardNamespace);
 	});
 
@@ -1538,40 +1560,47 @@
 (function( $, document, window, undefined ) {
 
 	'use strict';
+	var $jmpress = $.jmpress;
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
 
-	$.jmpress("defaults").mouse = {
+	/* DEFAULTS */
+	$jmpress("defaults").mouse = {
 		clickSelects: true
 	};
-	$.jmpress("afterInit", function( nil, eventData ) {
-		eventData.current.clickableStepsNamespace = ".jmpress-"+randomString();
-		var jmpress = this;
-		$(this).bind("click"+eventData.current.clickableStepsNamespace, function(event) {
-			if (!eventData.settings.mouse.clickSelects || eventData.current.userZoom) {
+
+	/* HOOKS */
+	$jmpress("afterInit", function( nil, eventData ) {
+		var settings = eventData.settings,
+			stepSelector = settings.stepSelector,
+			current = eventData.current,
+			jmpress = $(this);
+		current.clickableStepsNamespace = ".jmpress-"+randomString();
+		jmpress.bind("click"+current.clickableStepsNamespace, function(event) {
+			if (!settings.mouse.clickSelects || current.userZoom) {
 				return;
 			}
-			// clicks on the active step do default
-			if ( $(event.target)
-				.closest( eventData.settings.stepSelector)
-				.is( $(jmpress).jmpress("active") ) ) {
-					return;
-				}
 
 			// get clicked step
-			var clickedStep = $(event.target).closest(eventData.settings.stepSelector);
+			var clickedStep = $(event.target).closest(stepSelector);
+
+			// clicks on the active step do default
+			if ( clickedStep.is( jmpress.jmpress("active") ) ) {
+				return;
+			}
 
 			if (clickedStep.length) {
 				// select the clicked step
-				$(this).jmpress("select", clickedStep[0], "click");
+				jmpress.jmpress("select", clickedStep[0], "click");
 				event.preventDefault();
 				event.stopPropagation();
 			}
 		});
 	});
-	$.jmpress('afterDeinit', function( nil, eventData ) {
+	$jmpress('afterDeinit', function( nil, eventData ) {
 		$(this).unbind(eventData.current.clickableStepsNamespace);
 	});
 

@@ -20,7 +20,7 @@
 		do {
 			var item = step.near( stepSelector, prev );
 			if (item.length === 0 || item.closest(jmpress).length === 0) {
-				item = $(jmpress).find(stepSelector).last();
+				item = $(jmpress).find(stepSelector)[prev?"last":"first"]();
 			}
 			if (!item.length) {
 				return false;

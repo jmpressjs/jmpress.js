@@ -24,7 +24,7 @@ config.init({
 		' */'
 	},
 	watch: {
-		files: ['grunt.js', 'src/**'],
+		files: ['src/**'],
 		tasks: 'default'
 	},
 	lint: {
