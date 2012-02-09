@@ -19,7 +19,7 @@
 			}).text('Loading...');
 			section.load(id + '.html', function() {
 				// ENCODE CODE SAMPLES
-				$(this).find('code').each(function() {
+				$(this).find('code:not(.noconvert)').each(function() {
 					$(this).text($(this).html()).html();
 				});
 				$('.press-key').hide();
