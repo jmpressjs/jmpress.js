@@ -30,6 +30,12 @@
 		$.getJSON('../package.json', function(data) {
 			$('.version').text('v' + data.version);
 		});
+		// MAKE HASH WORK AFTER DOCS BUILT
+		setTimeout(function() {
+			if ( window.location.hash ) {
+				window.location = window.location;
+			}
+		}, 500);
 	});
 	</script>
 </head>
