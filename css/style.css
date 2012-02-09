@@ -101,6 +101,14 @@ h4 {
 	display: inline-block;
 }
 
+#nested-jmpress {
+	-webkit-transform: translate3d(0,0,1px);
+	-moz-transform:    translate3d(0,0,1px);
+	-ms-transform:     translate3d(0,0,1px);
+	-o-transform:      translate3d(0,0,1px);
+	transform:         translate3d(0,0,1px);
+}
+
 /** NAV **/
 #nav {
 	background: transparent;
