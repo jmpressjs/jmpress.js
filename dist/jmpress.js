@@ -1918,7 +1918,7 @@
 
 	'use strict';
 	var $jmpress = $.jmpress,
-		templateFromParentIdent = templateFromParentIdent,
+		templateFromParentIdent = "_template_",
 		templateFromApplyIdent = "_applied_template_";
 
 	/* STATIC VARS */
