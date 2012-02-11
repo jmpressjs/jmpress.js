@@ -1,46 +1,52 @@
 <section>
 <h1>Plugins</h1>
-<p>Plugins are a way to package additional functionality into jmpress.js.</p>
-
+<p>Plugins are a way to package additional functionality into jmpress.js. In
+fact most of jmpress.js is built using this same plugin interface.</p>
 
 <h2>Default Plugins</h2>
 <p>jmpress.js comes loaded with a default set of plugins to handle the common uses.</p>
 
-<h3>Translate, Scale &amp; Rotate</h3>
-<p>This default plugin handles the transformation stuff.</p>
-
-<h3>Active Class</h3>
+<h3>Active Class <em>src/components/active.js</em></h3>
 <p>This default plugin handles the toggling of activeClass and nestedActiveClass.</p>
 
-<h3>Circular Stepping</h3>
-<p>This default plugin handles the natural flow of the steps, taken from the dom order.</p>
-
-<h3>Starting Step</h3>
-<p>This default plugin handles the config option "start".</p>
-
-<h3>Routing</h3>
-<p>This default plugin handles the data-next and data-prev attributes and the route command.</p>
-
-<h3>Ajax Load Steps</h3>
+<h3>Ajax Load Steps <em>src/components/ajax.js</em></h3>
 <p>This default plugin enables you to load step via ajax.
 It handles the data-src and href attribute and offers the "afterStepLoaded" event.</p>
 
-<h3>Hash in URL</h3>
+<h3>Animation <em>src/components/animation.js</em></h3>
+<p>Apply custom animations to steps.</p>
+
+<h3>Circular Stepping <em>src/components/circular.js</em></h3>
+<p>This default plugin handles the natural flow of the steps, taken from the dom order.</p>
+
+<h3>Hash in URL <em>src/components/hash.js</em></h3>
 <p>This default plugin handles updates to and change events from the url hash.
 It also handles clicks on link to other steps.</p>
 
-<h3>Keyboard Navigation</h3>
+<h3>Keyboard Navigation <em>src/components/keyboard.js</em></h3>
 <p>This default plugin handles navigation with the keyboard.</p>
 
-<h3>Viewport</h3>
-<p>This default plugin handles camera zooming to window size.</p>
-
-<h3>Clickable Inactive Steps</h3>
+<h3>Mouse: Clickable Inactive Steps <em>src/components/mouse.js</em></h3>
 <p>This default plugin handles click on other steps.</p>
 
-<h3>Templates</h3>
+<h3>Near <em>src/components/near.js</em></h3>
+<p>Find steps near each other.</p>
+
+<h3>Starting Step <em>src/components/start.js</em></h3>
+<p>This default plugin handles the config option "start".</p>
+
+<h3>Templates <em>src/components/templates.js</em></h3>
 <p>This default plugin handles templates.
 It handles the data-template attribute and registers the template.</p>
+
+<h3>Translate, Scale &amp; Rotate <em>src/components/transform.js</em></h3>
+<p>This default plugin handles the transformation stuff.</p>
+
+<h3>Viewport <em>src/components/viewport.js</em></h3>
+<p>This default plugin handles camera zooming to window size.</p>
+
+<h3>Ways: Routing <em>src/components/ways.js</em></h3>
+<p>This default plugin handles the data-next and data-prev attributes and the route command.</p>
 </section>
 
 <section>
