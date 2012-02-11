@@ -1188,28 +1188,28 @@
 		};
 		props = $.extend({}, animation, props);
 		if (!zoomin) {
-			props.transitionDelay = '0';
+			props.transitionDelay = '0s';
 		}
 		if (!active) {
-			props.transitionDuration = '0';
-			props.transitionDelay = '0';
+			props.transitionDuration = '0s';
+			props.transitionDelay = '0s';
 		}
 		$.jmpress("css", eventData.area, props);
 		engine.transform(eventData.area, extracted);
 
 		props = $.extend({}, animation);
 		if (!zoomout) {
-			props.transitionDelay = '0';
+			props.transitionDelay = '0s';
 		}
 		if (!active) {
-			props.transitionDuration = '0';
-			props.transitionDelay = '0';
+			props.transitionDuration = '0s';
+			props.transitionDelay = '0s';
 		}
 
 		eventData.current.perspectiveScale = target.perspectiveScale;
 
-		engine.transform(eventData.canvas, target.transform);
 		$.jmpress("css", eventData.canvas, props);
+		engine.transform(eventData.canvas, target.transform);
 	});
 
 }(jQuery, document, window));
