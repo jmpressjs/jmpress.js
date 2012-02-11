@@ -76,7 +76,6 @@
 			,transformStyle: "preserve-3d"
 		}
 		,transitionDuration: 1500
-		,maxNestedDepth: 10
 
 		/* TEST */
 		,test: false
