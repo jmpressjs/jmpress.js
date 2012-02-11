@@ -15,7 +15,8 @@
 The jQuery selector to specify each step.</p>
 
 <h4>start</h4>
-<p>Selector of step to start from. (ex. "#home")</p>
+<p><em>Default: undefined</em><br/>
+Selector of step to start from. (ex. <em>#home</em>)</p>
 
 <h4>notSupportedClass</h4>
 <p><em>Default: 'not-supported'</em><br/>
@@ -128,22 +129,26 @@ building your steps will be familiar if you're coming from impress.js.</p>
 
 <p>Each step element can have the following data attributes set:</p>
 <ul>
-	<li>data-x: cartesian coordinates: X Position
-	<li>data-y: cartesian coordinates: Y Position
-	<li>data-z: cartesian coordinates: Z Position
-	<li>data-r: polar coordinates: radius
-	<li>data-phi: polar coordinates: angle (starting at top, counterclockwise)
-	<li>data-scale: Scale of element (also scale-x, scale-y, scale-z)
-	<li>data-rotation: Degree of rotation
-	<li>data-rotation-x: Degree of rotation on x-axis
-	<li>data-rotation-y: Degree of rotation on y-axis
-	<li>data-rotation-z: Degree of rotation on z-axis
-	<li>data-delegate: delegate the activeness to another step chosen by selector
-	<li>data-src: Load content of slide dynamically
-	<li>data-exclude: do not use step in natural flow, but it can be selected with the route command
-	<li>data-next: selector of the next step
-	<li>data-prev: selector of the prev step
-	<li>data-template: apply a template, which must be defined before init jmpress
-	<li>even more with plugins
+	<li><em>data-x</em>: cartesian coordinates: X Position
+	<li><em>data-y</em>: cartesian coordinates: Y Position
+	<li><em>data-z</em>: cartesian coordinates: Z Position
+	<li><em>data-r</em>: polar coordinates: radius
+	<li><em>data-phi</em>: polar coordinates: angle (starting at top,
+		counterclockwise)
+	<li><em>data-scale</em>: Scale of element (also scale-x, scale-y, scale-z)
+	<li><em>data-rotation</em>: Degree of rotation
+	<li><em>data-rotation-x</em>: Degree of rotation on x-axis
+	<li><em>data-rotation-y</em>: Degree of rotation on y-axis
+	<li><em>data-rotation-z</em>: Degree of rotation on z-axis
+	<li><em>data-delegate</em>: delegate the activeness to another step chosen
+		by selector
+	<li><em>data-src</em>: Load content of slide dynamically
+	<li><em>data-exclude</em>: do not use step in natural flow, but it can be
+		selected with the route command
+	<li><em>data-next</em>: selector of the next step
+	<li><em>data-prev</em>: selector of the prev step
+	<li><em>data-template</em>: apply a template, which must be defined before
+		init jmpress
+	<li><em>data-jmpress</em>: apply a custom animation
 </ul>
 </section>

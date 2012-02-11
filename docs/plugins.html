@@ -7,14 +7,14 @@ fact most of jmpress.js is built using this same plugin interface.</p>
 <p>jmpress.js comes loaded with a default set of plugins to handle the common uses.</p>
 
 <h3>Active Class <em>src/components/active.js</em></h3>
-<p>This default plugin handles the toggling of activeClass and nestedActiveClass.</p>
+<p>This default plugin handles the toggling of <em>activeClass</em> and <em>nestedActiveClass</em>.</p>
 
 <h3>Ajax Load Steps <em>src/components/ajax.js</em></h3>
 <p>This default plugin enables you to load step via ajax.
-It handles the data-src and href attribute and offers the "afterStepLoaded" event.</p>
+It handles the <em>data-src</em> and <em>href</em> attribute and offers the "afterStepLoaded" event.</p>
 
 <h3>Animation <em>src/components/animation.js</em></h3>
-<p>Apply custom animations to steps.</p>
+<p>Apply custom animations to steps. Handles the attribute <em>data-jmpress</em>.</p>
 
 <h3>Circular Stepping <em>src/components/circular.js</em></h3>
 <p>This default plugin handles the natural flow of the steps, taken from the dom order.</p>
@@ -33,20 +33,21 @@ It also handles clicks on link to other steps.</p>
 <p>Find steps near each other.</p>
 
 <h3>Starting Step <em>src/components/start.js</em></h3>
-<p>This default plugin handles the config option "start".</p>
+<p>This default plugin handles the config option <em>start</em>.</p>
 
 <h3>Templates <em>src/components/templates.js</em></h3>
 <p>This default plugin handles templates.
-It handles the data-template attribute and registers the template.</p>
+It handles the <em>data-template</em> attribute and registers the template.</p>
 
 <h3>Translate, Scale &amp; Rotate <em>src/components/transform.js</em></h3>
-<p>This default plugin handles the transformation stuff.</p>
+<p>This default plugin handles the transformations.</p>
 
 <h3>Viewport <em>src/components/viewport.js</em></h3>
 <p>This default plugin handles camera zooming to window size.</p>
 
 <h3>Ways: Routing <em>src/components/ways.js</em></h3>
-<p>This default plugin handles the data-next and data-prev attributes and the route command.</p>
+<p>This default plugin handles the <em>data-next</em> and <em>data-prev</em>
+attributes and the route command.</p>
 </section>
 
 <section>
@@ -55,7 +56,7 @@ It handles the data-template attribute and registers the template.</p>
 you might choose to use. To load the plugin simply add a script tag including
 the plugin js file.</p>
 
-<h3>Duration</h3>
+<h3>Duration <em>src/plugins/duration.js</em></h3>
 <p>For automatically changing steps after a given duration. Makes the attributes
 <em>data-duration</em> and <em>data-duration-action</em> available:</p>
 
@@ -105,11 +106,11 @@ Set to property and property values which should be changed.
 The values are set in on step, so transition should be enabled on element.</p>
 
 
-<h3>Secondary</h3>
+<h3>Secondary <em>src/plugins/secondary.js</em></h3>
 <p>Documentation coming soon.</p>
 
-<h3>Toggle</h3>
-<p>Bind a key to toggle the de/initialization of jmpress. Example:</p>
+<h3>Toggle <em>src/plugins/toggle.js</em></h3>
+<p>Bind a key to toggle the de/initialization of jmpress.js. Example:</p>
 <pre><code>$("#jmpress").jmpress("toggle", 27); // Bind escape key</code></pre>
 </section>
 
