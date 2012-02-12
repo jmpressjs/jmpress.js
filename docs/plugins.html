@@ -3,53 +3,72 @@
 <p>Plugins are a way to package additional functionality into jmpress.js. In
 fact most of jmpress.js is built using this same plugin interface.</p>
 
-<h2>Default Plugins</h2>
-<p>jmpress.js comes loaded with a default set of plugins to handle the common uses.</p>
+<h2>Components / Default Plugins</h2>
+<p>jmpress.js comes loaded with a default set of plugins called components to handle
+the common uses. Components are compiled into the jmpress.js file and there is no
+need to include them by <em>&lt;script&gt;</em>-tag.</p>
+<p>You can compile your own version of jmpress.js by excluding or replacing some of
+them in the grunt.js file. In some cases the order is important.</p>
 
-<h3>Active Class <em>src/components/active.js</em></h3>
-<p>This default plugin handles the toggling of <em>activeClass</em> and <em>nestedActiveClass</em>.</p>
-
-<h3>Ajax Load Steps <em>src/components/ajax.js</em></h3>
-<p>This default plugin enables you to load step via ajax.
-It handles the <em>data-src</em> and <em>href</em> attribute and offers the "afterStepLoaded" event.</p>
-
-<h3>Animation <em>src/components/animation.js</em></h3>
-<p>Apply custom animations to steps. Handles the attribute <em>data-jmpress</em>.
-Take a look at this <a href="http://shama.github.com/jmpress.js/examples/animation/" target="_blank">animation example</a>
-for more information.</p>
-
-<h3>Circular Stepping <em>src/components/circular.js</em></h3>
-<p>This default plugin handles the natural flow of the steps, taken from the dom order.</p>
-
-<h3>Hash in URL <em>src/components/hash.js</em></h3>
-<p>This default plugin handles updates to and change events from the url hash.
-It also handles clicks on link to other steps.</p>
-
-<h3>Keyboard Navigation <em>src/components/keyboard.js</em></h3>
-<p>This default plugin handles navigation with the keyboard.</p>
-
-<h3>Mouse: Clickable Inactive Steps <em>src/components/mouse.js</em></h3>
-<p>This default plugin handles click on other steps.</p>
+<h3>Core <em>src/components/core.js</em></h3>
+<p>This is the jmpress.js core.</p>
 
 <h3>Near <em>src/components/near.js</em></h3>
-<p>Find steps near each other.</p>
-
-<h3>Starting Step <em>src/components/start.js</em></h3>
-<p>This default plugin handles the config option <em>start</em>.</p>
-
-<h3>Templates <em>src/components/templates.js</em></h3>
-<p>This default plugin handles templates.
-It handles the <em>data-template</em> attribute and registers the template.</p>
+<p>This component adds the <em>$(...).near</em> function to jQuery. This function
+finds the next (prev) element in dom which matches a selector.</p>
 
 <h3>Translate, Scale &amp; Rotate <em>src/components/transform.js</em></h3>
-<p>This default plugin handles the transformations.</p>
+<p>This component handles the transformations. It handles the basic attributes like
+<em>data-x</em>, <em>data-rotate</em> or <em>data-scale-y</em>.</p>
 
-<h3>Viewport <em>src/components/viewport.js</em></h3>
-<p>This default plugin handles camera zooming to window size.</p>
+<h3>Active Class <em>src/components/active.js</em></h3>
+<p>This component handles the toggling of <em>activeClass</em> and <em>nestedActiveClass</em>.</p>
+
+<h3>Circular Stepping <em>src/components/circular.js</em></h3>
+<p>This component handles the natural flow of the steps, taken from the dom order.
+It is based on the Near component. It also handles the <em>data-exclude</em> attribute.</p>
+
+<h3>Starting Step <em>src/components/start.js</em></h3>
+<p>This component handles the config option <em>start</em>. As the start config
+option should override the start of the natural flow, this component should be
+included after the Circular Stepping component.</p>
 
 <h3>Ways: Routing <em>src/components/ways.js</em></h3>
-<p>This default plugin handles the <em>data-next</em> and <em>data-prev</em>
-attributes and the route command.</p>
+<p>This component handles the <em>data-next</em> and <em>data-prev</em>
+attributes and the route command. As it should override the natural flow of the
+steps, it should be included after the Circular Stepping component.</p>
+
+<h3>Ajax Load Steps <em>src/components/ajax.js</em></h3>
+<p>This component enables you to load step via ajax.
+It handles the <em>data-src</em> and <em>href</em> attribute and offers the "afterStepLoaded" event.</p>
+
+<h3>Hash in URL <em>src/components/hash.js</em></h3>
+<p>This component handles updates to and change events from the url hash.
+It also handles clicks on link to other steps. As the initial hash also defines a
+starting step which should override the Starting Step component, this component
+should be included after that.</p>
+
+<h3>Keyboard <em>src/components/keyboard.js</em></h3>
+<p>This component handles navigation with the keyboard. It also offers a binding mechanism for other components, plugins and the user.</p>
+
+<h3>Viewport <em>src/components/viewport.js</em></h3>
+<p>This component handles camera zooming to window size and zooming in zoomable
+steps. The binding of [+] and [-] keys relies on the Keyboard component.</p>
+
+<h3>Mouse: Clickable Inactive Steps <em>src/components/mouse.js</em></h3>
+<p>This component handles click on other steps.</p>
+
+<h3>Templates <em>src/components/templates.js</em></h3>
+<p>This component handles templates.
+It handles the <em>data-template</em> attribute and registers the template.</p>
+
+<h3>jQuery events <em>src/components/jqevents.js</em></h3>
+<p>This component fires the jQuery events <em>enterStep</em> and <em>leaveStep</em>.</p>
+
+<h3>Animation <em>src/components/animation.js</em></h3>
+<p>Apply custom animations to steps. Handles the attribute <em>data-jmpress</em> (the attribute name depends on a config option).
+Take a look at this <a href="http://shama.github.com/jmpress.js/examples/animation/" target="_blank">animation example</a>
+for more information.</p>
 </section>
 
 <section>
