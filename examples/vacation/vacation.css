@@ -1,10 +1,11 @@
 /** GENERAL **/
-body {
+body, html {
 	font-family: Verdana, sans-serif;
 	background-color: #ddd;
 	-webkit-font-smoothing: antialiased;
 	
 	background: url(http://farm8.staticflickr.com/7022/6832135787_d53ee5a487_o.jpg);
+	pointer-events: none;
 }
 
 /** STEP STYLES **/
