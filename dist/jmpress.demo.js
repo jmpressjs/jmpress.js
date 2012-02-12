@@ -2575,14 +2575,10 @@
 			{
 				x: 2500
 				,y: -900
+				,z: -350
 				,rotate: -160
+				,rotateX: 40
 				,scale: 2.2
-			},
-			{
-				x: 2600
-				,y: -1700
-				,rotate: -180
-				,scale: 2.4
 			},
 			{
 				x: 2600
@@ -2591,25 +2587,11 @@
 				,scale: 2.6
 			},
 			{
-				x: 2700
-				,y: -3700
-				,z: -350
-				,rotate: -230
-				,rotateX: 40
-				,scale: 2.8
-			},
-			{
 				x: 1500
-				,y: -4500
-				,rotate: -230
-				,scale: 2.8
-			},
-			{
-				x: 1500
-				,y: -9000
+				,y: -2600
 				,z: 0
 				,rotate: -230
-				,scale: 10
+				,scale: 0.7
 				,viewPort: {
 					height: 2000
 					,width: 4500
@@ -2619,7 +2601,6 @@
 			}
 		]});
 		$('#jmpress').jmpress("route", ["#showcase-zoom", "#about"]);
-		$('#jmpress').jmpress("route", ["#docs", "#contribute"]);
 		var jmpressConfig = {
 			// SET THE VIEW PORT
 			viewPort: {
