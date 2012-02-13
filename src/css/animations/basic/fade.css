@@ -26,7 +26,7 @@
 	opacity: 0;
 }
 
-.fade, .fade-slow, .fade-fast {
+.do-fade, .do-fade-slow, .do-fade-fast {
 	opacity: 1;
 }
 

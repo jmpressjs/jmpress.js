@@ -14,7 +14,7 @@
 	transform:         translate3d(0,0,1px) scale(10,10);
 }
 
-.zoom {
+.do-zoom {
 	opacity: 1;
 
 	-webkit-transform: translate3d(0,0,1px) scale(1,1);

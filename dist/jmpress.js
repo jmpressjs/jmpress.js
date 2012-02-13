@@ -2095,7 +2095,7 @@
 	function parseSubstepInfo(str) {
 		var arr = str.split(" ");
 		var className = arr[0];
-		var config = { willClass: "will-"+className, doClass: className, hasClass: "has-"+className };
+		var config = { willClass: "will-"+className, doClass: "do-"+className, hasClass: "has-"+className };
 		var state = "";
 		for(var i = 1; i < arr.length; i++) {
 			var s = arr[i];

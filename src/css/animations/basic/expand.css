@@ -14,7 +14,7 @@
 	transform:         translate3d(0,0,1px) scale(0.7,1);
 }
 
-.expand {
+.do-expand {
 	opacity: 1;
 
 	-webkit-transform: translate3d(0,0,1px) scale(1,1);

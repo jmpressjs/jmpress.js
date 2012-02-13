@@ -33,11 +33,11 @@
 	top: 300px;
 }
 
-.drive-up, .drive-down {
+.do-drive-up, .do-drive-down {
 	opacity: 1;
 	top: 0px;
 }
-.drive-right, .drive-left {
+.do-drive-right, .do-drive-left {
 	opacity: 1;
 	left: 0px;
 }
