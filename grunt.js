@@ -44,6 +44,7 @@ config.init({
 			'src/components/keyboard.js',
 			'src/components/viewport.js',
 			'src/components/mouse.js',
+			'src/components/mobile.js',
 			'src/components/templates.js',
 			'src/components/jqevents.js',
 			'src/components/animation.js'],
