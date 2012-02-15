@@ -35,10 +35,22 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
 body {
 	line-height: 1;
 	font-weight: bold;
 	pointer-events: none;
+	border-width: 0px !important;
+
+	-webkit-transform: translate3d(0,0,1px);
+	-moz-transform:    translate3d(0,0,1px);
+	-ms-transform:     translate3d(0,0,1px);
+	-o-transform:      translate3d(0,0,1px);
+	transform:         translate3d(0,0,1px);
 }
 ol, ul {
 	list-style: none;
