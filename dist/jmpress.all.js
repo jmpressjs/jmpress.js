@@ -1931,8 +1931,8 @@
 
 }(jQuery, document, window));
 /*!
- * ways.js
- * Control the flow of the steps
+ * mobile.js
+ * Adds support for swipe on touch supported browsers
  */
 (function( $, document, window, undefined ) {
 
