@@ -30,6 +30,9 @@ config.init({
 	lint: {
 		files: ['src/components/*', 'src/plugins/*']
 	},
+	qunit: {
+		files: ['test/**/*.html']
+	},
 	concat: {
 		'dist/jmpress.js': ['<banner>',
 			'src/components/core.js',
