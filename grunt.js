@@ -76,7 +76,7 @@ config.init({
 		'dist/plugins/jmpress.duration.js': ['<banner:meta.pluginbanner>', 'src/plugins/duration.js'],
 
 		'dist/basic-animations.css': ['<banner>', 'src/css/animations/basic/*'],
-		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*'],
+		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*']
 	},
 	min: {
 		'dist/jmpress.min.js': ['<banner>', 'dist/jmpress.js'],
@@ -85,11 +85,11 @@ config.init({
 		'dist/jmpress.allplugins.min.js': ['<banner:meta.pluginbanner>', 'dist/jmpress.allplugins.js'],
 		'dist/plugins/jmpress.secondary.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.secondary.js'],
 		'dist/plugins/jmpress.toggle.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.toggle.js'],
-		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js'],
+		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js']
 	},
 	css_min: {
 		'dist/basic-animations.min.css': ['dist/basic-animations.css'],
-		'dist/advanced-animations.min.css': ['dist/advanced-animations.css'],
+		'dist/advanced-animations.min.css': ['dist/advanced-animations.css']
 	},
 	jshint: {
 		options: {
@@ -114,4 +114,4 @@ config.init({
 	sqwish: {},
 	uglify: {}
 });
-task.registerTask('default', 'lint concat min css_min');
+task.registerTask('default', 'lint concat min css_min qunit');
