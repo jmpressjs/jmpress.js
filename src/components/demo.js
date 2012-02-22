@@ -213,6 +213,7 @@
 			,hash: { use: false }
 			,stepSelector: ".nested-step"
 			,fullscreen: false
+			,presentationMode: { use: false }
 		});
 		setTimeout(function() {
 			$("#jmpress").removeClass("init-css");

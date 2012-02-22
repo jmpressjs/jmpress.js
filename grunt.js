@@ -60,7 +60,8 @@ config.init({
 		'dist/jmpress.allplugins.js': ['<banner:meta.pluginbanner>',
 			'src/plugins/toggle.js',
 			'src/plugins/secondary.js',
-			'src/plugins/duration.js'],
+			'src/plugins/duration.js',
+			'src/plugins/presentation-mode.js'],
 		'dist/jmpress.demo.js': ['<banner>',
 			'dist/jmpress.js',
 			'dist/jmpress.allplugins.js',
@@ -71,6 +72,7 @@ config.init({
 		'dist/plugins/jmpress.secondary.js': ['<banner:meta.pluginbanner>', 'src/plugins/secondary.js'],
 		'dist/plugins/jmpress.toggle.js': ['<banner:meta.pluginbanner>', 'src/plugins/toggle.js'],
 		'dist/plugins/jmpress.duration.js': ['<banner:meta.pluginbanner>', 'src/plugins/duration.js'],
+		'dist/plugins/jmpress.presentation-mode.js': ['<banner:meta.pluginbanner>', 'src/plugins/presentation-mode.js'],
 
 		'dist/basic-animations.css': ['<banner>', 'src/css/animations/basic/*'],
 		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*'],
@@ -83,6 +85,7 @@ config.init({
 		'dist/plugins/jmpress.secondary.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.secondary.js'],
 		'dist/plugins/jmpress.toggle.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.toggle.js'],
 		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js'],
+		'dist/plugins/jmpress.presentation-mode.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.presentation-mode.js'],
 	},
 	css_min: {
 		'dist/basic-animations.min.css': ['dist/basic-animations.css'],

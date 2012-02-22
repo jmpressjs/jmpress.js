@@ -182,7 +182,7 @@
 		eventData.current.zoomOriginWindowScale = windowScale;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
-		if(eventData.nextStep !== step) {
+		if(!eventData.nextStep || !step || $(eventData.nextStep).attr("id") !== $(step).attr("id")) {
 			eventData.current.userZoom = 0;
 			eventData.current.userTranslateX = 0;
 			eventData.current.userTranslateY = 0;
