@@ -2581,6 +2581,7 @@
 	$jmpress("defaults").presentationMode = {
 		use: true,
 		url: "presentation-screen.html",
+		notesUrl: false,
 		transferredValues: ["userZoom", "userTranslateX", "userTranslateY"]
 	};
 	$jmpress("defaults").keyboard.keys[80] = "presentationPopup"; // p key
@@ -2615,7 +2616,7 @@
 						break;
 					case "read":
 						try {
-							event.source.postMessage(JSON.stringify({type: "url", url: window.location.href}), "*");
+							event.source.postMessage(JSON.stringify({type: "url", url: window.location.href, notesUrl: eventData.settings.presentationMode.notesUrl}), "*");
 						} catch(e) {
 							$.error("Cannot post message to source: " + e);
 						}
@@ -2676,7 +2677,7 @@
 		function trySend() {
 			jmpress.jmpress("current").presentationPopupTimeout = setTimeout(trySend, 100);
 			try {
-				popup.postMessage(JSON.stringify({type: "url", url: window.location.href}), "*");
+				popup.postMessage(JSON.stringify({type: "url", url: window.location.href, notesUrl: jmpress.jmpress("settings").presentationMode.notesUrl}), "*");
 			} catch(e) {
 			}
 		}
@@ -2836,6 +2837,7 @@
 			,canvasClass: ""
 			,initClass: "init-css"
 			,notSupportedClass: "normal-mode"
+			,presentationMode: { notesUrl: "index.notes.html" }
 		};
 		$('#jmpress').jmpress("toggle", 27, jmpressConfig, true);
 		$('.next').click(function() {

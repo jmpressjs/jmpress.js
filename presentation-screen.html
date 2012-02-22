@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="dist/jmpress.min.js"></script>
 	<script type="text/javascript">
+		var notesUrl = false;
 		window.addEventListener("message", function(event) {
 			var json = JSON.parse(event.data);
 			switch(json.type) {
@@ -22,10 +23,16 @@
 			case "select":
 				window.console.log(event.data);
 				window.opener.postMessage(JSON.stringify(json), "*");
+				if(notesUrl)
+					$("#notesframe").attr("src", notesUrl+"#"+json.targetId);
 				break;
 			case "url":
 				event.source.postMessage(JSON.stringify({type:"ok"}), "*");
 				$("#frame").attr("src", json.url);
+				notesUrl = json.notesUrl || notesUrl;
+				window.alert(notesUrl);
+				if(notesUrl)
+					$("#notesframe").attr("src", notesUrl);
 				break;
 			}
 		});
@@ -38,31 +45,32 @@
 			margin: 0px;
 			border: 0px;
 			text-align: center;
+			background: #999999;
 		}
 		#frame {
 			position: relative;
 			height: 50%;
 			padding: 0px;
-			margin-top: 20px;
-			margin-bottom: 20px;
+			margin-top: 2%;
+			margin-bottom: 1%;
 			width: 90%;
-			border: 5px solid black;
+			border: 0px solid black;
+			background: white;
 		}
-		.block {
-			display: inline-block;
-			text-align: left;
-			padding: 20px;
-			border: 1px solid #999999;
+		#notesframe {
+			position: relative;
+			height: 40%;
+			padding: 0px;
+			margin-top: 1%;
+			margin-bottom: 0px;
+			width: 90%;
+			border: 0px solid black;
+			background: white;
 		}
 	</style>
 </head>
 <body>
 	<iframe id="frame" src="javascript:document.write('waiting for presentation message...');" style=""></iframe>
-	<div>
-	<div class="block">
-		<h1>Notes</h1>
-		<p>coming soon...</p>
-	</div>
-	</div>
+	<iframe id="notesframe" src="javascript:document.write('waiting for presentation message...');" style=""></iframe>
 </body>
 </html>

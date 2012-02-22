@@ -145,6 +145,7 @@
 			,canvasClass: ""
 			,initClass: "init-css"
 			,notSupportedClass: "normal-mode"
+			,presentationMode: { notesUrl: "index.notes.html" }
 		};
 		$('#jmpress').jmpress("toggle", 27, jmpressConfig, true);
 		$('.next').click(function() {
