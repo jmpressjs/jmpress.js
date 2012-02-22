@@ -30,7 +30,6 @@
 				event.source.postMessage(JSON.stringify({type:"ok"}), "*");
 				$("#frame").attr("src", json.url);
 				notesUrl = json.notesUrl || notesUrl;
-				window.alert(notesUrl);
 				if(notesUrl)
 					$("#notesframe").attr("src", notesUrl);
 				break;
