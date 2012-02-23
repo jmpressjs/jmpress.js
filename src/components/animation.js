@@ -26,9 +26,11 @@
 				}
 				break;
 			case "after":
-				if(s.match(/^[1-9][0-9]*[sm]?/)) {
+				if(s.match(/^[1-9][0-9]*m?s?/)) {
 					var value = parseFloat(s);
-					if(s.indexOf("s") !== -1) {
+					if(s.indexOf("ms") !== -1) {
+						value *= 1;
+					} else if(s.indexOf("s") !== -1) {
 						value *= 1000;
 					} else if(s.indexOf("m") !== -1) {
 						value *= 60000;
