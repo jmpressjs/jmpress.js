@@ -6,8 +6,12 @@
 
 	'use strict';
 
+	/* FUNCTIONS */
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
+	}
+	function toCssNumber(number) {
+		return (Math.round(10000*number)/10000)+"";
 	}
 
 	/**
@@ -21,15 +25,15 @@
 					var coord = ["X", "Y", "Z"];
 					var i;
 					if(item[0] === "translate") { // ["translate", x, y, z]
-						transform += " translate3d(" + (item[1] || 0) + "px," + (item[2] || 0) + "px," + (item[3] || 0) + "px)";
+						transform += " translate3d(" + toCssNumber(item[1] || 0) + "px," + toCssNumber(item[2] || 0) + "px," + toCssNumber(item[3] || 0) + "px)";
 					} else if(item[0] === "rotate") {
 						var order = item[4] ? [1, 2, 3] : [3, 2, 1];
 						for(i = 0; i < 3; i++) {
-							transform += " rotate" + coord[order[i]-1] + "(" + (item[order[i]] || 0) + "deg)";
+							transform += " rotate" + coord[order[i]-1] + "(" + toCssNumber(item[order[i]] || 0) + "deg)";
 						}
 					} else if(item[0] === "scale") {
 						for(i = 0; i < 3; i++) {
-							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+							transform += " scale" + coord[i] + "(" + toCssNumber(item[i+1] || 1) + ")";
 						}
 					}
 				});
@@ -42,12 +46,12 @@
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
 					if(item[0] === "translate") { // ["translate", x, y, z]
-						transform += " translate(" + (item[1] || 0) + "px," + (item[2] || 0) + "px)";
+						transform += " translate(" + toCssNumber(item[1] || 0) + "px," + toCssNumber(item[2] || 0) + "px)";
 					} else if(item[0] === "rotate") {
-						transform += " rotate(" + (item[3] || 0) + "deg)";
+						transform += " rotate(" + toCssNumber(item[3] || 0) + "deg)";
 					} else if(item[0] === "scale") {
 						for(var i = 0; i < 2; i++) {
-							transform += " scale" + coord[i] + "(" + (item[i+1] || 1) + ")";
+							transform += " scale" + coord[i] + "(" + toCssNumber(item[i+1] || 1) + ")";
 						}
 					}
 				});
@@ -63,8 +67,8 @@
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
 					if(item[0] === "translate") { // ["translate", x, y, z]
-						anitarget.left = (item[1] || 0) + "px";
-						anitarget.top = (item[2] || 0) + "px";
+						anitarget.left = Math.round(item[1] || 0) + "px";
+						anitarget.top = Math.round(item[2] || 0) + "px";
 					}
 				});
 				el.animate(anitarget, 1000); // TODO: Use animation duration
