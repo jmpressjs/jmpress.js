@@ -57,7 +57,7 @@ each step programmatically:</p>
 <p></p>
 
 <pre><code>$.jmpress("template", "mytemplate", {
-	children: function( idx ) {
+	children: function( idx, current_child, children ) {
 		return {
 			y: 400
 			,x: -300 + idx * 300
