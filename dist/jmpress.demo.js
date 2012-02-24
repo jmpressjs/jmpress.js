@@ -2023,7 +2023,7 @@
 			children.each(function(idx, child) {
 				child = $(child);
 				var tmpl = child.data(templateFromParentIdent) || {};
-				addUndefined(tmpl, templateChildren(idx, child));
+				addUndefined(tmpl, templateChildren(idx, child, children));
 				child.data(templateFromParentIdent, tmpl);
 			});
 		} // TODO: else if(object)
