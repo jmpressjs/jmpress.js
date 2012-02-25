@@ -228,6 +228,9 @@
 			});
 
 			container.attr("style", oldStyle.container);
+			if(settings.fullscreen) {
+				$("html").attr("style", "");
+			}
 			area.attr("style", oldStyle.area);
 			$(canvas).children().each(function() {
 				jmpress.append( $( this ) );
@@ -593,6 +596,9 @@
 		});
 		if(settings.fullscreen) {
 			container = $('body');
+			$("html").css({
+				overflow: 'hidden'
+			});
 			area = jmpress;
 		}
 		oldStyle.area = area.attr("style") || "";
