@@ -28,7 +28,10 @@ config.init({
 		tasks: 'default'
 	},
 	lint: {
-		files: ['src/components/*', 'src/plugins/*']
+		files: ['src/components/*', 'src/plugins/*', 'test/*.js']
+	},
+	qunit: {
+		files: ['test/**/*.html']
 	},
 	concat: {
 		'dist/jmpress.js': ['<banner>',
@@ -75,7 +78,7 @@ config.init({
 		'dist/plugins/jmpress.presentation-mode.js': ['<banner:meta.pluginbanner>', 'src/plugins/presentation-mode.js'],
 
 		'dist/basic-animations.css': ['<banner>', 'src/css/animations/basic/*'],
-		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*'],
+		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*']
 	},
 	min: {
 		'dist/jmpress.min.js': ['<banner>', 'dist/jmpress.js'],
@@ -85,11 +88,11 @@ config.init({
 		'dist/plugins/jmpress.secondary.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.secondary.js'],
 		'dist/plugins/jmpress.toggle.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.toggle.js'],
 		'dist/plugins/jmpress.duration.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.duration.js'],
-		'dist/plugins/jmpress.presentation-mode.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.presentation-mode.js'],
+		'dist/plugins/jmpress.presentation-mode.min.js': ['<banner:meta.pluginbanner>', 'dist/plugins/jmpress.presentation-mode.js']
 	},
 	css_min: {
 		'dist/basic-animations.min.css': ['dist/basic-animations.css'],
-		'dist/advanced-animations.min.css': ['dist/advanced-animations.css'],
+		'dist/advanced-animations.min.css': ['dist/advanced-animations.css']
 	},
 	jshint: {
 		options: {
