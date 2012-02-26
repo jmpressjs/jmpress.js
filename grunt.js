@@ -28,7 +28,7 @@ config.init({
 		tasks: 'default'
 	},
 	lint: {
-		files: ['src/components/*', 'src/plugins/*']
+		files: ['src/components/*', 'src/plugins/*', 'test/*.js']
 	},
 	qunit: {
 		files: ['test/**/*.html']
@@ -114,4 +114,4 @@ config.init({
 	sqwish: {},
 	uglify: {}
 });
-task.registerTask('default', 'lint concat min css_min qunit');
+task.registerTask('default', 'lint concat min css_min');
