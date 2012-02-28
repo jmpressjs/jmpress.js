@@ -67,22 +67,9 @@
 				,y: -2500
 				,rotate: -210
 				,scale: 2.6
-			},
-			{
-				x: 1500
-				,y: -2600
-				,z: 0
-				,rotate: -230
-				,scale: 0.7
-				,viewPort: {
-					height: 2000
-					,width: 4500
-					,zoomable: 10
-					,maxScale: 2
-				}
 			}
 		]});
-		$('#jmpress').jmpress("route", ["#showcase-zoom", "#about"]);
+		$('#jmpress').jmpress("route", ".step:not(#home)");
 		var jmpressConfig = {
 			// SET THE VIEW PORT
 			viewPort: {
