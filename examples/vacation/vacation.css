@@ -1,0 +1,68 @@
+/** GENERAL **/
+body, html {
+	font-family: Verdana, sans-serif;
+	background-color: #ddd;
+	-webkit-font-smoothing: antialiased;
+	
+	background: url(http://farm8.staticflickr.com/7022/6832135787_d53ee5a487_o.jpg);
+	pointer-events: none;
+}
+
+/** STEP STYLES **/
+section {
+	width: 900px;
+    height: 400px;
+	font-size: 20pt;
+	min-height: 500px;
+
+	display: block;
+    padding: 40px 60px;
+
+	text-align: center;
+
+    color: rgb(102, 102, 102);
+	z-index: 1;
+	text-shadow: 1px 1px 3px rgb(102, 102, 102);
+
+    letter-spacing: 1px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	-ms-box-sizing:     border-box;
+	-o-box-sizing:      border-box;
+	box-sizing:         border-box;
+
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
+	
+	pointer-events: auto;
+}
+
+.nextday {
+}
+.prevday {
+}
+.prevday, .nextday {
+	border: 1px rgba(202, 102, 202, 0.5);
+	border-radius: 5px;
+	margin-top: 30px;
+	padding: 5px;
+	background: rgba(202, 202, 202, 0.5);
+	box-shadow: 2px 2px rgba(0,0,0,0.5);
+	color: black;
+	text-decoration: none;
+	opacity: 0;
+
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
+}
+
+.active .prevday, .active .nextday {
+	opacity: 1;
+}

@@ -1,0 +1,58 @@
+/** GENERAL **/
+body {
+	font-family: Verdana, sans-serif;
+	min-height: 740px;
+	background-color: #ddd;
+	-webkit-font-smoothing: antialiased;
+	font-size: 20px;
+}
+
+/** STEP STYLES **/
+.step {
+	position: absolute;
+	width: 900px;
+    height: 400px;
+	font-size: 1em;
+	min-height: 500px;
+	background-color: white;
+
+	display: block;
+    padding: 40px 60px;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+    border: 10px solid rgba(0, 0, 0, 1);
+
+    color: rgb(102, 102, 102);
+    text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+
+    letter-spacing: -1px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	-ms-box-sizing:     border-box;
+	-o-box-sizing:      border-box;
+	box-sizing:         border-box;
+
+	-webkit-transition: opacity 1s;
+	-moz-transition:    opacity 1s;
+	-ms-transition:     opacity 1s;
+	-o-transition:      opacity 1s;
+	transition:         opacity 1s;
+}
+
+/* fade out inactive slides */
+.step:not(.active):not(.nested-active) {
+	opacity: 0.3;
+}
+
+.step > .step {
+	font-size: 70px;
+}
+
+/** NOT SUPPORTED STYLES **/
+.not-supported .step {
+	position: relative;
+	opacity: 1;
+	margin: 20px auto;
+}

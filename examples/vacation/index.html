@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | vacation example</title>
+	
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="vacation.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../dist/jmpress.all.js"></script>
+
+	<script type="text/javascript">
+	$(function() {
+		$.jmpress("template", "pic1", {
+			scale: 0.2,
+			secondary: {"":"siblings", scale: 1}
+		});
+		$.jmpress("template", "pics1", {
+			children: [
+				{x: -250, y: 50, template: "pic1",
+					secondary: {x: 0, y: 1000}},
+				{x: 0, y: 50, template: "pic1",
+					secondary: {x: 0, y: 2000}},
+				{x: 250, y: 50, template: "pic1",
+					secondary: {x: 1000, y: 2000}},
+				{x: -250, y: 200, template: "pic1",
+					secondary: {x: 1000, y: 3000}},
+				{x: 0, y: 200, template: "pic1",
+					secondary: {x: 0, y: 3000}},
+				{x: 250, y: 200, template: "pic1",
+					secondary: {x: 0, y: 4000}},
+				{x: -250, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 4000}},
+				{x: 0, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 3000}},
+				{x: 250, y: 350, template: "pic1",
+					secondary: {x: -1000, y: 2000}},
+			]
+		});
+		$.jmpress("template", "pic2", {
+			scale: 0.2,
+			secondary: {"":"self", scale: 1, x: 0, y: 500}
+		});
+		$.jmpress("template", "pics2", {
+			children: function(idx) {
+				return {x: 50-idx*10, y: 100-idx*10, z: 10-idx, template: "pic2"}
+			}
+		});
+		$.jmpress("template", "pics3", {
+			children: function(idx) {
+				return {r: 250, phi: idx*40, rotateY: idx*40, scale: 0.2, rotateX: 90}
+			}
+		});
+		$.jmpress("template", "main", {
+			children: [
+				{},
+				{x: 1000, rotate: 0},
+				{x: 2000, rotate: 0},
+				{x: 3000, rotate: 0}
+			]
+		});
+		$('article').jmpress({
+			stepSelector: "section",
+			viewPort: {
+				height: 500,
+				width: 1000,
+				maxScale: 1
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+
+<article data-template="main">
+	<section>
+		<h1>My vacation...</h1>
+		<p>This is just an example for jmpress.js</p>
+		<p>Images under <a href="http://creativecommons.org/licenses/by/2.0/">Creative Commons</a> from Miran Rijavec</p>
+		<p><a href="http://www.flickr.com/photos/miran/6832135787/" title="IMG_2663_pp von Miran Rijavec bei Flickr">background image on flickr.com</a>
+		<p>&nbsp;</p>
+		<p><em>Press space to continue...</em></p>
+	</section>
+	
+	<section id="day1" data-template="pics1">
+		<h1><a href="#day3" class="prevday">&larr;</a>&nbsp;Day 1&nbsp;<a href="#day2" class="nextday">&rarr;</a></h1>
+		<p>great start, great weather...</p>
+		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832131653/" title="IMG_2659_pp von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7010/6832131653_8bf3a938f0.jpg" height="100%" alt="IMG_2659_pp"></a>
+			<p>just</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832124463/" title="IMG_2654 von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7146/6832124463_007603c6a4.jpg" height="100%" alt="IMG_2654"></a>
+			<p>a few</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>pics</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6744852201/" title="Srikrishna Pot Curd. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7153/6744852201_3b76081d92.jpg" height="100%" alt="Srikrishna Pot Curd."></a>
+			<p>showing</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727258969/" title="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7141/6727258969_b713ee47db.jpg" height="100%" alt="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah."></a>
+			<p>some</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727244135/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7013/6727244135_3f9f825633.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>things</p>
+		</section>		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727108551/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7002/6727108551_03349300e0.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>that's great</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727081743/" title="Gokarnian architectural details ... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7006/6727081743_7dbf7a0e70.jpg" height="100%" alt="Gokarnian architectural details ..."></a>
+			<p>thanks</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>flickr</p>
+		</section>
+	</section>
+	
+	<section id="day2" data-template="pics2">
+		<h1><a href="#day1" class="prevday">&larr;</a>&nbsp;Day 2&nbsp;<a href="#day3" class="nextday">&rarr;</a></h1>
+		<p>just as great as day 1</p>
+		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832131653/" title="IMG_2659_pp von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7010/6832131653_8bf3a938f0.jpg" height="100%" alt="IMG_2659_pp"></a>
+			<p>just</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832124463/" title="IMG_2654 von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7146/6832124463_007603c6a4.jpg" height="100%" alt="IMG_2654"></a>
+			<p>a few</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>pics</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6744852201/" title="Srikrishna Pot Curd. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7153/6744852201_3b76081d92.jpg" height="100%" alt="Srikrishna Pot Curd."></a>
+			<p>showing</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727258969/" title="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7141/6727258969_b713ee47db.jpg" height="100%" alt="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah."></a>
+			<p>some</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727244135/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7013/6727244135_3f9f825633.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>things</p>
+		</section>		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727108551/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7002/6727108551_03349300e0.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>that's great</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727081743/" title="Gokarnian architectural details ... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7006/6727081743_7dbf7a0e70.jpg" height="100%" alt="Gokarnian architectural details ..."></a>
+			<p>thanks</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>flickr</p>
+		</section>
+	</section>
+	
+	<section id="day3" data-template="pics3">
+		<h1><a href="#day2" class="prevday">&larr;</a>&nbsp;Day 3&nbsp;<a href="#day1" class="nextday">&rarr;</a></h1>
+		<p>rollercoaster was great...</p>
+		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832131653/" title="IMG_2659_pp von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7010/6832131653_8bf3a938f0.jpg" height="100%" alt="IMG_2659_pp"></a>
+			<p>just</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6832124463/" title="IMG_2654 von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7146/6832124463_007603c6a4.jpg" height="100%" alt="IMG_2654"></a>
+			<p>a few</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>pics</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6744852201/" title="Srikrishna Pot Curd. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7153/6744852201_3b76081d92.jpg" height="100%" alt="Srikrishna Pot Curd."></a>
+			<p>showing</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727258969/" title="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah. von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7141/6727258969_b713ee47db.jpg" height="100%" alt="Spirulina &amp;tc. Evening creativity on Kudle beach... Sleemy, yeah."></a>
+			<p>some</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727244135/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7013/6727244135_3f9f825633.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>things</p>
+		</section>		
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727108551/" title="Evening creativity on Kudle beach... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7002/6727108551_03349300e0.jpg" height="100%" alt="Evening creativity on Kudle beach..."></a>
+			<p>that's great</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6727081743/" title="Gokarnian architectural details ... von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7006/6727081743_7dbf7a0e70.jpg" height="100%" alt="Gokarnian architectural details ..."></a>
+			<p>thanks</p>
+		</section>
+		<section>
+			<a href="http://www.flickr.com/photos/miran/6801824533/" title="Maracua / Passion fruit / Passiflora edulis von Miran Rijavec bei Flickr"><img src="http://farm8.staticflickr.com/7143/6801824533_fab8cd19ef.jpg" height="100%" alt="Maracua / Passion fruit / Passiflora edulis"></a>
+			<p>flickr</p>
+		</section>
+	</section>
+</article>
+
+<!-- IGNORE BELOW THIS LINE -->
+
+<div style="position: fixed; bottom: 50px; left: 10px; pointer-events: auto;">
+	<g:plusone href="http://shama.github.com/jmpress.js"></g:plusone>
+	<script type="text/javascript">
+	  (function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/plusone.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-text="jmpress.js: a jQuery port of impress.js" data-url="http://shama.github.com/jmpress.js" data-related="shama"></a>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+</div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28251006-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

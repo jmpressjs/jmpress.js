@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | presentation screen</title>
+
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="expires" content="0">
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="dist/jmpress.min.js"></script>
+	<script type="text/javascript">
+		var notesUrl = false;
+		window.addEventListener("message", function(event) {
+			var json = JSON.parse(event.data);
+			switch(json.type) {
+			case "afterInit":
+				event.source.postMessage(JSON.stringify({type:"listen"}), "*");
+				break;
+			case "select":
+				window.opener.postMessage(JSON.stringify(json), "*");
+				if(notesUrl)
+					$("#notesframe").attr("src", notesUrl+"#"+json.targetId);
+				break;
+			case "url":
+				event.source.postMessage(JSON.stringify({type:"ok"}), "*");
+				$("#frame").attr("src", json.url);
+				notesUrl = json.notesUrl || notesUrl;
+				if(notesUrl)
+					$("#notesframe").attr("src", notesUrl);
+				break;
+			}
+		});
+	</script>
+	<style>
+		body, html {
+			width: 100%;
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			border: 0px;
+			text-align: center;
+			background: #999999;
+		}
+		#frame {
+			position: relative;
+			height: 50%;
+			padding: 0px;
+			margin-top: 2%;
+			margin-bottom: 1%;
+			width: 90%;
+			border: 0px solid black;
+			background: white;
+		}
+		#notesframe {
+			position: relative;
+			height: 40%;
+			padding: 0px;
+			margin-top: 1%;
+			margin-bottom: 0px;
+			width: 90%;
+			border: 0px solid black;
+			background: white;
+		}
+	</style>
+</head>
+<body>
+	<iframe id="frame" src="javascript:document.write('waiting for presentation message...');" style=""></iframe>
+	<iframe id="notesframe" src="javascript:document.write('waiting for presentation message...');" style=""></iframe>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28251006-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

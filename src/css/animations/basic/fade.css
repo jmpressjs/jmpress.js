@@ -1,0 +1,32 @@
+.will-fade {
+	-webkit-transition: opacity 1s;
+	-moz-transition:    opacity 1s;
+	-ms-transition:     opacity 1s;
+	-o-transition:      opacity 1s;
+	transition:         opacity 1s;
+
+	opacity: 0;
+}
+.will-fade-slow {
+	-webkit-transition: opacity 2s;
+	-moz-transition:    opacity 2s;
+	-ms-transition:     opacity 2s;
+	-o-transition:      opacity 2s;
+	transition:         opacity 2s;
+
+	opacity: 0;
+}
+.will-fade-fast {
+	-webkit-transition: opacity 0.5s;
+	-moz-transition:    opacity 0.5s;
+	-ms-transition:     opacity 0.5s;
+	-o-transition:      opacity 0.5s;
+	transition:         opacity 0.5s;
+
+	opacity: 0;
+}
+
+.do-fade, .do-fade-slow, .do-fade-fast {
+	opacity: 1;
+}
+

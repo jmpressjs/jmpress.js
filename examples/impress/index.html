@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>impress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Bartek Szopka @bartaz</title>
+    <title>impress.js | impress example</title>
     
-    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
-    <meta name="author" content="Bartek Szopka" />
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
 
     <link href="impress.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../../js/jmpress.js"></script>
+	<script type="text/javascript" src="../../dist/jmpress.impress.js"></script>
 </head>
 <body>
 
@@ -60,7 +60,7 @@
 
     <div id="source" class="step" data-x="6300" data-y="2000" data-rotate="20" data-scale="4">
         <p>want to know more?</p>
-        <q><a href="http://github.com/bartaz/impress.js">use the source</a>, Luke!</q>
+        <q><a href="http://github.com/shame/jmpress.js">use the source</a>, Luke!</q>
     </div>
 
     <div id="one-more-thing" class="step" data-x="6000" data-y="4000" data-scale="2">
@@ -86,5 +86,35 @@ $(function() {
 	$('#impress').jmpress();
 });
 </script>
+
+<!-- IGNORE BELOW THIS LINE -->
+
+<div style="position: fixed; bottom: 50px; left: 10px; pointer-events: auto;">
+	<g:plusone href="http://shama.github.com/jmpress.js"></g:plusone>
+	<script type="text/javascript">
+	  (function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/plusone.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-text="jmpress.js: a jQuery port of impress.js" data-url="http://shama.github.com/jmpress.js" data-related="shama"></a>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+</div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28251006-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
 </body>
 </html>

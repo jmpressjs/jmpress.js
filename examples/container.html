@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | a jQuery plugin to build a website on the infinite canvas</title>
+
+	<meta name="description" content="jmpress.js is jQuery port of https://github.com/bartaz/impress.js based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+	<meta name="author" content="Kyle Robinson Young @shama" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/excite-bike/jquery-ui.css" rel="stylesheet" />
+	<link href="../src/css/style.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/jmpress.js"></script>
+</head>
+<body>
+
+<p style="text-align: center"><a href="../index.html#/showcase">Back to Fullscreen Slides</a></p>
+
+<div id="jmpress" class="jmpress">
+
+	<div id="about" class="step" data-x="-900" data-y="-1500">
+		<h4>introducing</h4>
+		<h1>jmpress.js</h1>
+		<p>a jQuery plugin to build a website on the infinite canvas</p>
+		<span class="ui-icon ui-icon-star"></span>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<div id="about-port" class="step" data-x="-800" data-y="-1100" data-rotate="-20" data-scale="1.2">
+		<h4>a jQuery port of</h4>
+		<div class="impress"><a href="http://bartaz.github.com/impress.js/" target="_blank">impress.js*</a><sup>created by Bartek Szopka</sup></div>
+		<p>but with a different goal in mind. Why keep it behind a podium? Let's make websites!</p>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<div id="about-jquery" class="step" data-x="-700" data-y="-500" data-rotate="-40" data-scale="1.4">
+		<h1>why jQuery?</h1>
+		<ul>
+			<li>great plugin framework that is familiar to a lot of people</li>
+			<li>easier to add and maintain features</li>
+			<li>wouldn't be surprised if CSS3 transforms/itions are later supported</li>
+			<li>Fallback to <i>.animate()</i> when needed</li>
+			<li>jQuery UI themes</li>
+			<li>easier to implement ajax into slides</li>
+			<li>jQuery mobile for adding touch support</li>
+		</ul>
+		<h3>So why not?</h3>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<div id="about-impress" class="step" data-x="0" data-y="100" data-rotate="-60" data-scale="1.6">
+		<h4>why not contribute to the</h4>
+		<h1>original?</h1>
+		<p>I have contributed and will continue to send pull requests :)<br/>
+		@bartaz has a very specific vision for impress.js which I respect.<br/>
+		<br/>
+		Plus I asked him and he <a href="https://twitter.com/#!/bartaz/status/156123781037957123" target="_blank">said no</a>.</p>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+    <div id="download" class="step" data-x="1000" data-y="200" data-rotate="-95" data-scale="1.8">
+		<h1>download</h1>
+		<p>Download, clone, submodule or fork on <a href="https://github.com/shama/jmpress.js/">github</a></p>
+		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
+		<a href="#" class="next">next &gt;</a>
+    </div>
+
+	<div id="docs" class="step" data-x="1800" data-y="-100" data-rotate="-120" data-scale="2">
+		<h1>docs</h1>
+		<p>Available <a href="https://github.com/shama/jmpress.js">in the readme</a> for now</p>
+		<span class="ui-icon ui-icon-document"></span>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<!--
+	<div id="docs-basic" data-src="docs/basic.html" class="step docs" data-x="2800" data-y="1400" data-rotate="-130" data-scale="2">
+		Loading...
+	</div>
+
+	<div id="docs-api" data-src="docs/api.html" class="step docs" data-x="3900" data-y="2500" data-rotate="-140" data-scale="2">
+		Loading...
+	</div>
+	-->
+
+	<div id="contribute" class="step" data-x="2500" data-y="-900" data-rotate="-160" data-scale="2.2">
+		<h1>contribute</h1>
+		<p>Good news! I accept pull requests ;)</p>
+		<p>Please work and pull against the <i>dev</i> or <i>beta</i> branch. Thanks!</p>
+		<span class="ui-icon ui-icon-person"></span>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<div id="contribute-tests" class="step" data-x="2600" data-y="-1700" data-rotate="-180" data-scale="2.4">
+		<h1>tests</h1>
+		<p>jmpress.js uses the <a href="http://pivotal.github.com/jasmine/" target="_blank">jasmine bdd</a> library for testing. Please load <i>tests/</i> in your browser to run the tests.</p>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+
+	<div id="contribute-wishlist" class="step" data-x="2600" data-y="-2500" data-rotate="-210" data-scale="2.6">
+		<h1>wishlist</h1>
+		<ul>
+			<li>Browser Support (hard but important)</li>
+			<li>Better fallback support for older browsers</li>
+			<li>Mobile/Touch (use jQuery mobile)</li>
+			<li>Integrate an option for jQuery UI theme support</li>
+			<li>Simple to use for new users, but flexible for advanded</li>
+			<li>Community for plugins</li>
+		</ul>
+		<a href="#" class="next">next &gt;</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#jmpress').clone().insertAfter('#jmpress');
+	
+	$('.jmpress').jmpress({
+		// SET THE VIEW PORT
+		viewPort: {
+			height: 600
+			,width: 1000
+			,maxScale: 1 // do not scale up
+		}
+		// SET THE ACTIVE SLIDE IN THE NAV
+		,setActive: function( slide ) {
+			var id = $(slide).attr('id');
+			if (id.indexOf('-') != -1) {
+				id = id.substr(0, id.indexOf('-'));
+			}
+			$('#nav a').removeClass( 'ui-state-active' );
+			$('#nav a[href=#' + id + ']').addClass( 'ui-state-active' );
+		}
+		// UPON STEP LOAD/ENCODE CODE SAMPLES
+		,afterStepLoaded: function( step, eventData ) {
+			$(step).find('code').each(function() {
+				$(this).text($(this).html()).html();
+			});
+		}
+		,containerClass: "ui-widget-content"
+		,areaClass: ""
+		,canvasClass: ""
+		,fullscreen: false
+		,hash: { use: false }
+	});
+	$('.next').click(function() {
+		$(this).closest(".jmpress").jmpress('next');
+		return false;
+	});
+	$("a[href]").addClass("ui-state-default ui-corner-all").hover(function() {
+		$(this).addClass("ui-state-hover");
+	}, function() {
+		$(this).removeClass("ui-state-hover");
+	});
+});
+</script>
+
+<!-- IGNORE BELOW THIS LINE -->
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28251006-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

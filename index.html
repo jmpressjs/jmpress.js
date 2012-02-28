@@ -6,8 +6,8 @@
 
 	<meta name="name" content="jmpress.js">
 	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
-	<meta name="author" content="Kyle Robinson Young @shama" />
-	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta http-equiv="expires" content="0">
 	<meta property="og:title" content="jmpress.js - a jQuery plugin to build a website on the infinite canvas" />
@@ -15,12 +15,11 @@
 	<meta property="og:image" content="http://dontkry.com/img/jmpress/jmpress.png" />
 
 	<link id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/start/jquery-ui.css" rel="stylesheet" />
-	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<link href="src/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="dist/basic-animations.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jmpress.js"></script>
-	<script type="text/javascript" src="plugins/jmpress.duration.js"></script>
-	<script type="text/javascript" src="plugins/jmpress.secondary.js"></script>
+	<script type="text/javascript" src="dist/jmpress.demo.js"></script>
 </head>
 <body>
 
@@ -28,19 +27,7 @@
 	<li><a href="#home"><span>HOME</span></a></li>
 	<li><a href="#about"><span>ABOUT</span></a></li>
 	<li><a href="#download"><span>DOWNLOAD</span></a></li>
-	<li><a href="#docs"><span>DOCS</span></a>
-		<ul>
-			<li><a href="#docs-start"><span>Getting Started</span></a></li>
-			<li><a href="#docs-basic"><span>Basic Usage</span></a></li>
-			<li><a href="#docs-options"><span>Options</span></a></li>
-			<li><a href="#docs-templates"><span>Templates</span></a></li>
-			<li><a href="#docs-route"><span>Routes</span></a></li>
-			<li><a href="#docs-plugins"><span>Plugins</span></a></li>
-			<li><a href="#docs-callbacks"><span>Callbacks</span></a></li>
-			<li><a href="#docs-methods"><span>Methods</span></a></li>
-		</ul>
-	</li>
-	<li><a href="#contribute"><span>CONTRIBUTE</span></a></li>
+	<li><a href="#docs"><span>DOCS</span></a></li>
 	<li><a href="#showcase"><span>SHOWCASE</span></a>
 		<ul>
 			<li><b>THEMES</b></li>
@@ -55,10 +42,10 @@
 	</li>
 </ul>
 
-<a id="global-prev" href="#" class="prev">&lt;</a>
-<a id="global-next" href="#" class="next">&gt;</a>
+<a id="global-prev" href="#" class="prev" style="display:none">&lt;</a>
+<a id="global-next" href="#" class="next" style="display:none">&gt;</a>
 
-<div id="jmpress" class="init-css" data-template="main">
+<div id="jmpress" class="normal-mode" data-template="main">
 	<div id="home" class="step init-css">
 		<div class="intro-top ui-state-default">
 			<div class="inner">
@@ -96,7 +83,6 @@
 			<li>Fallback to <i>.animate()</i> when needed</li>
 			<li>jQuery UI themes</li>
 			<li>easier to implement ajax into slides</li>
-			<li>jQuery mobile for adding touch support</li>
 		</ul>
 		<h3>So why not?</h3>
 	</div>
@@ -118,72 +104,25 @@
 		<span class="ui-icon ui-icon-arrowthick-1-s"></span>
     </div>
 
-	<div id="docs" class="step">
+	<div id="docs" class="step" style="display:none">
 		<h1>docs</h1>
-		<p>Read them <a href="#docs-start">&lt; over there ;)</a></p>
+		<p id="read-docs" style="display:none">Read the docs <a href="docs/" target="_blank">over here</a>.</p>
 		<span class="ui-icon ui-icon-document"></span>
-		
-		<div id="docs-start" data-src="docs/start.html" class="step docs ui-widget-content" data-x="-1000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-basic" data-src="docs/basic.html" class="step docs ui-widget-content" data-x="-2000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-options" data-src="docs/options.html" class="step docs ui-widget-content" data-x="-3000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-templates" data-src="docs/templates.html" class="step docs ui-widget-content" data-x="-4000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-route" data-src="docs/route.html" class="step docs ui-widget-content" data-x="-5000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-plugins" data-src="docs/plugins.html" class="step docs ui-widget-content" data-x="-6000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-callbacks" data-src="docs/callbacks.html" class="step docs ui-widget-content" data-x="-7000" data-rotate="180">
-			Loading...
-		</div>
-		<div id="docs-methods" data-src="docs/methods.html" class="step docs ui-widget-content" data-x="-8000" data-rotate="180">
-			Loading...
-		</div>
-	</div>
-
-	<div id="contribute" class="step">
-		<h1>contribute</h1>
-		<p>Good news! We accept pull requests ;)</p>
-		<p>Please work and pull against the <i>dev</i> or <i>dev-next</i> branch. Thanks!</p>
-		<p>You can also contribute by writing <a href="https://github.com/shama/jmpress.js/issues" target="_blank">issues</a> for bugs or features requests.</p>
-		<span class="ui-icon ui-icon-person"></span>
-	</div>
-
-	<div id="contribute-tests" class="step">
-		<h1>tests</h1>
-		<p>jmpress.js uses the <a href="http://pivotal.github.com/jasmine/" target="_blank">jasmine bdd</a> library for testing. Please load <i>test.html</i> in your browser to run the tests.</p>
-	</div>
-
-	<div id="contribute-wishlist" class="step">
-		<h1>wishlist</h1>
-		<ul>
-			<li>Browser Support (hard but important)</li>
-			<li>Better fallback support for older browsers</li>
-			<li>Mobile/Touch (use jQuery mobile)</li>
-			<li>Simple to use for new users, but flexible for advanced</li>
-			<li>Community for plugins</li>
-		</ul>
 	</div>
 
 	<div id="showcase" class="step">
 		<h1>some cool features</h1>
 		<ul>
-			<li>embed this in a container <a href="container.html">Show Sample</a></li>
-			<li>jquery ui themes</li>
-			<li>Switch to normal view: <a href="#" id="uninit-jmpress">Switch</a> <a href="#" id="reinit-jmpress">Switch back to presentation view :)</a></li>
-			<li>nice plugin interface <br>(most of the core functionality is built on this interface)</li>
-			<li>many config options</li>
-			<li>tree-like hierarchies are possible</li>
+			<li>custom animation, click next or press arrow key to see it.</li>
+			<li data-jmpress="fade">embed this in a container <a href="examples/container.html">Show Sample</a></li>
+			<li data-jmpress="drive-right after 500ms">jquery ui themes</li>
+			<li data-jmpress="drive-up after 500ms">Switch to normal view: <a href="#" id="uninit-jmpress">Switch</a> or press Esc</li>
+			<li data-jmpress="warp-right after 500ms">nice plugin interface <br>(most of the core functionality is built on this interface)</li>
+			<li data-jmpress="fade after 500ms">many config options</li>
+			<li data-jmpress="drive-right after 500ms">tree-like hierarchies are possible</li>
 		</ul>
-		<p>See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
+		<a href="#" id="reinit-jmpress" style="display:none">Switch back to presentation view :)</a>
+		<p data-jmpress="fade-slow after 500ms">See more features on <a href="http://sokra.github.com/jmpress.js/#/showcase">beta</a> branch!</p>
 
 		<div id="showcase-nested" class="step">
 			<h1>nested step</h1>
@@ -228,227 +167,16 @@
 </div>
 
 <script type="text/javascript">
+$("#jmpress").addClass("init-css");
 $(function() {
-	var pageviewTimeout;
-
-	$.jmpress("apply", "#showcase-nested", {
-		x: 250
-		,y: -30
-		,rotate: { z: 20 }
-		,secondary: {
-			rotateZ: 90
-			,y: 30
-			,"": "siblings"
-		}
-		,scale: 0.3
-	});
-	$.jmpress("template", "main", { children: [
-		{
-			scale: 10
-			,z: 1
-		},
-		{
-			x: -800
-			,y: -1100
-			,rotate: -20
-			,scale: 1.2
-		},
-		{
-			x: -700
-			,y: -500
-			,rotate: -40
-			,scale: 1.4
-		},
-		{
-			x: 0
-			,y: 100
-			,rotate: -60
-			,scale: 1.6
-		},
-		{
-			x: 1000
-			,y: 200
-			,rotate: -95
-			,scale: 1.8
-		},
-		{
-			x: 1800
-			,y: -100
-			,rotate: -120
-			,scale: 2
-		},
-		{
-			x: 2500
-			,y: -900
-			,rotate: -160
-			,scale: 2.2
-		},
-		{
-			x: 2600
-			,y: -1700
-			,rotate: -180
-			,scale: 2.4
-		},
-		{
-			x: 2600
-			,y: -2500
-			,rotate: -210
-			,scale: 2.6
-		},
-		{
-			x: 2700
-			,y: -3700
-			,rotate: -230
-			,rotateX: 60
-			,scale: 2.8
-		},
-		{
-			x: 1500
-			,y: -4500
-			,rotate: -230
-			,scale: 2.8
-		},
-	]});
-	$('#jmpress').jmpress("route", ["#showcase-jmpress-nested", "#about"]);
-	$('#jmpress').jmpress("route", ["#docs", "#contribute"]);
-	var jmpressConfig = {
-		// SET THE VIEW PORT
-		viewPort: {
-			height: 600
-			,width: 1000
-			,maxScale: 1 // do not scale up
-		}
-		// SET THE ACTIVE SLIDE IN THE NAV
-		,setActive: function( slide ) {
-			$('#nav a')
-				.removeClass( 'ui-state-active' )
-				.parent( 'li' )
-					.removeClass( 'active' );
-			var id = $(slide).attr('id');
-			var idArr = id.split("-");
-			id = "";
-			for(var i = 0; i < idArr.length; i ++) {
-				if(id) id += "-";
-				id += idArr[i];
-				$('#nav a[href=\"#' + id + '\"]')
-					.addClass( 'ui-state-active' )
-					.parent( 'li' )
-						.addClass( 'active' );
-			}
-
-			// Track each step as page
-			if(pageviewTimeout) clearTimeout(pageviewTimeout);
-			pageviewTimeout = setTimeout(function() {
-				_gaq.push(['_trackPageview', "/jmpress.js/step-" + id]);
-			}, 1500);
-		}
-		// UPON STEP LOAD/ENCODE CODE SAMPLES
-		,afterStepLoaded: function( step, eventData ) {
-			$(step).find('code:not(.noconvert)').each(function() {
-				$(this).text($(this).html()).html();
-			});
-			$("pre").addClass('ui-state-default');
-		}
-		,containerClass: "ui-widget-content"
-		,areaClass: ""
-		,canvasClass: ""
-		,initClass: "init-css"
-		,animation: { transitionDelay: "0ms" }
-	};
-	$('#jmpress').jmpress(jmpressConfig);
-	$('.next').click(function() {
-		$('#jmpress').jmpress('next');
-		return false;
-	});
-	$('.prev').click(function() {
-		$('#jmpress').jmpress('prev');
-		return false;
-	});
-	$('.nested-next').click(function() {
-		$('#nested-jmpress').jmpress('next');
-		_gaq.push(['_trackEvent', 'Feature', 'NestedJmpress', "start"]);
-		return false;
-	});
-	$("#jmpress a[href], #global-next, #global-prev").addClass("ui-state-default ui-corner-all");
-	$("#nav a, #nav-themes a").addClass("ui-button ui-widget ui-state-default");
-	$("#nav a span").addClass("ui-button-text");
-	//$('#home .intro-top, #home .intro-bottom').addClass('');
-	$("#jmpress a[href], #nav a, #nav-themes a, #global-next, #global-prev").hover(function() {
-		$(this).addClass("ui-state-hover");
-	}, function() {
-		$(this).removeClass("ui-state-hover");
-	});
-	// HACK TO CHANGE HINT IF IPAD
-	var ua = navigator.userAgent.toLowerCase();
-	if ( ua.search(/(ipad)/) != -1 ) {
-		$('.hint').text('Swipe support is coming :)');
-	}
-
-	$("a[data-theme]").click(function(event) {
-		var theme = $(this).data("theme");
-
-		$("#theme").remove();
-
-		var link = $("<link>");
-		link.attr({
-				id: "theme",
-				type: 'text/css',
-				rel: 'stylesheet',
-				href: "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/"+theme+"/jquery-ui.css"
-		});
-		$("head").append( link )
-
-		$("a[data-theme]").removeClass("ui-state-active");
-		$(this).addClass("ui-state-active");
-
-		_gaq.push(['_trackEvent', 'Feature', 'Theme', theme]);
-		event.preventDefault();
-	});
-	$("a[data-theme=start]").addClass("ui-state-active");
-	$("#uninit-jmpress").click(function(event) {
-		$("#jmpress").jmpress("deinit");
-		$("#nav").css("opacity", 0);
-		$("#jmpress").addClass("not-supported");
-		$("#reinit-jmpress").show();
-		$("#uninit-jmpress").hide();
-		$("#global-next").hide();
-		$("#global-prev").hide();
-		$('#home').find('.intro-top .inner').attr('class', 'notinner').unwrap();
-		$('#home').find('.intro-bottom').hide();
-		window.location.hash = ""
-		event.preventDefault();
-
-		_gaq.push(['_trackEvent', 'Feature', 'Deinit', "deinit"]);
-	});
-	$("#reinit-jmpress").click(function(event) {
-		$("#jmpress").jmpress(jmpressConfig);
-		$("#nav").css("opacity", 1);
-		$("#jmpress").removeClass("not-supported");
-		$("#reinit-jmpress").hide();
-		$("#uninit-jmpress").show();
-		$("#global-next").show();
-		$("#global-prev").show();
-		$('#home').find('.notinner').attr('class', 'inner').wrap('<div class="intro-top ui-state-default" />');
-		$('#home').find('.intro-bottom').show();
-		event.preventDefault();
-
-		_gaq.push(['_trackEvent', 'Feature', 'Deinit', "reinit"]);
-	});
-	$("#reinit-jmpress").hide();
-	$("#nested-jmpress").jmpress({
-		viewPort: {
-			height: 200
-			,width: 1000
-		}
-		,duration: { defaultValue: 3500, barSelector: "#nested-jmpress-bar" }
-		,containerClass: "ui-widget-content"
-		,hash: { use: false }
-		,stepSelector: ".nested-step"
-		,fullscreen: false
-	});
-	setTimeout(function() {
-		$("#jmpress").removeClass("init-css");
-	}, 500);
+	/**
+	 * Run the jmpress.js demo!
+	 *
+	 * In order to showcase all the features in one demo, a lot more code is
+	 * used than you'll need to run your own. Check out the examples for better
+	 * examples on using jmpress.js.
+	 */
+	$("#jmpress").jmpress('demo');
 });
 </script>
 

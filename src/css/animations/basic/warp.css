@@ -1,0 +1,43 @@
+.will-warp-right, .will-warp-left {
+	position: relative;
+
+	-webkit-transition: opacity 0.2s, left 0.5s ease-in-out;
+	-moz-transition:    opacity 0.2s, left 0.5s ease-in-out;
+	-ms-transition:     opacity 0.2s, left 0.5s ease-in-out;
+	-o-transition:      opacity 0.2s, left 0.5s ease-in-out;
+	transition:         opacity 0.2s, left 0.5s ease-in-out;
+
+	opacity: 0;
+}
+.will-warp-right {
+	left: -600px;
+}
+.will-warp-left {
+	left: 600px;
+}
+.will-warp-down, .will-warp-up {
+	position: relative;
+
+	-webkit-transition: opacity 0.2s, top 0.5s ease-in-out;
+	-moz-transition:    opacity 0.2s, top 0.5s ease-in-out;
+	-ms-transition:     opacity 0.2s, top 0.5s ease-in-out;
+	-o-transition:      opacity 0.2s, top 0.5s ease-in-out;
+	transition:         opacity 0.2s, top 0.5s ease-in-out;
+
+	opacity: 0;
+}
+.will-warp-down {
+	top: -600px;
+}
+.will-warp-up {
+	top: 600px;
+}
+
+.do-warp-up, .do-warp-down {
+	opacity: 1;
+	top: 0px;
+}
+.do-warp-right, .do-warp-left {
+	opacity: 1;
+	left: 0px;
+}

@@ -31,13 +31,13 @@ See the [DOCS](http://shama.github.com/jmpress.js/#/docs-start) in the main pres
 
 ## CONTRIBUTING
 
-Good news! We accept pull requests ;) Please work and pull against the `dev`
-branch. Thanks!
+Good news! We accept pull requests and are looking for more contributors! ;)
+Please work and pull against the `dev` branch. Thanks!
 
 ### TESTS
 
 jmpress.js uses the [jasmine bdd](http://pivotal.github.com/jasmine/) library
-for testing. Please load `test.html` in your browser to run the tests.
+for testing. Please load `tests/` in your browser to run the tests.
 
 ## LICENSE
 

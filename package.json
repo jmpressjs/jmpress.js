@@ -1,6 +1,6 @@
 {
 	"name": "jmpress.js",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"title": "jQuery.jmpress()",
 	"author": {
 		"name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
@@ -28,6 +28,6 @@
 		}
 	],
 	"files": [
-		"js/jmpress.js"
+		"dist/jmpress.js"
 	]
 }

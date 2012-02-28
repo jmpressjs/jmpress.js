@@ -1,0 +1,43 @@
+.will-drive-right, .will-drive-left {
+	position: relative;
+
+	-webkit-transition: opacity 0.6s, left 1s;
+	-moz-transition:    opacity 0.6s, left 1s;
+	-ms-transition:     opacity 0.6s, left 1s;
+	-o-transition:      opacity 0.6s, left 1s;
+	transition:         opacity 0.6s, left 1s;
+
+	opacity: 0;
+}
+.will-drive-right {
+	left: -300px;
+}
+.will-drive-left {
+	left: 300px;
+}
+.will-drive-down, .will-drive-up {
+	position: relative;
+
+	-webkit-transition: opacity 0.6s, top 1s;
+	-moz-transition:    opacity 0.6s, top 1s;
+	-ms-transition:     opacity 0.6s, top 1s;
+	-o-transition:      opacity 0.6s, top 1s;
+	transition:         opacity 0.6s, top 1s;
+
+	opacity: 0;
+}
+.will-drive-down {
+	top: -300px;
+}
+.will-drive-up {
+	top: 300px;
+}
+
+.do-drive-up, .do-drive-down {
+	opacity: 1;
+	top: 0px;
+}
+.do-drive-right, .do-drive-left {
+	opacity: 1;
+	left: 0px;
+}

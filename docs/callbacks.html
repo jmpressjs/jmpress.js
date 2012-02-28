@@ -14,26 +14,29 @@ change we use the beforeChange callback:</p>
 
 <h2>Available Callbacks</h2>
 <ul>
-	<li>setActive: When a step is activated or selected.</li>
-	<li>setInactive: When a previously active step is de-activated or not
-	<li>afterInit: After all the steps are initialized.</li>
-	<li>afterDeinit: After all the steps are de-initialized.</li>
-	<li>beforeChange: Before each step change. eventData.cancel() cancels the select.</li>
-	<li>beforeDeinit: Before all the steps are de-initialized.</li>
-	<li>beforeInit: Before all the steps are initialized.</li>
-	<li>beforeInitStep: On each step as it is initialized.</li>
-	<li>initStep: On each step as it is initialized.</li>
-	<li>applyStep: Called last on each step after it is initialized.</li>
-	<li>unapplyStep: Called last on each step after is is de-initialized.</li>
-	<li>loadStep: When a step has began loading via AJAX.</li>
-	<li>afterStepLoaded: Called after the AJAX step has finished loading.</li>
-	<li>selectEnd: Callback should return the last step.</li>
-	<li>selectHome: Callback should return the first step.</li>
-	<li>selectInitialStep: Callback should return the initial step.</li>
-	<li>selectNext: Callback should return the next step.</li>
-	<li>selectPrev: Callback should return the prev step.</li>
-	selected.</li>
+	<li><em>setActive</em>: When a step is activated or selected.
+	<li><em>setInactive</em>: When a previously active step is de-activated or
+		not
+	<li><em>afterInit</em>: After all the steps are initialized.
+	<li><em>afterDeinit</em>: After all the steps are de-initialized.
+	<li><em>beforeChange</em>: Before each step change. <em>eventData.cancel()</em>
+		cancels the select.
+	<li><em>beforeDeinit</em>: Before all the steps are de-initialized.
+	<li><em>beforeInit</em>: Before all the steps are initialized.
+	<li><em>beforeInitStep</em>: On each step as it is initialized.
+	<li><em>initStep</em>: On each step as it is initialized.
+	<li><em>applyStep</em>: Called last on each step after it is initialized.
+	<li><em>unapplyStep</em>: Called last on each step after is is de-initialized.
+	<li><em>loadStep</em>: When a step has began loading via AJAX.
+	<li><em>afterStepLoaded</em>: Called after the AJAX step has finished loading.
+	<li><em>selectEnd</em>: Callback should return the last step.
+	<li><em>selectHome</em>: Callback should return the first step.
+	<li><em>selectInitialStep</em>: Callback should return the initial step.
+	<li><em>selectNext</em>: Callback should return the next step.
+	<li><em>selectPrev</em>: Callback should return the prev step.
+		selected.
 </ul>
 
-<p>Additionally the jQuery events "enterStep" and "leaveStep" will be fired on the step element.</p>
+<p>Additionally the jQuery events <em>enterStep</em> and <em>leaveStep</em> will
+be fired on the step element.</p>
 </section>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | animation example</title>
+
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="animation.css" rel="stylesheet" type="text/css" />
+	<link href="../../dist/basic-animations.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../dist/jmpress.js"></script>
+</head>
+<body>
+
+<div id="jmpress">
+	<div class="step basic" id="basic">
+		<p><b>substep 0 + 1s</b></p>
+		<p data-jmpress="fade after 1s step">fade after 1s step: should fade in after 1s</p>
+		<p><b>substep 0 + 1500ms</b></p>
+		<p data-jmpress="fade after 500ms prev">fade after 500ms prev: should fade in after another 500ms<br />
+		<em>Press space to continue...</em></p>
+		<p><b>substep 1 + 0s</b></p>
+		<p id="item3" data-jmpress="fade">fade: should fade in after next action</p>
+		<p><b>substep 1 + 1s</b></p>
+		<p data-jmpress="fade after 1s">fade after 1s: should fade in after 1s<br />
+		<em>Press space to continue...</em></p>
+		<p><b>substep 2 + 0s</b></p>
+		<p data-jmpress="fade after prev">fade after prev: should fade in after another next action</p>
+		<p><b>substep 1 + 700ms</b></p>
+		<p data-jmpress="fade after 700 #item3">fade after 700 #item3: should fade in after #item3</p>
+	</div>
+	<div class="step basic" data-x="500">
+		<p><em>Press space to continue...</em></p>
+		<p><b>substep 1 + 0s</b></p>
+		<p id="item3" data-jmpress="fade">fade: should fade in after next action</p>
+		<p><b>substep 1 + 1s</b></p>
+		<p data-jmpress="fade after 1s">fade after 1s: should fade in after 1s</p>
+	</div>
+	<div class="step basic" data-x="1000">
+		<p>Step without animation.</p>
+		<p><em>Press space to continue...</em></p>
+		<p>or <a href="#anilib">goto animation libary examples</a></p>
+	</div>
+
+	<div class="step anilib" id="anilib" data-y="5000">
+		<h1>Some examples from the animations libary:</h1>
+		<ul>
+		<li><a href="#anilib-fade">fade</a></li>
+		<li><a href="#anilib-drive">drive</a></li>
+		<li><a href="#anilib-warp">warp</a></li>
+		<li><a href="#anilib-more">more</a></li>
+		</ul>
+		<p><a href="#basic">back to basic syntax examples</a></p>
+	</div>
+	<div class="step anilib" id="anilib-fade" data-y="5000" data-x="1000">
+		<h1>fade</h1>
+		<p data-jmpress="fade">fade</p>
+		<p data-jmpress="fade-slow">fade-slow</p>
+		<p data-jmpress="fade-fast">fade-fast</p>
+	</div>
+	<div class="step anilib" id="anilib-drive" data-y="5000" data-x="2000">
+		<h1>drive</h1>
+		<p data-jmpress="drive-right">drive-right</p>
+		<p data-jmpress="drive-left">drive-left</p>
+		<p data-jmpress="drive-up">drive-up</p>
+		<p data-jmpress="drive-down">drive-down</p>
+	</div>
+	<div class="step anilib" id="anilib-warp" data-y="5000" data-x="3000">
+		<h1>warp</h1>
+		<p data-jmpress="warp-right">warp-right</p>
+		<p data-jmpress="warp-left">warp-left</p>
+		<p data-jmpress="warp-up">warp-up</p>
+		<p data-jmpress="warp-down">warp-down</p>
+	</div>
+	<div class="step anilib" id="anilib-more" data-y="5000" data-x="4000">
+		<h1>more</h1>
+		<p data-jmpress="appear">appear</p>
+		<p><span style="display:inline-block" data-jmpress="expand">expand</span></p>
+		<p><span style="display:inline-block" data-jmpress="zoom">zoom</span></p>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#jmpress').jmpress("route", ".basic");
+	$('#jmpress').jmpress("route", ".anilib");
+	$('#jmpress').jmpress();
+});
+</script>
+
+<!-- IGNORE BELOW THIS LINE -->
+
+<div style="position: fixed; bottom: 50px; left: 10px; pointer-events: auto;">
+	<g:plusone href="http://shama.github.com/jmpress.js"></g:plusone>
+	<script type="text/javascript">
+	  (function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/plusone.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-text="jmpress.js: a jQuery port of impress.js" data-url="http://shama.github.com/jmpress.js" data-related="shama"></a>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+</div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28251006-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>
