@@ -27,17 +27,14 @@ falls back to jQuery.animate(). Here is the current browser support list:
 
 ## USAGE
 
-See the [DOCS](http://shama.github.com/jmpress.js/#/docs-start) in the main presentation.
+See the [DOCS](http://shama.github.com/jmpress.js/docs).
 
 ## CONTRIBUTING
 
 Good news! We accept pull requests and are looking for more contributors! ;)
-Please work and pull against the `dev` branch. Thanks!
-
-### TESTS
-
-jmpress.js uses the [jasmine bdd](http://pivotal.github.com/jasmine/) library
-for testing. Please load `tests/` in your browser to run the tests.
+Take a look at the
+[contribute section](http://shama.github.com/jmpress.js/docs/#contribute) of the
+docs for more information on how you can contribute. Thanks!
 
 ## LICENSE
 
