@@ -12,19 +12,6 @@
  */
 
 /*!
- * jmpress.js v0.3.5
- * http://shama.github.com/jmpress.js
- *
- * A jQuery plugin to build a website on the infinite canvas.
- *
- * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
- * Licensed MIT
- * http://www.opensource.org/licenses/mit-license.php
- *
- * Based on the foundation laid by Bartek Szopka @bartaz
- */
-
-/*!
  * core.js
  * The core of jmpress.js
  */
@@ -2615,7 +2602,6 @@
 				// We do not test orgin, because we want to accept messages
 				// from all orgins
 				try {
-					window.console.log(event.data);
 					var json = JSON.parse(event.data);
 					switch(json.type) {
 					case "select":

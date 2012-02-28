@@ -215,7 +215,6 @@
 				// We do not test orgin, because we want to accept messages
 				// from all orgins
 				try {
-					window.console.log(event.data);
 					var json = JSON.parse(event.data);
 					switch(json.type) {
 					case "select":

@@ -21,7 +21,6 @@
 				event.source.postMessage(JSON.stringify({type:"listen"}), "*");
 				break;
 			case "select":
-				window.console.log(event.data);
 				window.opener.postMessage(JSON.stringify(json), "*");
 				if(notesUrl)
 					$("#notesframe").attr("src", notesUrl+"#"+json.targetId);

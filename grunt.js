@@ -65,11 +65,11 @@ config.init({
 			'src/plugins/secondary.js',
 			'src/plugins/duration.js',
 			'src/plugins/presentation-mode.js'],
-		'dist/jmpress.demo.js': ['<banner>',
+		'dist/jmpress.demo.js': [
 			'dist/jmpress.js',
 			'dist/jmpress.allplugins.js',
 			'src/components/demo.js'],
-		'dist/jmpress.all.js': ['<banner>',
+		'dist/jmpress.all.js': [
 			'dist/jmpress.js',
 			'dist/jmpress.allplugins.js'],
 		'dist/plugins/jmpress.secondary.js': ['<banner:meta.pluginbanner>', 'src/plugins/secondary.js'],
