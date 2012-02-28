@@ -138,7 +138,7 @@
 		$(this).jmpress("reselect", "zoom");
 	});
 	$.jmpress('afterDeinit', function( nil, eventData ) {
-		$(eventData.settings.fullscreen ? document : this).unbind(eventData.current.viewPortNamespace);
+		$(window).unbind(eventData.current.viewPortNamespace);
 	});
 	$.jmpress("setActive", function( step, eventData ) {
 		var viewPort = eventData.settings.viewPort;
