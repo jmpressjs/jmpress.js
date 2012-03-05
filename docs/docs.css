@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Quicksand:400,700);
+@import url(http://fonts.googleapis.com/css?family=Simonetta:400,700);
 
 /*! normalize.css - http://github.com/necolas/normalize.css */
 article,
@@ -222,7 +222,7 @@ table {
 
 /** GENERAL **/
 body {
-	font-family: 'Quicksand', Verdana, sans-serif;
+	font-family: 'Simonetta', Verdana, sans-serif;
 	color: #1a1a1a;
 	font-size: 16px;
 	line-height: 24px;
