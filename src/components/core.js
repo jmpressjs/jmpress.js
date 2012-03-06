@@ -311,14 +311,7 @@
 		 *
 		 */
 		function getStepParents( el ) {
-			var parents = [];
-			var currentEl = el;
-			while($(currentEl).parent().length &&
-						$(currentEl).parent().is(settings.stepSelector)) {
-				currentEl = $(currentEl).parent();
-				parents.push(currentEl[0]);
-			}
-			return parents;
+			return $(el).parentsUntil(jmpress).not(jmpress).filter(settings.stepSelector);
 		}
 		/**
 		 * Reselect the active step

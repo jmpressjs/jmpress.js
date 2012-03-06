@@ -324,14 +324,7 @@
 		 *
 		 */
 		function getStepParents( el ) {
-			var parents = [];
-			var currentEl = el;
-			while($(currentEl).parent().length &&
-						$(currentEl).parent().is(settings.stepSelector)) {
-				currentEl = $(currentEl).parent();
-				parents.push(currentEl[0]);
-			}
-			return parents;
+			return $(el).parentsUntil(jmpress).not(jmpress).filter(settings.stepSelector);
 		}
 		/**
 		 * Reselect the active step
@@ -1340,6 +1333,21 @@
 			return el.length > 0 && el.is(settings.stepSelector) ? el : undefined;
 		} catch(e) {}
 	}
+	function setHash(stepid) {
+		var shouldBeHash = "#/" + stepid;
+		if(window.history && window.history.pushState) {
+			// shouldBeHash = "#" + stepid;
+			// consider this for future versions
+			//  it has currently issues, when startup with a link with hash (webkit)
+			if(window.location.hash !== shouldBeHash) {
+				window.history.pushState({}, '', shouldBeHash);
+			}
+		} else {
+			if(window.location.hash !== shouldBeHash) {
+				window.location.hash = shouldBeHash;
+			}
+		}
+	}
 
 	/* DEFAULTS */
 	$jmpress('defaults').hash = {
@@ -1360,7 +1368,7 @@
 		// HASH CHANGE EVENT
 		if ( hashSettings.use ) {
 			if ( hashSettings.bindChange ) {
-				$(window).bind('hashchange'+current.hashNamespace, function() {
+				$(window).bind('hashchange'+current.hashNamespace, function(event) {
 					var urlItem = getElementFromUrl(settings);
 					if ( jmpress.jmpress('initialized') ) {
 						jmpress.jmpress("scrollFix");
@@ -1369,11 +1377,9 @@
 						if(urlItem.attr("id") !== jmpress.jmpress("active").attr("id")) {
 							jmpress.jmpress('select', urlItem);
 						}
-						var shouldBeHash = "#/" + urlItem.attr("id");
-						if(window.location.hash !== shouldBeHash) {
-							window.location.hash = shouldBeHash;
-						}
+						setHash(urlItem.attr("id"));
 					}
+					event.preventDefault();
 				});
 				$(hashLink).on("click"+current.hashNamespace, function(event) {
 					var href = $(this).attr("href");
@@ -1401,7 +1407,7 @@
 		if ( settings.hash.use && settings.hash.update ) {
 			clearTimeout(current.hashtimeout);
 			current.hashtimeout = setTimeout(function() {
-				window.location.hash = "#/" + $(eventData.delegatedFrom).attr('id');
+				setHash($(eventData.delegatedFrom).attr('id'));
 			}, settings.transitionDuration + 200);
 		}
 	});
