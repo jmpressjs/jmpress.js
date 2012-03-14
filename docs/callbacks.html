@@ -38,5 +38,13 @@ change we use the beforeChange callback:</p>
 </ul>
 
 <p>Additionally the jQuery events <em>enterStep</em> and <em>leaveStep</em> will
-be fired on the step element.</p>
+be fired on the step element. These events can be added to specific steps to be 
+triggered as the step is entered and left:</p>
+<pre><code>$('#a-specific-step')
+	.on('enterStep', function(event) {
+		// Called when entering only this step
+	})
+	.on('leaveStep', function(event) {
+		// Called when leaving only this step
+	});</code></pre>
 </section>
