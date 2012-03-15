@@ -78,7 +78,21 @@ config.init({
 		'dist/plugins/jmpress.presentation-mode.js': ['<banner:meta.pluginbanner>', 'src/plugins/presentation-mode.js'],
 
 		'dist/basic-animations.css': ['<banner>', 'src/css/animations/basic/*'],
-		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*']
+		'dist/advanced-animations.css': ['<banner>', 'src/css/animations/advanced/*'],
+
+		'docs/index.html': [
+			'docs/prepend.html',
+			'docs/start.html',
+			'docs/basic.html',
+			'docs/options.html',
+			'docs/methods.html',
+			'docs/callbacks.html',
+			'docs/templates.html',
+			'docs/route.html',
+			'docs/plugins.html',
+			'docs/examples.html',
+			'docs/contribute.html',
+			'docs/append.html']
 	},
 	min: {
 		'dist/jmpress.min.js': ['<banner>', 'dist/jmpress.js'],

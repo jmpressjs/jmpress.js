@@ -10,20 +10,9 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	$(function() {
-		// LOAD DOCS
-		$('.nav a').each(function() {
-			var id = $(this).attr('href').substr(1);
-			var section = $('<div />').attr({
-				'id': id
-				,'class': 'step'
-			}).text('Loading...');
-			section.load(id + '.html', function() {
-				// ENCODE CODE SAMPLES
-				$(this).find('code:not(.noconvert)').each(function() {
-					$(this).text($(this).html()).html();
-				});
-			});
-			$('.docs').append(section);
+		// CONVERT CODE BLOCKS
+		$('code:not(.noconvert)').each(function() {
+			$(this).text($(this).html()).html();
 		});
 		// SET CURRENT VERSION
 		$.getJSON('../package.json', function(data) {
@@ -34,7 +23,7 @@
 			if ( window.location.hash ) {
 				window.location = window.location;
 			}
-		}, 500);
+		}, 1);
 	});
 	</script>
 </head>
@@ -52,10 +41,734 @@
 	<li><a href="#templates"><span>Templates</span></a>
 	<li><a href="#route"><span>Routes</span></a>
 	<li><a href="#plugins"><span>Plugins</span></a>
-	<li>-
+	<li><hr style="margin-right: 50%" />
 	<li><a href="#examples"><span>Examples</span></a>
 	<li><a href="#contribute"><span>Contribute</span></a>
 </ul>
-<div class="docs"></div>
+<div class="docs">
+<section class="step" id="start">
+<h1>Getting Started</h1>
+
+<p>The only required files are 
+<a href="http://jquery.com" target="_blank">jQuery</a> and 
+<a href="https://github.com/shama/jmpress.js/blob/master/dist/jmpress.js" target="_blank">dist/jmpress.js</a>
+to use.<br/>
+For a quick and simple example look at the
+<a href="https://github.com/shama/jmpress.js/blob/beta/examples/simple/index.html" target="_blank">examples/simple/index.html</a>
+and <a href="https://github.com/shama/jmpress.js/blob/beta/examples/simple/simple.css" target="_blank">examples/simple/simple.css</a>.</p>
+
+
+<h2>Migrating From impress.js</h2>
+<p>Currently jmpress.js includes all of the impress.js features and a lot more.
+To migrate simply add jQuery, change impress.js to jmpress.js and call
+$(selector).jmpress(); to initialize. Take a look at the 
+<a href="http://shama.github.com/jmpress.js/examples/impress/" target="_blank">impress.js
+running on jmpress.js</a> example.</p>
+
+</section>
+<section class="step" id="basic">
+<h1>Basic Usage</h1>
+
+<p><strong>Create a root element:</strong></p>
+<pre><code><div id="jmpress"></div></code></pre>
+
+<p><strong>Fill it up with steps:</strong></p>
+<pre><code><div id="jmpress">
+	<div class="step">Slide 1</div>
+	<div class="step">Slide 2</div>
+</div></code></pre>
+
+<p><strong>Tell jQuery to run it:</strong></p>
+<pre><code>$(function() {
+	$('#jmpress').jmpress();
+});</code></pre>
+
+<p><strong>Configure jmpress</strong><br/>
+Don't want to use <em>.step</em> as a selector? Okay:</p>
+<pre><code>$('#jmpress').jmpress({
+	stepSelector: 'li'
+});</code></pre>
+<p>See more <a href="#options">options</a>.</p>
+
+<p><strong>Customize the hash id of each slide</strong><br/>
+The id of the step will appear as the URI hash to recall the slide later. If you
+don't give your steps ids then the id `step-N` will be used.</p>
+<pre><code class="noconvert">&lt;div id=&quot;name-of-slide&quot; class=&quot;step&quot; 
+		data-x=&quot;3500&quot; data-y=&quot;-850&quot; 
+		data-rotate=&quot;270&quot; data-scale=&quot;6&quot;&gt;
+	Slide 1
+&lt;/div&gt;</code></pre>
+
+<p><strong>Load slides dynamically</strong><br/>
+You can load a slide dynamically by setting the <em>data-src</em> or
+<em>href</em> attribute on the slide. The slide will only be loaded when an
+adjacent slide or the slide itself is selected.</p>
+<pre><code><div class="step" data-src="slides/slide-1.html" data-x="500" data-y="300">
+	Loading...
+</div></code></pre>
+</section>
+<section class="step" id="options">
+<h1>Options</h1>
+
+<p>Options and callbacks can be set when you initialize jmpress as such:</p>
+<pre><code>$(selector).jmpress({
+	stepSelector: '.step',
+	start: '#home',
+	setActive: function( slide, eventData ) { }
+});</code></pre>
+
+<h2>Core</h2>
+
+<h4>stepSelector</h4>
+<p><em>Default: '.step'</em><br/>
+The jQuery selector to specify each step.</p>
+
+<h4>start</h4>
+<p><em>Default: undefined</em><br/>
+Selector of step to start from. (ex. <em>#home</em>)</p>
+
+<h4>notSupportedClass</h4>
+<p><em>Default: 'not-supported'</em><br/>
+Class name to remove on root element if jmpress.js is supported.</p>
+
+<h4>fullscreen</h4>
+<p><em>Default: true</em><br/>
+Whether jmpress.js should run in full screen mode or in a container.</p>
+
+<h2>Integrated Functionality</h2>
+
+<h4>activeClass</h4>
+<p><em>Default: 'active'</em><br/>
+A class name to set on the current step.</p>
+
+<h4>nestedActiveClass</h4>
+<p><em>Default: 'nested-active'</em><br/>
+A class name to set on all parents of the current step.</p>
+
+<h4>hash.use</h4>
+<p><em>Default: true</em><br/>
+Whether the url hash should be used with jmpress.</p>
+
+<h4>hash.update</h4>
+<p><em>Default: true</em><br/>
+Whether the url hash should be updated on step change.</p>
+
+<h4>hash.bindChange</h4>
+<p><em>Default: true</em><br/>
+Whether changes of the url hash and clicks on link should be converted into step selects.</p>
+
+<h4>viewPort.width, viewPort.height</h4>
+<p>Let camera zoom to contain at least width and/or height.</p>
+
+<h4>viewPort.maxScale, viewPort.minScale</h4>
+<p>Minimum and maximum zoom factor of camera.</p>
+
+<h4>mouse.clickSelects</h4>
+<p>Whether a mouse click on another step select it.</p>
+
+
+<h2>Keyboard Controls</h2>
+<p>jmpress.js has a great keyboard mapping system. Mapping a key to an event is
+simple:</p>
+
+<pre><code>$(selector).jmpress({
+	keyboard: {
+		keys: {
+			189: ['select', '#overview']
+		}
+	}
+});</code></pre>
+<p>In this example we are binding the '-' key (key code 189) to select a step we
+have named 'overview'.</p>
+
+<h4>keyboard.keys</h4>
+<p><em>Default: {33: "prev", 32: "next", ...}</em><br/>
+Bind a key to a jmpress command. Set it to null to remove an existing
+key binding.<br/>
+Set it to a string to get the jmpress command invoked.<br/>
+Set it to a string containing ":" (ex. "next:prev") to get the first command on
+default and the second on modified with the shift key.<br/>
+Set it to a array to apply the array as arguments a jmpress command (ex.
+["select", "#some-cool-step"]).</p>
+
+<h4>keyboard.ignore[TAGNAME]</h4>
+<p><em>Default: [32, 37, ...] as TAGNAME = "INPUT"</em><br/>
+Ignore some keys on a specific tag name.</p>
+
+<h4>keyboard.use</h4>
+<p><em>Default: true</em><br/>
+Whether the keyboard should be used to navigate in jmpress.</p>
+</section>
+
+<section>
+<h1>Advanced Options</h1>
+
+<h4>containerClass</h4>
+<p>A class name to set on the container.
+The overall container of the camera.
+It has no transformation applied so you can set some background on it.
+</p>
+
+<h4>canvasClass</h4>
+<p>A class name to set on the canvas. The canvas is the element, which contains
+the steps.</p>
+
+<h4>areaClass</h4>
+<p>A class name to set on the area. The area is some middle element, which is
+needed to build this camera.</p>
+
+<h4>animation</h4>
+<p>Set the CSS animation values for transitions between slides.</p>
+
+<h4>loadedClass</h4>
+<p><em>Default: 'loaded'</em><br/>
+Class name to set on each step that has been started loading.</p>
+</section>
+
+<section>
+<h1>Inline Options</h1>
+
+<p>You may set a series of data attributes on your steps. This method of
+building your steps will be familiar if you're coming from impress.js.</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-x="100" data-y="2000" data-rotate="90">...</div>
+	<div class="step" data-rotate="120">...</div>
+</div></code></pre>
+
+<p>Each step element can have the following data attributes set:</p>
+<ul>
+	<li><em>data-x</em>: cartesian coordinates: X Position
+	<li><em>data-y</em>: cartesian coordinates: Y Position
+	<li><em>data-z</em>: cartesian coordinates: Z Position
+	<li><em>data-r</em>: polar coordinates: radius
+	<li><em>data-phi</em>: polar coordinates: angle (starting at top,
+		counterclockwise)
+	<li><em>data-scale</em>: Scale of element (also scale-x, scale-y, scale-z)
+	<li><em>data-rotation</em>: Degree of rotation
+	<li><em>data-rotation-x</em>: Degree of rotation on x-axis
+	<li><em>data-rotation-y</em>: Degree of rotation on y-axis
+	<li><em>data-rotation-z</em>: Degree of rotation on z-axis
+	<li><em>data-delegate</em>: delegate the activeness to another step chosen
+		by selector
+	<li><em>data-src</em>: Load content of slide dynamically
+	<li><em>data-exclude</em>: do not use step in natural flow, but it can be
+		selected with the route command
+	<li><em>data-next</em>: selector of the next step
+	<li><em>data-prev</em>: selector of the prev step
+	<li><em>data-template</em>: apply a template, which must be defined before
+		init jmpress
+	<li><em>data-jmpress</em>: apply a custom animation
+</ul>
+</section>
+<section class="step" id="methods">
+<h1>Methods</h1>
+
+<p>Methods are called on the jmpress object like such:</p>
+<pre><code>$(selector).jmpress( 'methodName', param1, param2, paramN );</code></pre>
+
+<h2>Navigational</h2>
+
+<h4>select( selector )</h4>
+<p>Move to the first step matching the given selector.</p>
+
+<h4>goTo( selector )</h4>
+<p>Same as select( selector )</p>
+
+<h4>next()</h4>
+<p>Select the next step in flow</p>
+
+<h4>prev()</h4>
+<p>Select the previous step in flow</p>
+
+<h4>home()</h4>
+<p>Select the first step in DOM</p>
+
+<h4>end()</h4>
+<p>Select the last step in DOM</p>
+
+
+<h2>Setup & Tear Down</h2>
+
+<h4>init()</h4>
+<p>Initializes jmpress with the default config (like impress.js).</p>
+
+<h4>init( config )</h4>
+<p>Initializes jmpress with a custom config object.</p>
+
+<h4>initialized()</h4>
+<p>Returns true if jmpress is initialized.</p>
+
+<h4>deinit()</h4>
+<p>Deinits jmpress, returning to it's original state. If already deinited it
+does nothing. This is useful for enabling a print mode.</p>
+
+<h4>settings()</h4>
+<p>Returns the settings object which you can modify.</p>
+
+
+<h2>Template</h2>
+
+<h4>template( templateName, templateData )</h4>
+<p>Adds or modify a template. If it's already defined then the old template is
+extended with the new properties.</p>
+
+<h4>apply( selector, templateName )</h4>
+<p>Applies the template to all selected steps.</p>
+
+<h4>apply( selector, templateData )</h4>
+<p>Applies the template directly by template data object.</p>
+
+<h4>apply( selector, arrayOfTemplateDatas )</h4>
+<p>Applies template data to an array of selected items.</p>
+
+
+<h2>Miscellaneous</h2>
+
+<h4>active()</h4>
+<p>Returns the active step as jQuery object.</p>
+
+<h4>fire( callbackName, element, eventData )</h4>
+<p>fire a event</p>
+
+<h4>canvas()</h4>
+<p>returns the canvas element as jQuery object</p>
+
+<h4>canvas( css )</h4>
+<p>sets styles on the canvas element and returns it</p>
+
+<h4>css( element, cssAsObject )</h4>
+<p>Applies css with the correct browser prefix.</p>
+
+<h4>reapply( step )</h4>
+<p>reapplies styles on step, should be called after modifying stepData</p>
+
+<h4>defaults()</h4>
+<p>Return or modify the default settings used in jmpress.js.</p>
+
+<h4>register( name, callback )</h4>
+<p>Register a new callback.</p>
+
+<h4>dataset( element )</h4>
+<p>Returns the dataset of an element.</p>
+</section>
+<section class="step" id="callbacks">
+<h1>Callbacks</h1>
+
+<p>Callbacks are a way to trigger a specific action when an event is fired
+within jmpress.js. For instance if we want to fire some code before a slide
+change we use the beforeChange callback:</p>
+<pre><code>$('#jmpress').jmpress({
+	'beforeChange': function( element, eventData ) {
+		// ...
+	}
+});</code></pre>
+<p>All callbacks supply the same two parameters: element, the element the event
+	pertains to and eventData, various data associated with the event.</p>
+
+<h2>Available Callbacks</h2>
+<ul>
+	<li><em>setActive</em>: When a step is activated or selected.
+	<li><em>setInactive</em>: When a previously active step is de-activated or
+		not
+	<li><em>afterInit</em>: After all the steps are initialized.
+	<li><em>afterDeinit</em>: After all the steps are de-initialized.
+	<li><em>beforeChange</em>: Before each step change. <em>eventData.cancel()</em>
+		cancels the select.
+	<li><em>beforeDeinit</em>: Before all the steps are de-initialized.
+	<li><em>beforeInit</em>: Before all the steps are initialized.
+	<li><em>beforeInitStep</em>: On each step as it is initialized.
+	<li><em>initStep</em>: On each step as it is initialized.
+	<li><em>applyStep</em>: Called last on each step after it is initialized.
+	<li><em>unapplyStep</em>: Called last on each step after is is de-initialized.
+	<li><em>loadStep</em>: When a step has began loading via AJAX.
+	<li><em>afterStepLoaded</em>: Called after the AJAX step has finished loading.
+	<li><em>selectEnd</em>: Callback should return the last step.
+	<li><em>selectHome</em>: Callback should return the first step.
+	<li><em>selectInitialStep</em>: Callback should return the initial step.
+	<li><em>selectNext</em>: Callback should return the next step.
+	<li><em>selectPrev</em>: Callback should return the prev step.
+		selected.
+</ul>
+
+<p>Additionally the jQuery events <em>enterStep</em> and <em>leaveStep</em> will
+be fired on the step element. These events can be added to specific steps to be 
+triggered as the step is entered and left:</p>
+<pre><code>$('#a-specific-step')
+	.on('enterStep', function(event) {
+		// Called when entering only this step
+	})
+	.on('leaveStep', function(event) {
+		// Called when leaving only this step
+	});</code></pre>
+</section>
+<section class="step" id="templates">
+<h1>Templates</h1>
+
+<p>For more complex builds consider using templates rather then setting
+attributes on each step.</p>
+
+<p>First create and register your template with jmpress:</p>
+
+<pre><code>$.jmpress("template", "mytemplate", {
+  x: 1000, y: -2000, scale: 10,
+  rotateY: 60,
+  rotate: { x: 60 } // is automatically converted to camel case
+});</code></pre>
+
+<p>Then use your template in your HTML:</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-template="mytemplate">...</div>
+	...
+</div></code></pre>
+
+<p>Templates can also be applied to nested steps:</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-template="mytemplate">
+		<div class="step">...</div>
+		<div class="step">...</div>
+		<div class="step">...</div>
+	</div>
+</div></code></pre>
+
+<p></p>
+
+<pre><code>$.jmpress("template", "mytemplate", {
+  x: 1000, y: -2000, scale: 10,
+  children: [
+    { x: -300, y: -100, scale: 0.2 },
+    { x: -100, y: -100, scale: 0.2 },
+    { x: 100, y: -100, scale: 0.2 }
+  ]
+});</code></pre>
+
+<p>Rather then setting the values manually you can provide a method to setup
+each step programmatically:</p>
+
+<pre><code><div id="jmpress" data-template="mytemplate">
+	<div class="step">
+		<div class="step">...</div>
+		<div class="step">...</div>
+		<div class="step">...</div>
+	</div>
+	<div class="step">
+		<div class="step">...</div>
+	</div>
+</div></code></pre>
+
+<p></p>
+
+<pre><code>$.jmpress("template", "mytemplate", {
+	children: function( idx, current_child, children ) {
+		return {
+			y: 400
+			,x: -300 + idx * 300
+			,template: "mytemplate"
+			,scale: 0.3
+		}
+	}
+});</code></pre>
+</section>
+<section class="step" id="route">
+<h1>Route</h1>
+
+<p>By default, jmpress.js will flow through each step linearly down the DOM. You
+have a couple of ways to modify the flow.</p>
+
+<p><strong>Inline Next / Prev</strong></p>
+<pre><code><div id="jmpress">
+	<div class="step" id="a" data-next="c">A</div>
+	<div class="step" id="b">B</div>
+	<div class="step" id="c">C</div>
+	<div class="step" id="d">D</div>
+</div></code></pre>
+<p>The flow will start with A, goto C, then D and back to A. Only when the user
+is on C and goes back will they be shown B.</p>
+
+<p><strong>Using route:</strong></p>
+<p>You can set the flow using the route method. You also don't have to define
+all the steps. The commando will preserve the natural flow and only modify the
+indicated steps.</p>
+<pre><code>$("#jmpress").jmpress("route", ["#a", "#c", "#b", "#d"]);</code></pre>
+<p>The flow will start with A, goto C, goto B, goto D and back to A. If the user
+goes backwards he will get the same flow D -> B -> C -> A -> D.</p>
+
+<p><strong>Unidirectional:</strong></p>
+<pre><code>$("#jmpress").jmpress("route", ["#a", "#c"], true);</code></pre>
+<p>The flow will be as the flow above with data attributes. <br />Forwards:
+A -> C -> D -> A. Backwards: D -> C -> B -> A -> D.</p>
+<p>If you omit the 4th parameter, the function will set the forward flow. Set it
+to true to set the backward flow.</p>
+</section>
+<section class="step" id="plugins">
+<h1>Plugins</h1>
+<p>Plugins are a way to package additional functionality into jmpress.js. In
+fact most of jmpress.js is built using this same plugin interface.</p>
+
+<h2>Components / Default Plugins</h2>
+<p>jmpress.js comes loaded with a default set of plugins called components to handle
+the common uses. Components are compiled into the jmpress.js file and there is no
+need to include them by <em>&lt;script&gt;</em>-tag.</p>
+<p>You can compile your own version of jmpress.js by excluding or replacing some of
+them in the grunt.js file. In some cases the order is important.</p>
+
+<h3>Core <em>src/components/core.js</em></h3>
+<p>This is the jmpress.js core.</p>
+
+<h3>Near <em>src/components/near.js</em></h3>
+<p>This component adds the <em>$(...).near</em> function to jQuery. This function
+finds the next (prev) element in dom which matches a selector.</p>
+
+<h3>Translate, Scale &amp; Rotate <em>src/components/transform.js</em></h3>
+<p>This component handles the transformations. It handles the basic attributes like
+<em>data-x</em>, <em>data-rotate</em> or <em>data-scale-y</em>.</p>
+
+<h3>Active Class <em>src/components/active.js</em></h3>
+<p>This component handles the toggling of <em>activeClass</em> and <em>nestedActiveClass</em>.</p>
+
+<h3>Circular Stepping <em>src/components/circular.js</em></h3>
+<p>This component handles the natural flow of the steps, taken from the dom order.
+It is based on the Near component. It also handles the <em>data-exclude</em> attribute.</p>
+
+<h3>Starting Step <em>src/components/start.js</em></h3>
+<p>This component handles the config option <em>start</em>. As the start config
+option should override the start of the natural flow, this component should be
+included after the Circular Stepping component.</p>
+
+<h3>Ways: Routing <em>src/components/ways.js</em></h3>
+<p>This component handles the <em>data-next</em> and <em>data-prev</em>
+attributes and the route command. As it should override the natural flow of the
+steps, it should be included after the Circular Stepping component.</p>
+
+<h3>Ajax Load Steps <em>src/components/ajax.js</em></h3>
+<p>This component enables you to load step via ajax.
+It handles the <em>data-src</em> and <em>href</em> attribute and offers the "afterStepLoaded" event.</p>
+
+<h3>Hash in URL <em>src/components/hash.js</em></h3>
+<p>This component handles updates to and change events from the url hash.
+It also handles clicks on link to other steps. As the initial hash also defines a
+starting step which should override the Starting Step component, this component
+should be included after that.</p>
+
+<h3>Keyboard <em>src/components/keyboard.js</em></h3>
+<p>This component handles navigation with the keyboard. It also offers a binding mechanism for other components, plugins and the user.</p>
+
+<h3>Viewport <em>src/components/viewport.js</em></h3>
+<p>This component handles camera zooming to window size and zooming in zoomable
+steps. The binding of [+] and [-] keys relies on the Keyboard component.</p>
+
+<h3>Mouse: Clickable Inactive Steps <em>src/components/mouse.js</em></h3>
+<p>This component handles click on other steps.</p>
+
+<h3>Templates <em>src/components/templates.js</em></h3>
+<p>This component handles templates.
+It handles the <em>data-template</em> attribute and registers the template.</p>
+
+<h3>jQuery events <em>src/components/jqevents.js</em></h3>
+<p>This component fires the jQuery events <em>enterStep</em> and <em>leaveStep</em>.</p>
+
+<h3>Animation <em>src/components/animation.js</em></h3>
+<p>Apply custom animations to steps. Handles the attribute <em>data-jmpress</em> (the attribute name depends on a config option).
+Take a look at this <a href="http://shama.github.com/jmpress.js/examples/animation/" target="_blank">animation example</a>
+for more information.</p>
+</section>
+
+<section>
+<h2>Extra Plugins</h2>
+<p>jmpress.js also comes with extra plugins located in the /plugins folder that
+you might choose to use. To load the plugin simply add a script tag including
+the plugin js file.</p>
+
+<h3>Duration <em>src/plugins/duration.js</em></h3>
+<p>For automatically changing steps after a given duration. Makes the attributes
+<em>data-duration</em> and <em>data-duration-action</em> available:</p>
+
+<pre><code><div id="jmpress">
+	<div class="step" data-duration="3000">
+		Auto advanced after 3 second
+	</div>
+	<div class="step" data-duration="5000" data-duration-action="prev">
+		Then advanced after 5 seconds and go back to the previous step
+	</div>
+</div></code></pre>
+
+<p>You can also display a progress bar indicating how long until the change will
+occur:</p>
+
+<pre><code><div id="jmpress">
+	<div class="step">Step 1</div>
+	<div class="step">Step 2</div>
+	<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all">
+		<div id="my-progress-bar" class="ui-progressbar-value ui-widget-header ui-corner-left" style="width:0"></div>
+	</div>
+</div></code></pre>
+
+<p>Specify the progress bar using the <em>duration.barSelector</em> option:</p>
+
+<pre><code>$(selector).jmpress({
+	duration: {
+		barSelector: '#my-progress-bar'
+	}
+});</code></pre>
+
+<p>Adds the following config options to jmpress:</p>
+
+<h4>duration.defaultValue</h4>
+<p>The duration that should be taken if no data-duration is defined.</p>
+
+<h4>duration.defaultAction</h4>
+<p><em>Default: "next"</em><br />
+The action that should be executed if no data-duration-action is defined.</p>
+
+<h4>duration.barSelector</h4>
+<p>A jQuery selector to the bar element on which a property should be changed.</p>
+
+<h4>duration.barProperty, duration.barPropertyStart, duration.barPropertyEnd</h4>
+<p><em>Default: "width", "0", "100%"</em><br />
+Set to property and property values which should be changed.
+A transition for the property are automatically applied on the element.</p>
+
+
+<h3>Secondary <em>src/plugins/secondary.js</em></h3>
+<p>Documentation coming soon.</p>
+
+<h3>Toggle <em>src/plugins/toggle.js</em></h3>
+<p>Bind a key to toggle the de/initialization of jmpress.js. Example:</p>
+<pre><code>$("#jmpress").jmpress("toggle", 27); // Bind escape key</code></pre>
+</section>
+
+<section>
+<h2>Writing a Plugin</h2>
+<p>To extend jmpress.js, simply create a new js file and then add the script to
+your website or presentation HTML. It is wise to wrap your plugin within a
+closure:</p>
+
+<pre><code>(function( $, document, window, undefined ) {
+	// Plugin Code Will Go Here
+}(jQuery, document, window));</code></pre>
+
+<p>Now we can add a new option to jmpress by using the defaults method:</p>
+
+<pre><code>(function( $, document, window, undefined ) {
+	$.jmpress("defaults").withMeat = 'Yum! Meat!';
+})(jQuery, document, window);</code></pre>
+
+<p>Now the config option 'withMeat' will be settable when initiating jmpress
+and will default to 'Yum! Meat!'. Let's go further and add some more meat to our
+plugin:</p>
+
+<pre><code>(function( $, document, window, undefined ) {
+	$.jmpress("defaults").withMeat = 'Yum! Meat!';
+	function meat( step, what ) {
+		$(step).html( what );
+	}
+	$.jmpress('initStep', function( step, eventData ) {
+		meat( step, eventData.settings.withMeat );
+	});
+}(jQuery, document, window));</code></pre>
+
+<p>We have created a 'meat' method available only within our plugin. Then we are
+calling this method as each step is initialized to replace the HTML in every
+step to 'Yum! Meat!'.</p>
+
+<p>You can add your own events to jmpress using the 'register' method and then
+call it upon an event:</p>
+
+<pre><code>(function( $, document, window, undefined ) {
+	$.jmpress("defaults").withMeat = 'Yum! Meat!';
+	$.extend(true, $.jmpress('defaults').keyboard.keys, {
+		77: 'meat' // 'm' key for meat
+	});
+	$.jmpress("register", "meat", function() {
+		var step = $(this).jmpress('active')
+		step.html( $(this).jmpress("settings").withMeat );
+	});
+}(jQuery, document, window));</code></pre>
+
+<p>With this plugin, any time the 'm' key is pressed the active slide HTML will
+be replace with 'Yum! Meat!'.</p>
+
+<p>Take a look at the core plugins in jmpress.js or the extra plugins in the
+/plugins folder for more examples.</p>
+
+<p>If you have written a plugin for jmpress.js please let us know!</p>
+
+<p>More documentation coming soon...</p>
+</section>
+<article class="step" id="examples">
+	<h1>Examples</h1>
+	<ul>
+		<li><a href="../examples/simple/" target="_blank">simple</a>
+		<li><a href="../examples/impress/" target="_blank">impress.js</a>
+		<li><a href="../examples/vacation/" target="_blank">vacation</a>
+		<li><a href="../examples/animation/" target="_blank">animation</a>
+		<li><a href="../examples/automatic-layout/" target="_blank">automatic layout</a>
+		<li><a href="../examples/nested-templates/" target="_blank">nested templates</a>
+		<li><a href="../examples/zoomable/" target="_blank">zoomable steps</a>
+	</ul>
+</article>
+<article class="step" id="contribute">
+	<h1>Contribute</h1>
+	<p>We are always looking for more contributors and there are many ways you
+	can help!</p>
+	<ul>
+		<li>Open an <a href="https://github.com/shama/jmpress.js/issues" target="_blank">issue</a>
+			for a bug or a feature request
+		<li>Send us a message if you're using jmpress.js
+		<li>Add/update the test cases
+		<li>Fix a bug or write a feature then submit a pull request
+	</ul>
+	<p>Thank you for using and contributing to jmpress.js!</p>
+	<section>
+		<h2>Edit &amp; Build</h2>
+		<p>All the source files are located in the <em>src/</em> folder. They
+		are broken up into components and plugins to allow users to build their
+		own customized version of jmpress.js.</p>
+		<h3>Grunt</h3>
+		<p>We use the command line build tool: 
+		<a href="https://github.com/cowboy/grunt" target="_blank">grunt</a>. It
+		requires nodejs. If you already have nodejs installed run the command
+		<em>npm install -g grunt</em> to install grunt. Then navigate to your
+		copy of jmpress.js and run the command: <em>grunt</em> to build. You can
+		also use the command <em>grunt watch</em> to continuously build
+		jmpress.js as you edit.</p>
+		<p>The output files will be located in the <em>dist/</em> folder. Please
+		do not edit any file in the <em>dist/</em> folder as they are
+		automatically generated.</p>
+	</section>
+	<section>
+		<h2>Pull Requests</h2>
+		<p>Good news! We accept pull requests!</p>
+		<p>Please work and pull against the <em>dev</em> branch to make sure you
+		are using the latest code. Thanks!</p>
+	</section>
+	<section>
+		<h2>Tests</h2>
+		<p>jmpress.js uses
+		<a href="http://docs.jquery.com/QUnit" target="_blank">QUnit</a>
+		for testing. Please run <i>tests/</i> in your browser to run the
+		tests or the command: <em>grunt qunit</em>.</p>
+		<p><em>Currently the tests need a lot of catching up. Any help you can
+		provide will be very much appreciated.</em></p>
+	</section>
+	<section>
+		<h2>Docs</h2>
+		<p>If you find an error or something missing (currently there is a lot)
+		please edit and submit a pull request.</p>
+	</section>
+	<section>
+		<h2>Wishlist</h2>
+		<ul>
+			<li>Browser Support (hard but important)
+			<li>Better fallback support for older browsers
+			<li>Mobile/Touch Support
+			<li>Simple to use for new users, but flexible for advanced
+			<li>Community for plugins
+		</ul>
+	</section>
+</article>
+</div>
 </body>
 </html>
