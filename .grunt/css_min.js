@@ -1,4 +1,4 @@
-/* Stealed from https://github.com/cowboy/grunt/issues/17 
+/* Stolen from https://github.com/cowboy/grunt/issues/17 
  * Thanks to @sindresorhus :)
  */
 task.registerBasicTask( 'css_min', 'Minify CSS files with Sqwish.', function( data, name ) {
