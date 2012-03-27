@@ -219,6 +219,23 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+.clearfix {
+	display: inline-block;
+}
+html[xmlns] .clearfix {
+	display: block;
+}
+* html .clearfix {
+	height: 1%;
+}
 
 /** GENERAL **/
 body {
@@ -308,4 +325,32 @@ header i {
 }
 .step {
 	padding-top: 60px;
+}
+#download {
+	width: 100%;
+}
+#download section {
+	width: 24%;
+	height: 75px;
+	float: left;
+	margin: 0px 70px 20px 0px;
+	padding: 10px;
+	border: 1px solid #0078AE;
+	border-radius: 5px;
+}
+#download section a {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#download section em {
+	font-size: 0.8em;
+	padding: 0px 5px;
+	float: right;
+	color: #0078AE;
+}
+#download section.plugin {
+	border-color: #ddd;
+}
+#download section.plugin a {
+	font-size: 1em;
 }
