@@ -30,15 +30,24 @@
 <h4>init()</h4>
 <p>Initializes jmpress with the default config (like impress.js).</p>
 
-<h4>init( config )</h4>
-<p>Initializes jmpress with a custom config object.</p>
+<h4>init( step )</h4>
+<p>Initializes a single step with jmpress. Useful when dynamically adding steps:</p>
+<pre><code class="noconvert">var newStep = $('&lt;div class="step" /&gt;').html('This is a new step');
+$('#container').append(newStep);
+$('#jmpress').jmpress('init', newStep);</code></pre>
 
 <h4>initialized()</h4>
 <p>Returns true if jmpress is initialized.</p>
 
 <h4>deinit()</h4>
-<p>Deinits jmpress, returning to it's original state. If already deinited it
+<p>De-initializes jmpress, returning to it's original state. If already deinited it
 does nothing. This is useful for enabling a print mode.</p>
+
+<h4>deinit( step )</h4>
+<p>De-initializes a single step with jmpress. Useful when dynamically removing steps:</p>
+<pre><code class="noconvert">var removeStep = $('.step').first();
+$('#jmpress').jmpress('deinit', removeStep);
+removeStep.remove();</code></pre>
 
 <h4>settings()</h4>
 <p>Returns the settings object which you can modify.</p>
