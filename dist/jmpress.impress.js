@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.0
+ * jmpress.js v0.4.1 dev
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -559,7 +559,16 @@
 			,active: getActive
 			,current: function() { return current; }
 			,fire: fire
-			,deinit: deinit
+			,init: function(step) {
+				doStepInit.call(this, $(step), current.nextIdNumber++);
+			}
+			,deinit: function(step) {
+				if(step) {
+					doStepDeinit.call(this, $(step));
+				} else {
+					deinit.call(this);
+				}
+			}
 			,reapply: doStepReapply
 		});
 
@@ -652,6 +661,7 @@
 		steps.each(function( idx ) {
 			doStepInit.call(jmpress, this, idx );
 		});
+		current.nextIdNumber = steps.length;
 
 		callCallback.call(this, 'afterInit', null, {});
 

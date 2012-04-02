@@ -24,7 +24,7 @@ config.init({
 		' */'
 	},
 	watch: {
-		files: ['src/**'],
+		files: ['src/**', 'docs/**'],
 		tasks: 'default'
 	},
 	lint: {

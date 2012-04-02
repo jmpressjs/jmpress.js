@@ -546,7 +546,16 @@
 			,active: getActive
 			,current: function() { return current; }
 			,fire: fire
-			,deinit: deinit
+			,init: function(step) {
+				doStepInit.call(this, $(step), current.nextIdNumber++);
+			}
+			,deinit: function(step) {
+				if(step) {
+					doStepDeinit.call(this, $(step));
+				} else {
+					deinit.call(this);
+				}
+			}
 			,reapply: doStepReapply
 		});
 
@@ -639,6 +648,7 @@
 		steps.each(function( idx ) {
 			doStepInit.call(jmpress, this, idx );
 		});
+		current.nextIdNumber = steps.length;
 
 		callCallback.call(this, 'afterInit', null, {});
 

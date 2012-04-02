@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.0
+ * jmpress.js v0.4.1 dev
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -559,7 +559,16 @@
 			,active: getActive
 			,current: function() { return current; }
 			,fire: fire
-			,deinit: deinit
+			,init: function(step) {
+				doStepInit.call(this, $(step), current.nextIdNumber++);
+			}
+			,deinit: function(step) {
+				if(step) {
+					doStepDeinit.call(this, $(step));
+				} else {
+					deinit.call(this);
+				}
+			}
 			,reapply: doStepReapply
 		});
 
@@ -652,6 +661,7 @@
 		steps.each(function( idx ) {
 			doStepInit.call(jmpress, this, idx );
 		});
+		current.nextIdNumber = steps.length;
 
 		callCallback.call(this, 'afterInit', null, {});
 
@@ -2392,7 +2402,7 @@
 
 }(jQuery, document, window));
 /*!
- * plugin for jmpress.js v0.4.0
+ * plugin for jmpress.js v0.4.1 dev
  *
  * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
@@ -2574,7 +2584,7 @@
 
 /*!
  * jmpress.presentation-mode plugin
- * Display a window for the presentator with notes and a control and view of the
+ * Display a window for the presenter with notes and a control and view of the
  * presentation
  */
 (function( $, document, window, undefined ) {
