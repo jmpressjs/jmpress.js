@@ -326,10 +326,10 @@ header i {
 .step {
 	padding-top: 60px;
 }
-#download {
+.float {
 	width: 100%;
 }
-#download section {
+.float section {
 	width: 24%;
 	height: 75px;
 	float: left;
@@ -338,19 +338,19 @@ header i {
 	border: 1px solid #0078AE;
 	border-radius: 5px;
 }
-#download section a {
+.float section a {
 	font-weight: bold;
 	font-size: 1.2em;
 }
-#download section em {
+.float section em {
 	font-size: 0.8em;
 	padding: 0px 5px;
 	float: right;
 	color: #0078AE;
 }
-#download section.plugin {
+.float section.plugin {
 	border-color: #ddd;
 }
-#download section.plugin a {
+.float section.plugin a {
 	font-size: 1em;
 }

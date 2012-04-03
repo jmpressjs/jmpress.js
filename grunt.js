@@ -82,6 +82,7 @@ config.init({
 
 		'docs/index.html': [
 			'docs/prepend.html',
+			'docs/download.html',
 			'docs/start.html',
 			'docs/basic.html',
 			'docs/options.html',
@@ -90,6 +91,7 @@ config.init({
 			'docs/templates.html',
 			'docs/route.html',
 			'docs/plugins.html',
+			'docs/help.html',
 			'docs/examples.html',
 			'docs/contribute.html',
 			'docs/append.html']
