@@ -110,6 +110,15 @@ needed to build this camera.</p>
 
 <h4>animation</h4>
 <p>Set the CSS animation values for transitions between slides.</p>
+<pre><code>$('#jmpress').jmpress({
+	animation: {
+		transformOrigin: 'center center', // Point on which to transform
+		transitionDuration: '5s',         // Length of animation
+		transitionDelay: '500ms',         // Delay before animating
+		transitionTimingFunction: 'ease'  // Animation effect
+	}
+});</code></pre>
+<p>See <a href="https://developer.mozilla.org/en/CSS/transform" target="_blank">Mozilla CSS docs</a> for more info.</p>
 
 <h4>loadedClass</h4>
 <p><em>Default: 'loaded'</em><br/>
