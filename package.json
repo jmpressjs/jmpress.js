@@ -1,7 +1,9 @@
 {
 	"name": "jmpress.js",
-	"version": "0.4.1 dev",
+	"version": "0.4.1",
 	"title": "jQuery.jmpress()",
+	"description": "A jQuery plugin to build a website on the infinite canvas.",
+	"homepage": "http://shama.github.com/jmpress.js",
 	"author": {
 		"name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
 		"url": "https://github.com/shama/jmpress.js"
@@ -12,11 +14,6 @@
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
 	],
-	"dependencies": {
-		"jquery": "1"
-	},
-	"description": "A jQuery plugin to build a website on the infinite canvas.",
-	"homepage": "http://shama.github.com/jmpress.js",
 	"maintainers": [
 		{
 			"name": "Kyle Robinson Young",
@@ -27,7 +24,20 @@
 			"url": "https://github.com/sokra"
 		}
 	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/shama/jmpress.js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/shama/jmpress.js/issues"
+	},
 	"files": [
 		"dist/jmpress.js"
-	]
+	],
+	"dependencies": {
+		"jquery": "~1.5"
+	},
+	"devDependencies": {
+		"grunt": "~0.3.8"
+	}
 }
