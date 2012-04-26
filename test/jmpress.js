@@ -9,6 +9,9 @@
 		window.location.hash = '#';
 	};
 
+	QUnit.done = function() {
+		$('body').css('overflow', 'auto');
+	};
 
 	module('core#init', {
 		setup: function() {
