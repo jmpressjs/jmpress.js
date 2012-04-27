@@ -34,15 +34,15 @@
 		});
 		$(this.fixture).jmpress({stepSelector: 'section'});
 		var result = $(this.fixture + ' #step-1').attr('style');
-		ok( result.indexOf('translate3d(0px, 0px, 0px)') != -1 );
-		ok( result.indexOf('rotateX(0deg)') != -1 );
-		ok( result.indexOf('rotateY(0deg)') != -1 );
-		ok( result.indexOf('rotateZ(0deg)') != -1 );
+		ok( result.indexOf('translate3d(0px, 0px, 0px)') !== -1 );
+		ok( result.indexOf('rotateX(0deg)') !== -1 );
+		ok( result.indexOf('rotateY(0deg)') !== -1 );
+		ok( result.indexOf('rotateZ(0deg)') !== -1 );
 		result = $(this.fixture + ' #step-3').attr('style');
-		ok( result.indexOf('translate3d(2000px, 2000px, 0px)') != -1 );
-		ok( result.indexOf('rotateX(0deg)') != -1 );
-		ok( result.indexOf('rotateY(0deg)') != -1 );
-		ok( result.indexOf('rotateZ(90deg)') != -1 );
+		ok( result.indexOf('translate3d(2000px, 2000px, 0px)') !== -1 );
+		ok( result.indexOf('rotateX(0deg)') !== -1 );
+		ok( result.indexOf('rotateY(0deg)') !== -1 );
+		ok( result.indexOf('rotateZ(90deg)') !== -1 );
 	});
 
 }(jQuery));
