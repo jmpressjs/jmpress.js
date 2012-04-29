@@ -35,5 +35,45 @@
 			});
 		}
 	});
+	$jmpress('loadSteps', function( step, eventData ) {
+		if (!step) {
+			return;
+		}
+		var settings = eventData.settings,
+			jmpress = $(this);
+		if ( $(settings.stepSelector).filter('[data-src],[href]').length < 1 ) {
+			return;
+		}
+		var siblings = $(step).near( settings.stepSelector )
+			.add( $(step).near( settings.stepSelector, true) )
+			.add( jmpress.jmpress('selectPrev', step, {
+				stepData: $(step).data('stepData')
+			}))
+			.add( jmpress.jmpress('selectNext', step, {
+				stepData: $(step).data('stepData')
+			}));
+		siblings.each(function() {
+			var step = this;
+			if ($(step).hasClass( settings.loadedClass )) {
+				return;
+			}
+			setTimeout(function() {
+				if ($(step).hasClass( settings.loadedClass )) {
+					return;
+				}
+				jmpress.jmpress('loadStep', step, {
+					stepData: $(step).data('stepData')
+				});
+				$(step).addClass( settings.loadedClass );
+			}, settings.transitionDuration - 100);
+		});
+		if ($(step).hasClass( settings.loadedClass )) {
+			return;
+		}
+		jmpress.jmpress('loadStep', step, {
+			stepData: $(step).data('stepData')
+		});
+		$(step).addClass( settings.loadedClass );
+	});
 
 }(jQuery, document, window));

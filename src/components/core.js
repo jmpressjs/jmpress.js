@@ -99,6 +99,7 @@
 		,'selectHome': 1
 		,'selectEnd': 1
 		,'loadStep': 1
+		,'loadSteps': 1
 		,'applyTarget': 1
 	};
 	for(var callbackName in callbacks) {
@@ -267,50 +268,6 @@
 			return result.value;
 		}
 		/**
-		 * Load Siblings
-		 *
-		 * @access protected
-		 * @return void
-		 */
-		function loadSiblings() {
-			if (!active) {
-				return;
-			}
-			if ( $(settings.stepSelector).filter('[data-src],[href]').length < 1 ) {
-				return;
-			}
-			var siblings = $(active).near( settings.stepSelector )
-				.add( $(active).near( settings.stepSelector, true) )
-				.add( callCallback.call(this, 'selectPrev', active, {
-					stepData: $(active).data('stepData')
-				}))
-				.add( callCallback.call(this, 'selectNext', active, {
-					stepData: $(active).data('stepData')
-				}));
-			siblings.each(function() {
-				var step = this;
-				if ($(step).hasClass( settings.loadedClass )) {
-					return;
-				}
-				setTimeout(function() {
-					if ($(step).hasClass( settings.loadedClass )) {
-						return;
-					}
-					callCallback.call(jmpress, 'loadStep', step, {
-						stepData: $(step).data('stepData')
-					});
-					$(step).addClass( settings.loadedClass );
-				}, settings.transitionDuration - 100);
-			});
-			if ($(active).hasClass( settings.loadedClass )) {
-				return;
-			}
-			callCallback.call(jmpress, 'loadStep', active, {
-				stepData: $(active).data('stepData')
-			});
-			$(active).addClass( settings.loadedClass );
-		}
-		/**
 		 *
 		 */
 		function getStepParents( el ) {
@@ -421,7 +378,7 @@
 			activeSubstep = callbackData.substep;
 			activeDelegated = delegated;
 
-			loadSiblings.call(this);
+			callCallback.call(this, 'loadSteps', active, callbackData);
 
 			return delegated;
 		}
