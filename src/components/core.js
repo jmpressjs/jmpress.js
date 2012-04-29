@@ -276,6 +276,9 @@
 			if (!active) {
 				return;
 			}
+			if ( $(settings.stepSelector).filter('[data-src],[href]').length < 1 ) {
+				return;
+			}
 			var siblings = $(active).near( settings.stepSelector )
 				.add( $(active).near( settings.stepSelector, true) )
 				.add( callCallback.call(this, 'selectPrev', active, {
