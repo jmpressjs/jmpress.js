@@ -76,9 +76,6 @@
 			,transformStyle: "preserve-3d"
 		}
 		,transitionDuration: 1500
-
-		/* TEST */
-		,test: false
 	};
 	var callbacks = {
 		'beforeChange': 1
@@ -768,17 +765,9 @@
 		function f() {
 			var jmpressmethods = $(this).data("jmpressmethods");
 			if ( jmpressmethods && jmpressmethods[method] ) {
-				if ( method.substr(0, 1) === '_' && jmpressmethods.settings().test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] && jmpressmethods ) {
 				var settings = jmpressmethods.settings();
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
@@ -804,11 +793,7 @@
 	$.extend({
 		jmpress: function( method ) {
 			if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] ) {
 				// plugin interface
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
