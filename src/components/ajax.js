@@ -8,24 +8,28 @@
 	var $jmpress = $.jmpress;
 
 	/* DEFINES */
-	var afterStepLoaded = 'afterStepLoaded';
-
-	/* FUNCTIONS */
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
+	var afterStepLoaded = 'ajax:afterStepLoaded',
+		loadStep = 'ajax:loadStep';
 
 	/* REGISTER EVENTS */
+	$jmpress('register', loadStep);
 	$jmpress('register', afterStepLoaded);
+
+	/* DEFAULTS */
+	$jmpress('defaults').ajaxLoadedClass = "loaded";
 
 	/* HOOKS */
 	$jmpress('initStep', function( step, eventData ) {
 		eventData.stepData.src = $(step).attr('href') || eventData.data.src || false;
+		eventData.stepData.srcLoaded = false;
 	});
-	$jmpress('loadStep', function( step, eventData ) {
+	$jmpress(loadStep, function( step, eventData ) {
 		var stepData = eventData.stepData,
-			href = stepData && stepData.src;
+			href = stepData && stepData.src,
+			settings = eventData.settings;
 		if ( href ) {
+			$(step).addClass( settings.ajaxLoadedClass );
+			stepData.srcLoaded = true;
 			$(step).load(href, function(response, status, xhr) {
 				$(eventData.jmpress).jmpress('fire', afterStepLoaded, step, $.extend({}, eventData, {
 					response: response
@@ -35,45 +39,41 @@
 			});
 		}
 	});
-	$jmpress('loadSteps', function( step, eventData ) {
+	$jmpress('idle', function( step, eventData ) {
 		if (!step) {
 			return;
 		}
 		var settings = eventData.settings,
-			jmpress = $(this);
-		if ( $(settings.stepSelector).filter('[data-src],[href]').length < 1 ) {
-			return;
-		}
-		var siblings = $(step).near( settings.stepSelector )
+			jmpress = $(this),
+			stepData = eventData.stepData;
+		var siblings = $(step)
+			.add( $(step).near( settings.stepSelector ) )
 			.add( $(step).near( settings.stepSelector, true) )
-			.add( jmpress.jmpress('selectPrev', step, {
+			.add( jmpress.jmpress('fire', 'selectPrev', step, {
 				stepData: $(step).data('stepData')
 			}))
-			.add( jmpress.jmpress('selectNext', step, {
+			.add( jmpress.jmpress('fire', 'selectNext', step, {
 				stepData: $(step).data('stepData')
 			}));
 		siblings.each(function() {
-			var step = this;
-			if ($(step).hasClass( settings.loadedClass )) {
+			var step = this,
+				stepData = $(step).data("stepData");
+			if(!stepData.src || stepData.srcLoaded) {
 				return;
 			}
-			setTimeout(function() {
-				if ($(step).hasClass( settings.loadedClass )) {
-					return;
-				}
-				jmpress.jmpress('loadStep', step, {
-					stepData: $(step).data('stepData')
-				});
-				$(step).addClass( settings.loadedClass );
-			}, settings.transitionDuration - 100);
+			jmpress.jmpress('fire', loadStep, step, {
+				stepData: $(step).data('stepData')
+			});
 		});
-		if ($(step).hasClass( settings.loadedClass )) {
+	});
+	$jmpress("setActive", function(step, eventData) {
+		var stepData = $(step).data("stepData");
+		if(!stepData.src || stepData.srcLoaded) {
 			return;
 		}
-		jmpress.jmpress('loadStep', step, {
+		$(this).jmpress('fire', loadStep, step, {
 			stepData: $(step).data('stepData')
 		});
-		$(step).addClass( settings.loadedClass );
 	});
 
 }(jQuery, document, window));

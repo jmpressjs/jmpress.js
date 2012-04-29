@@ -61,7 +61,6 @@
 		,canvasClass: ''
 		,areaClass: ''
 		,notSupportedClass: 'not-supported'
-		,loadedClass: 'loaded'
 
 		/* CONFIG */
 		,fullscreen: true
@@ -98,8 +97,7 @@
 		,'selectNext': 1
 		,'selectHome': 1
 		,'selectEnd': 1
-		,'loadStep': 1
-		,'loadSteps': 1
+		,'idle': 1
 		,'applyTarget': 1
 	};
 	for(var callbackName in callbacks) {
@@ -369,16 +367,22 @@
 			}
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
-			callCallback.call(this, "applyTarget", active, $.extend({
+			callCallback.call(this, "applyTarget", delegated, $.extend({
 				canvas: canvas
 				,area: area
+				,beforeActive: activeDelegated
 			}, callbackData));
 
 			active = el;
 			activeSubstep = callbackData.substep;
 			activeDelegated = delegated;
 
-			callCallback.call(this, 'loadSteps', active, callbackData);
+			if(current.idleTimeout) {
+				clearTimeout(current.idleTimeout);
+			}
+			current.idleTimeout = setTimeout(function() {
+				callCallback.call(this, 'idle', delegated, callbackData);
+			}, Math.max(1, settings.transitionDuration - 100));
 
 			return delegated;
 		}
@@ -484,7 +488,7 @@
 			if( !callbacks[callbackName] ) {
 				$.error( "callback " + callbackName + " is not registered." );
 			} else {
-				callCallback.call(this, callbackName, element, eventData);
+				return callCallback.call(this, callbackName, element, eventData);
 			}
 		}
 
