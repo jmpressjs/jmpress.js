@@ -1,0 +1,27 @@
+- require("bootstrap");
+.container
+	.row
+		.span12
+			.page-header
+				h1
+					| jmpress.js
+					small  builder
+	.row
+		.span8
+			p
+				| Build your own version of jmpress.js
+			p
+				| (Some more help...)
+			form.form-horizontal#choose-form
+				fieldset
+					.form-actions#form-actions
+						#downloadify
+						button.btn.btn-primary#download
+							| Download (Data Url)
+			#progress.alert.alert-info(style="display:none")
+				.progress.progress-striped.active
+					.bar(style="width: 100%")
+				| Generating your version of jmpress.js...
+		.span4
+			h2 Common builds
+			#settings
