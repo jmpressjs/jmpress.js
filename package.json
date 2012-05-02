@@ -38,7 +38,7 @@
 		"jquery": "~1.5"
 	},
 	"devDependencies": {
-		"grunt": "~0.3.8",
-		"sqwish": "~0.2.0"
+		"grunt": "~0.3.9",
+		"grunt-css": "~0.2.0"
 	}
 }
