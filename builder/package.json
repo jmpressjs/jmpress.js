@@ -5,6 +5,7 @@
 		"webpack": "0.3.x"
 	},
 	"scripts": {
-		"build": "node ./node_modules/webpack/bin/webpack --colors --min lib/index.js ./web.js"
+		"build": "node ./node_modules/webpack/bin/webpack --colors --min lib/index.js ./web.js",
+		"build_debug": "node ./node_modules/webpack/bin/webpack --colors --debug --verbose --watch --progress lib/index.js ./web.js"
 	}
 }
