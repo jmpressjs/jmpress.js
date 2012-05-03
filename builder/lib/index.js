@@ -12,16 +12,24 @@ $(function() {
 	});
 	$("#download").click(function() {
 		$(this).attr("disabled", true);
-		$("#progress").show();
 		process.nextTick(function() {
-			download(true);
+			download(false, function(dataUrl) {
+				$("#dataurl").show();
+				$("#dataurl").attr("href", dataUrl);
+			});
 		});
 	});
+	function invalidate() {
+		$("#dataurl").hide();
+		$("#download").attr("disabled", false);
+	}
+	$("input").change(invalidate);
 	config.settings.forEach(function(setting) {
 		$("<p>").html(require("./setting.jade")(setting))
 			.appendTo("#settings")
 			.click(function() {
 				loadSetting(setting);
+				invalidate();
 			});
 	});
 	loadSetting(config.settings[0]);
@@ -36,7 +44,7 @@ function loadSetting(setting) {
 	});
 }
 
-function download(navigate, init) {
+function download(init, dataUrlCb) {
 	return require.ensure([], function(require) {
 		if(init) {
 			require.ensure([], function(require) {
@@ -66,14 +74,13 @@ function download(navigate, init) {
 			return build(options);
 		}
 		var file = getFile();
-		if(navigate) {
+		if(dataUrlCb) {
 			var base64_encode = require("./base64_encode");
-			var dataUrl = "data:application/javascript;base64," + base64_encode(file);
-			window.location = dataUrl;
-		} else {
-			return file;
+			var dataUrl = "data:text/javascript;headers=Content-Disposition%3A%20attachment%3B%20jmpress.js%22%0D%0AContent-Language%3A%20en;charset=utf-8;base64," + base64_encode(file);
+			dataUrlCb(dataUrl);
 		}
+		return file;
 	});
 }
 
-download(false, true);
+download(true);

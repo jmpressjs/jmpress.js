@@ -17,11 +17,10 @@
 					.form-actions#form-actions
 						#downloadify
 						button.btn.btn-primary#download
-							| Download (Data Url)
-			#progress.alert.alert-info(style="display:none")
-				.progress.progress-striped.active
-					.bar(style="width: 100%")
-				| Generating your version of jmpress.js...
+							| Create download with Data Url
+						span &nbsp;
+						a.btn.btn-primary#dataurl(style="display:none")
+							| Download (Right click, and save as)
 		.span4
 			h2 Common builds
 			#settings
