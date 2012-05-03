@@ -10,18 +10,13 @@ $(function() {
 			.html(require("./component.jade")(component))
 			.insertBefore("#form-actions");
 	});
-	$("#download").click(function() {
-		$(this).attr("disabled", true);
-		process.nextTick(function() {
-			download(false, function(dataUrl) {
-				$("#dataurl").show();
-				$("#dataurl").attr("href", dataUrl);
-			});
-		});
-	});
 	function invalidate() {
-		$("#dataurl").hide();
-		$("#download").attr("disabled", false);
+		$("#dataurl").addClass("disabled");
+		$("#dataurl").attr("href", "");
+		download(false, function(dataUrl) {
+			$("#dataurl").removeClass("disabled");
+			$("#dataurl").attr("href", dataUrl);
+		});
 	}
 	$("input").change(invalidate);
 	config.settings.forEach(function(setting) {
@@ -33,6 +28,7 @@ $(function() {
 			});
 	});
 	loadSetting(config.settings[0]);
+	invalidate()
 });
 
 function loadSetting(setting) {

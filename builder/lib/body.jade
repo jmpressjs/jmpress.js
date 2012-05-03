@@ -9,18 +9,20 @@
 	.row
 		.span8
 			p
-				| Build your own version of jmpress.js
+				| Build your own version of
+				b  jmpress.js
+				b &nbsp;
+				b= require("../../package.json").version
 			p
-				| (Some more help...)
+				em
+					| Select the components and plugins you need for your
+					|  project and click on "Download" to save it.
 			form.form-horizontal#choose-form
 				fieldset
 					.form-actions#form-actions
 						#downloadify
-						button.btn.btn-primary#download
-							| Create download with Data Url
-						span &nbsp;
-						a.btn.btn-primary#dataurl(style="display:none")
-							| Download (Right click, and save as)
+						a.btn.btn-primary#dataurl(download="jmpress.js")
+							| Download (Data Url)
 		.span4
 			h2 Common builds
 			#settings
