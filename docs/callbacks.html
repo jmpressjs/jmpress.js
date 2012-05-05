@@ -27,8 +27,9 @@ change we use the beforeChange callback:</p>
 	<li><em>initStep</em>: On each step as it is initialized.
 	<li><em>applyStep</em>: Called last on each step after it is initialized.
 	<li><em>unapplyStep</em>: Called last on each step after is is de-initialized.
-	<li><em>loadStep</em>: When a step has began loading via AJAX.
-	<li><em>afterStepLoaded</em>: Called after the AJAX step has finished loading.
+	<li><em>idle</em>: When on step while transition finishs.
+	<li><em>ajax:loadStep</em>: When a step has began loading via AJAX.
+	<li><em>ajax:afterStepLoaded</em>: Called after the AJAX step has finished loading.
 	<li><em>selectEnd</em>: Callback should return the last step.
 	<li><em>selectHome</em>: Callback should return the first step.
 	<li><em>selectInitialStep</em>: Callback should return the initial step.

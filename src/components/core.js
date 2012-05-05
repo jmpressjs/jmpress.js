@@ -61,7 +61,6 @@
 		,canvasClass: ''
 		,areaClass: ''
 		,notSupportedClass: 'not-supported'
-		,loadedClass: 'loaded'
 
 		/* CONFIG */
 		,fullscreen: true
@@ -95,7 +94,7 @@
 		,'selectNext': 1
 		,'selectHome': 1
 		,'selectEnd': 1
-		,'loadStep': 1
+		,'idle': 1
 		,'applyTarget': 1
 	};
 	for(var callbackName in callbacks) {
@@ -264,47 +263,6 @@
 			return result.value;
 		}
 		/**
-		 * Load Siblings
-		 *
-		 * @access protected
-		 * @return void
-		 */
-		function loadSiblings() {
-			if (!active) {
-				return;
-			}
-			var siblings = $(active).near( settings.stepSelector )
-				.add( $(active).near( settings.stepSelector, true) )
-				.add( callCallback.call(this, 'selectPrev', active, {
-					stepData: $(active).data('stepData')
-				}))
-				.add( callCallback.call(this, 'selectNext', active, {
-					stepData: $(active).data('stepData')
-				}));
-			siblings.each(function() {
-				var step = this;
-				if ($(step).hasClass( settings.loadedClass )) {
-					return;
-				}
-				setTimeout(function() {
-					if ($(step).hasClass( settings.loadedClass )) {
-						return;
-					}
-					callCallback.call(jmpress, 'loadStep', step, {
-						stepData: $(step).data('stepData')
-					});
-					$(step).addClass( settings.loadedClass );
-				}, settings.transitionDuration - 100);
-			});
-			if ($(active).hasClass( settings.loadedClass )) {
-				return;
-			}
-			callCallback.call(jmpress, 'loadStep', active, {
-				stepData: $(active).data('stepData')
-			});
-			$(active).addClass( settings.loadedClass );
-		}
-		/**
 		 *
 		 */
 		function getStepParents( el ) {
@@ -406,16 +364,22 @@
 			}
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
-			callCallback.call(this, "applyTarget", active, $.extend({
+			callCallback.call(this, "applyTarget", delegated, $.extend({
 				canvas: canvas
 				,area: area
+				,beforeActive: activeDelegated
 			}, callbackData));
 
 			active = el;
 			activeSubstep = callbackData.substep;
 			activeDelegated = delegated;
 
-			loadSiblings.call(this);
+			if(current.idleTimeout) {
+				clearTimeout(current.idleTimeout);
+			}
+			current.idleTimeout = setTimeout(function() {
+				callCallback.call(this, 'idle', delegated, callbackData);
+			}, Math.max(1, settings.transitionDuration - 100));
 
 			return delegated;
 		}
@@ -521,7 +485,7 @@
 			if( !callbacks[callbackName] ) {
 				$.error( "callback " + callbackName + " is not registered." );
 			} else {
-				callCallback.call(this, callbackName, element, eventData);
+				return callCallback.call(this, callbackName, element, eventData);
 			}
 		}
 
