@@ -112,29 +112,12 @@ module.exports = function(grunt) {
 				src: ['<banner:meta.banner>',
 					'src/css/animations/basic/*'],
 				dest: 'dist/basic-animations.css'
-			},
+			}
 			/*dist_css_advanced_animations: {
 				src: ['<banner:meta.banner>',
 					'src/css/animations/advanced/*'],
 				dest: 'dist/advanced-animations.css'
 			},*/
-			docs: {
-				src: ['docs/prepend.html',
-					'docs/download.html',
-					'docs/start.html',
-					'docs/basic.html',
-					'docs/options.html',
-					'docs/methods.html',
-					'docs/callbacks.html',
-					'docs/templates.html',
-					'docs/route.html',
-					'docs/plugins.html',
-					'docs/help.html',
-					'docs/examples.html',
-					'docs/contribute.html',
-					'docs/append.html'],
-				dest: 'docs/index.html'
-			}
 		},
 		min: {
 			dist: {

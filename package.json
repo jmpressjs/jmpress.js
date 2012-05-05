@@ -40,7 +40,8 @@
 	"devDependencies": {
 		"grunt": "~0.3.9",
 		"grunt-css": "~0.2.0",
-		"webpack": "0.3.x"
+		"webpack": "0.3.x",
+		"YamYam": "0.2.x"
 	},
 	"scripts": {
 		"build": "node ./node_modules/webpack/bin/webpack --colors --min --progress lib/index.js ./docs/web.js",
