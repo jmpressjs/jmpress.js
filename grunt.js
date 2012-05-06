@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			tasks: 'default'
 		},
 		lint: {
-			files: ['src/**/*.js', 'test/**/*.js']
+			files: ['src/**/*.js', 'test/lib/*.js']
 		},
 		qunit: {
 			files: ['test/**/*.html']
