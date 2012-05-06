@@ -1,6 +1,7 @@
 /*global module:false*/
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-css');
+	grunt.loadNpmTasks('grunt-webpack');
 	grunt.initConfig({
 		pkg: '<json:package.json>',
 		meta: {
@@ -163,6 +164,12 @@ module.exports = function(grunt) {
 				dest: 'dist/advanced-animations.min.css'
 			}*/
 		},
+		webpack: {
+			docs: {
+				src: "lib/index.js",
+				dest: "docs/web.js"
+			}
+		},
 		jshint: {
 			options: {
 				curly: true,
@@ -185,5 +192,5 @@ module.exports = function(grunt) {
 		},
 		uglify: {}
 	});
-	grunt.registerTask('default', 'lint concat min cssmin');
+	grunt.registerTask('default', 'lint concat min cssmin webpack');
 };
