@@ -1,11 +1,11 @@
 var config = require("./config.json");
 
 function getComponent(component) {
-	return require("raw!../../src/components/"+component+".js");
+	return require("raw!../../../src/components/"+component+".js");
 }
 
 function getPlugin(plugin) {
-	return require("raw!../../src/plugins/"+plugin+".js");
+	return require("raw!../../../src/plugins/"+plugin+".js");
 }
 
 function build(options) {

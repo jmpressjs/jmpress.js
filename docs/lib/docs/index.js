@@ -4,7 +4,7 @@ module.exports = function(element, hash) {
 	document.title = "jmpress.js - docs";
 	var content = element.find(".content");
 	try {
-		require("bundle!./yamyam!../../src/docs/"+hash[0]+".yam")(function(doc) {
+		require("bundle!./yamyam!../../../src/docs/"+hash[0]+".yam")(function(doc) {
 			content.html(doc);
 			list.find("#docs-"+hash[0]).addClass("active");
 		});

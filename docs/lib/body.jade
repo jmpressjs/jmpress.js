@@ -9,13 +9,13 @@
 				span.icon-bar
 			a.brand(href="http://shama.github.com/jmpress.js")
 				| jmpress.js
-				span= " " + require("../package.json").version
+				span= " " + require("../../package.json").version
 			.nav-collapse
 				ul.nav
 					li.dropdown
 						a.dropdown-toggle(href="#docs-start", data-toggle="dropdown")
 							| Docs
 							b.caret
-					ul.dropdown-menu!= require("../src/docs/nav.jade")()
+					ul.dropdown-menu!= require("../../src/docs-nav.jade")()
 					li: a(href="#builder") Builder
 .page

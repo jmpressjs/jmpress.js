@@ -166,7 +166,7 @@ module.exports = function(grunt) {
 		},
 		webpack: {
 			docs: {
-				src: "lib/index.js",
+				src: "docs/lib/index.js",
 				dest: "docs/web.js"
 			}
 		},
