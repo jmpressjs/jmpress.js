@@ -19,7 +19,9 @@ $(function() {
 			});
 			break;
 		default:
-			$(".page").html(require("./overview.jade")());
+			require("bundle!./docs")(function(page) {
+				page($(".page"), ["start"]);
+			});
 			break;
 		}
 	});
