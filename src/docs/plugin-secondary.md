@@ -1,0 +1,3 @@
+# Plugin: Secondary
+
+Documentation coming.
