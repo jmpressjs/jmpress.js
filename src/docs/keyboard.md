@@ -4,7 +4,7 @@ This component handles navigation with the keyboard. It also offers a binding me
 
 Example:
 
-```javascript
+``` javascript
 $(selector).jmpress({
 	keyboard: {
 		keys: {
