@@ -1,9 +1,8 @@
 # Plugin: Duration
 
-For automatically changing steps after a given duration. Makes the attributes
-`data-duration` and `data-duration-action` available:
+For automatically changing steps after a given duration. Makes the attributes `data-duration` and `data-duration-action` available:
 
-```html
+``` html
 <div id="jmpress">
 	<div class="step" data-duration="3000">
 		Auto advanced after 3 second
@@ -14,10 +13,9 @@ For automatically changing steps after a given duration. Makes the attributes
 </div>
 ```
 
-You can also display a progress bar indicating how long until the change will
-occur:
+You can also display a progress bar indicating how long until the change will occur:
 
-```html
+``` html
 <div id="jmpress">
 	<div class="step">Step 1</div>
 	<div class="step">Step 2</div>
@@ -29,7 +27,7 @@ occur:
 
 Specify the progress bar using the duration.barSelector option:
 
-```javascript
+``` javascript
 $(selector).jmpress({
 	duration: {
 		barSelector: '#my-progress-bar'
@@ -38,17 +36,20 @@ $(selector).jmpress({
 ```
 
 ## `property` duration.defaultValue
+
 The duration that should be taken if no data-duration is defined.
 
 ## `property` duration.defaultAction : `'next'`
+
 The action that should be executed if no data-duration-action is defined.
 
 ## `property` duration.barSelector
+
 A jQuery selector to the bar element on which a property should be changed.
 
 ## `property` duration.barProperty : `'width'`
-Set to property and property values which should be changed. A transition for
-the property are automatically applied on the element.
+
+Set to property and property values which should be changed. A transition for the property are automatically applied on the element.
 
 ## `property` duration.barPropertyStart : `0`
 

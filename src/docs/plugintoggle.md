@@ -2,6 +2,6 @@
 
 Bind a key to toggle the de/initialization of jmpress.js. Example:
 
-```javascript
+``` javascript
 $("#jmpress").jmpress("toggle", 27); // Bind escape key
 ```

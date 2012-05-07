@@ -1,14 +1,12 @@
 # Templates
 
-This component handles templates. It handles the `data-template` attribute and
-registers the template.
+This component handles templates. It handles the `data-template` attribute and registers the template.
 
-For more complex builds consider using templates rather then setting attributes
-on each step.
+For more complex builds consider using templates rather then setting attributes on each step.
 
 First create and register your template with jmpress:
 
-```javascript
+``` javascript
 $.jmpress("template", "mytemplate", {
   x: 1000, y: -2000, scale: 10,
   rotateY: 60,
@@ -18,7 +16,7 @@ $.jmpress("template", "mytemplate", {
 
 Then use your template in your HTML:
 
-```html
+``` html
 <div id="jmpress">
   <div class="step" data-template="mytemplate">...</div>
   ...
@@ -27,7 +25,7 @@ Then use your template in your HTML:
 
 Templates can also be applied to nested steps:
 
-```html
+``` html
 <div id="jmpress">
   <div class="step" data-template="mytemplate">
     <div class="step">...</div>
@@ -37,7 +35,7 @@ Templates can also be applied to nested steps:
 </div>
 ```
 
-```javascript
+``` javascript
 $.jmpress("template", "mytemplate", {
   x: 1000, y: -2000, scale: 10,
   children: [
@@ -48,10 +46,9 @@ $.jmpress("template", "mytemplate", {
 });
 ```
 
-Rather then setting the values manually you can provide a method to setup each
-step programmatically:
+Rather then setting the values manually you can provide a method to setup each step programmatically:
 
-```html
+``` html
 <div id="jmpress" data-template="mytemplate">
 	<div class="step">
 		<div class="step">...</div>
@@ -64,7 +61,7 @@ step programmatically:
 </div>
 ```
 
-```javascript
+``` javascript
 $.jmpress("template", "mytemplate", {
 	children: function( idx, current_child, children ) {
 		return {
@@ -78,14 +75,18 @@ $.jmpress("template", "mytemplate", {
 ```
 
 ## `method` template( templateName, templateData )
+
 Adds or modify a template. If it's already defined then the old template is
 extended with the new properties.
 
 ## `method` apply( selector, templateName )
+
 Applies the template to all selected steps.
 
 ## `method` apply( selector, templateData )
+
 Applies the template directly by template data object.
 
 ## `method` apply( selector, arrayOfTemplateDatas )
+
 Applies template data to an array of selected items.
