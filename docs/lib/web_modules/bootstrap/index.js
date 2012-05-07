@@ -1,3 +1,3 @@
-require("./css/bootstrap.min.css");
+require("./bootstrap.less");
 require("jquery");
-require("./js/bootstrap.min.js");
+require("./bootstrap.js");
