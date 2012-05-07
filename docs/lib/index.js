@@ -20,7 +20,7 @@ $(function() {
 			break;
 		default:
 			require("bundle!./docs")(function(page) {
-				page($(".page"), ["start"]);
+				page($(".page"), ["index"]);
 			});
 			break;
 		}
