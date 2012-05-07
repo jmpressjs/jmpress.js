@@ -52,11 +52,11 @@ module.exports = function(element) {
 						data: function() {
 							return getFile();
 						},
-						swf: 'media/downloadify.swf',
+						swf: require("file/swf!./downloadify.swf"),
 						width: 78,
 						height: 28,
 						transparent: true,
-						downloadImage: "img/download.png"
+						downloadImage: require("file/png!./download.png")
 					});
 				});
 				return;
