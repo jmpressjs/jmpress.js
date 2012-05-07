@@ -23,7 +23,11 @@ module.exports = function(grunt) {
 			' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
 			' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n' +
 			' * <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
-			' */'
+			' */',
+			docsindex: '<!DOCTYPE html><html><head>' +
+			'<script type="text/javascript" charset="utf-8" ' +
+			'src="asserts/<%= docsStats.hash %>.js"></script>' +
+			'</head><body></body></html>'
 		},
 		watch: {
 			files: ['src/**', 'docs/**', 'test/**'],
@@ -113,12 +117,16 @@ module.exports = function(grunt) {
 				src: ['<banner:meta.banner>',
 					'src/css/animations/basic/*'],
 				dest: 'dist/basic-animations.css'
-			}
+			},
 			/*dist_css_advanced_animations: {
 				src: ['<banner:meta.banner>',
 					'src/css/animations/advanced/*'],
 				dest: 'dist/advanced-animations.css'
 			},*/
+			docs: {
+				src: ['<banner:meta.docsindex>'],
+				dest: 'docs/index.html'
+			}
 		},
 		min: {
 			dist: {
@@ -168,7 +176,8 @@ module.exports = function(grunt) {
 			docs: {
 				src: "docs/lib/index.js",
 				scriptSrcPrefix: "asserts/",
-				dest: "docs/asserts/web.js"
+				statsTarget: "docsStats",
+				dest: "docs/asserts/[hash].js"
 			}
 		},
 		jshint: {
@@ -193,5 +202,5 @@ module.exports = function(grunt) {
 		},
 		uglify: {}
 	});
-	grunt.registerTask('default', 'lint concat min cssmin webpack');
+	grunt.registerTask('default', 'lint webpack concat min cssmin');
 };
