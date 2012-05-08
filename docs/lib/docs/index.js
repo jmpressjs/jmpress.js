@@ -5,9 +5,11 @@ module.exports = function(element, hash) {
 	var list = element.find("ul");
 	document.title = "jmpress.js - docs";
 	var content = element.find(".content");
+	var editButton = element.find(".edit-button");
 	try {
 		require("bundle!./yamyam!../../../src/docs/"+hash[0]+".md")(function(doc) {
 			content.html(doc);
+			editButton.attr("href", "https://github.com/shama/jmpress.js/edit/dev/src/docs/" + hash[0] + ".md");
 			content.find("pre").each(function() {
 				hljs.highlightBlock(this);
 			});
