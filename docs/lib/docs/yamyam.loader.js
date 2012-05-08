@@ -8,7 +8,15 @@ module.exports = function(source) {
 				tag: "",
 				_prepend: " ",
 				_prependStart: ""
-			}
+			},
+			codeContainer: {
+				tag: "pre",
+				"class": function(buffer, params, element) {
+					buffer.push("language-" + element.language.replace(/"/g, "&quot;"));
+				}
+			},
+			code: "",
+			codeText: ""
 		}
 	}, function(err, html) {
 		cb(err, html && ("module.exports =\n\t" + JSON.stringify(html) + ";"));
