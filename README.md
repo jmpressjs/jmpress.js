@@ -26,40 +26,11 @@ Here is the current browser support list:
 * Android: NO
 * Chrome for Android: YES in desktop mode
 
-## BUILDING
-
-All the source files are located in the src/ folder. They are broken up into components and plugins to allow users to build their own customized version of jmpress.js.
-
-To build the documentation and the libraries, you need to use `grunt`. It requires `nodejs`. If you already have `nodejs` installed run the command
-```
-npm install -g grunt
-```
-to install `grunt`.
-Afterwards, you will need to install four additional modules:
-```
-npm install grunt-css grunt-webpack YamYam git://github.com/twitter/bootstrap.git
-```
-
-Then navigate to your copy of jmpress.js and run the command: `grunt` to build. You can also use the command `grunt watch` to continuously build jmpress.js as you edit.
-
-The output files will be located in the `dist/` folder. Please do not edit any file in the `dist/` folder as they are automatically generated.
-
-Additionally, the documentation for jmpress.js will be built and put into the `docs/` directory.
-
-### TESTING
-
-To run the tests, the grunt testing module `PhantomJS` must be installed. Unfortunately, this cannot be installed via npm or grunt itself, so the installation
-must be done manually. Please look at the [PhantomJS documentation](https://github.com/cowboy/grunt/blob/master/docs/faq.md#why-does-grunt-complain-that-phantomjs-isnt-installed-%E2%9A%91) for ways to install on your system.
-
-After you have installed PhantomJS, you can run the tests via
-```
-grunt qunit
-```
-
-
 ## USAGE
 
 See the [DOCS](http://shama.github.com/jmpress.js/docs/).
+
+To build your own version or contribute to this version, please look at the development documentation under `src/docs/contribute.md`.
 
 ## CONTRIBUTING
 
