@@ -1,9 +1,8 @@
  project: jmpress.js
- commits: 342
- active : 64 days
- files  : 92
+ commits: 396
+ active : 83 days
+ files  : 143
  authors: 
-   202	Tobias Koppers          59.1%
-   138	Kyle Robinson Young     40.4%
-     2	Marcus Lunzenauer       0.6%
-
+   237	Tobias Koppers          59.8%
+   157	Kyle Robinson Young     39.6%
+     2	Marcus Lunzenauer       0.5%
