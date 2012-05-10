@@ -26,6 +26,25 @@ Here is the current browser support list:
 * Android: NO
 * Chrome for Android: YES in desktop mode
 
+## BUILDING
+
+All the source files are located in the src/ folder. They are broken up into components and plugins to allow users to build their own customized version of jmpress.js.
+
+To build the documentation and the libraries, you need to use `grunt`. It requires `nodejs`. If you already have `nodejs` installed run the command
+```
+npm install -g grunt
+```
+to install `grunt`.
+Afterwards, you will need to install four additional modules:
+```
+npm install grunt-css grunt-webpack YamYam git://github.com/twitter/bootstrap.git
+```
+
+Then navigate to your copy of jmpress.js and run the command: `grunt` to build. You can also use the command `grunt watch` to continuously build jmpress.js as you edit.
+
+The output files will be located in the `dist/` folder. Please do not edit any file in the `dist/` folder as they are automatically generated.
+
+
 ## USAGE
 
 See the [DOCS](http://shama.github.com/jmpress.js/docs/).
