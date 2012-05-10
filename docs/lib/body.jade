@@ -1,0 +1,21 @@
+- require("bootstrap");
+- require("./body.css");
+.navbar.navbar-fixed-top
+	.navbar-inner
+		.container
+			a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.brand(href="http://shama.github.com/jmpress.js")
+				| jmpress.js
+				span= " " + require("../../package.json").version
+			.nav-collapse
+				ul.nav
+					li.dropdown
+						a.dropdown-toggle(href="#docs-index", data-toggle="dropdown")
+							| Docs
+							b.caret
+					ul.dropdown-menu!= require("../../src/docs-nav.jade")()
+					li: a(href="#builder") Custom Downloader
+.page

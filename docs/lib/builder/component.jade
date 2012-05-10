@@ -1,0 +1,9 @@
+label.control-label(for="component-"+name)
+	- if(locals.plugin) {
+	span.label.label-info Plugin
+	- }
+	b= " " + title
+.controls
+	label.checkbox
+		input(id="component-"+name, type="checkbox")
+		span= description
