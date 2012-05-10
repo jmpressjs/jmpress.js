@@ -30,6 +30,8 @@ Here is the current browser support list:
 
 See the [DOCS](http://shama.github.com/jmpress.js/docs/).
 
+To build your own version or contribute to this version, please look at the development documentation under `src/docs/contribute.md`.
+
 ## CONTRIBUTING
 
 Good news! We accept pull requests and are looking for more contributors! ;)
