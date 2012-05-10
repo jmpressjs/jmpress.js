@@ -5,6 +5,7 @@ $(function() {
 	$("body").html(require("./body.jade")());
 	$(".navbar .dropdown").dropdown();
 	$(window).hashchange(function() {
+		$(window).scrollTop(0);
 		var hash = location.hash;
 		hash = hash.replace(/^#/, "").split("-");
 		switch(hash.shift()) {

@@ -4,7 +4,7 @@ Apply custom animations to steps. Handles the attribute data-jmpress (the
 attribute name depends on a config option). Take a look at this 
 [animation example](http://shama.github.com/jmpress.js/examples/animation/) for more information.
 
-## `data-jmpress`
+### `data-jmpress`
 
 Apply a custom animation.
 

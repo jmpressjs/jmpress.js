@@ -41,12 +41,3 @@ The id of the step will appear as the URI hash to recall the slide later. If you
 	Slide 1
 </div>
 ```
-
-**Load slides dynamically**
-You can load a slide dynamically by setting the *data-src* or *href* attribute on the slide. The slide will only be loaded when an adjacent slide or the slide itself is selected.
-
-``` html
-<div class="step" data-src="slides/slide-1.html" data-x="500" data-y="300">
-	Loading...
-</div>
-```
