@@ -177,7 +177,8 @@ module.exports = function(grunt) {
 				src: "docs/lib/index.js",
 				scriptSrcPrefix: "asserts/",
 				statsTarget: "docsStats",
-				dest: "docs/asserts/[hash].js"
+				dest: "docs/asserts/[hash].js",
+				minimize: true
 			}
 		},
 		jshint: {
