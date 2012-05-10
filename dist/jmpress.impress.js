@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.1 dev
+ * jmpress.js v0.4.1
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -74,7 +74,6 @@
 		,canvasClass: ''
 		,areaClass: ''
 		,notSupportedClass: 'not-supported'
-		,loadedClass: 'loaded'
 
 		/* CONFIG */
 		,fullscreen: true
@@ -89,9 +88,6 @@
 			,transformStyle: "preserve-3d"
 		}
 		,transitionDuration: 1500
-
-		/* TEST */
-		,test: false
 	};
 	var callbacks = {
 		'beforeChange': 1
@@ -111,7 +107,7 @@
 		,'selectNext': 1
 		,'selectHome': 1
 		,'selectEnd': 1
-		,'loadStep': 1
+		,'idle': 1
 		,'applyTarget': 1
 	};
 	for(var callbackName in callbacks) {
@@ -280,47 +276,6 @@
 			return result.value;
 		}
 		/**
-		 * Load Siblings
-		 *
-		 * @access protected
-		 * @return void
-		 */
-		function loadSiblings() {
-			if (!active) {
-				return;
-			}
-			var siblings = $(active).near( settings.stepSelector )
-				.add( $(active).near( settings.stepSelector, true) )
-				.add( callCallback.call(this, 'selectPrev', active, {
-					stepData: $(active).data('stepData')
-				}))
-				.add( callCallback.call(this, 'selectNext', active, {
-					stepData: $(active).data('stepData')
-				}));
-			siblings.each(function() {
-				var step = this;
-				if ($(step).hasClass( settings.loadedClass )) {
-					return;
-				}
-				setTimeout(function() {
-					if ($(step).hasClass( settings.loadedClass )) {
-						return;
-					}
-					callCallback.call(jmpress, 'loadStep', step, {
-						stepData: $(step).data('stepData')
-					});
-					$(step).addClass( settings.loadedClass );
-				}, settings.transitionDuration - 100);
-			});
-			if ($(active).hasClass( settings.loadedClass )) {
-				return;
-			}
-			callCallback.call(jmpress, 'loadStep', active, {
-				stepData: $(active).data('stepData')
-			});
-			$(active).addClass( settings.loadedClass );
-		}
-		/**
 		 *
 		 */
 		function getStepParents( el ) {
@@ -422,16 +377,22 @@
 			}
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
-			callCallback.call(this, "applyTarget", active, $.extend({
+			callCallback.call(this, "applyTarget", delegated, $.extend({
 				canvas: canvas
 				,area: area
+				,beforeActive: activeDelegated
 			}, callbackData));
 
 			active = el;
 			activeSubstep = callbackData.substep;
 			activeDelegated = delegated;
 
-			loadSiblings.call(this);
+			if(current.idleTimeout) {
+				clearTimeout(current.idleTimeout);
+			}
+			current.idleTimeout = setTimeout(function() {
+				callCallback.call(this, 'idle', delegated, callbackData);
+			}, Math.max(1, settings.transitionDuration - 100));
 
 			return delegated;
 		}
@@ -537,7 +498,7 @@
 			if( !callbacks[callbackName] ) {
 				$.error( "callback " + callbackName + " is not registered." );
 			} else {
-				callCallback.call(this, callbackName, element, eventData);
+				return callCallback.call(this, callbackName, element, eventData);
 			}
 		}
 
@@ -781,17 +742,9 @@
 		function f() {
 			var jmpressmethods = $(this).data("jmpressmethods");
 			if ( jmpressmethods && jmpressmethods[method] ) {
-				if ( method.substr(0, 1) === '_' && jmpressmethods.settings().test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] && jmpressmethods ) {
 				var settings = jmpressmethods.settings();
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
@@ -817,11 +770,7 @@
 	$.extend({
 		jmpress: function( method ) {
 			if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] ) {
 				// plugin interface
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
@@ -1197,7 +1146,7 @@
 		if (!zoomin) {
 			props.transitionDelay = '0s';
 		}
-		if (!active) {
+		if (!eventData.beforeActive) {
 			props.transitionDuration = '0s';
 			props.transitionDelay = '0s';
 		}
@@ -1208,7 +1157,7 @@
 		if (!zoomout) {
 			props.transitionDelay = '0s';
 		}
-		if (!active) {
+		if (!eventData.beforeActive) {
 			props.transitionDuration = '0s';
 			props.transitionDelay = '0s';
 		}
