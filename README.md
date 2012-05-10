@@ -1,4 +1,4 @@
-# jmpress.js (Version 0.4.0)
+# jmpress.js (Version 0.4.1)
 
 A jQuery plugin to build a website on the infinite canvas.
 
@@ -7,14 +7,14 @@ and utilizes the power of CSS3 transforms and transitions in modern browsers.
 
 ## DEMO
 
-jmpress.js demo: [http://shama.github.com/jmpress.js]
+jmpress.js demo: [http://shama.github.com/jmpress.js/]
 
-jmpress.js beta demo: [http://sokra.github.com/jmpress.js] [beta branch](https://github.com/shama/jmpress.js/tree/beta)
+jmpress.js beta demo: [http://sokra.github.com/jmpress.js/] [dev branch](https://github.com/shama/jmpress.js/tree/dev)
 
 ## BROWSER SUPPORT
 
-jmpress.js attempts to use CSS3 transform and transition as its engine and then
-falls back to jQuery.animate(). Here is the current browser support list:
+jmpress.js attempts to use CSS3 transform and transition as its engine.
+Here is the current browser support list:
 
 * Chrome/Chromium: YES
 * Safari: YES
@@ -24,17 +24,18 @@ falls back to jQuery.animate(). Here is the current browser support list:
 * iPad: YES
 * iPhone/iPod: NO
 * Android: NO
+* Chrome for Android: YES in desktop mode
 
 ## USAGE
 
-See the [DOCS](http://shama.github.com/jmpress.js/docs).
+See the [DOCS](http://shama.github.com/jmpress.js/docs/).
 
 ## CONTRIBUTING
 
 Good news! We accept pull requests and are looking for more contributors! ;)
 Take a look at the
-[contribute section](http://shama.github.com/jmpress.js/docs/#contribute) of the
-docs for more information on how you can contribute. Thanks!
+[contribute section](http://shama.github.com/jmpress.js/docs/#docs-contribute)
+of the docs for more information on how you can contribute. Thanks!
 
 ## LICENSE
 

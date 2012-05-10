@@ -61,7 +61,6 @@
 		,canvasClass: ''
 		,areaClass: ''
 		,notSupportedClass: 'not-supported'
-		,loadedClass: 'loaded'
 
 		/* CONFIG */
 		,fullscreen: true
@@ -76,9 +75,6 @@
 			,transformStyle: "preserve-3d"
 		}
 		,transitionDuration: 1500
-
-		/* TEST */
-		,test: false
 	};
 	var callbacks = {
 		'beforeChange': 1
@@ -98,7 +94,7 @@
 		,'selectNext': 1
 		,'selectHome': 1
 		,'selectEnd': 1
-		,'loadStep': 1
+		,'idle': 1
 		,'applyTarget': 1
 	};
 	for(var callbackName in callbacks) {
@@ -267,58 +263,10 @@
 			return result.value;
 		}
 		/**
-		 * Load Siblings
-		 *
-		 * @access protected
-		 * @return void
-		 */
-		function loadSiblings() {
-			if (!active) {
-				return;
-			}
-			var siblings = $(active).near( settings.stepSelector )
-				.add( $(active).near( settings.stepSelector, true) )
-				.add( callCallback.call(this, 'selectPrev', active, {
-					stepData: $(active).data('stepData')
-				}))
-				.add( callCallback.call(this, 'selectNext', active, {
-					stepData: $(active).data('stepData')
-				}));
-			siblings.each(function() {
-				var step = this;
-				if ($(step).hasClass( settings.loadedClass )) {
-					return;
-				}
-				setTimeout(function() {
-					if ($(step).hasClass( settings.loadedClass )) {
-						return;
-					}
-					callCallback.call(jmpress, 'loadStep', step, {
-						stepData: $(step).data('stepData')
-					});
-					$(step).addClass( settings.loadedClass );
-				}, settings.transitionDuration - 100);
-			});
-			if ($(active).hasClass( settings.loadedClass )) {
-				return;
-			}
-			callCallback.call(jmpress, 'loadStep', active, {
-				stepData: $(active).data('stepData')
-			});
-			$(active).addClass( settings.loadedClass );
-		}
-		/**
 		 *
 		 */
 		function getStepParents( el ) {
-			var parents = [];
-			var currentEl = el;
-			while($(currentEl).parent().length &&
-						$(currentEl).parent().is(settings.stepSelector)) {
-				currentEl = $(currentEl).parent();
-				parents.push(currentEl[0]);
-			}
-			return parents;
+			return $(el).parentsUntil(jmpress).not(jmpress).filter(settings.stepSelector);
 		}
 		/**
 		 * Reselect the active step
@@ -416,16 +364,22 @@
 			}
 			$(jmpress).addClass(current.jmpressDelegatedClass = 'delegating-step-' + $(el).attr('id') );
 
-			callCallback.call(this, "applyTarget", active, $.extend({
+			callCallback.call(this, "applyTarget", delegated, $.extend({
 				canvas: canvas
 				,area: area
+				,beforeActive: activeDelegated
 			}, callbackData));
 
 			active = el;
 			activeSubstep = callbackData.substep;
 			activeDelegated = delegated;
 
-			loadSiblings.call(this);
+			if(current.idleTimeout) {
+				clearTimeout(current.idleTimeout);
+			}
+			current.idleTimeout = setTimeout(function() {
+				callCallback.call(this, 'idle', delegated, callbackData);
+			}, Math.max(1, settings.transitionDuration - 100));
 
 			return delegated;
 		}
@@ -531,7 +485,7 @@
 			if( !callbacks[callbackName] ) {
 				$.error( "callback " + callbackName + " is not registered." );
 			} else {
-				callCallback.call(this, callbackName, element, eventData);
+				return callCallback.call(this, callbackName, element, eventData);
 			}
 		}
 
@@ -553,7 +507,16 @@
 			,active: getActive
 			,current: function() { return current; }
 			,fire: fire
-			,deinit: deinit
+			,init: function(step) {
+				doStepInit.call(this, $(step), current.nextIdNumber++);
+			}
+			,deinit: function(step) {
+				if(step) {
+					doStepDeinit.call(this, $(step));
+				} else {
+					deinit.call(this);
+				}
+			}
 			,reapply: doStepReapply
 		});
 
@@ -646,6 +609,7 @@
 		steps.each(function( idx ) {
 			doStepInit.call(jmpress, this, idx );
 		});
+		current.nextIdNumber = steps.length;
 
 		callCallback.call(this, 'afterInit', null, {});
 
@@ -765,17 +729,9 @@
 		function f() {
 			var jmpressmethods = $(this).data("jmpressmethods");
 			if ( jmpressmethods && jmpressmethods[method] ) {
-				if ( method.substr(0, 1) === '_' && jmpressmethods.settings().test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return jmpressmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] && jmpressmethods ) {
 				var settings = jmpressmethods.settings();
 				var func = Array.prototype.slice.call( arguments, 1 )[0];
@@ -801,11 +757,7 @@
 	$.extend({
 		jmpress: function( method ) {
 			if ( methods[method] ) {
-				if ( method.substr(0, 1) === '_' && defaults.test === false) {
-					$.error( 'Method ' +  method + ' is protected and should only be used internally.' );
-				} else {
-					return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-				}
+				return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 			} else if ( callbacks[method] ) {
 				// plugin interface
 				var func = Array.prototype.slice.call( arguments, 1 )[0];

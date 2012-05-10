@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | form and dynamic</title>
+
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="style.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../dist/jmpress.js"></script>
+</head>
+<body>
+
+<div id="jmpress">
+	<div id="home" class="step">
+		<form id="form">
+			<p>Slides: <input type="number" name="number-field" id="number-field" value="2" /></p>
+			<p><input type="submit" value="Set" /></p>
+		</form>
+	</div>
+
+	<div id="container" class="step" data-exclude="true" data-x="1000">
+
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#jmpress').jmpress();
+	$("#form").submit(function(event) {
+		event.preventDefault();
+
+		$("#container").find(".step").each(function(idx, step) {
+			$("#jmpress").jmpress("deinit", step);
+		}).remove();
+
+		var count = parseInt($("#number-field").val(), 10);
+
+		for(var i = 0; i < count; i++) {
+			var newStep = $("<div class='step'>");
+			newStep.attr("data-y", i*600);
+			newStep.html("<p>This is step "+(i+1)+"</p>");
+			$("#container").append(newStep);
+			$("#jmpress").jmpress("init", newStep);
+		}
+
+		$("#jmpress").jmpress("next");
+
+	});
+});
+</script>
+
+</body>
+</html>
