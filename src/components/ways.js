@@ -51,10 +51,10 @@
 		}
 	});
 	$jmpress( 'selectNext', function( step, eventData ) {
-		return selectPrevOrNext(step, eventData, "next");
+		return selectPrevOrNext.call(this, step, eventData, "next");
 	});
 	$jmpress( 'selectPrev', function( step, eventData ) {
-		return selectPrevOrNext(step, eventData, "prev", true);
+		return selectPrevOrNext.call(this, step, eventData, "prev", true);
 	});
 
 }(jQuery, document, window));

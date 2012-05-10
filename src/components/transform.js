@@ -281,7 +281,7 @@
 		if (!zoomin) {
 			props.transitionDelay = '0s';
 		}
-		if (!active) {
+		if (!eventData.beforeActive) {
 			props.transitionDuration = '0s';
 			props.transitionDelay = '0s';
 		}
@@ -292,7 +292,7 @@
 		if (!zoomout) {
 			props.transitionDelay = '0s';
 		}
-		if (!active) {
+		if (!eventData.beforeActive) {
 			props.transitionDuration = '0s';
 			props.transitionDelay = '0s';
 		}

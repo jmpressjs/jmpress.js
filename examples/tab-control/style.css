@@ -1,0 +1,63 @@
+body {
+	font-family: Verdana, sans-serif;
+	min-height: 740px;
+	background-color: #ddd;
+	-webkit-font-smoothing: antialiased;
+}
+
+.nav.jmpress {
+	width: 600px;
+	height: 400px;
+	background: #F29E88;
+	border: 5px solid #525855;
+	border-radius: 5px;
+}
+
+.nav.jmpress section {
+	width: 450px;
+	height: 200px;
+	padding: 25px;
+	margin-bottom: 30px;
+
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
+
+	/*background-color: #B2342C;*/
+	background-color: #D55D5C;
+	border: 2px solid #B2342C;
+	border-radius: 5px;
+	overflow: hidden;
+	color: #1E0403;
+	
+	cursor: pointer;
+}
+
+.nav.jmpress section.active {
+	color: #1E0403;
+	
+	cursor: inherit;
+}
+
+.nav.jmpress section p {
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
+}
+
+.nav.jmpress section:not(.active) p {
+	/*font-size: 6pt;*/
+	/*opacity: 0;*/
+}
+
+.nav.jmpress section h1 {
+	-webkit-transition: 1s;
+	-moz-transition:    1s;
+	-ms-transition:     1s;
+	-o-transition:      1s;
+	transition:         1s;
+}

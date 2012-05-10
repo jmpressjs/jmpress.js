@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jmpress.js | ajax example</title>
+
+	<meta name="description" content="jmpress.js is a jQuery plugin to build a website on the infinite canvas">
+	<meta name="author" content="Kyle Robinson Young @shama & Tobias Koppers @sokra" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link href="ajax.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../dist/jmpress.js"></script>
+</head>
+<body>
+
+<div id="jmpress">
+	<div id="home" class="step">
+		<p>The next 3 slided load content via ajax.</p>
+	</div>
+	<div class="step" data-x="1000" data-src="content.html"></div>
+	<div class="step" data-x="2000" href="content.html"></div>
+	<div class="step" data-x="3000" data-template="ajax"></div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$.jmpress("template", "ajax", { src: "content.html" });
+	$('#jmpress').jmpress();
+});
+</script>
+
+</body>
+</html>
