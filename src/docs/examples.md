@@ -13,3 +13,5 @@
 * [nested templates](http://shama.github.com/jmpress.js/examples/nested-templates/)
 
 * [zoomable steps](http://shama.github.com/jmpress.js/examples/zoomable/)
+
+* [tab control](http://shama.github.com/jmpress.js/examples/tab-control/)
