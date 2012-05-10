@@ -1,0 +1,27 @@
+.container-fluid
+	.row-fluid
+		.span12
+			.page-header
+				h1
+					| jmpress.js
+					small  custom downloader
+	.row-fluid
+		.span8
+			p
+				| Build your own version of
+				b  jmpress.js
+				b &nbsp;
+				b= require("../../../package.json").version
+			p
+				em
+					| Select the components and plugins you need for your
+					|  project and click on "Download" to save it.
+			form.form-horizontal#choose-form
+				fieldset
+					.form-actions#form-actions
+						#downloadify
+						a.btn.btn-primary#dataurl(download="jmpress.js")
+							| Download (Data Url)
+		.span4
+			h2 Common builds
+			#settings

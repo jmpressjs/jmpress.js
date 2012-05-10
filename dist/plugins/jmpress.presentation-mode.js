@@ -1,5 +1,5 @@
 /*!
- * plugin for jmpress.js v0.4.0
+ * plugin for jmpress.js v0.4.1 dev
  *
  * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
@@ -8,7 +8,7 @@
 
 /*!
  * jmpress.presentation-mode plugin
- * Display a window for the presentator with notes and a control and view of the
+ * Display a window for the presenter with notes and a control and view of the
  * presentation
  */
 (function( $, document, window, undefined ) {

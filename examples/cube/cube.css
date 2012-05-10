@@ -1,0 +1,28 @@
+/** GENERAL **/
+body {
+	font-family: Verdana, sans-serif;
+	min-height: 740px;
+	background-color: #ddd;
+	-webkit-font-smoothing: antialiased;
+	pointer-events: none;
+}
+
+/** STEP STYLES **/
+.step {
+	width: 1000px;
+    height: 1000px;
+
+	display: block;
+    padding: 100px;
+	
+	font-size: 200px;
+
+    border: 10px solid black;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	-ms-box-sizing:     border-box;
+	-o-box-sizing:      border-box;
+	box-sizing:         border-box;
+}
+}
