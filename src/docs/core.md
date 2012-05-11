@@ -35,7 +35,9 @@ $('#jmpress').jmpress({
 		transitionDuration: '5s',         // Length of animation
 		transitionDelay: '500ms',         // Delay before animating
 		transitionTimingFunction: 'ease'  // Animation effect
-	}
+	},
+	transitionDuration: 5000 // Set this according to animation.transitionDuration
+	                         // It is used for setting the timeout for the transition
 });
 ```
 
@@ -158,6 +160,17 @@ On each step as it is initialized.
 ## `callback` initStep : `function( element, eventData )`
 
 On each step as it is initialized.
+A listener should read values from `eventData.data` and store them after
+string-to-xxx conversion into `eventData.stepData`
+
+### `callback` applyStep : `function( element, eventData )`
+
+Called last on each step after it is initialized to apply css.
+A listener should read `eventData.stepData` and apply css the the `element`
+
+### `callback` unapplyStep : `function( element, eventData )`
+
+Called last on each step after is is de-initialized to remove css.
 
 ## `callback` applyStep : `function( element, eventData )`
 
