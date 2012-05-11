@@ -36,7 +36,7 @@ $('#jmpress').jmpress({
 		transitionDelay: '500ms',         // Delay before animating
 		transitionTimingFunction: 'ease'  // Animation effect
 	},
-	transitionDuration: 5000 // Set this acording to animation.transitionDuration
+	transitionDuration: 5000 // Set this according to animation.transitionDuration
 	                         // It is used for setting the timeout for the transition
 });
 ```
@@ -186,7 +186,7 @@ On each step as it is initialized.
 
 On each step as it is initialized.
 A listener should read values from `eventData.data` and store them after
-string-to-xxx convertion into `eventData.stepData`
+string-to-xxx conversion into `eventData.stepData`
 
 ### `callback` applyStep : `function( element, eventData )`
 
