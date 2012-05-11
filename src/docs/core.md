@@ -1,30 +1,30 @@
 # Core
 
-#### `property` stepSelector : `'.step'`
+### `property` stepSelector : `'.step'`
 
 The jQuery selector to specify each step.
 
-#### `property` notSupportedClass : `'not-supported'`
+### `property` notSupportedClass : `'not-supported'`
 
 Class name to remove on root element if jmpress.js is supported.
 
-#### `property` fullscreen : `true`
+### `property` fullscreen : `true`
 
 Whether jmpress.js should run in full screen mode or in a container.
 
-#### `property` containerClass
+### `property` containerClass
 
 A class name to set on the container. The overall container of the camera. It has no transformation applied so you can set some background on it.
 
-#### `property` canvasClass
+### `property` canvasClass
 
 A class name to set on the canvas. The canvas is the element, which contains the steps.
 
-#### `property` areaClass
+### `property` areaClass
 
 A class name to set on the area. The area is some middle element, which is needed to build this camera.
 
-#### `property` animation
+### `property` animation
 
 Set the CSS animation values for transitions between slides.
 
@@ -43,7 +43,7 @@ $('#jmpress').jmpress({
 
 See [Mozilla CSS docs](https://developer.mozilla.org/en/CSS/transform) for more info.
 
-#### `method` init( ) - shortcut .jmpress( )
+### `method` init( ) - shortcut .jmpress( )
 
 Initializes jmpress with the default config (like impress.js).
 
@@ -51,7 +51,7 @@ Initializes jmpress with the default config (like impress.js).
 
 Initializes jmpress with a custom config object.
 
-#### `method` init( [step] )
+### `method` init( [step] )
 
 Can also initialize a single step.
 This is required when dynamically adding steps:
