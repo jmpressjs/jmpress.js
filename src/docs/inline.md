@@ -35,19 +35,19 @@ Polar coordinates: angle (starting at top, counterclockwise).
 
 Scale of element (also scale-x, scale-y, scale-z).
 
-## `data-rotation`
+## `data-rotate`
 
 Degree of rotation.
 
-## `data-rotation-x`
+## `data-rotate-x`
 
 Degree of rotation on x-axis.
 
-## `data-rotation-y`
+## `data-rotate-y`
 
 Degree of rotation on y-axis.
 
-## `data-rotation-z`
+## `data-rotate-z`
 
 Degree of rotation on z-axis.
 
