@@ -16,10 +16,6 @@ itself is selected.
 
 ### `property` ajaxLoadedClass : `'loaded'`
 
-Class given to ajax steps that have been loaded.
-
-### `property` loadedClass : `'loaded'`
-
 Class name to set on each step that has started loading.
 
 ### `callback` ajax:loadStep : `function( element, eventData )`
