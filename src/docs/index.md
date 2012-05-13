@@ -12,6 +12,7 @@ To migrate simply add jQuery, change impress.js to jmpress.js and call `$(select
 
 If you use the impress.js api and you want to migrate:
 
+[@attrs class="table table-bordered"]
 | **impress.js**                | **jmpress.js**                         |
 | `impress:stepenter`           | `enterStep`                            |
 | `impress:stepleave`           | `leaveStep`                            |

@@ -17,7 +17,10 @@ module.exports = function(source) {
 				}
 			},
 			code: "",
-			codeText: ""
+			codeText: "",
+			annotations: {
+				"@attrs": YamYam.HtmlFormater.ATTRS
+			}
 		}
 	}, function(err, html) {
 		cb(err, html && ("module.exports =\n\t" + JSON.stringify(html) + ";"));
