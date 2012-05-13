@@ -167,7 +167,7 @@
 	});
 
 	test('should fire selectNext and selectPrev events', function() {
-		expect(5); // TODO: This is incorrect, look into problem
+		expect(2);
 		$(this.fixture).jmpress();
 		$(this.fixture).jmpress('selectNext', function(element, eventData) {
 			ok( true );
