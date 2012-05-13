@@ -14,4 +14,10 @@
 
 * [zoomable steps](http://shama.github.com/jmpress.js/examples/zoomable/)
 
+* [ajax](http://shama.github.com/jmpress.js/examples/ajax/)
+
+* [cube](http://shama.github.com/jmpress.js/examples/cube/)
+
+* [form dynamic](http://shama.github.com/jmpress.js/examples/form-dynamic/)
+
 * [tab control](http://shama.github.com/jmpress.js/examples/tab-control/)

@@ -12,7 +12,8 @@ module.exports = function(source) {
 			codeContainer: {
 				tag: "pre",
 				"class": function(buffer, params, element) {
-					buffer.push("language-" + element.language.replace(/"/g, "&quot;"));
+					if(element.language)
+						buffer.push("language-" + element.language.replace(/"/g, "&quot;"));
 				}
 			},
 			code: "",
