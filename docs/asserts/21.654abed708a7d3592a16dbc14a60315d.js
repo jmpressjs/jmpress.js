@@ -1,1 +1,0 @@
-webpackJsonp(21,{51:function(a,b,c){a.exports="<h1>Mouse</h1><p>This component handles click on other steps.</p>"}})
