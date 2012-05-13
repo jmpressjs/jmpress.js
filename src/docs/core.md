@@ -150,7 +150,7 @@ $('#jmpress').jmpress('select', '#step-5', 'i said so');
 
 ### `method` goTo( selector )
 
-Same as `select( selector, "step" )`.
+Same as `select( selector, 'jump' )`.
 
 ### `method` next()
 
