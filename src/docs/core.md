@@ -4,25 +4,61 @@
 
 The jQuery selector to specify each step.
 
+``` javascript
+$('#jmpress').jmpress({
+	stepSelector: 'section' // use <section> tags as steps
+});
+```
+
 ### `property` notSupportedClass : `'not-supported'`
 
 Class name to remove on root element if jmpress.js is supported.
+
+``` javascript
+$('#jmpress').jmpress({
+	notSupportedClass: 'no-jmpress'
+});
+```
 
 ### `property` fullscreen : `true`
 
 Whether jmpress.js should run in full screen mode or in a container.
 
+``` javascript
+$('#jmpress').jmpress({
+	fullscreen: false
+});
+```
+
 ### `property` containerClass
 
 A class name to set on the container. The overall container of the camera. It has no transformation applied so you can set some background on it.
+
+``` javascript
+$('#jmpress').jmpress({
+	containerClass: 'jmpress-container'
+});
+```
 
 ### `property` canvasClass
 
 A class name to set on the canvas. The canvas is the element, which contains the steps.
 
+``` javascript
+$('#jmpress').jmpress({
+	canvasClass: 'jmpress-canvas'
+});
+```
+
 ### `property` areaClass
 
 A class name to set on the area. The area is some middle element, which is needed to build this camera.
+
+``` javascript
+$('#jmpress').jmpress({
+	areaClass: 'jmpress-area'
+});
+```
 
 ### `property` animation
 
@@ -47,9 +83,19 @@ See [Mozilla CSS docs](https://developer.mozilla.org/en/CSS/transform) for more 
 
 Initializes jmpress with the default config (like impress.js).
 
+``` javascript
+$('#jmpress').jmpress();
+```
+
 ### `method` init( config ) - shortcut .jmpress( config )
 
 Initializes jmpress with a custom config object.
+
+``` javascript
+$('#jmpress').jmpress({
+	// config object literal here
+});
+```
 
 ### `method` init( [step] )
 
@@ -62,11 +108,15 @@ $('#jmpress').jmpress('canvas').append(newStep);
 $('#jmpress').jmpress('init', newStep);
 ```
 
-see form-dynamic [example](#docs-examples)
+See the dynamic form [example](#docs-examples)
 
 ### `method` initialized()
 
 Returns true if jmpress is initialized.
+
+``` javascript
+var isInit = $('#jmpress').jmpress('initialized');
+```
 
 ### `method` deinit( [step] )
 
@@ -84,58 +134,104 @@ removeStep.remove();
 
 Returns the settings object which you can modify.
 
+``` javascript
+var settings = $('#jmpress').jmpress('settings');
+settings.animation.transitionDuration = '10s';
+```
+
 ### `method` select( selector, reason )
 
 Move to the first step matching the given selector.
 `reason` can be a string which passed to the callbacks in `eventData.reason`.
 
+``` javascript
+$('#jmpress').jmpress('select', '#step-5', 'i said so');
+```
+
 ### `method` goTo( selector )
 
-Same as `select( selector, "jump" )`.
+Same as `select( selector, "step" )`.
 
 ### `method` next()
 
 Select the next step in flow.
 
+``` javascript
+$('#jmpress').jmpress('next');
+```
+
 ### `method` prev()
 
 Select the previous step in flow.
+
+``` javascript
+$('#jmpress').jmpress('prev');
+```
 
 ### `method` home()
 
 Select the first step in DOM.
 
+``` javascript
+$('#jmpress').jmpress('home');
+```
+
 ### `method` end()
 
 Select the last step in DOM.
+
+``` javascript
+$('#jmpress').jmpress('end');
+```
 
 ### `method` fire( callbackName, element, eventData )
 
 Fire a event. `callbackName` must be registered as callback before.
 
+``` javascript
+$('#jmpress').jmpress('fire', 'selectNext', step, {
+	// Additional data for event here
+});
+```
+
 ### `method` canvas()
 
-Returns the canvas element as jQuery object
+Returns the canvas element as jQuery object.
+
+``` javascript
+var canvas = $('#jmpress').jmpress('canvas');
+```
 
 ### `method` canvas( css )
 
 Sets styles on the canvas element and returns it.
 
-*deprecated*: Use `canvasClass` and CSS.
+**deprecated**: Use `canvasClass` and CSS.
 
 ### `method` css( element, cssAsObject )
 
 Applies css with the correct browser prefix.
 
+``` javascript
+var el = $('#step-2').get(0);
+$('#jmpress').jmpress('css', el, {
+	transform: 'rotate(90deg)' // Will be -webkit-transform if a Webkit browser
+});
+```
+
 ### `method` reapply( step )
 
 Reapplies styles on step. Should be called after modifying
-step.data("stepData"), which is allowed.
+`step.data("stepData")`, which is allowed.
 
 ### `method` defaults()
 
 Return or modify the default settings used in jmpress.js.
 Should only be used in plugins. Use `settings` instead.
+
+``` javascript
+var defaults = $('#jmpress').jmpress('defaults');
+```
 
 ### `method` register( callbackName )
 
@@ -148,6 +244,10 @@ Register a new jmpress function.
 ### `method` active()
 
 Returns the active step as jQuery object.
+
+``` javascript
+var activeStep = $('#jmpress').jmpress('active');
+```
 
 ### `method` current()
 
