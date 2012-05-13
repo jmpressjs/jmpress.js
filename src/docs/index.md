@@ -13,13 +13,22 @@ To migrate simply add jQuery, change impress.js to jmpress.js and call `$(select
 If you use the impress.js api and you want to migrate:
 
 [@attrs class="table table-bordered"]
-| **impress.js**                | **jmpress.js**                         |
-| `impress:stepenter`           | `enterStep`                            |
-| `impress:stepleave`           | `leaveStep`                            |
-| `impress:init`                | `$(x).afterInit(...)`                  |
-| `impress().init()`            | `$(x).jmpress()`                       |
-| `impress().goto()`            | `$(x).jmpress("goTo", ...)`            |
-| `data-width, data-height`     | `viewPort: {width: ..., height: ...}`  |
-| `max-scale`                   | `viewPort.maxScale`                    |
-| `impress-on-ID`               | `step-ID`                              |
+| **impress.js**
+ | **jmpress.js**
+| event       `impress:stepenter`
+ | event      `enterStep`
+| event       `impress:stepleave`
+ | event      `leaveStep`
+| event       `impress:init`
+ | callback   `$(x).afterInit(...)`
+| api         `impress().init()`
+ | api        `$(x).jmpress()`
+| api         `impress().goto()`
+ | api        `$(x).jmpress("goTo", ...)`
+| attribute   `data-width`, `data-height`
+ | attribute  `data-view-port-width`, `...-height`
+| attribute   `data-max-scale`, `data-min-scale`
+ | setting    `data-view-port-max-scale`, `...-min-scale`
+| class       `impress-on-ID` on body
+ | class      `step-ID` on container
 
