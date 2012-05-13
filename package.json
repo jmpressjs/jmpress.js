@@ -1,6 +1,6 @@
 {
 	"name": "jmpress.js",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"title": "jQuery.jmpress()",
 	"description": "A jQuery plugin to build a website on the infinite canvas.",
 	"homepage": "http://shama.github.com/jmpress.js",
