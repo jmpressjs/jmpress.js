@@ -18,7 +18,7 @@ If you use the impress.js api and you want to migrate:
 | `impress:init`                | `$(x).afterInit(...)`                  |
 | `impress().init()`            | `$(x).jmpress()`                       |
 | `impress().goto()`            | `$(x).jmpress("goTo", ...)`            |
-| `data-width, data-heigth`     | `viewPort: {width: ..., heigth: ...}`  |
+| `data-width, data-height`     | `viewPort: {width: ..., height: ...}`  |
 | `max-scale`                   | `viewPort.maxScale`                    |
 | `impress-on-ID`               | `step-ID`                              |
 
