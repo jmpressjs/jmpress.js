@@ -53,4 +53,4 @@ Set to property and property values which should be changed. A transition for th
 
 ## `property` duration.barPropertyStart : `0`
 
-## `property` duration.barPropertyEnd : '`100%'`
+## `property` duration.barPropertyEnd : `'100%'`

@@ -15,9 +15,9 @@ All the source files are located in the `src/` folder. They are broken up into c
 
 ### Grunt
 
-We use the command line build tool: [grunt](https://github.com/cowboy/grunt). It requires Node.js. If you already have Node.js installed, navigate to your copy of jmpress.js and run the command: `npm link` to install any development dependencies. It is recommended to install grunt globally with `npm install grunt -g`.
+We use the command line build tool: [grunt](https://github.com/cowboy/grunt). It requires Node.js. If you already have Node.js installed, navigate to your copy of jmpress.js and run the command: `npm install --dev` to install any development dependencies. It is recommended to install grunt globally with `npm install grunt -g`.
 
-Then navigate to your copy of jmpress.js and run the command: `grunt` to build. You can also use the command `grunt watch` to continuously build jmpress.js as you edit.
+Then navigate to your copy of jmpress.js and run the command: `grunt` (windows: `grunt.cmd`) to build. You can also use the command `grunt watch` to continuously build jmpress.js as you edit.
 
 The output files will be located in the `dist/` folder. Additionally `docs/asserts` and `docs/index.html` are output files for the documentation. Please do not edit any file in this folders as they are automatically generated. You can delete them and they will be regenerated.
 
