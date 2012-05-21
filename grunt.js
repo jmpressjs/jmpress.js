@@ -96,22 +96,22 @@ module.exports = function(grunt) {
 			dist_plugin_secondary: {
 				src: ['<banner:meta.pluginbanner>',
 					'src/plugins/secondary.js'],
-				dest: 'dist/jmpress.secondary.js'
+				dest: 'dist/plugins/jmpress.secondary.js'
 			},
 			dist_plugin_toggle: {
 				src: ['<banner:meta.pluginbanner>',
 					'src/plugins/toggle.js'],
-				dest: 'dist/jmpress.toggle.js'
+				dest: 'dist/plugins/jmpress.toggle.js'
 			},
 			dist_plugin_duration: {
 				src: ['<banner:meta.pluginbanner>',
 					'src/plugins/duration.js'],
-				dest: 'dist/jmpress.duration.js'
+				dest: 'dist/plugins/jmpress.duration.js'
 			},
 			dist_plugin_presentation_mode: {
 				src: ['<banner:meta.pluginbanner>',
 					'src/plugins/presentation-mode.js'],
-				dest: 'dist/jmpress.presentation-mode.js'
+				dest: 'dist/plugins/jmpress.presentation-mode.js'
 			},
 			dist_css_basic_animations: {
 				src: ['<banner:meta.banner>',
