@@ -18,6 +18,6 @@
 
 * [cube](http://shama.github.com/jmpress.js/examples/cube/)
 
-* [form dynamic](http://shama.github.com/jmpress.js/examples/form-dynamic/)
+* [dynamic form](http://shama.github.com/jmpress.js/examples/form-dynamic/)
 
 * [tab control](http://shama.github.com/jmpress.js/examples/tab-control/)

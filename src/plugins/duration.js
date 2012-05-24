@@ -15,7 +15,7 @@
 		,barPropertyEnd: "100%"
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		eventData.stepData.duration = eventData.data.duration;
+		eventData.stepData.duration = eventData.data.duration && parseInt(eventData.data.duration, 10);
 		eventData.stepData.durationAction = eventData.data.durationAction;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {

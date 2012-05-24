@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.1
+ * jmpress.js v0.4.2
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -2121,15 +2121,11 @@
 }(jQuery, document, window));
 /*!
  * jqevents.js
+ * Fires jQuery events
  */
 (function( $, document, window, undefined ) {
 
 	'use strict';
-
-	/* FUNCTIONS */
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
 
 	/* HOOKS */
 	// the events should not bubble up the tree
