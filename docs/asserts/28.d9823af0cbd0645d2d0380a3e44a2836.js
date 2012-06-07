@@ -1,1 +1,0 @@
-webpackJsonp(28,{55:function(a,b,c){a.exports="<h1>Plugin: Secondary</h1><p>Documentation coming.</p>"}})

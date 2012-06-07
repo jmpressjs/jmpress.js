@@ -1,5 +1,5 @@
 /*!
- * plugin for jmpress.js v0.4.1 dev
+ * plugin for jmpress.js v0.4.2
  *
  * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
@@ -23,7 +23,7 @@
 		,barPropertyEnd: "100%"
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		eventData.stepData.duration = eventData.data.duration;
+		eventData.stepData.duration = eventData.data.duration && parseInt(eventData.data.duration, 10);
 		eventData.stepData.durationAction = eventData.data.durationAction;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {

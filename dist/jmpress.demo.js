@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.1
+ * jmpress.js v0.4.2
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -12,7 +12,7 @@
  */
 
 /*!
- * jmpress.js v0.4.1
+ * jmpress.js v0.4.2
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -2134,15 +2134,11 @@
 }(jQuery, document, window));
 /*!
  * jqevents.js
+ * Fires jQuery events
  */
 (function( $, document, window, undefined ) {
 
 	'use strict';
-
-	/* FUNCTIONS */
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
 
 	/* HOOKS */
 	// the events should not bubble up the tree
@@ -2404,7 +2400,7 @@
 
 }(jQuery, document, window));
 /*!
- * plugin for jmpress.js v0.4.1
+ * plugin for jmpress.js v0.4.2
  *
  * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
@@ -2519,7 +2515,7 @@
 		,barPropertyEnd: "100%"
 	};
 	$.jmpress("initStep", function( step, eventData ) {
-		eventData.stepData.duration = eventData.data.duration;
+		eventData.stepData.duration = eventData.data.duration && parseInt(eventData.data.duration, 10);
 		eventData.stepData.durationAction = eventData.data.durationAction;
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
