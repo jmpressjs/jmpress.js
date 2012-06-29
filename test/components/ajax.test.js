@@ -35,4 +35,21 @@
 		});
 	});
 
+	asyncTest('inactive steps were unloaded', 6, function() {
+		var $this = this;
+		$(this.fixture).find('.step')
+			.attr('data-src', 'fixtures/ajax.html')
+			.text('');
+		$(this.fixture).jmpress({
+			'ajax:loadStep': function(el, e) {
+				var steps = $(this).find('.step').not('.loaded');
+				equal( steps.length, 2, 'two other steps are not unloaded' );
+				equal( steps.first().html(), '', 'unloaded steps are did not get emptied' );
+				start();
+			}
+		});
+		$(this.fixture).jmpress('next');
+		$(this.fixture).jmpress('next');
+	});
+
 }(jQuery));
