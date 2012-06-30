@@ -4,7 +4,7 @@ The secondary plugin applies an alternative step config, on a choosen condition.
 
 *Alternative step configuration is only useable via template.*
 
-## Conditions
+### Conditions
 
 The condition can only be set by template `{ secondary: <string> }`.
 
@@ -14,7 +14,7 @@ The condition can only be set by template `{ secondary: <string> }`.
 * `grandchildren`: If a child or grand child is active.
 * `grandchildren self`: If the step, a child or grand child is active.
 
-## Alternative config
+### Alternative config
 
 The alternative config is described by prefixing the attribute by `secondary` (But stay in camel case).
 
@@ -34,7 +34,7 @@ Because objects in templates are automatically expanded it can be simplified:
 }
 ```
 
-## Examples
+### Examples
 
 * [vacation](http://shama.github.com/jmpress.js/examples/vacation/)
 * [tab control](http://shama.github.com/jmpress.js/examples/tab-control/)
