@@ -179,6 +179,7 @@
 				windowScale,
 				1]);
 			eventData.target.transform.reverse();
+			eventData.target.perspectiveScale /= windowScale;
 		}
 		eventData.current.zoomOriginWindowScale = windowScale;
 	});
