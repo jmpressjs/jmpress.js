@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.2
+ * jmpress.js v0.4.3
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -402,7 +402,9 @@
 		function scrollFix() {
 			function fix() {
 				if ($(container)[0].tagName === "BODY") {
-					window.scrollTo(0, 0);
+					try {
+						window.scrollTo(0, 0);
+					} catch(e) {}
 				}
 				$(container).scrollTop(0);
 				$(container).scrollLeft(0);
@@ -1291,12 +1293,15 @@
 	function randomString() {
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
-	// TODO allow call of route after init
 	function routeFunc( jmpress, route, type ) {
 		for(var i = 0; i < route.length - 1; i++) {
 			var from = route[i];
 			var to = route[i+1];
-			$(from, jmpress).attr('data-' + type, to);
+			if($(jmpress).jmpress("initialized")) {
+				$(from, jmpress).data("stepData")[type] = to;
+			} else {
+				$(from, jmpress).attr('data-' + type, to);
+			}
 		}
 	}
 	function selectPrevOrNext( step, eventData, attr, prev ) {
@@ -1737,14 +1742,15 @@
 		eventData.current.userTranslateY = 0;
 		if(eventData.settings.viewPort.zoomBindWheel) {
 			$(eventData.settings.fullscreen ? document : this)
-				.bind("mousewheel"+eventData.current.viewPortNamespace, function( event, delta ) {
-				delta = delta || event.originalEvent.wheelDelta;
+				.bind("mousewheel"+eventData.current.viewPortNamespace+" DOMMouseScroll"+eventData.current.viewPortNamespace, function( event, delta ) {
+				delta = delta || event.originalEvent.wheelDelta || -event.originalEvent.detail /* mozilla */;
 				var direction = (delta / Math.abs(delta));
 				if(direction < 0) {
 					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
 				} else if(direction > 0) {
 					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
 				}
+				return false;
 			});
 		}
 		if(eventData.settings.viewPort.zoomBindMove) {
@@ -1868,6 +1874,7 @@
 				windowScale,
 				1]);
 			eventData.target.transform.reverse();
+			eventData.target.perspectiveScale /= windowScale;
 		}
 		eventData.current.zoomOriginWindowScale = windowScale;
 	});

@@ -1,5 +1,5 @@
 /*!
- * plugin for jmpress.js v0.4.2
+ * plugin for jmpress.js v0.4.3
  *
  * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT

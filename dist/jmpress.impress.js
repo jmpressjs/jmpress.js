@@ -1,5 +1,5 @@
 /*!
- * jmpress.js v0.4.2
+ * jmpress.js v0.4.3
  * http://shama.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
@@ -402,7 +402,9 @@
 		function scrollFix() {
 			function fix() {
 				if ($(container)[0].tagName === "BODY") {
-					window.scrollTo(0, 0);
+					try {
+						window.scrollTo(0, 0);
+					} catch(e) {}
 				}
 				$(container).scrollTop(0);
 				$(container).scrollLeft(0);

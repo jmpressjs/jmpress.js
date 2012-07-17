@@ -35,22 +35,22 @@ $(selector).jmpress({
 });
 ```
 
-## `property` duration.defaultValue
+### `property` duration.defaultValue
 
 The duration that should be taken if no data-duration is defined.
 
-## `property` duration.defaultAction : `'next'`
+### `property` duration.defaultAction : `'next'`
 
 The action that should be executed if no data-duration-action is defined.
 
-## `property` duration.barSelector
+### `property` duration.barSelector
 
 A jQuery selector to the bar element on which a property should be changed.
 
-## `property` duration.barProperty : `'width'`
+### `property` duration.barProperty : `'width'`
 
 Set to property and property values which should be changed. A transition for the property are automatically applied on the element.
 
-## `property` duration.barPropertyStart : `0`
+### `property` duration.barPropertyStart : `0`
 
-## `property` duration.barPropertyEnd : `'100%'`
+### `property` duration.barPropertyEnd : `'100%'`

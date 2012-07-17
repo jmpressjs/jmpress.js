@@ -1,5 +1,7 @@
 # Core
 
+## Properties
+
 ### `property` stepSelector : `'.step'`
 
 The jQuery selector to specify each step.
@@ -78,6 +80,8 @@ $('#jmpress').jmpress({
 ```
 
 See [Mozilla CSS docs](https://developer.mozilla.org/en/CSS/transform) for more info.
+
+## Methods
 
 ### `method` init( ) - shortcut .jmpress( )
 
@@ -257,6 +261,8 @@ Should be only used by plugins for saving some state.
 ### `method` dataset( element )
 
 Returns the dataset of an element. *private*
+
+## Callbacks
 
 ### `callback` afterInit : `function( element, eventData )`
 

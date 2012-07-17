@@ -16,7 +16,7 @@ $(selector).jmpress({
 
 In this example we are binding the '-' key (key code 189) to select a step we have named 'overview'.
 
-## `property` keyboard.keys : `{33: "prev", 32: "next", ...}`
+### `property` keyboard.keys : `{33: "prev", 32: "next", ...}`
 
 Bind a key to a jmpress command. Set it to null to remove an existing key binding.
 
@@ -26,10 +26,10 @@ Set it to a string containing ":" (ex. "next:prev") to get the first command on 
 
 Set it to a array to apply the array as arguments a jmpress command (ex. ["select", "#some-cool-step"]).
 
-## `property` keyboard.ignore[TAGNAME] : `[32, 37, ...] as TAGNAME = "INPUT"`
+### `property` keyboard.ignore[TAGNAME] : `[32, 37, ...] as TAGNAME = "INPUT"`
 
 Ignore some keys on a specific tag name.
 
-## `property` keyboard.use : `true`
+### `property` keyboard.use : `true`
 
 Whether the keyboard should be used to navigate in jmpress.
