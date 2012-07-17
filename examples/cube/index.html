@@ -40,11 +40,6 @@
 <script type="text/javascript">
 $(function() {
 	var cube = $('#cube');
-	cube.jmpress("route", ["#left", "#front"]);
-	cube.jmpress("route", ["#top", "#right"], true);
-	cube.jmpress("route", ["#top", "#left"], true, true);
-	cube.jmpress("route", ["#bottom", "#left"], true, true);
-	cube.jmpress("route", ["#bottom", "#right"], true);
 	$.jmpress("initStep", function(step, eventData) {
 		eventData.stepData.up = eventData.data.up;
 		eventData.stepData.down = eventData.data.down;
@@ -71,6 +66,11 @@ $(function() {
 			}
 		}
 	});
+	cube.jmpress("route", ["#left", "#front"]);
+	cube.jmpress("route", ["#top", "#right"], true);
+	cube.jmpress("route", ["#top", "#left"], true, true);
+	cube.jmpress("route", ["#bottom", "#left"], true, true);
+	cube.jmpress("route", ["#bottom", "#right"], true);
 });
 </script>
 
