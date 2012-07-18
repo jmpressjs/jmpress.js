@@ -28,8 +28,6 @@
 			href = stepData && stepData.src,
 			settings = eventData.settings;
 		if ( href ) {
-			$(this).find('.' + settings.ajaxLoadedClass).not(step)
-				.html('').removeClass(settings.ajaxLoadedClass);
 			$(step).addClass( settings.ajaxLoadedClass );
 			stepData.srcLoaded = true;
 			$(step).load(href, function(response, status, xhr) {
