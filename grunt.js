@@ -1,6 +1,6 @@
 /*global module:false*/
 module.exports = function(grunt) {
-	grunt.loadNpmTasks('grunt-css');
+	grunt.loadNpmTasks('grunt-contrib');
 	grunt.loadNpmTasks('grunt-webpack');
 	grunt.initConfig({
 		pkg: '<json:package.json>',
@@ -30,11 +30,11 @@ module.exports = function(grunt) {
 			'</head><body></body></html>'
 		},
 		watch: {
-			files: ['src/**', 'docs/**', 'test/**'],
+			files: ['src/**', 'docs/lib/**', 'test/components/*.js'],
 			tasks: 'default'
 		},
 		lint: {
-			files: ['src/**/*.js', 'test/lib/*.js']
+			files: ['src/**/*.js', 'test/components/*.js']
 		},
 		qunit: {
 			files: ['test/*.html']
@@ -162,7 +162,7 @@ module.exports = function(grunt) {
 				dest: 'dist/plugins/jmpress.presentation-mode.min.js'
 			}
 		},
-		cssmin: {
+		mincss: {
 			dist_basic: {
 				src: ['dist/basic-animations.css'],
 				dest: 'dist/basic-animations.min.css'
@@ -180,6 +180,7 @@ module.exports = function(grunt) {
 				dest: "docs/asserts/[hash].js"
 			}
 		},
+		clean: ['docs/asserts/**/*', 'docs/index.html', 'dist/**/*'],
 		jshint: {
 			options: {
 				curly: true,
@@ -202,5 +203,6 @@ module.exports = function(grunt) {
 		},
 		uglify: {}
 	});
-	grunt.registerTask('default', 'lint webpack concat min cssmin');
+	grunt.registerTask('default', 'clean lint webpack concat min mincss');
+	grunt.registerTask('docs', 'clean webpack concat:docs');
 };
