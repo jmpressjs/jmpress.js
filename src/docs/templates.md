@@ -74,19 +74,19 @@ $.jmpress("template", "mytemplate", {
 });
 ```
 
-## `method` template( templateName, templateData )
+### `method` template( templateName, templateData )
 
 Adds or modify a template. If it's already defined then the old template is
 extended with the new properties.
 
-## `method` apply( selector, templateName )
+### `method` apply( selector, templateName )
 
 Applies the template to all selected steps.
 
-## `method` apply( selector, templateData )
+### `method` apply( selector, templateData )
 
 Applies the template directly by template data object.
 
-## `method` apply( selector, arrayOfTemplateDatas )
+### `method` apply( selector, arrayOfTemplateDatas )
 
 Applies template data to an array of selected items.
