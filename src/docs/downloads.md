@@ -2,7 +2,7 @@
 
 You can create your own version of jmpress.js with our [Custom Downloader](#builder).
 
-If you don't like it here are some prebuilded downloads:
+Otherwise download a prebuilt copy:
 
 (Right click them and save to...)
 
