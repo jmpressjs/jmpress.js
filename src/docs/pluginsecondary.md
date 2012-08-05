@@ -1,6 +1,6 @@
 # Plugin: Secondary
 
-The secondary plugin applies an alternative step config, on a choosen condition.
+The secondary plugin applies an alternative step config, on a chosen condition.
 
 *Alternative step configuration is only useable via template.*
 

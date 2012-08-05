@@ -75,7 +75,7 @@ $('#jmpress').jmpress('settings').setting = newValue;
 
 ### `method`
 
-A `method` is a public function availible on a jmpress instance or statically.
+A `method` is a public function available on a jmpress instance or statically.
 
 A `method` with the signature `methodName(param1, param2)` can be called like this:
 
@@ -104,4 +104,4 @@ A `callback` handler should have the following parameters:
  * `container` the jmpress container
  * `parents` all parents of the step, or null
  * `jmpress` the jmpress element
- * and more properties spefific for the events.
+ * and more properties specific for the events.
