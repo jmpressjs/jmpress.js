@@ -175,7 +175,7 @@ module.exports = function(grunt) {
 		webpack: {
 			docs: {
 				src: "docs/lib/index.js",
-				scriptSrcPrefix: "asserts/",
+				publicPrefix: "asserts/",
 				statsTarget: "docsStats",
 				dest: "docs/asserts/[hash].js"
 			}

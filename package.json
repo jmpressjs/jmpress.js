@@ -43,7 +43,7 @@
 	"devDependencies": {
 		"grunt": "~0.3.x",
 		"grunt-contrib": "~0.1.x",
-		"grunt-webpack": "0.2.x",
+		"grunt-webpack": "0.3.x",
 		"bootstrap": "https://github.com/twitter/bootstrap/tarball/v2.0.4",
 		"YamYam": "0.2.x"
 	}
