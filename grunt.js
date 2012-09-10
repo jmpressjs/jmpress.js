@@ -80,13 +80,6 @@ module.exports = function(grunt) {
 					'src/plugins/presentation-mode.js'],
 				dest: 'dist/jmpress.allplugins.js'
 			},
-			dist_demo: {
-				src: ['<banner:meta.banner>',
-					'dist/jmpress.js',
-					'dist/jmpress.allplugins.js',
-					'src/components/demo.js'],
-				dest: 'dist/jmpress.demo.js'
-			},
 			dist_all: {
 				src: ['<banner:meta.banner>',
 					'dist/jmpress.js',
@@ -115,8 +108,14 @@ module.exports = function(grunt) {
 			},
 			dist_css_basic_animations: {
 				src: ['<banner:meta.banner>',
-					'src/css/animations/basic/*'],
+					'src/css/animations/basic/*.css'],
 				dest: 'dist/basic-animations.css'
+			},
+			dist_demo: {
+				src: ['<banner:meta.banner>',
+					'src/css/animations/basic/*.css',
+					'src/css/demo/*.css'],
+				dest: 'dist/demo.css'
 			},
 			/*dist_css_advanced_animations: {
 				src: ['<banner:meta.banner>',
