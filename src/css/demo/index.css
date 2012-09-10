@@ -174,6 +174,10 @@ section:not(.active) {
 	padding: 0 5px;
 	position: relative;
 	-webkit-transition-duration: 0.5s;
+	-moz-transition-duration:    0.5s;
+	-ms-transition-duration:     0.5s;
+	-o-transition-duration:      0.5s;
+	transition-duration:         0.5s;
 }
 .nav li a:hover {
 	bottom: 5px;
@@ -244,16 +248,94 @@ section:not(.active) {
 	-webkit-animation-iteration-count: infinite;
 	-webkit-animation-duration: 5s;
 	-webkit-animation-direction: alternate;
+
+	-moz-animation-name: floater;
+	-moz-animation-timing-function: ease-in-out;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-duration: 5s;
+	-moz-animation-direction: alternate;
+
+	-ms-animation-name: floater;
+	-ms-animation-timing-function: ease-in-out;
+	-ms-animation-iteration-count: infinite;
+	-ms-animation-duration: 5s;
+	-ms-animation-direction: alternate;
+
+	-o-animation-name: floater;
+	-o-animation-timing-function: ease-in-out;
+	-o-animation-iteration-count: infinite;
+	-o-animation-duration: 5s;
+	-o-animation-direction: alternate;
+
+	animation-name: floater;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-duration: 5s;
+	animation-direction: alternate;
 }
-#home .title li:nth-child(2) { -webkit-animation-delay: 0.25s; }
-#home .title li:nth-child(3) { -webkit-animation-delay: 0.5s;  }
-#home .title li:nth-child(4) { -webkit-animation-delay: 0.75s; }
-#home .title li:nth-child(5) { -webkit-animation-delay: 1s;    }
-#home .title li:nth-child(6) { -webkit-animation-delay: 1.25s; }
-#home .title li:nth-child(7) { -webkit-animation-delay: 1.5s;  }
-#home .title li:nth-child(8) { -webkit-animation-delay: 1.75s; }
-#home .title li:nth-child(9) { -webkit-animation-delay: 2s;    }
-#home .title li:nth-child(10) { -webkit-animation-delay: 2.25s;}
+#home .title li:nth-child(2) {
+	-webkit-animation-delay: 0.25s;
+	-moz-animation-delay:    0.25s;
+	-ms-animation-delay:     0.25s;
+	-o-animation-delay:      0.25s;
+	animation-delay:         0.25s;
+}
+#home .title li:nth-child(3) {
+	-webkit-animation-delay: 0.5s;
+	-moz-animation-delay:    0.5s;
+	-ms-animation-delay:     0.5s;
+	-o-animation-delay:      0.5s;
+	animation-delay:         0.5s;
+}
+#home .title li:nth-child(4) {
+	-webkit-animation-delay: 0.75s;
+	-moz-animation-delay:    0.75s;
+	-ms-animation-delay:     0.75s;
+	-o-animation-delay:      0.75s;
+	animation-delay:         0.75s;
+}
+#home .title li:nth-child(5) {
+	-webkit-animation-delay: 1s;
+	-moz-animation-delay:    1s;
+	-ms-animation-delay:     1s;
+	-o-animation-delay:      1s;
+	animation-delay:         1s;
+}
+#home .title li:nth-child(6) {
+	-webkit-animation-delay: 1.25s;
+	-moz-animation-delay:    1.25s;
+	-ms-animation-delay:     1.25s;
+	-o-animation-delay:      1.25s;
+	animation-delay:         1.25s;
+}
+#home .title li:nth-child(7) {
+	-webkit-animation-delay: 1.5s;
+	-moz-animation-delay:    1.5s;
+	-ms-animation-delay:     1.5s;
+	-o-animation-delay:      1.5s;
+	animation-delay:         1.5s;
+}
+#home .title li:nth-child(8) {
+	-webkit-animation-delay: 1.75s;
+	-moz-animation-delay:    1.75s;
+	-ms-animation-delay:     1.75s;
+	-o-animation-delay:      1.75s;
+	animation-delay:         1.75s;
+}
+#home .title li:nth-child(9) {
+	-webkit-animation-delay: 2s;
+	-moz-animation-delay:    2s;
+	-ms-animation-delay:     2s;
+	-o-animation-delay:      2s;
+	animation-delay:         2s;
+}
+#home .title li:nth-child(10) {
+	-webkit-animation-delay: 2.25s;
+	-moz-animation-delay:    2.25s;
+	-ms-animation-delay:     2.25s;
+	-o-animation-delay:      2.25s;
+	animation-delay:         2.25s;
+}
 #home .tagline {
 	font-size: 60%;
 	position: absolute;
@@ -285,6 +367,10 @@ section:not(.active) {
 	color: #777;
 	font-size: 80%;
 	-webkit-transition-duration: 0.5s;
+	-moz-transition-duration:    0.5s;
+	-ms-transition-duration:     0.5s;
+	-o-transition-duration:      0.5s;
+	transition-duration:         0.5s;
 }
 #home .home-nav a:hover {
 	color: #333;
@@ -306,6 +392,10 @@ section:not(.active) {
    ========================================================================== */
 #about section {
 	-webkit-transition-duration: 1s;
+	-moz-transition-duration:    1s;
+	-ms-transition-duration:     1s;
+	-o-transition-duration:      1s;
+	transition-duration:         1s;
 }
 #about section:not(.active) {
 	opacity: 0.3;
@@ -376,9 +466,17 @@ section:not(.active) {
 	border: 1px solid #fff;
 	background-color: #ddd;
 	-webkit-transition-duration: 0.5s;
+	-moz-transition-duration:    0.5s;
+	-ms-transition-duration:     0.5s;
+	-o-transition-duration:      0.5s;
+	transition-duration:         0.5s;
 }
 #presenter section.active {
 	-webkit-box-shadow: 3px 3px 0px #333;
+	-moz-box-shadow:    3px 3px 0px #333;
+	-ms-box-shadow:     3px 3px 0px #333;
+	-o-box-shadow:      3px 3px 0px #333;
+	box-shadow:         3px 3px 0px #333;
 }
 #presenter #animations {
 	width: 750px;
@@ -445,6 +543,10 @@ section:not(.active) {
 .nested-jmpress:focus {
 	outline: none;
 	-webkit-box-shadow: 3px 3px 0px #333;
+	-moz-box-shadow:    3px 3px 0px #333;
+	-ms-box-shadow:     3px 3px 0px #333;
+	-o-box-shadow:      3px 3px 0px #333;
+	box-shadow:         3px 3px 0px #333;
 }
 .nested-step {
 	width: 600px;
