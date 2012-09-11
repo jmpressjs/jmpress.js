@@ -53,7 +53,7 @@
 				<li><a href="#/examples">examples</a>
 				<li class="navsep">I AM A
 				<li class="small"><a href="#/presenter">presenter</a>
-				<li class="small"><a href="#/developer">developer</a>
+				<li class="small"><a href="#/developer">website developer</a>
 			</ul>
 			<div class="ocean"></div>
 			<div class="ocean-floor"></div>
@@ -186,10 +186,10 @@ $.jmpress('template', 'functiontemplate', {
 
 				<!-- NESTED JMPRESS -->
 				<div class="nested-jmpress">
-					<div class="nested-step" data-duration="-1">
+					<div class="offset1 nested-step" data-duration="-1">
 						<h4>jmpress can be used for more than</h4>
 						<h3 class="offset1">presentations</h3>
-						<h4 class="offset2">click inside me and <a href="#next" class="go">let's go</a></h4>
+						<h4 class="offset2"><a href="#next" class="nested-go">let's go &gt;</a></h4>
 					</div>
 					<div class="nested-step" data-x="1000" data-rotate-y="90">
 						<h4>embed your presentation</h4>
@@ -311,10 +311,10 @@ $.jmpress('register', 'demo', function() {
 	var setActive = function(step) {
 		if ($(step).attr('id') === 'home') {
 			$('.nav').fadeOut();
-			$('.hint').fadeIn();
+			$('.hint').stop(true, true).delay(3000).fadeIn().delay(5000).fadeOut();
 		} else {
 			$('.nav').fadeIn();
-			$('.hint').fadeOut();
+			$('.hint').stop(true, true).fadeOut();
 		}
 	};
 
@@ -323,7 +323,7 @@ $.jmpress('register', 'demo', function() {
 		stepSelector: 'section',
 		viewPort: {
 			width: 1300,
-			maxScale: 2,
+			maxScale: 1,
 			zoomable: 10
 		},
 		presentationMode: {
@@ -337,12 +337,19 @@ $.jmpress('register', 'demo', function() {
 
 	// start nested jmpress
 	$('.nested-jmpress').jmpress({
-		viewPort: { height: 150, width: 700 },
+		viewPort: { height: 150, width: 700, maxScale: 1 },
 		duration: { defaultValue: 3500, barSelector: '.progressbar-value' },
 		stepSelector: '.nested-step',
 		hash: { use: false },
 		fullscreen: false,
 		presentationMode: { use: false }
+	});
+
+	// handle nested internal nav links
+	$('.nested-go').click(function() {
+		$('.nested-jmpress').jmpress($(this).attr('href').slice(1));
+		//_gaq.push(['_trackEvent', 'Feature', 'NestedJmpress', "start"]);
+		return false;
 	});
 
 	// handle internal nav links

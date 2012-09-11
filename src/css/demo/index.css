@@ -184,9 +184,19 @@ section:not(.active) {
 }
 .hint {
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	font-size: 80%;
+	width: 100%;
+	bottom: 20px;
+	right: 0px;
+	font-size: 130%;
+	background-color: #aab6c2;
+	padding: 20px 10px;
+	text-align: center;
+	color: #c8d5e1;
+	display: none;
+	z-index: 99;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
 }
 
 /* ==========================================================================
@@ -358,7 +368,7 @@ section:not(.active) {
 	position: absolute;
 	right: -20px;
 	top: -140px;
-	width: 180px;
+	width: 200px;
 }
 #home .home-nav li {
 	line-height: 1em;
@@ -425,7 +435,7 @@ section:not(.active) {
    ========================================================================== */
 #features {
 	width: 700px;
-	margin-top: -100px;
+	margin-top: -150px;
 }
 #features .features li {
 	font-size: 70%;
@@ -440,7 +450,7 @@ section:not(.active) {
    EXAMPLES
    ========================================================================== */
 #examples {
-	width: 700px;
+	width: 600px;
 }
 #examples li {
 	font-size: 70%;
@@ -550,6 +560,11 @@ section:not(.active) {
 }
 .nested-step {
 	width: 600px;
+}
+.nested-step a {
+	background-color: #bbb;
+	padding: 3px 5px;
+	border-radius: 3px;
 }
 
 /* ==========================================================================
