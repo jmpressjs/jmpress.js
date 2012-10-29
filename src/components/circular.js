@@ -1,4 +1,4 @@
-/*!
+/*
  * circular.js
  * Repeat from start after end
  */

@@ -1,4 +1,4 @@
-/*!
+/*
  * keyboard.js
  * Keyboard event mapping and default keyboard actions
  */

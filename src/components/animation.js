@@ -1,4 +1,4 @@
-/*!
+/*
  * animation.js
  * Apply custom animations to steps
  */

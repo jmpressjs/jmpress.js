@@ -1,4 +1,4 @@
-/*!
+/*
  * ways.js
  * Control the flow of the steps
  */

@@ -1,4 +1,4 @@
-/*!
+/*
  * demo.js
  * Extras for running the main jmpress.js demo
  */

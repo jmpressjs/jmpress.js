@@ -1,4 +1,4 @@
-/*!
+/*
  * ajax.js
  * Load steps via ajax
  */

@@ -1,4 +1,4 @@
-/*!
+/*
  * start.js
  * Set the first step to start on
  */

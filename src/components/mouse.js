@@ -1,4 +1,4 @@
-/*!
+/*
  * mouse.js
  * Clicking to select a step
  */
