@@ -393,47 +393,6 @@ h4 {
 	transform:         rotate(-30deg);
 }
 
-/* DOCS */
-.docs {
-	font-size: 0.6em;
-	overflow: auto;
-	min-width: 600px;
-	min-height: 600px;
-	width: 80%;
-	height: 80%;
-
-	border-top-left-radius: 20px;
-}
-.docs h1 {
-	font-size: 1.5em;
-	line-height: 1em;
-	text-shadow: #333 -1px 1px 5px;
-}
-.docs h2 {
-	margin-top: 10px;
-	font-size: 1.4em;
-	text-shadow: #666 0px 0px 4px;
-}
-.docs h3 {
-	margin-top: 10px;
-	font-size: 1.3em;
-	text-shadow: #666 0px 0px 2px;
-}
-.docs h4, .docs strong {
-	margin: 0px;
-	font-size: 1.2em;
-}
-.docs p {
-	margin-bottom: 10px;
-}
-.docs pre {
-	padding: 5px;
-	border-radius: 5px;
-}
-.docs ul li {
-	font-size: 1em;
-}
-
 /* keyboard hint on the first step */
 .hint {
 	position: fixed;
