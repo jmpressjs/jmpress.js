@@ -1,4 +1,4 @@
-# jmpress.js (Version 0.4.3)
+# jmpress.js (Version 0.4.4)
 
 A jQuery plugin to build a website on the infinite canvas.
 
@@ -7,9 +7,9 @@ and utilizes the power of CSS3 transforms and transitions in modern browsers.
 
 ## DEMO
 
-jmpress.js demo: [http://shama.github.com/jmpress.js/]
+jmpress.js demo: [http://jmpressjs.github.com/jmpress.js/]
 
-jmpress.js beta demo: [http://sokra.github.com/jmpress.js/] [dev branch](https://github.com/shama/jmpress.js/tree/dev)
+jmpress.js beta demo: [http://jmpressjs.github.com/jmpress.js-beta/] [dev branch](https://github.com/jmpressjs/jmpress.js/tree/dev)
 
 ## BROWSER SUPPORT
 

@@ -3,10 +3,10 @@
   "version": "0.4.4",
   "title": "jQuery.jmpress()",
   "description": "A jQuery plugin to build a website on the infinite canvas.",
-  "homepage": "http://shama.github.com/jmpress.js",
+  "homepage": "http://jmpressjs.github.com/jmpress.js",
   "author": {
     "name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
-    "url": "https://github.com/shama/jmpress.js"
+    "url": "https://github.com/jmpressjs"
   },
   "licenses": [
     {
@@ -26,10 +26,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/shama/jmpress.js.git"
+    "url": "git://github.com/jmpressjs/jmpress.js.git"
   },
   "bugs": {
-    "url": "https://github.com/shama/jmpress.js/issues"
+    "url": "https://github.com/jmpressjs/jmpress.js/issues"
   },
   "files": [
     "dist/jmpress.js"
