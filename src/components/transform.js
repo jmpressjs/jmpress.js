@@ -27,7 +27,30 @@
 					if(item[0] === "translate") { // ["translate", x, y, z]
 						transform += " translate3d(" + toCssNumber(item[1] || 0) + "px," + toCssNumber(item[2] || 0) + "px," + toCssNumber(item[3] || 0) + "px)";
 					} else if(item[0] === "rotate") {
-						var order = item[4] ? [1, 2, 3] : [3, 2, 1];
+                        var order = [1, 2, 3];
+                        if (item[5]) {
+                            switch (item[5].toLowerCase()) {
+                                case 'xyz':
+                                    order = [1, 2, 3];
+                                    break;
+                                case 'xzy':
+                                    order = [1, 3, 2];
+                                    break;
+                                case 'yxz':
+                                    order = [2, 1, 3];
+                                    break;
+                                case 'yzx':
+                                    order = [2, 3, 1];
+                                    break;
+                                case 'zxy':
+                                    order = [3, 1, 2];
+                                    break;
+                                case 'zyx':
+                                    order = [3, 2, 1];
+                                    break;
+                            }
+                        }
+                        order = item[4] ? order : order.reverse();
 						for(i = 0; i < 3; i++) {
 							transform += " rotate" + coord[order[i]-1] + "(" + toCssNumber(item[order[i]] || 0) + "deg)";
 						}
@@ -105,7 +128,9 @@
 			,rotateX: pf(data.rotateX) || 0
 			,rotateY: pf(data.rotateY) || 0
 			,rotateZ: pf(data.rotateZ) || 0
-			,revertRotate: false
+            ,revertRotate: false
+			,rotateOrder: data.rotateOrder || 'xyz'
+            ,transformOrder: data.transformOrder || 'trs'
 			,scale: pf(data.scale) || 1
 			,scaleX: pf(data.scaleX) || false
 			,scaleY: pf(data.scaleY) || false
@@ -135,21 +160,41 @@
 			});
 		}
 		var sd = eventData.stepData;
-		var transform = [
-			["translate",
-				sd.x || (sd.r * Math.sin(sd.phi*Math.PI/180)),
-				sd.y || (-sd.r * Math.cos(sd.phi*Math.PI/180)),
-				sd.z],
-			["rotate",
-				sd.rotateX,
-				sd.rotateY,
-				sd.rotateZ || sd.rotate,
-				true],
-			["scale",
-				sd.scaleX || sd.scale,
-				sd.scaleY || sd.scale,
-				sd.scaleZ || sd.scale]
-		];
+        var translate = ["translate",
+            sd.x || (sd.r * Math.sin(sd.phi * Math.PI / 180)),
+            sd.y || (-sd.r * Math.cos(sd.phi * Math.PI / 180)),
+            sd.z];
+        var rotate = ["rotate",
+            sd.rotateX,
+            sd.rotateY,
+            sd.rotateZ || sd.rotate,
+            true,
+            sd.rotateOrder];
+        var scale = ["scale",
+            sd.scaleX || sd.scale,
+            sd.scaleY || sd.scale,
+            sd.scaleZ || sd.scale];
+        var transform;
+        switch (sd.transformOrder) {
+            case 'trs':
+                transform = [translate, rotate, scale];
+                break;
+            case 'tsr':
+                transform = [translate, scale, rotate];
+                break;
+            case 'rts':
+                transform = [rotate, translate, scale];
+                break;
+            case 'rst':
+                transform = [rotate, scale, translate];
+                break;
+            case 'srt':
+                transform = [scale, rotate, translate];
+                break;
+            case 'str':
+                transform = [scale, translate, rotate];
+                break;
+        }
 		engine.transform( step, transform );
 	});
 	$.jmpress("setActive", function( element, eventData ) {
@@ -159,37 +204,112 @@
 		target.perspectiveScale = 1;
 
 		for(var i = eventData.current.maxNestedDepth; i > (eventData.parents.length || 0); i--) {
-			tf.push(["scale"], ["rotate"], ["translate"]);
+            switch (step.transformOrder) {
+                case 'trs':
+                    tf.push(["translate"], ["rotate"], ["scale"]);
+                    break;
+                case 'tsr':
+                    tf.push(["translate"], ["scale"], ["rotate"]);
+                    break;
+                case 'rts':
+                    tf.push(["rotate"], ["translate"], ["scale"]);
+                    break;
+                case 'rst':
+                    tf.push(["rotate"], ["scale"], ["translate"]);
+                    break;
+                case 'srt':
+                    tf.push(["scale"], ["rotate"], ["translate"]);
+                    break;
+                case 'str':
+                    tf.push(["scale"], ["translate"], ["rotate"]);
+                    break;
+            }
 		}
 
-		tf.push(["scale",
-			1 / (step.scaleX || step.scale),
-			1 / (step.scaleY || step.scale),
-			1 / (step.scaleZ)]);
-		tf.push(["rotate",
-			-step.rotateX,
-			-step.rotateY,
-			-(step.rotateZ || step.rotate)]);
-		tf.push(["translate",
-			-(step.x || (step.r * Math.sin(step.phi*Math.PI/180))),
-			-(step.y || (-step.r * Math.cos(step.phi*Math.PI/180))),
-			-step.z]);
+        var scale = ["scale",
+            1 / (step.scaleX || step.scale),
+            1 / (step.scaleY || step.scale),
+            1 / (step.scaleZ)];
+        var rotate = ["rotate",
+            -step.rotateX,
+            -step.rotateY,
+            -(step.rotateZ || step.rotate),
+            false,
+            step.rotateOrder];
+        var translate = ["translate",
+            -(step.x || (step.r * Math.sin(step.phi * Math.PI / 180))),
+            -(step.y || (-step.r * Math.cos(step.phi * Math.PI / 180))),
+            -step.z];
+
+        switch (step.transformOrder) {
+            case 'trs':
+                tf.push(scale);
+                tf.push(rotate);
+                tf.push(translate);
+                break;
+            case 'tsr':
+                tf.push(rotate);
+                tf.push(scale);
+                tf.push(translate);
+                break;
+            case 'rts':
+                tf.push(scale);
+                tf.push(translate);
+                tf.push(rotate);
+                break;
+            case 'rst':
+                tf.push(translate);
+                tf.push(scale);
+                tf.push(rotate);
+                break;
+            case 'srt':
+                tf.push(translate);
+                tf.push(rotate);
+                tf.push(scale);
+                break;
+            case 'str':
+                tf.push(rotate);
+                tf.push(translate);
+                tf.push(scale);
+                break;
+        }
+
 		target.perspectiveScale *= (step.scaleX || step.scale);
 
 		$.each(eventData.parents, function(idx, element) {
 			var step = $(element).data("stepData");
-			tf.push(["scale",
-				1 / (step.scaleX || step.scale),
-				1 / (step.scaleY || step.scale),
-				1 / (step.scaleZ)]);
-			tf.push(["rotate",
-				-step.rotateX,
-				-step.rotateY,
-				-(step.rotateZ || step.rotate)]);
-			tf.push(["translate",
-				-(step.x || (step.r * Math.sin(step.phi*Math.PI/180))),
-				-(step.y || (-step.r * Math.cos(step.phi*Math.PI/180))),
-				-step.z]);
+            switch (step.transformOrder) {
+                case 'trs':
+                    tf.push(scale);
+                    tf.push(rotate);
+                    tf.push(translate);
+                    break;
+                case 'tsr':
+                    tf.push(rotate);
+                    tf.push(scale);
+                    tf.push(translate);
+                    break;
+                case 'rts':
+                    tf.push(scale);
+                    tf.push(translate);
+                    tf.push(rotate);
+                    break;
+                case 'rst':
+                    tf.push(translate);
+                    tf.push(scale);
+                    tf.push(rotate);
+                    break;
+                case 'srt':
+                    tf.push(translate);
+                    tf.push(rotate);
+                    tf.push(scale);
+                    break;
+                case 'str':
+                    tf.push(rotate);
+                    tf.push(translate);
+                    tf.push(scale);
+                    break;
+            }
 			target.perspectiveScale *= (step.scaleX || step.scale);
 		});
 
