@@ -1,4 +1,4 @@
-/*!
+/*
  * jqevents.js
  * Fires jQuery events
  */

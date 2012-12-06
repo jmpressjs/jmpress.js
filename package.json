@@ -1,50 +1,51 @@
 {
-	"name": "jmpress.js",
-	"version": "0.4.4",
-	"title": "jQuery.jmpress()",
-	"description": "A jQuery plugin to build a website on the infinite canvas.",
-	"homepage": "http://shama.github.com/jmpress.js",
-	"author": {
-		"name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
-		"url": "https://github.com/shama/jmpress.js"
-	},
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "http://www.opensource.org/licenses/mit-license.php"
-		}
-	],
-	"maintainers": [
-		{
-			"name": "Kyle Robinson Young",
-			"url": "https://github.com/shama"
-		},
-		{
-			"name": "Tobias Koppers",
-			"url": "https://github.com/sokra"
-		}
-	],
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/shama/jmpress.js.git"
-	},
-	"bugs": {
-		"url": "https://github.com/shama/jmpress.js/issues"
-	},
-	"files": [
-		"dist/jmpress.js"
-	],
-	"scripts": {
-		"test": "grunt qunit"
-	},
-	"dependencies": {
-		"jquery": "~1.5"
-	},
-	"devDependencies": {
-		"grunt": "~0.3.x",
-		"grunt-contrib": "~0.1.x",
-		"grunt-webpack": "0.3.x",
-		"bootstrap": "https://github.com/twitter/bootstrap/tarball/v2.0.4",
-		"YamYam": "0.2.x"
-	}
+  "name": "jmpress.js",
+  "version": "0.4.4",
+  "title": "jQuery.jmpress()",
+  "description": "A jQuery plugin to build a website on the infinite canvas.",
+  "homepage": "http://jmpressjs.github.com/jmpress.js",
+  "author": {
+    "name": "Kyle Robinson Young @shama & Tobias Koppers @sokra",
+    "url": "https://github.com/jmpressjs"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Kyle Robinson Young",
+      "url": "https://github.com/shama"
+    },
+    {
+      "name": "Tobias Koppers",
+      "url": "https://github.com/sokra"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jmpressjs/jmpress.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jmpressjs/jmpress.js/issues"
+  },
+  "files": [
+    "dist/jmpress.js"
+  ],
+  "scripts": {
+    "test": "grunt qunit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.0a",
+    "grunt-contrib-mincss": "~0.3.1",
+    "grunt-contrib-jshint": "~0.1.0",
+    "grunt-contrib-concat": "~0.1.0",
+    "grunt-contrib-qunit": "~0.1.0",
+    "grunt-contrib-watch": "~0.1.3",
+    "grunt-contrib-uglify": "~0.1.0",
+    "grunt-contrib-clean": "~0.4.0a"
+  }
 }

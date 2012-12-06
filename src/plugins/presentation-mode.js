@@ -1,4 +1,4 @@
-/*!
+/*
  * jmpress.presentation-mode plugin
  * Display a window for the presenter with notes and a control and view of the
  * presentation

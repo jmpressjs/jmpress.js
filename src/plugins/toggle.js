@@ -1,4 +1,4 @@
-/*!
+/*
  * jmpress.toggle plugin
  * For binding a key to toggle de/initialization of jmpress.js.
  */

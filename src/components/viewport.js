@@ -1,4 +1,4 @@
-/*!
+/*
  * viewport.js
  * Scale to fit a given viewport
  */

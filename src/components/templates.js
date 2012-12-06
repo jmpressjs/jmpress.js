@@ -1,4 +1,4 @@
-/*!
+/*
  * templates.js
  * The amazing template engine
  */

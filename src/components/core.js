@@ -1,4 +1,4 @@
-/*!
+/*
  * core.js
  * The core of jmpress.js
  */
