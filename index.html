@@ -27,7 +27,7 @@
 	<!-- NAVIGATION -->
 	<ul class="nav">
 		<li><a href="#home" class="go">HOME</a>&middot;
-		<li><a href="docs/">DOCS</a>&middot;
+		<li><a href="http://jmpressjs.github.com/docs/" target="_blank">DOCS</a>&middot;
 		<li><a href="#/about">ABOUT</a>&middot;
 		<li><a href="#/features">FEATURES</a>&middot;
 		<li><a href="#/examples">EXAMPLES</a>&nbsp;-&nbsp;
@@ -47,8 +47,8 @@
 			<div class="tagline">build a website on the infinite canvas</div>
 			<ul class="home-nav">
 				<li><a href="#/about">about</a>
-				<li><a href="docs/#builder">download</a>
-				<li><a href="docs/">documentation</a>
+				<li><a href="http://jmpressjs.github.com/customize/" target="_blank">download</a>
+				<li><a href="http://jmpressjs.github.com/docs/" target="_blank">documentation</a>
 				<li><a href="#/features">features</a>
 				<li><a href="#/examples">examples</a>
 				<li class="navsep">I AM A
@@ -113,7 +113,7 @@
 		<section id="presenter" data-x="1000" data-y="500" data-template="stepper">
 			<h4>get started quickly</h4>
 			<h3>by using one of our pre-made presentation templates</h3>
-			<em>add pre-made templates here</em>
+			<em><!-- add pre-made templates here --></em>
 
 			<h5 class="offset6 span4"><br/><br/>Don't know HTML or CSS? Beta drag and drop presentation builders are being developed in the community: <a href="http://tantaman.github.com/Strut/web/index.html" target="_blank">Strut</a> &amp; <a href="http://www.hsivaram.com/impressionist/alpha3/app.html" target="_blank">Impressionist</a>.</h5>
 
@@ -146,7 +146,7 @@
 					<li data-jmpress="warp-right after 500ms"><code>&lt;div data-jmpress="warp-right after 500ms"/&gt;</code></li>
 					<li data-jmpress="fade after 500ms"><code>&lt;div data-jmpress="fade after 500ms"/&gt;</code></li>
 					<li data-jmpress="drive-right after 500ms"><code>&lt;div data-jmpress="drive-right after 500ms"/&gt;</code></li>
-					<li data-jmpress="fade after 500ms" style="list-style:none;"><a href="docs/#docs-animation" target="_blank" class="pull-right">read more about animations</a></li>
+					<li data-jmpress="fade after 500ms" style="list-style:none;"><a href="http://jmpressjs.github.com/docs/animation.html" target="_blank" class="pull-right">read more about animations</a></li>
 				</ul>
 			</section>
 
@@ -156,11 +156,11 @@
 		<section id="developer" data-x="2000" data-y="-100" data-template="stepper">
 			<h4>i am</h4>
 			<h3>developer friendly</h3>
-			<h4 class="offset1">and have a great <a href="docs/#docs-plugin" target="_blank">plugin interface</a> to extend from.</h4>
+			<h4 class="offset1">and have a great <a href="http://jmpressjs.github.com/docs/plugin.html" target="_blank">plugin interface</a> to extend from.</h4>
 
 			<section id="templating">
 				<h4>want cleaner HTML?</h4>
-				<h3 class="offset1">use <a href="docs/#docs-templates" target="_blank">templates</a></h3>
+				<h3 class="offset1">use <a href="http://jmpressjs.github.com/docs/templates.html" target="_blank">templates</a></h3>
 				<h4 class="offset0">set the attributes of your elements with javascript:</h4>
 				<pre class="span5 pull-left">$.jmpress('template', 'arraytemplate', {
     x: 100, y: 100, scale: 2,
@@ -218,7 +218,7 @@ $.jmpress('template', 'functiontemplate', {
 			<section id="controls">
 				<h4>customize</h4>
 				<h3>all the controls</h3>
-				<h4 class="offset1">Map any key to an action in jmpress.js, <a href="docs/#docs-keyboard" target="_blank">read more</a>.</h4>
+				<h4 class="offset1">Map any key to an action in jmpress.js, <a href="http://jmpressjs.github.com/docs/keyboard.html" target="_blank">read more</a>.</h4>
 				<pre class="offset1 span7 pull-left">// bind the 'o' key to select a step with the id 'overview'
 $('#jmpress').jmpress({
     keyboard: {
@@ -231,23 +231,23 @@ $('#jmpress').jmpress({
 
 			<section id="routing">
 				<h4>change the flow with</h4>
-				<h3 class="offset1"><a href="docs/#docs-ways" target="_blank">routing</a></h3>
+				<h3 class="offset1"><a href="http://jmpressjs.github.com/docs/ways.html" target="_blank">routing</a></h3>
 				<pre class="offset1 span5">$('#jmpress').jmpress('route', [
     '#one', '#three', '#two', '#four'
 ]);</pre>
-				<h4 class="offset4"><a href="docs/#docs-ways" target="_blank">read more about routing</a></h4>
+				<h4 class="offset4"><a href="http://jmpressjs.github.com/docs/ways.html" target="_blank">read more about routing</a></h4>
 			</section>
 
 			<section id="secondary">
 				<h4>apply</h4>
-				<h3><a href="docs/#docs-pluginsecondary" target="_blank">secondary animations</a></h3>
+				<h3><a href="http://jmpressjs.github.com/docs/pluginsecondary.html" target="_blank">secondary animations</a></h3>
 				<pre class="offset1 span5">$.jmpress('apply', '#secondary', {
     secondary: {
         rotate: { z: 20, x: 20, y:20 },
         '': 'self'
     }
 });</pre>
-				<h4 class="offset4"><a href="docs/#docs-pluginsecondary" target="_blank">read more about the secondard plugin</a></h4>
+				<h4 class="offset4"><a href="http://jmpressjs.github.com/docs/pluginsecondary.html" target="_blank">read more about the secondard plugin</a></h4>
 			</section>
 
 		</section>
@@ -267,7 +267,7 @@ $('#jmpress').jmpress({
 				<li><a href="examples/vacation/" target="_blank">vacation</a>
 				<li><a href="examples/zoomable/" target="_blank">zoomable</a>
 			</ul>
-			<h4>and more <a href="https://github.com/shama/jmpress.js/wiki/Examples" target="_blank">community examples here</a>.</h4>
+			<h4>and more <a href="https://github.com/jmpressjs/jmpress.js/wiki/Examples" target="_blank">community examples here</a>.</h4>
 		</section>
 
 	</article>

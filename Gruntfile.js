@@ -107,15 +107,6 @@ module.exports = function(grunt) {
 				],
 				dest: 'dist/jmpress.allplugins.js'
 			},
-			dist_demo: {
-				options: {banner: banner},
-				src: [
-					'dist/jmpress.js',
-					'dist/jmpress.allplugins.js',
-					'src/components/demo.js'
-				],
-				dest: 'dist/jmpress.demo.js'
-			},
 			dist_all: {
 				options: {banner: banner},
 				src: [
@@ -213,6 +204,10 @@ module.exports = function(grunt) {
 			dist_basic: {
 				src: ['dist/basic-animations.css'],
 				dest: 'dist/basic-animations.min.css'
+			},
+			dist_demo: {
+				src: ['dist/basic-animations.css', 'src/css/demo/*.css'],
+				dest: 'dist/demo.css'
 			}
 			/*dist_advanced: {
 				src: ['dist/advanced-animations.css'],
