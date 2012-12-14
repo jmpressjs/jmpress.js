@@ -64,14 +64,14 @@
 			<h4>I am</h4>
 			<h3>pure <code>&lt;html&gt;</code>, <code>.css {}</code> and <code>function javascript() {}</code></h3>
 			<h4 class="offset3">and use CSS3 transitions and transformations.</h4>
-			<section data-y="200" data-x="-400">I can pan,</section>
-			<section data-y="700" data-x="-300" data-rotate="90">rotate</section>
-			<section data-y="500" data-x="-100" data-rotate="180" data-scale=".3">
+			<section id="pan" data-y="200" data-x="-400">I can pan,</section>
+			<section id="rotate" data-y="700" data-x="-300" data-rotate="90">rotate</section>
+			<section id="scale" data-y="500" data-x="-100" data-rotate="180" data-scale=".3">
 				and scale
-				<h4>between elements on an infinite canvas.</h3>
+				<h4>between elements on an infinite canvas.</h4>
 			</section>
 
-			<section data-y="800" data-rotate="180">
+			<section id="support" data-y="800" data-rotate="180">
 				<h4>I currently work</h4>
 				<h3>with most modern web browsers</h3>
 				<h4 class="offset1">and fallback to simpler transitions with unsupported browsers.</h4>
@@ -84,7 +84,7 @@
 				</ul>
 			</section>
 
-			<section data-y="1115">
+			<section id="impress" data-y="1115">
 				<h4>I started as a</h4>
 				<h3>a jQuery port of <a href="http://bartaz.github.com/impress.js" target="_blank">impress.js</a></h3>
 				<h4 class="offset2">but I have become much, much more.</h4>
@@ -92,7 +92,7 @@
 		</section>
 
 		<!-- FEATURES -->
-		<section id="features" data-x="0" data-y="-800" data-scale="2" data-rotate="90">
+		<section id="features" data-x="0" data-y="-800" data-scale="1.4" data-rotate="90">
 			<h4>here are</h4>
 			<h3>some of my features</h3>
 			<ul class="features">
@@ -129,7 +129,7 @@
 				<h4 class="offset1">allowing your presentation to be printed.</h4>
 			</section>
 
-			<section id="zoom">
+			<section id="zoom" data-view-port-zoomable="10" data-view-port-max-scale="4">
 				<h4>press <code>+</code> and <code>-</code></h4>
 				<h3>to zoom in and out of a step</h3>
 				<h4 class="offset1">or use your mouse wheel.</h4>
@@ -253,7 +253,7 @@ $('#jmpress').jmpress({
 		</section>
 
 		<!-- EXAMPLES -->
-		<section id="examples" data-x="-1500" data-y="-1500" data-scale="4" data-template="stepper">
+		<section id="examples" data-x="-500" data-y="-500" data-scale="1">
 			<h2>examples</h2>
 			<ul>
 				<li><a href="examples/ajax/" target="_blank">ajax</a>
@@ -311,7 +311,7 @@ $.jmpress('register', 'demo', function() {
 	var setActive = function(step) {
 		if ($(step).attr('id') === 'home') {
 			$('.nav').fadeOut();
-			$('.hint').stop(true, true).delay(3000).fadeIn().delay(5000).fadeOut();
+			$('.hint').stop(true, true).delay(3000).fadeIn();
 		} else {
 			$('.nav').fadeIn();
 			$('.hint').stop(true, true).fadeOut();
@@ -323,8 +323,7 @@ $.jmpress('register', 'demo', function() {
 		stepSelector: 'section',
 		viewPort: {
 			width: 1300,
-			maxScale: 1,
-			zoomable: 10
+			maxScale: 1
 		},
 		presentationMode: {
 			notesUrl: 'index.notes.html'
