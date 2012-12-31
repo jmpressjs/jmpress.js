@@ -457,10 +457,14 @@ section:not(.active) {
 	width: 50%;
 	float: left;
 }
-#examples li:hover {
+#examples li li {
+	width: 100%;
+	float: none;
+}
+#examples li li:hover {
 	list-style: circle;
 }
-#examples h4 {
+#examples h4, #examples h3 {
 	clear: both;
 	padding-top: 10px;
 }
