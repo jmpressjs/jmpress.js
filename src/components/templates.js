@@ -1,4 +1,4 @@
-/*!
+/*
  * templates.js
  * The amazing template engine
  */
@@ -13,9 +13,6 @@
 	var templates = {};
 
 	/* FUNCTIONS */
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
 	function addUndefined( target, values, prefix ) {
 		for( var name in values ) {
 			var targetName = name;

@@ -1,1 +1,0 @@
-require("script!./jquery.ba-hashchange.min.js");

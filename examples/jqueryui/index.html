@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>jmpress.js | jquery ui template</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="" />
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta http-equiv="expires" content="0">
+  
+  <!-- jQuery UI Style -->
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/hot-sneaks/jquery-ui.css" />
+  
+  <!-- OR TRY OTHER JQUERY UI THEMES -->
+  <!--
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" />
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-darkness/jquery-ui.css" />
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/trontastic/jquery-ui.css" />
+  -->
+
+  <!-- jmpress/user style -->
+  <link type="text/css" rel="stylesheet" href="style.css" />
+
+</head>
+<body class="ui-widget-content">
+  <article class="jmpress" data-template="simple">
+
+    <!-- HOME -->
+    <section id="home" class="ui-widget ui-widget-content ui-corner-all ui-state-default">
+      <h1>Example Template</h1>
+      <p>This is an example presentation template using <a href="http://jqueryui.com/" target="_blank">jQuery UI</a>.<br/>
+      Switch out this template's theme by changing the stylesheet link. Use any <a href="http://jqueryui.com/themeroller/" target="_blank">jQuery UI theme</a>.</p>
+      <p>&nbsp;</p>
+      <h3>Copy the <a href="#home" onClick='window.location="view-source:" + window.location.href'>HTML source</a> and the <a href="style.css" target="_blank">CSS</a> for this template.</h3>
+    </section>
+
+    <!-- LIST -->
+    <section id="list" class="ui-widget ui-widget-content ui-corner-all ui-state-default">
+      <h1>My List</h1>
+      <ul>
+          <li data-jmpress="fade">I am</li>
+          <li data-jmpress="fade">a wonderful</li>
+          <li data-jmpress="fade">little list of</li>
+          <li data-jmpress="fade">fading items.</li>
+        </ul>
+    </section>
+
+    <!-- END -->
+    <section id="end" class="ui-widget ui-widget-content ui-corner-all ui-state-default">
+      <h1>The End</h1>
+      <p>Thanks for listening!</p>
+    </section>
+
+  </article>
+
+  <!-- jQuery Dependencies -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+
+  <!-- jmpress - RECOMMENDED TO REPLACE WITH A LOCAL/HOSTED COPY -->
+  <script type="text/javascript" src="https://raw.github.com/jmpressjs/dist/master/jmpress.js"></script>
+  <script type="text/javascript">
+  // simple left to right template
+  $.jmpress('template', 'simple', {
+    children: function(i, child, children) {
+      return {x: i * 1000};
+    }
+  });
+  // start up jmpress
+  $('.jmpress').jmpress({
+    // use section tags as steps
+    stepSelector: 'section',
+    // on steps active, set ui-state-active class
+    setActive: function(step, event) {
+      $('.jmpress').find('section').removeClass('ui-state-active');
+      $(step).addClass('ui-state-active');
+    }
+  });
+  </script>
+</body>
+</html>

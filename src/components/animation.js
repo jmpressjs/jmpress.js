@@ -1,14 +1,10 @@
-/*!
+/*
  * animation.js
  * Apply custom animations to steps
  */
 (function( $, document, window, undefined ) {
 
 	'use strict';
-
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
 
 	function parseSubstepInfo(str) {
 		var arr = str.split(" ");
@@ -38,6 +34,7 @@
 					config.delay = value;
 				} else {
 					config.after = Array.prototype.slice.call(arr, i).join(" ");
+					i = arr.length;
 				}
 			}
 		}
@@ -93,10 +90,10 @@
 					other = listOfSubsteps[idx-1];
 				} else {
 					var index = find(listOfSubsteps, other, 0, idx - 1);
-					if(index === -1) {
+					if(index === undefined) {
 						index = find(listOfSubsteps, other);
 					}
-					other = (index === -1 || index === idx) ? listOfSubsteps[idx-1] : listOfSubsteps[index];
+					other = (index === undefined || index === idx) ? listOfSubsteps[idx-1] : listOfSubsteps[index];
 				}
 			} else {
 				other = listOfSubsteps[idx-1];

@@ -1,4 +1,4 @@
-/*!
+/*
  * jmpress.secondary plugin
  * Apply a secondary animation when step is selected.
  */

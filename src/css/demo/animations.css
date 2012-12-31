@@ -1,0 +1,28 @@
+/* ==========================================================================
+   FLOATING
+   ========================================================================== */
+@-webkit-keyframes floater {
+	0%   { margin-top: 0px;   }
+	50%  { margin-top: -20px; }
+	100% { margin-top: 0px;   }
+}
+@-moz-keyframes floater {
+	0%   { margin-top: 0px;   }
+	50%  { margin-top: -20px; }
+	100% { margin-top: 0px;   }
+}
+@-ms-keyframes floater {
+	0%   { margin-top: 0px;   }
+	50%  { margin-top: -20px; }
+	100% { margin-top: 0px;   }
+}
+@-o-keyframes floater {
+	0%   { margin-top: 0px;   }
+	50%  { margin-top: -20px; }
+	100% { margin-top: 0px;   }
+}
+@keyframes floater {
+	0%   { margin-top: 0px;   }
+	50%  { margin-top: -20px; }
+	100% { margin-top: 0px;   }
+}

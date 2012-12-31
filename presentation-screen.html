@@ -14,19 +14,23 @@
 	<script type="text/javascript" src="dist/jmpress.min.js"></script>
 	<script type="text/javascript">
 		var notesUrl = false;
+		var PREFIX = "jmpress-presentation-";
 		window.addEventListener("message", function(event) {
-			var json = JSON.parse(event.data);
+			if(typeof event.data !== "string" || event.data.indexOf(PREFIX) !== 0) {
+				return;
+			}
+			var json = JSON.parse(event.data.slice(PREFIX.length));
 			switch(json.type) {
 			case "afterInit":
-				event.source.postMessage(JSON.stringify({type:"listen"}), "*");
+				event.source.postMessage(PREFIX + JSON.stringify({type:"listen"}), "*");
 				break;
 			case "select":
-				window.opener.postMessage(JSON.stringify(json), "*");
-				if(notesUrl)
+				window.opener.postMessage(PREFIX + JSON.stringify(json), "*");
+				if(notesUrl && /[a-z0-9\-]+/i.test(json.targetId))
 					$("#notesframe").attr("src", notesUrl+"#"+json.targetId);
 				break;
 			case "url":
-				event.source.postMessage(JSON.stringify({type:"ok"}), "*");
+				event.source.postMessage(PREFIX + JSON.stringify({type:"ok"}), "*");
 				$("#frame").attr("src", json.url);
 				notesUrl = json.notesUrl || notesUrl;
 				if(notesUrl)
