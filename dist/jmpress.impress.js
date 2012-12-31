@@ -1,6 +1,6 @@
 /*!
- * jmpress.js v0.4.3
- * http://shama.github.com/jmpress.js
+ * jmpress.js v0.4.4
+ * http://jmpressjs.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
  *
@@ -9,9 +9,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  *
  * Based on the foundation laid by Bartek Szopka @bartaz
- */
-
-/*!
+ *//*
  * core.js
  * The core of jmpress.js
  */
@@ -309,14 +307,6 @@
 				return false;
 			}
 
-			// Sometimes it's possible to trigger focus on first link with some keyboard action.
-			// Browser in such a case tries to scroll the page to make this element visible
-			// (even that body overflow is set to hidden) and it breaks our careful positioning.
-			//
-			// So, as a lousy (and lazy) workaround we will make the page scroll back to the top
-			// whenever slide is selected
-			//
-			// If you are reading this and know any better way to handle it, I'll be glad to hear about it!
 			scrollFix.call(this);
 
 			var step = $(el).data('stepData');
@@ -400,7 +390,7 @@
 		 * This should fix ANY kind of buggy scrolling
 		 */
 		function scrollFix() {
-			function fix() {
+			(function fix() {
 				if ($(container)[0].tagName === "BODY") {
 					try {
 						window.scrollTo(0, 0);
@@ -419,8 +409,7 @@
 				setTimeout(check, 100);
 				setTimeout(check, 200);
 				setTimeout(check, 400);
-			}
-			fix();
+			}());
 		}
 		/**
 		 * Alias for select
@@ -788,7 +777,7 @@
 	});
 
 }(jQuery, document, window));
-/*!
+/*
  * near.js
  * Find steps near each other
  */
@@ -865,7 +854,7 @@
 		return $(array);
 	};
 }(jQuery, document, window));
-/*!
+/*
  * transform.js
  * The engine that powers the transforms or falls back to other methods
  */
@@ -874,9 +863,6 @@
 	'use strict';
 
 	/* FUNCTIONS */
-	function randomString() {
-		return "" + Math.round(Math.random() * 100000, 0);
-	}
 	function toCssNumber(number) {
 		return (Math.round(10000*number)/10000)+"";
 	}
@@ -1171,7 +1157,7 @@
 	});
 
 }(jQuery, document, window));
-/*!
+/*
  * active.js
  * Set the active classes on steps
  */
@@ -1218,7 +1204,7 @@
 	});
 
 }(jQuery, document, window));
-/*!
+/*
  * circular.js
  * Repeat from start after end
  */
@@ -1266,7 +1252,7 @@
 		return prevOrNext(this, step, eventData);
 	});
 }(jQuery, document, window));
-/*!
+/*
  * hash.js
  * Detect and set the URL hash
  */
@@ -1374,7 +1360,7 @@
 	});
 
 }(jQuery, document, window));
-/*!
+/*
  * keyboard.js
  * Keyboard event mapping and default keyboard actions
  */
@@ -1537,7 +1523,7 @@
 
 
 }(jQuery, document, window));
-/*!
+/*
  * mouse.js
  * Clicking to select a step
  */
