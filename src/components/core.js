@@ -531,7 +531,8 @@
 		 */
 		function checkSupport() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) === -1 );
+			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) === -1 ) 
+							|| (ua.search(/(chrome)/) !== -1);
 			return supported;
 		}
 
