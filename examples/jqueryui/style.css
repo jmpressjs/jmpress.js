@@ -1,0 +1,203 @@
+/*
+ * http://meyerweb.com/eric/tools/css/reset/
+ * v2.0 | 20110126
+ * License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+html {
+  width: 100%;
+}
+body {
+  line-height: 1;
+  font-weight: bold;
+  border-width: 0px !important;
+}
+ol, ul {
+  margin-left: 20px;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ==========================================================================
+   COMMON JMPRESS
+   ========================================================================== */
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-transform: translate3d(0,0,1px);
+  -moz-transform:    translate3d(0,0,1px);
+  -ms-transform:     translate3d(0,0,1px);
+  -o-transform:      translate3d(0,0,1px);
+  transform:         translate3d(0,0,1px);
+}
+a { text-decoration: underline !important; }
+a:hover { text-decoration: none !important; }
+b, strong { font-weight: bold; }
+i, em { font-style: italic; }
+h1 { font-size: 150%; }
+h2 { font-size: 120%; }
+h3 { font-size: 80%; }
+h4 { font-size: 60%; }
+h5 { font-size: 40%; }
+p { font-size: 60%; }
+sup { font-size: 40%; vertical-align: top; }
+code {
+  font-family: monospace;
+  font-weight: normal;
+  background-color: #ddd;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  padding: 3px;
+}
+pre {
+  font-family: monospace;
+  font-weight: normal;
+  font-size: 50%;
+  background-color: #ddd;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  padding: 3px;
+  margin: 10px 0;
+}
+section, .nested-step {
+  width: 800px;
+  min-height: 300px;
+  padding: 20px;
+  z-index: 2;
+
+  font-size: 26px;
+  line-height: 1.5;
+
+  pointer-events: auto;
+}
+section:not(.active) {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   USER DEFINED STYLES
+   ========================================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+.will-appear { opacity: 0; }
+.will-fade {
+  -webkit-transition: opacity 1s;
+  -moz-transition:    opacity 1s;
+  -ms-transition:     opacity 1s;
+  -o-transition:      opacity 1s;
+  transition:         opacity 1s;
+
+  opacity: 0;
+}
+.will-fade-slow {
+  -webkit-transition: opacity 2s;
+  -moz-transition:    opacity 2s;
+  -ms-transition:     opacity 2s;
+  -o-transition:      opacity 2s;
+  transition:         opacity 2s;
+
+  opacity: 0;
+}
+.will-fade-fast {
+  -webkit-transition: opacity 0.5s;
+  -moz-transition:    opacity 0.5s;
+  -ms-transition:     opacity 0.5s;
+  -o-transition:      opacity 0.5s;
+  transition:         opacity 0.5s;
+
+  opacity: 0;
+}
+.do-appear, .fade, .not-supported .will-fade, .do-fade, .do-fade-slow, .do-fade-fast {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+@media print {
+  body, .ui-state-default {
+    background: white;
+  }
+  .jmpress {
+    width: auto;
+    margin: 0 5%;
+    padding: 0;
+    border: 0;
+    float: none !important;
+    color: black;
+    background: transparent;
+  }
+  section {
+    page-break-after: always;
+    opacity: 1;
+    clear: both;
+    display: block;
+    float: none !important;
+    position: relative;
+    margin: 20px auto;
+
+    -webkit-transition: rotate(0deg);
+    -moz-transition:    rotate(0deg);
+    -ms-transition:     rotate(0deg);
+    -o-transition:      rotate(0deg);
+    transition:         rotate(0deg);
+  }
+  section:not(.active) {
+    opacity: 1;
+  }
+}

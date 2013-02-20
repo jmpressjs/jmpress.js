@@ -1,4 +1,4 @@
-/*!
+/*
  * hash.js
  * Detect and set the URL hash
  */

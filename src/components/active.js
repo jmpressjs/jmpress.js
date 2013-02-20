@@ -1,4 +1,4 @@
-/*!
+/*
  * active.js
  * Set the active classes on steps
  */

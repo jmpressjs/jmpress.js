@@ -1,4 +1,4 @@
-/*!
+/*
  * near.js
  * Find steps near each other
  */
