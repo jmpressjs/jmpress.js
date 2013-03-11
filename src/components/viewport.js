@@ -10,6 +10,17 @@
 		return "" + Math.round(Math.random() * 100000, 0);
 	}
 
+	var browser = (function() {
+		var ua = navigator.userAgent.toLowerCase();
+		var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+			/(webkit)[ \/]([\w.]+)/.exec(ua) ||
+			/(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+			/(msie) ([\w.]+)/.exec(ua) ||
+			ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+			[];
+		return match[1] || "";
+	}());
+
 	var defaults = $.jmpress("defaults");
 	defaults.viewPort = {
 		width: false
@@ -21,8 +32,8 @@
 		,zoomBindWheel: true
 	};
 	var keys = defaults.keyboard.keys;
-	keys[$.browser.mozilla?107:187] = "zoomIn";  // +
-	keys[$.browser.mozilla?109:189] = "zoomOut"; // -
+	keys[browser === 'mozilla' ? 107 : 187] = "zoomIn";  // +
+	keys[browser === 'mozilla' ? 109 : 189] = "zoomOut"; // -
 	defaults.reasonableAnimation.resize = {
 		transitionDuration: '0s'
 		,transitionDelay: '0ms'
@@ -139,6 +150,7 @@
 		$(this).jmpress("reselect", "zoom");
 	});
 	$.jmpress('afterDeinit', function( nil, eventData ) {
+		$(eventData.settings.fullscreen ? document : this).unbind(eventData.current.viewPortNamespace);
 		$(window).unbind(eventData.current.viewPortNamespace);
 	});
 	$.jmpress("setActive", function( step, eventData ) {

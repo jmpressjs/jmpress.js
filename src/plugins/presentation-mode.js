@@ -68,7 +68,7 @@
 						throw "Unknown message type: " + json.type;
 					}
 				} catch(e) {
-					$.error("Recieved message is malformed: " + e);
+					$.error("Received message is malformed: " + e);
 				}
 			});
 			try {

@@ -200,7 +200,7 @@ module.exports = function(grunt) {
 				dest: 'dist/plugins/jmpress.presentation-mode.min.js'
 			}
 		},
-		mincss: {
+		cssmin: {
 			dist_basic: {
 				src: ['dist/basic-animations.css'],
 				dest: 'dist/basic-animations.min.css'
@@ -223,11 +223,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-mincss');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Tasks
-	grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify', 'mincss']);
+	grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify', 'cssmin']);
 };

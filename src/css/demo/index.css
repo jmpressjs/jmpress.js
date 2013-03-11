@@ -191,7 +191,7 @@ section:not(.active) {
 	background-color: #aab6c2;
 	padding: 20px 10px;
 	text-align: center;
-	color: #c8d5e1;
+	color: #333;
 	display: none;
 	z-index: 99;
 	-webkit-box-sizing: border-box;
