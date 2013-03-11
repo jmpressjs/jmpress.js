@@ -1,10 +1,10 @@
 /*!
- * jmpress.js v0.4.4
+ * jmpress.js v0.4.5
  * http://jmpressjs.github.com/jmpress.js
  *
  * A jQuery plugin to build a website on the infinite canvas.
  *
- * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
+ * Copyright 2013 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
  * http://www.opensource.org/licenses/mit-license.php
  *
@@ -60,6 +60,15 @@
 			return "";
 		}
 		return attribute + ",";
+	}
+	/**
+	 * Return an jquery object only if it's not empty
+	 */
+	function ifNotEmpty(el) {
+		if(el.length > 0) {
+			return el;
+		}
+		return null;
 	}
 
 	/**
@@ -327,11 +336,16 @@
 
 			var delegated = el;
 			if($(el).data("stepData").delegate) {
-				delegated = $(el).parentsUntil(jmpress).filter(settings.stepSelector).filter(step.delegate) ||
-					$(el).near(step.delegate) ||
-					$(el).near(step.delegate, true) ||
-					$(step.delegate, jmpress);
-				step = delegated.data("stepData");
+				delegated = ifNotEmpty($(el).parentsUntil(jmpress).filter(settings.stepSelector).filter(step.delegate)) ||
+					ifNotEmpty($(el).near(step.delegate)) ||
+					ifNotEmpty($(el).near(step.delegate, true)) ||
+					ifNotEmpty($(step.delegate, jmpress));
+				if(delegated) {
+					step = delegated.data("stepData");
+				} else {
+					// Do not delegate if expression not found
+					delegated = el;
+				}
 			}
 			if ( activeDelegated ) {
 				callCallback.call(this, 'setInactive', activeDelegated, {
@@ -533,8 +547,7 @@
 		 */
 		function checkSupport() {
 			var ua = navigator.userAgent.toLowerCase();
-			var supported = ( ua.search(/(iphone)|(ipod)|(android)/) === -1 );
-			return supported;
+			return (ua.search(/(iphone)|(ipod)|(android)/) === -1) || (ua.search(/(chrome)/) !== -1);
 		}
 
 		// BEGIN INIT
@@ -777,6 +790,7 @@
 	});
 
 }(jQuery, document, window));
+
 /*
  * near.js
  * Find steps near each other

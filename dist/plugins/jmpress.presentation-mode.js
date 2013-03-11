@@ -1,7 +1,7 @@
 /*!
- * plugin for jmpress.js v0.4.4
+ * plugin for jmpress.js v0.4.5
  *
- * Copyright 2012 Kyle Robinson Young @shama & Tobias Koppers @sokra
+ * Copyright 2013 Kyle Robinson Young @shama & Tobias Koppers @sokra
  * Licensed MIT
  * http://www.opensource.org/licenses/mit-license.php
  *//*
@@ -74,7 +74,7 @@
 						throw "Unknown message type: " + json.type;
 					}
 				} catch(e) {
-					$.error("Recieved message is malformed: " + e);
+					$.error("Received message is malformed: " + e);
 				}
 			});
 			try {
