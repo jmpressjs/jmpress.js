@@ -1,4 +1,4 @@
-# jmpress.js (Version 0.4.4)
+# jmpress.js (Version 0.4.5)
 
 A jQuery plugin to build a website on the infinite canvas.
 
@@ -24,7 +24,7 @@ Here is the current browser support list:
 * iPad: YES
 * iPhone/iPod: NO
 * Android: NO
-* Chrome for Android: YES in desktop mode
+* Chrome for Android: YES
 
 ## USAGE
 
@@ -42,5 +42,5 @@ of the docs for more information on how you can contribute. Thanks!
 
 ## LICENSE
 
-Copyright 2012 Kyle Robinson Young & Tobias Koppers. Released under a
+Copyright 2013 Kyle Robinson Young & Tobias Koppers. Released under a
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
