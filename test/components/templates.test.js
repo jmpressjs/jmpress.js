@@ -1,6 +1,4 @@
-/*global QUnit:true, module:true, test:true, asyncTest:true, expect:true*/
-/*global start:true, stop:true ok:true, equal:true, notEqual:true, deepEqual:true*/
-/*global notDeepEqual:true, strictEqual:true, notStrictEqual:true, raises:true*/
+/* global QUnit, module, test, asyncTest, expect, start, stop, ok, equal, notEqual, deepEqual, notDeepEqual, strictEqual, notStrictEqual, raises */
 (function($) {
 
 	'use strict';

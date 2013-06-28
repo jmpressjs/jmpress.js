@@ -1,0 +1,18 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "eqnull": true,
+  "browser": true,
+  "laxcomma": true,
+  "smarttabs": true,
+  "validthis": true,
+  "globals": {
+    "jQuery": true
+  }
+}
