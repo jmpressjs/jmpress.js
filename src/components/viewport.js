@@ -62,9 +62,9 @@
 				delta = delta || event.originalEvent.wheelDelta || -event.originalEvent.detail /* mozilla */;
 				var direction = (delta / Math.abs(delta));
 				if(direction < 0) {
-					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.x, event.originalEvent.y);
+					$(eventData.jmpress).jmpress("zoomOut", event.originalEvent.clientX, event.originalEvent.clientY);
 				} else if(direction > 0) {
-					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.x, event.originalEvent.y);
+					$(eventData.jmpress).jmpress("zoomIn", event.originalEvent.clientX, event.originalEvent.clientY);
 				}
 				return false;
 			});
