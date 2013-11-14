@@ -89,6 +89,7 @@
 		'beforeChange': 1
 		,'beforeInitStep': 1
 		,'initStep': 1
+		,'checkNoSupport': 1
 		,'beforeInit': 1
 		,'afterInit': 1
 		,'beforeDeinit': 1
@@ -546,7 +547,8 @@
 		// BEGIN INIT
 
 		// CHECK FOR SUPPORT
-		if (checkSupport() === false) {
+		if (checkSupport() === false || callCallback.call(this, 'checkNoSupport', null, {})) {
+			// not supported
 			if (settings.notSupportedClass) {
 				jmpress.addClass(settings.notSupportedClass);
 			}

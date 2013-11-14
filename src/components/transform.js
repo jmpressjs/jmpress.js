@@ -55,22 +55,6 @@
 				$.jmpress("css", el, $.extend({}, { transform: transform }));
 			}
 		}
-		,1: {
-			// CHECK IF SUPPORT IS REALLY NEEDED?
-			// this not even work without scaling...
-			// it may better to display the normal view
-			transform: function( el, data ) {
-				var anitarget = { top: 0, left: 0 };
-				$.each(data, function(idx, item) {
-					var coord = ["X", "Y"];
-					if(item[0] === "translate") { // ["translate", x, y, z]
-						anitarget.left = Math.round(item[1] || 0) + "px";
-						anitarget.top = Math.round(item[2] || 0) + "px";
-					}
-				});
-				el.animate(anitarget, 1000); // TODO: Use animation duration
-			}
-		}
 	};
 
 	/**
@@ -81,11 +65,14 @@
 			return engines[3];
 		} else if ($.jmpress("pfx", "transform")) {
 			return engines[2];
-		} else {
-			// CHECK IF SUPPORT IS REALLY NEEDED?
-			return engines[1];
 		}
 	}());
+
+	if(!engine) {
+		$.jmpress("checkNoSupport", function() {
+			return true;
+		});
+	}
 
 	$.jmpress("defaults").reasonableAnimation = {};
 	$.jmpress("initStep", function( step, eventData ) {
