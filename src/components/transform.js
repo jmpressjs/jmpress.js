@@ -16,8 +16,8 @@
 	 */
 	var engines = {
 		3: {
-			transform: function( el, data ) {
-				var transform = 'translate(-50%,-50%)';
+			transform: function( el, data, settings ) {
+				var transform = 'translate(-' + settings.originX + ',-' + settings.originY + ')';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y", "Z"];
 					var i;
@@ -38,8 +38,8 @@
 			}
 		}
 		,2: {
-			transform: function( el, data ) {
-				var transform = 'translate(-50%,-50%)';
+			transform: function( el, data, settings ) {
+				var transform = 'translate(-' + settings.originX + ',-' + settings.originY + ')';
 				$.each(data, function(idx, item) {
 					var coord = ["X", "Y"];
 					if(item[0] === "translate") { // ["translate", x, y, z]
@@ -74,7 +74,10 @@
 		});
 	}
 
-	$.jmpress("defaults").reasonableAnimation = {};
+	var jmpressDefaults = $.jmpress("defaults");
+	jmpressDefaults.reasonableAnimation = {};
+	jmpressDefaults.originX = "50%";
+	jmpressDefaults.originY = "50%";
 	$.jmpress("initStep", function( step, eventData ) {
 		var data = eventData.data;
 		var stepData = eventData.stepData;
@@ -94,6 +97,13 @@
 			,scaleX: pf(data.scaleX) || false
 			,scaleY: pf(data.scaleY) || false
 			,scaleZ: pf(data.scaleZ) || 1
+		});
+	});
+	$.jmpress("beforeInit", function( nil, eventData ) {
+		$.jmpress("css", eventData.area, {
+			left: eventData.settings.originX,
+			top: eventData.settings.originY,
+			perspective: '1000px',
 		});
 	});
 	$.jmpress("afterInit", function( nil, eventData ) {
@@ -134,7 +144,7 @@
 				sd.scaleY || sd.scale,
 				sd.scaleZ || sd.scale]
 		];
-		engine.transform( step, transform );
+		engine.transform( step, transform, eventData.settings );
 	});
 	$.jmpress("setActive", function( element, eventData ) {
 		var target = eventData.target;
@@ -270,7 +280,7 @@
 			props.transitionDelay = '0s';
 		}
 		$.jmpress("css", eventData.area, props);
-		engine.transform(eventData.area, extracted);
+		engine.transform(eventData.area, extracted, eventData.settings);
 
 		props = $.extend({}, animation);
 		if (!zoomout) {
@@ -284,7 +294,7 @@
 		eventData.current.perspectiveScale = target.perspectiveScale;
 
 		$.jmpress("css", eventData.canvas, props);
-		engine.transform(eventData.canvas, target.transform);
+		engine.transform(eventData.canvas, target.transform, eventData.settings);
 	});
 
 }(jQuery, document, window));

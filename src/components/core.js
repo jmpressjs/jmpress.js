@@ -606,16 +606,14 @@
 		};
 		props = $.extend({}, settings.animation, props);
 		css(area, props);
-		css(area, {
-			top: '50%'
-			,left: '50%'
-			,perspective: '1000px'
-		});
 		css(canvas, props);
 
 		current = {};
 
-		callCallback.call(this, 'beforeInit', null, {});
+		callCallback.call(this, 'beforeInit', null, {
+			canvas: canvas,
+			area: area
+		});
 
 		// INITIALIZE EACH STEP
 		steps.each(function( idx ) {
