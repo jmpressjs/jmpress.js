@@ -42,7 +42,7 @@
 		for(var i = 1; i < eventData.parents.length; i++) {
 			$(eventData.parents[i])
 				.children(eventData.settings.stepSelector)
-				.each();
+				.each(grandchildrenFunc);
 		}
 	});
 	$.jmpress("setInactive", function( step, eventData ) {
