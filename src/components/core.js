@@ -14,7 +14,7 @@
 	 */
 	var pfx = (function () {
 		var style = document.createElement('dummy').style,
-			prefixes = ['webkit', 'moz', 'o', 'ms', 'khtml', ''],
+			prefixes = ['Webkit', 'Moz', 'O', 'ms', 'Khtml', ''],
 			memory = {};
 		return function ( prop ) {
 			if ( typeof memory[ prop ] === "undefined" ) {
@@ -42,7 +42,7 @@
 		var index = 1 + name.substr(1).search(/[A-Z]/);
 		var prefix = name.substr(0, index).toLowerCase();
 		if(prefix === '') {
-			return name;
+			return name.toLowerCase();
 		}
 		var postfix = name.substr(index).toLowerCase();
 		return "-" + prefix + "-" + postfix;
