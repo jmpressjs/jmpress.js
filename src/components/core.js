@@ -14,7 +14,7 @@
 	 */
 	var pfx = (function () {
 		var style = document.createElement('dummy').style,
-			prefixes = 'Webkit Moz O ms Khtml'.split(' '),
+			prefixes = ['Webkit','Moz','O','ms','Khtml',''],
 			memory = {};
 		return function ( prop ) {
 			if ( typeof memory[ prop ] === "undefined" ) {
@@ -41,6 +41,12 @@
 		}
 		var index = 1 + name.substr(1).search(/[A-Z]/);
 		var prefix = name.substr(0, index).toLowerCase();
+
+        // If there's no prefix, use the name itself, don't attempt to prefix it with '-prefix-'.
+        if (prefix === '') {
+            return name;
+        }
+
 		var postfix = name.substr(index).toLowerCase();
 		return "-" + prefix + "-" + postfix;
 	}
