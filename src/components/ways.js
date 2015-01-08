@@ -5,6 +5,7 @@
 (function( $, document, window, undefined ) {
 
 	"use strict";
+
 	var $jmpress = $.jmpress;
 
 	/* FUNCTIONS */
