@@ -1,28 +1,29 @@
-/* global QUnit, module, test, asyncTest, expect, start, stop, ok, equal, notEqual, deepEqual, notDeepEqual, strictEqual, notStrictEqual, raises */
+/* global QUnit, module, test, asyncTest, expect, start, stop, ok, equal, notEqual, deepEqual,
+ * notDeepEqual, strictEqual, notStrictEqual, raises */
 (function($) {
 
-	'use strict';
+	"use strict";
 
-	QUnit.testStart = function(test) {
-		window.location.hash = '#';
+	QUnit.testStart = function( test ) {
+		window.location.hash = "#";
 	};
 
-	module('templates', {
+	module( "templates", {
 		setup: function() {
-			this.fixture = '#qunit-fixture #jmpress';
-			$(this.fixture)
+			this.fixture = "#qunit-fixture #jmpress";
+			$( this.fixture )
 				.empty()
-				.attr('data-template', 'test-template')
-				.append($('<section />').text('One'))
-				.append($('<section />').text('Two'))
-				.append($('<section />').text('Three'))
-				.append($('<section />').text('Four'));
+				.attr( "data-template", "test-template" )
+				.append( $( "<section />" ).text( "One" ) )
+				.append( $( "<section />" ).text( "Two" ) )
+				.append( $( "<section />" ).text( "Three" ) )
+				.append( $( "<section />" ).text( "Four" ) );
 		}
 	});
 
-	test('basic', 8, function() {
-		$.jmpress('template', 'test-template', {
-			children: function (idx, child, children) {
+	test( "basic", 8, function() {
+		$.jmpress( "template", "test-template", {
+			children: function( idx, child, children ) {
 				return {
 					x: idx * 1000,
 					y: idx * 1000,
@@ -30,17 +31,19 @@
 				};
 			}
 		});
-		$(this.fixture).jmpress({stepSelector: 'section'});
-		var result = $(this.fixture + ' #step-1').attr('style');
-		ok( result.indexOf('translate3d(0px, 0px, 0px)') !== -1 );
-		ok( result.indexOf('rotateX(0deg)') !== -1 );
-		ok( result.indexOf('rotateY(0deg)') !== -1 );
-		ok( result.indexOf('rotateZ(0deg)') !== -1 );
-		result = $(this.fixture + ' #step-3').attr('style');
-		ok( result.indexOf('translate3d(2000px, 2000px, 0px)') !== -1 );
-		ok( result.indexOf('rotateX(0deg)') !== -1 );
-		ok( result.indexOf('rotateY(0deg)') !== -1 );
-		ok( result.indexOf('rotateZ(90deg)') !== -1 );
+		$( this.fixture ).jmpress({
+			stepSelector: "section"
+		});
+		var result = $( this.fixture + " #step-1" ).attr( "style" );
+		ok( result.indexOf( "translate3d(0px, 0px, 0px)" ) !== -1 );
+		ok( result.indexOf( "rotateX(0deg)" ) !== -1 );
+		ok( result.indexOf( "rotateY(0deg)" ) !== -1 );
+		ok( result.indexOf( "rotateZ(0deg)" ) !== -1 );
+		result = $( this.fixture + " #step-3" ).attr( "style" );
+		ok( result.indexOf( "translate3d(2000px, 2000px, 0px)" ) !== -1 );
+		ok( result.indexOf( "rotateX(0deg)" ) !== -1 );
+		ok( result.indexOf( "rotateY(0deg)" ) !== -1 );
+		ok( result.indexOf( "rotateZ(90deg)" ) !== -1 );
 	});
 
-}(jQuery));
+}( jQuery ));
