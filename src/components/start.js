@@ -4,11 +4,11 @@
  */
 (function( $, document, window, undefined ) {
 
-	'use strict';
+	"use strict";
 
 	/* HOOKS */
-	$.jmpress( 'selectInitialStep', function( nil, eventData ) {
+	$.jmpress( "selectInitialStep", function( nil, eventData ) {
 		return eventData.settings.start;
 	});
 
-}(jQuery, document, window));
+}( jQuery, document, window ));
