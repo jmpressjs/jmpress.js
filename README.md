@@ -14,23 +14,15 @@ jmpress.js beta demo: [http://jmpressjs.github.com/jmpress.js-beta/]
 ## BROWSER SUPPORT
 
 jmpress.js attempts to use CSS3 transform and transition as its engine.
-Here is the current browser support list:
 
-* Chrome/Chromium: YES
-* Safari: YES
-* Firefox: YES
-* IE: MOSTLY
-* Opera: YES
-* iPad: YES
-* iPhone/iPod: NO
-* Android: NO
-* Chrome for Android: YES
+Please visit this link [http://caniuse.com/#feat=css-animation](http://caniuse.com/#feat=css-animation)
+to see what browsers support CSS3 transforms.
 
 ## USAGE
 
 See the [DOCS](http://jmpressjs.github.com/docs/).
 
-To build or contribute to this version, please look at the development 
+To build or contribute to this version, please look at the development
 documentation under the [contribute section](http://jmpressjs.github.com/docs/contribute.html).
 
 ## CONTRIBUTING
