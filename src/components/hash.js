@@ -6,7 +6,7 @@
 
 	'use strict';
 	var $jmpress = $.jmpress,
-		hashLink = "a[href^=#]";
+		hashLink = "a[href^='#']";
 
 	/* FUNCTIONS */
 	function randomString() {
